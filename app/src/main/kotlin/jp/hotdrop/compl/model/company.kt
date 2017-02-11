@@ -1,4 +1,4 @@
 package jp.hotdrop.compl.model
 
-class company {
+class Company {
 }
