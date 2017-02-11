@@ -1,7 +1,7 @@
 package jp.hotdrop.compl.di
 
 import dagger.Subcomponent
-import jp.hotdrop.compl.MainActivity
+import jp.hotdrop.compl.activity.MainActivity
 import jp.hotdrop.compl.di.scope.ActivityScope
 
 @ActivityScope

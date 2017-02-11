@@ -2,10 +2,41 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Navigation Menu Style -->
+    <style name="NavigationImageIcon">
+        <item name="android:layout_marginTop">@dimen/spacing</item>
+        <item name="android:layout_marginLeft">@dimen/spacing</item>
+        <item name="android:layout_marginStart">@dimen/spacing_large</item>
+    </style>
+
+    <style name="NavigationDescription">
+        <item name="android:layout_marginTop">@dimen/spacing_small</item>
+        <item name="android:layout_marginEnd">@dimen/spacing</item>
+        <item name="android:layout_marginLeft">@dimen/spacing</item>
+        <item name="android:layout_marginRight">@dimen/spacing</item>
+        <item name="android:layout_marginStart">@dimen/spacing</item>
+        <item name="android:textColor">@color/nav_menu_text_color</item>
+        <item name="android:textSize">@dimen/text_normal</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="NavigationViewTheme">
+        <item name="android:background">@color/nav_menu_background</item>
+        <item name="android:gravity">start</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:orientation="vertical"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/nav_header_background" />
+        
+        <ImageView
+            android:layout_width="@dimen/drawer_header_icon"
+            android:layout_height="@dimen/drawer_header_icon"
+            android:id="@+id/img_nav_header_icon"
+            style="@style/NavigationImageIcon"
+            android:contentDescription="@string/app_name"
+            android:src="@mipmap/ic_launcher"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_nav_header"
+            android:layout_below="@id/img_nav_header_icon"
+            style="@style/NavigationDescription"
+            android:text="@string/nav_description"/>
+
+    </RelativeLayout>
+
+</layout>
