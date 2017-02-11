@@ -1,9 +1,14 @@
 package jp.hotdrop.compl.activity
 
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentTransaction
+import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
+import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.ActivityMainBinding
 
 class MainActivity : BaseActivity(),
@@ -14,25 +19,36 @@ class MainActivity : BaseActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
-        //binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        //DataBindingUtil.bind<ActivityMainBinding>(binding.navView.getHeaderView(0))
-        //getComponent().inject(this)
 
-        // TODO subscription
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        // ヘッダー情報を取得しバインドへ設定
+        DataBindingUtil.bind<ActivityMainBinding>(binding.navView.getHeaderView(0))
+        getComponent().inject(this)
 
         initView()
+
+        if(savedInstanceState == null) {
+
+        }
     }
 
     private fun initView() {
-        /*setSupportActionBar(binding.toolbar)
+        // スライド式のメニューを生成する
+        setSupportActionBar(binding.toolbar)
         var toggle = ActionBarDrawerToggle(this, binding.drawer, binding.toolbar, R.string.open, R.string.close)
         binding.drawer.addDrawerListener(toggle)
         toggle.syncState()
         binding.navView.setNavigationItemSelectedListener(this)
-        //binding.navView.itemIconTintList(null)
+        binding.navView.itemIconTintList = null
         binding.navView.setCheckedItem(R.id.nav_main_list)
-        */
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+        ft.replace(R.id.content_view, fragment, fragment.javaClass.simpleName)
+        ft.addToBackStack(null)
+        ft.commit()
     }
 
     override fun onBackStackChanged() {

@@ -7,4 +7,8 @@
     <color name="nav_header_background">@color/light_blue</color>
     <color name="nav_menu_background">@color/white</color>
     <color name="nav_menu_text_color">@color/black</color>
+
+    <!-- fragment -->
+    <color name="view_background">@color/white</color>
+    <color name="fab_add_background">@color/white</color>
 </resources>
