@@ -1,14 +1,14 @@
 package jp.hotdrop.compl.di
 
-import android.app.Application
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import javax.inject.Inject
 
 @Module
-class AppModule @Inject constructor(val application: Application) {
+class AppModule(private val context: Context) {
 
     @Provides
-    fun provideContext(): Context = application.applicationContext
+    fun provideContext(): Context {
+        return context
+    }
 }

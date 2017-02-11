@@ -5,4 +5,8 @@
     <string name="nav_description">ここにアプリの説明</string>
     <string name="nav_list">一覧</string>
     <string name="nav_category_list">分類一覧</string>
+
+    <string name="open">open</string>
+    <string name="close">close</string>
+
 </resources>
