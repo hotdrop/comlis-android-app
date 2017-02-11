@@ -2,12 +2,12 @@ package jp.hotdrop.compl.di
 
 import android.support.v7.app.AppCompatActivity
 import dagger.Module
+import dagger.Provides
+import javax.inject.Inject
 
 @Module
-class ActivityModule(activity: AppCompatActivity) {
-    val activity = activity
+class ActivityModule @Inject constructor(var activity: AppCompatActivity) {
 
-    fun activity(): AppCompatActivity {
-        return activity
-    }
+    @Provides
+    fun activity(): AppCompatActivity = activity
 }

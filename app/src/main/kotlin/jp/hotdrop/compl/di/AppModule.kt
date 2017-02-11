@@ -4,14 +4,11 @@ import android.app.Application
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import javax.inject.Inject
 
 @Module
-class AppModule(app: Application) {
-
-    private val context: Context = app
+class AppModule @Inject constructor(val application: Application) {
 
     @Provides
-    fun provideContext(): Context {
-        return context
-    }
+    fun provideContext(): Context = application.applicationContext
 }

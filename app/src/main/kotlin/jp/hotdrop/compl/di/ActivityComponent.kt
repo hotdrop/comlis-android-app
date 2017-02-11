@@ -7,6 +7,5 @@ import jp.hotdrop.compl.di.scope.ActivityScope
 @ActivityScope
 @Subcomponent(modules = arrayOf(ActivityModule::class))
 interface ActivityComponent {
-
     fun inject(activity: MainActivity)
 }

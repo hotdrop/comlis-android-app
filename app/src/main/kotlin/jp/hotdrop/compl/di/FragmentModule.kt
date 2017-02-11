@@ -4,14 +4,11 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import dagger.Module
 import dagger.Provides
+import javax.inject.Inject
 
 @Module
-class FragmentModule(fragment: Fragment) {
-
-    private val fragment = fragment
+class FragmentModule @Inject constructor(var fragment: Fragment) {
 
     @Provides
-    fun provideFragmentManager(): FragmentManager {
-        return fragment.fragmentManager
-    }
+    fun provideFragmentManager(): FragmentManager = fragment.fragmentManager
 }
