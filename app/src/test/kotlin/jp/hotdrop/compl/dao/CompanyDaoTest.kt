@@ -28,8 +28,8 @@ class CompanyDaoTest {
 
     @Test
     fun insertData() {
-        dao.insert(Company(name="テスト1", content = "テストです。"))
-        dao.insert(Company(name="テスト2", content = "テストです。"))
+        dao.insert(Company(name="テスト1", content = "テストです。", category = null))
+        dao.insert(Company(name="テスト2", content = "テストです。", category = null))
 
         dao.findAll().subscribe {
             list -> list.forEach { v ->

@@ -8,7 +8,7 @@ import com.github.gfx.android.orma.annotation.Table
 @Table
 data class Company (
         @Setter("id") @PrimaryKey(autoincrement = true) var id: Long = 0,
-        @Setter("categoryId") @Column(indexed = true) var categoryId: Int = 0,
+        @Setter("category") @Column(indexed = true) var category: Category?,
         @Setter("name") @Column var name: String = "",
         @Setter("employeesNum") @Column var employeesNum: Int = 0,
         @Setter("content") @Column var content: String = "",
