@@ -37,14 +37,47 @@
                     android:text="@{company.name}" />
 
                 <TextView
-                    android:id="@+id/label_count"
+                    android:id="@+id/label_employees_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_below="@id/txt_name"
+                    android:textColor="@color/item_list_subtext_color"
+                    android:textSize="@dimen/text_small"
+                    android:text="従業員数:" />
+
+                <TextView
+                    android:id="@+id/txt_employees_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/txt_name"
-                    android:layout_toEndOf="@id/txt_name"
-                    android:textColor="@color/item_list_text_color"
+                    android:layout_alignTop="@id/label_employees_num"
+                    android:layout_toEndOf="@id/label_employees_num"
+                    android:textColor="@color/item_list_subtext_color"
                     android:textSize="@dimen/text_small"
-                    android:text="@{company.content}" />
+                    android:text="@{String.valueOf(company.employeesNum)}" />
+
+                <TextView
+                    android:id="@+id/label_salary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_name"
+                    android:layout_alignTop="@id/label_employees_num"
+                    android:layout_toEndOf="@id/txt_employees_num"
+                    android:textColor="@color/item_list_subtext_color"
+                    android:textSize="@dimen/text_small"
+                    android:text="年収:" />
+
+                <TextView
+                    android:id="@+id/txt_salary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_name"
+                    android:layout_alignTop="@id/label_employees_num"
+                    android:layout_toEndOf="@id/label_salary"
+                    android:textColor="@color/item_list_subtext_color"
+                    android:textSize="@dimen/text_small"
+                    android:text="TODO"/>
 
             </RelativeLayout>
         </android.support.v7.widget.CardView>

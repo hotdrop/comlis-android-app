@@ -21,8 +21,6 @@ class CompanyFragment : BaseFragment() {
     private lateinit var binding: FragmentCompanyListBinding
     private lateinit var adapter: CompanyAdapter
 
-    //private lateinit var dao: Company
-
     companion object {
         fun newInstance(): CompanyFragment {
             return CompanyFragment()
@@ -65,7 +63,9 @@ class CompanyFragment : BaseFragment() {
      * TODO 後で消す
      */
     private fun dummyList(): List<Company> {
-        return mutableListOf(Company(name="テストその１", category = null), Company(name="テストその２", category = null))
+        val comp1 = Company(name="テスト名前その１です。", employeesNum = 100, category = null)
+        val comp2 = Company(name="テストその２", employeesNum = 30 , category = null)
+        return mutableListOf(comp1, comp2)
     }
 
     /**
