@@ -25,6 +25,7 @@ android {
     }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
     }
 
     compileOptions {
@@ -63,5 +64,6 @@ dependencies {
     compile 'com.annimon:stream:1.1.4'
     provided 'javax.annotation:jsr250-api:1.0'
 
+    testCompile 'com.github.gfx.android.robolectricinstrumentation:robolectric-instrumentation:3.0.8'
     testCompile 'junit:junit:4.12'
 }
