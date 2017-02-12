@@ -7,7 +7,10 @@
     <color name="white">#ffffff</color>
 
     <color name="dark_blue">#303F9F</color>
-    <color name="light_dark_blue">#3c67ce</color>
+    <color name="light_dark_blue">#4e74ce</color>
     <color name="light_blue">#1cf1ed</color>
+    <color name="light_green">#88fda1</color>
+    <color name="more_light_blue">#c1e8fa</color>
+    <color name="light_gray">#d6d4d4</color>
 
 </resources>
