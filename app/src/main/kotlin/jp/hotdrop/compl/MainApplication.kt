@@ -7,16 +7,17 @@ import jp.hotdrop.compl.di.DaggerAppComponent
 
 class MainApplication: Application() {
 
-    // lateinitを指定すると宣言と同時に初期化しなくてもよくなる。
     private lateinit var appComponent: AppComponent
 
-    fun getComponent(): AppComponent = appComponent
-
+    @Suppress("DEPRECATION")
     override fun onCreate() {
         super.onCreate()
+        // DIしたクラスが各Activityクラスで利用できるよう、Componentクラスを生成する。
         appComponent = DaggerAppComponent
                 .builder()
                 .appModule(AppModule(this))
                 .build()
     }
+
+    fun getComponent(): AppComponent = appComponent
 }

@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.ActivityMainBinding
+import jp.hotdrop.compl.fragment.CompanyFragment
 
 class MainActivity : BaseActivity(),
         NavigationView.OnNavigationItemSelectedListener,
@@ -29,7 +30,7 @@ class MainActivity : BaseActivity(),
         initView()
 
         if(savedInstanceState == null) {
-
+            replaceFragment(CompanyFragment.newInstance())
         }
     }
 

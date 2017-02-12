@@ -7,7 +7,7 @@ import dagger.Provides
 import javax.inject.Inject
 
 @Module
-class ActivityModule @Inject constructor(var activity: AppCompatActivity) {
+class ActivityModule @Inject constructor(private var activity: AppCompatActivity) {
 
     @Provides
     fun activity(): AppCompatActivity = activity

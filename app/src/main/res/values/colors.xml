@@ -10,5 +10,7 @@
 
     <!-- fragment -->
     <color name="view_background">@color/white</color>
+    <color name="item_list_background">@color/light_dark_blue</color>
+    <color name="item_list_text_color">@color/black</color>
     <color name="fab_add_background">@color/white</color>
 </resources>
