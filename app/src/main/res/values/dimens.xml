@@ -23,4 +23,7 @@
     <!-- fab -->
     <dimen name="fab_margin">16dp</dimen>
 
+    <!-- Elevation -->
+    <dimen name="elevation">4dp</dimen>
+
 </resources>

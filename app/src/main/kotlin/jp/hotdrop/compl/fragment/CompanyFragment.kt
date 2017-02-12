@@ -39,6 +39,7 @@ class CompanyFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyListBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)
         adapter = CompanyAdapter(context)
 
         // TODO タップ動作
