@@ -1,11 +1,12 @@
 package jp.hotdrop.compl.model
 
-class Company {
-    var name: String = "aiueo"
-    var content: String = "kakikukeko"
-}
-        /*
-        (
+import com.github.gfx.android.orma.annotation.Column
+import com.github.gfx.android.orma.annotation.PrimaryKey
+import com.github.gfx.android.orma.annotation.Setter
+import com.github.gfx.android.orma.annotation.Table
+
+@Table
+data class Company (
         @Setter("id") @PrimaryKey(autoincrement = true) var id: Long = 0,
         @Setter("categoryId") @Column(indexed = true) var categoryId: Int = 0,
         @Setter("name") @Column var name: String = "",
@@ -16,6 +17,5 @@ class Company {
         @Setter("url") @Column var url: String = "",
         @Setter("note") @Column var note: String = "",
         @Setter("evaluation") @Column var evaluation: Int = 0
-        )
-        */
+)
 
