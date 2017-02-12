@@ -59,8 +59,6 @@ class MainActivity : BaseActivity(),
         ft.commit()
     }
 
-
-
     override fun onBackStackChanged() {
     }
 
@@ -68,10 +66,4 @@ class MainActivity : BaseActivity(),
         binding.drawer.closeDrawer(GravityCompat.START)
         return true
     }
-
-    private fun toggleToolbarElevation(enable: Boolean) {
-        var elevation = if(enable) resources.getDimension(R.dimen.elevation) else 0.toFloat()
-        binding.toolbar.elevation = elevation
-    }
-
 }

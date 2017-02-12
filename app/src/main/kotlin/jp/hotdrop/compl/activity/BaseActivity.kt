@@ -12,7 +12,7 @@ abstract class BaseActivity: AppCompatActivity() {
     fun getComponent(): ActivityComponent {
         if(activityComponent == null) {
             val mainApp = application as MainApplication
-            activityComponent = mainApp.getComponent().plus(ActivityModule(this)) as ActivityComponent
+            activityComponent = mainApp.getComponent().plus(ActivityModule(this))
         }
         return activityComponent!!
     }

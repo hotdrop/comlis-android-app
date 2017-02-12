@@ -11,7 +11,6 @@ class AppModule(app: Application) {
     private var context: Context = app
 
     @Provides
-    fun provideContext(): Context {
-        return context
-    }
+    fun provideContext(): Context = context
+
 }

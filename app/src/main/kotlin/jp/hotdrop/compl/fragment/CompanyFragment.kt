@@ -48,7 +48,7 @@ class CompanyFragment : BaseFragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        adapter.addAll(dummyList())
+        //adapter.addAll(dummyList())
 
         // TODO fabの動作
 
@@ -58,18 +58,12 @@ class CompanyFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
     }
-
+/*
     private fun dummyList(): List<Company> {
         // サンプル
-        var comp1 = Company()
-        comp1.name = "サンプル１"
-        comp1.member = "10"
-        var comp2 = Company()
-        comp2.name = "テストその２"
-        comp2.member = "20"
-        return mutableListOf(comp1, comp2)
+        //return mutableListOf(Company(name="テストその１"), Company(name="テストその２"))
     }
-
+*/
     /**
      * アダプター
      */
