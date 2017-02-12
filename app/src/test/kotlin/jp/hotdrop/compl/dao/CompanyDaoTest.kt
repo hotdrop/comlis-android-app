@@ -22,8 +22,8 @@ class CompanyDaoTest {
 
     @Before
     fun setup() {
-        orma = OrmaDatabase.builder(getContext()).name(null).build()
-        dao = CompanyDao(orma)
+        OrmaHolder.initialize(getContext())
+        dao = CompanyDao()
     }
 
     @Test

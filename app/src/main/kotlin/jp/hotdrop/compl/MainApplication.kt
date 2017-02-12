@@ -1,6 +1,7 @@
 package jp.hotdrop.compl
 
 import android.app.Application
+import jp.hotdrop.compl.dao.OrmaHolder
 import jp.hotdrop.compl.di.AppComponent
 import jp.hotdrop.compl.di.AppModule
 import jp.hotdrop.compl.di.DaggerAppComponent
@@ -17,6 +18,9 @@ class MainApplication: Application() {
                 .builder()
                 .appModule(AppModule(this))
                 .build()
+
+        // Ormaを初期化して各クラスで使えるようにする
+        OrmaHolder.initialize(this)
     }
 
     fun getComponent(): AppComponent = appComponent

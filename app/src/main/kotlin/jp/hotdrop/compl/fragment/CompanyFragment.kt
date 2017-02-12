@@ -21,6 +21,8 @@ class CompanyFragment : BaseFragment() {
     private lateinit var binding: FragmentCompanyListBinding
     private lateinit var adapter: CompanyAdapter
 
+    //private lateinit var dao: Company
+
     companion object {
         fun newInstance(): CompanyFragment {
             return CompanyFragment()
@@ -48,7 +50,7 @@ class CompanyFragment : BaseFragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        //adapter.addAll(dummyList())
+        adapter.addAll(dummyList())
 
         // TODO fabの動作
 
@@ -58,12 +60,14 @@ class CompanyFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
     }
-/*
+
+    /**
+     * TODO 後で消す
+     */
     private fun dummyList(): List<Company> {
-        // サンプル
-        //return mutableListOf(Company(name="テストその１"), Company(name="テストその２"))
+        return mutableListOf(Company(name="テストその１", category = null), Company(name="テストその２", category = null))
     }
-*/
+
     /**
      * アダプター
      */

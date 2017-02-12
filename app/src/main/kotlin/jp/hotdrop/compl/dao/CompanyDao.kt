@@ -7,9 +7,9 @@ import jp.hotdrop.compl.model.OrmaDatabase
 import javax.inject.Singleton
 
 @Singleton
-class CompanyDao constructor(orma: OrmaDatabase) {
+class CompanyDao {
 
-    var orma: OrmaDatabase = orma
+    var orma: OrmaDatabase = OrmaHolder.ORMA
 
     fun insert(company: Company) {
         companyRelation().inserter().execute(company)

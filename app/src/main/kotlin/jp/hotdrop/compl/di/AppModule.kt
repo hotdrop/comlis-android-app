@@ -12,5 +12,4 @@ class AppModule(app: Application) {
 
     @Provides
     fun provideContext(): Context = context
-
 }
