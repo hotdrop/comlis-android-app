@@ -64,7 +64,7 @@ class CompanyFragment : BaseFragment() {
      */
     private fun dummyList(): List<Company> {
         val comp1 = Company(name="テスト名前その１です。", employeesNum = 100, category = null)
-        val comp2 = Company(name="テストその２", employeesNum = 30 , category = null)
+        val comp2 = comp1.copy(name = "テストその２", employeesNum = 30)
         return mutableListOf(comp1, comp2)
     }
 
