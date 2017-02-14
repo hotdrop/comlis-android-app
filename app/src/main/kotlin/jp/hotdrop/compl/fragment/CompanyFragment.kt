@@ -22,6 +22,7 @@ class CompanyFragment : BaseFragment() {
     private lateinit var adapter: CompanyAdapter
 
     companion object {
+        @JvmStatic val TAG = CompanyFragment.javaClass.simpleName
         fun newInstance(): CompanyFragment {
             return CompanyFragment()
         }
