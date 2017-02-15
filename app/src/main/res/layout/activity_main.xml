@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             style="@style/NavigationViewTheme"
             app:headerLayout="@layout/nav_header"
-            app:itemTextColor="@color/nav_menu_text_color"
+            app:itemTextColor="@color/nav_menu_text"
             app:menu="@menu/nav_menu" />
 
     </android.support.v4.widget.DrawerLayout>

@@ -24,6 +24,7 @@ class CompanyRegisterFragment : BaseFragment() {
         setHasOptionsMenu(false)
 
         // TODO 登録ボタンのリスナーを実装する
+
         return binding.root
     }
 

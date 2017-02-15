@@ -25,7 +25,7 @@
         <item name="android:layout_marginLeft">@dimen/spacing</item>
         <item name="android:layout_marginRight">@dimen/spacing</item>
         <item name="android:layout_marginStart">@dimen/spacing</item>
-        <item name="android:textColor">@color/nav_menu_text_color</item>
+        <item name="android:textColor">@color/nav_menu_text</item>
         <item name="android:textSize">@dimen/text_normal</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -34,6 +34,38 @@
         <item name="android:background">@color/nav_menu_background</item>
         <item name="android:gravity">start</item>
         <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+    <style name="ItemLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/spacing_small</item>
+        <item name="android:layout_marginRight">@dimen/spacing_small</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:textColor">@color/label</item>
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/spacing_small</item>
+        <item name="android:lines">1</item>
+        <item name="android:inputType">text</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
+    <style name="OKButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">@dimen/spacing_small</item>
+        <item name="android:layout_marginRight">@dimen/spacing_small</item>
+        <item name="android:background">@color/ok_button_background</item>
+        <item name="android:textColor">@color/ok_button_text</item>
+        <item name="android:textSize">@dimen/text_large</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

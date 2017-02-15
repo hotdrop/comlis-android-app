@@ -10,7 +10,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -18,7 +19,45 @@
             android:layout_weight="0.8"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/label_name"
+                style="@style/ItemLabel"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:text="会社名" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/text_name"
+                style="@style/EditText"
+                android:layout_below="@id/label_name"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/label_category"
+                style="@style/ItemLabel"
+                android:layout_below="@id/text_name"
+                android:text="分類" />
+
+            <TextView
+                android:id="@+id/text_category"
+                style="@style/EditText"
+                android:layout_below="@id/label_category"
+                android:text="" />
+
         </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing"
+            android:layout_weight="0.2"
+            android:layout_gravity="center">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/register_button"
+                style="@style/OKButton"
+                android:text="Add"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

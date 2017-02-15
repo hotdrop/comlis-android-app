@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import jp.hotdrop.compl.R
+import jp.hotdrop.compl.activity.ActivityNavigator
 import jp.hotdrop.compl.databinding.CompanyItemBinding
 import jp.hotdrop.compl.databinding.FragmentCompanyListBinding
 import jp.hotdrop.compl.model.Company
@@ -22,10 +23,7 @@ class CompanyFragment : BaseFragment() {
     private lateinit var adapter: CompanyAdapter
 
     companion object {
-        @JvmStatic val TAG = CompanyFragment.javaClass.simpleName
-        fun newInstance(): CompanyFragment {
-            return CompanyFragment()
-        }
+        fun newInstance(): CompanyFragment = CompanyFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +49,9 @@ class CompanyFragment : BaseFragment() {
 
         adapter.addAll(dummyList())
 
-        // TODO fabの動作
+        binding.fabAddButton.setOnClickListener { v ->
+            ActivityNavigator.showCompanyRegister(this, REQ_CODE_COMPANY_REGISTER)
+        }
 
         return binding.root
     }

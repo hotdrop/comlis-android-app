@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_small"
                     android:textSize="@dimen/text_large"
-                    android:textColor="@color/item_list_text_color"
+                    android:textColor="@color/item_list_text"
                     android:text="@{company.name}" />
 
                 <TextView
@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_small"
                     android:layout_below="@id/txt_name"
-                    android:textColor="@color/item_list_subtext_color"
+                    android:textColor="@color/item_list_subtext"
                     android:textSize="@dimen/text_small"
                     android:text="従業員数:" />
 
@@ -53,7 +53,7 @@
                     android:layout_below="@id/txt_name"
                     android:layout_alignTop="@id/label_employees_num"
                     android:layout_toEndOf="@id/label_employees_num"
-                    android:textColor="@color/item_list_subtext_color"
+                    android:textColor="@color/item_list_subtext"
                     android:textSize="@dimen/text_small"
                     android:text="@{String.valueOf(company.employeesNum)}" />
 
@@ -64,7 +64,7 @@
                     android:layout_below="@id/txt_name"
                     android:layout_alignTop="@id/label_employees_num"
                     android:layout_toEndOf="@id/txt_employees_num"
-                    android:textColor="@color/item_list_subtext_color"
+                    android:textColor="@color/item_list_subtext"
                     android:textSize="@dimen/text_small"
                     android:text="年収:" />
 
@@ -75,7 +75,7 @@
                     android:layout_below="@id/txt_name"
                     android:layout_alignTop="@id/label_employees_num"
                     android:layout_toEndOf="@id/label_salary"
-                    android:textColor="@color/item_list_subtext_color"
+                    android:textColor="@color/item_list_subtext"
                     android:textSize="@dimen/text_small"
                     android:text="TODO"/>
 

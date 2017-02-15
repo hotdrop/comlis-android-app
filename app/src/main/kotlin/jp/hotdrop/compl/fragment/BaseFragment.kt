@@ -8,6 +8,8 @@ import jp.hotdrop.compl.di.FragmentModule
 
 abstract class BaseFragment: Fragment() {
 
+    val REQ_CODE_COMPANY_REGISTER: Int = 1
+
     var fragmentComponent: FragmentComponent? = null
 
     fun getComponent() : FragmentComponent {
