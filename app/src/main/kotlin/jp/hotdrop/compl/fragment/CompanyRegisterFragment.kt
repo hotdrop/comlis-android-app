@@ -53,7 +53,7 @@ class CompanyRegisterFragment : BaseFragment() {
     }
 
     private fun canRegister(): Boolean {
-        if(company.name.trim() == "") {
+        if(company.name.trim().equals("")) {
             Toast.makeText(this.activity, "会社名を入力してください。", Toast.LENGTH_LONG).show()
             return false
         }

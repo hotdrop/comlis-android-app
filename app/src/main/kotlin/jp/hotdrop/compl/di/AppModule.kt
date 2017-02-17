@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import io.reactivex.disposables.CompositeDisposable
 
 @Module
 class AppModule(app: Application) {
@@ -12,4 +13,9 @@ class AppModule(app: Application) {
 
     @Provides
     fun provideContext(): Context = context
+
+    @Provides
+    fun provideCompositeDisposable(): CompositeDisposable {
+        return CompositeDisposable()
+    }
 }

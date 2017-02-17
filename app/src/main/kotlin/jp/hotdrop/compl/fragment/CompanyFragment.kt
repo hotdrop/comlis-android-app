@@ -8,17 +8,25 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.activity.ActivityNavigator
+import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.CompanyItemBinding
 import jp.hotdrop.compl.databinding.FragmentCompanyListBinding
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
 import org.parceler.Parcels
+import javax.inject.Inject
 
 
 class CompanyFragment : BaseFragment() {
+
+    @Inject
+    lateinit var compositDisposable: CompositeDisposable
 
     private lateinit var binding: FragmentCompanyListBinding
     private lateinit var adapter: CompanyAdapter
@@ -48,7 +56,7 @@ class CompanyFragment : BaseFragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        adapter.addAll(dummyList())
+        loadData()
 
         binding.fabAddButton.setOnClickListener { v ->
             ActivityNavigator.showCompanyRegister(this, REQ_CODE_COMPANY_REGISTER)
@@ -71,15 +79,22 @@ class CompanyFragment : BaseFragment() {
         super.onDestroyView()
     }
 
-    /**
-     * TODO 後で消す
-     */
-    private fun dummyList(): List<Company> {
-        val comp1 = Company()
-        comp1.name = "テスト名前その１です。"
-        val comp2 = Company()
-        comp2.name = "テストその２"
-        return mutableListOf(comp1, comp2)
+    private fun loadData() {
+        var disposable = CompanyDao.findAll()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { list -> onLoadSuccess(list) },
+                        { throwable -> onLoadFailure(throwable) }
+                )
+        compositDisposable.add(disposable)
+    }
+
+    private fun onLoadSuccess(companies: List<Company>) {
+        adapter.addAll(companies)
+    }
+
+    private fun onLoadFailure(e: Throwable) {
+        Toast.makeText(activity, "failed load companies.", Toast.LENGTH_LONG).show()
     }
 
     /**
@@ -101,4 +116,3 @@ class CompanyFragment : BaseFragment() {
         }
     }
 }
-
