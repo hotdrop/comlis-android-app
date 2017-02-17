@@ -1,9 +1,10 @@
 package jp.hotdrop.compl.fragment
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +15,11 @@ import jp.hotdrop.compl.databinding.FragmentCompanyListBinding
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
+import org.parceler.Parcels
+
 
 class CompanyFragment : BaseFragment() {
 
-    // リストのアイテムタップ時のコールバックヘルパー
-    private lateinit var helper: ItemTouchHelper
     private lateinit var binding: FragmentCompanyListBinding
     private lateinit var adapter: CompanyAdapter
 
@@ -56,6 +57,16 @@ class CompanyFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_REGISTER || data == null) {
+            return
+        }
+
+        val company = Parcels.unwrap<Company>(data.getParcelableExtra(CompanyRegisterFragment.TAG))
+        adapter.addItem(company)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
     }
@@ -64,8 +75,10 @@ class CompanyFragment : BaseFragment() {
      * TODO 後で消す
      */
     private fun dummyList(): List<Company> {
-        val comp1 = Company(name="テスト名前その１です。", employeesNum = 100, category = null)
-        val comp2 = comp1.copy(name = "テストその２", employeesNum = 30)
+        val comp1 = Company()
+        comp1.name = "テスト名前その１です。"
+        val comp2 = Company()
+        comp2.name = "テストその２"
         return mutableListOf(comp1, comp2)
     }
 
@@ -86,6 +99,6 @@ class CompanyFragment : BaseFragment() {
 
             // TODO clicklistener
         }
-
     }
 }
+

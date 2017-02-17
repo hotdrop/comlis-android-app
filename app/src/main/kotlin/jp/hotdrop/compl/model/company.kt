@@ -2,21 +2,27 @@ package jp.hotdrop.compl.model
 
 import com.github.gfx.android.orma.annotation.Column
 import com.github.gfx.android.orma.annotation.PrimaryKey
-import com.github.gfx.android.orma.annotation.Setter
 import com.github.gfx.android.orma.annotation.Table
+import org.parceler.Parcel
+import java.sql.Timestamp
 
+@Parcel
 @Table
-data class Company (
-        @Setter("id") @PrimaryKey(autoincrement = true) var id: Long = 0,
-        @Setter("category") @Column(indexed = true) var category: Category?,
-        @Setter("name") @Column var name: String = "",
-        @Setter("employeesNum") @Column var employeesNum: Int = 0,
-        @Setter("content") @Column var content: String = "",
-        @Setter("salaryLow") @Column var salaryLow: Int = 0,
-        @Setter("salaryHigh") @Column var salaryHigh: Int = 0,
-        @Setter("jobCategory") @Column var jobCategory: String = "",
-        @Setter("url") @Column var url: String = "",
-        @Setter("note") @Column var note: String = "",
-        @Setter("evaluation") @Column var evaluation: Int = 0
-)
+class Company {
+
+    @PrimaryKey(autoincrement = true)
+    var id: Long = 0
+    @Column var name: String = ""
+    @Column(indexed = true) var category: Category? = null
+    @Column(indexed = true) var type: Type? = null
+    @Column var employeesNum: Int = 0
+    @Column var content: String = ""
+    @Column var salaryLow: Int = 0
+    @Column var salaryHigh: Int = 0
+    @Column var jobCategory: String = ""
+    @Column var url: String = ""
+    @Column var note: String = ""
+    @Column var evaluation: Int = 0
+    @Column var registerDate: Timestamp? = null
+}
 

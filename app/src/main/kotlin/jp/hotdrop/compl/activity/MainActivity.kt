@@ -46,6 +46,7 @@ class MainActivity : BaseActivity(),
         binding.navView.setNavigationItemSelectedListener(this)
         binding.navView.itemIconTintList = null
         binding.navView.setCheckedItem(R.id.nav_main_list)
+
         // TODO 今はなぜか隠れないので下の処理を入れているが、本来は不要のはず
         binding.navView.visibility = View.GONE
     }

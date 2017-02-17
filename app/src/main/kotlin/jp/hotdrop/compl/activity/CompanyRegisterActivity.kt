@@ -39,4 +39,5 @@ class CompanyRegisterActivity : BaseActivity() {
         super.onBackPressed()
         finish()
     }
+
 }

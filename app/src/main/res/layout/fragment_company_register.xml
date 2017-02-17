@@ -29,7 +29,7 @@
                 android:id="@+id/text_name"
                 style="@style/EditText"
                 android:layout_below="@id/label_name"
-                android:text="" />
+                android:text="@{company.name}" />
 
             <TextView
                 android:id="@+id/label_category"
@@ -37,11 +37,40 @@
                 android:layout_below="@id/text_name"
                 android:text="分類" />
 
-            <TextView
+            <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/text_category"
                 style="@style/EditText"
                 android:layout_below="@id/label_category"
-                android:text="" />
+                android:text="@{company.category.name}" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_category"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/label_salary"
+                    style="@style/ItemLabel"
+                    android:text="年収" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/text_salary_lower"
+                    style="@style/CompactEditText"
+                    android:text="@{String.valueOf(company.salaryLow)}" />
+
+                <TextView
+                    android:id="@+id/label_salary_range_mark"
+                    style="@style/ItemLabel"
+                    android:text="〜" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/text_salary_high"
+                    style="@style/CompactEditText"
+                    android:text="@{String.valueOf(company.salaryHigh)}" />
+            </LinearLayout>
+
+
 
         </RelativeLayout>
 

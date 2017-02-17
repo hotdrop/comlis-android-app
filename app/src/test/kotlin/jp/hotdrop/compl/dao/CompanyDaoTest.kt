@@ -22,8 +22,12 @@ class CompanyDaoTest {
 
     @Test
     fun insertData() {
-        CompanyDao.insert(Company(name="テスト1", content = "テストです。", category = null))
-        CompanyDao.insert(Company(name="テスト2", content = "テストです。", category = null))
+        var comp1 = Company()
+        var comp2 = Company()
+        comp1.name = "テスト1"
+        comp2.name = "テスト2"
+        CompanyDao.insert(comp1)
+        CompanyDao.insert(comp2)
 
         CompanyDao.findAll().subscribe {
             list -> list.forEach { v ->
