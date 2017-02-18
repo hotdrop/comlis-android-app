@@ -1,7 +1,6 @@
 package jp.hotdrop.compl.dao
 
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Company_Relation
 import jp.hotdrop.compl.model.OrmaDatabase
@@ -18,7 +17,6 @@ object CompanyDao {
         return companyRelation().selector()
                 .executeAsObservable()
                 .toList()
-                .subscribeOn(Schedulers.io())
     }
 
     private fun companyRelation(): Company_Relation {

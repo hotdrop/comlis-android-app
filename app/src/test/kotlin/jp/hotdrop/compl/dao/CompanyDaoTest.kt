@@ -29,10 +29,9 @@ class CompanyDaoTest {
         CompanyDao.insert(comp1)
         CompanyDao.insert(comp2)
 
-        CompanyDao.findAll().subscribe {
-            list -> list.forEach { v ->
-            //Assert.assertTrue(v.name.equals("テスト"))
-            print(" 取得した値=" + v.name)
-        }}
+        CompanyDao.findAll().subscribe (
+            { list -> list.forEach { v -> println("取得した値=" + v.name) }},
+            { throwable -> println("エラーです。" + throwable.message) }
+        )
     }
 }

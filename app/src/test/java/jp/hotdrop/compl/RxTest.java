@@ -13,6 +13,10 @@ import jp.hotdrop.compl.model.Company;
 
 public class RxTest {
 
+    public void test2(){
+
+    }
+
     public void test() {
         CompanyDao dao = CompanyDao.INSTANCE;
         Disposable disp = dao.findAll()
