@@ -72,7 +72,7 @@ class CompanyFragment : BaseFragment() {
         }
 
         val company = Parcels.unwrap<Company>(data.getParcelableExtra(CompanyRegisterFragment.TAG))
-        adapter.addItem(company)
+        adapter.add(company)
     }
 
     override fun onDestroyView() {
@@ -113,6 +113,11 @@ class CompanyFragment : BaseFragment() {
             binding.company = company
 
             // TODO clicklistener
+        }
+
+        fun add(company: Company) {
+            adapter.addItem(company)
+            adapter.notifyItemInserted(adapter.itemCount)
         }
     }
 }
