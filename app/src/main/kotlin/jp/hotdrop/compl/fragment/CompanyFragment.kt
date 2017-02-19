@@ -26,10 +26,10 @@ import javax.inject.Inject
 class CompanyFragment : BaseFragment() {
 
     @Inject
-    lateinit var compositDisposable: CompositeDisposable
+    lateinit var compositeDisposable: CompositeDisposable
 
     private lateinit var binding: FragmentCompanyListBinding
-    private lateinit var adapter: CompanyAdapter
+    private lateinit var adapter: Adapter
 
     companion object {
         fun newInstance(): CompanyFragment = CompanyFragment()
@@ -48,7 +48,7 @@ class CompanyFragment : BaseFragment() {
                               savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyListBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-        adapter = CompanyAdapter(context)
+        adapter = Adapter(context)
 
         // TODO タップ動作
         //helper = ItemTouchHelper()
@@ -86,7 +86,7 @@ class CompanyFragment : BaseFragment() {
                         { list -> onLoadSuccess(list) },
                         { throwable -> onLoadFailure(throwable) }
                 )
-        compositDisposable.add(disposable)
+        compositeDisposable.add(disposable)
     }
 
     private fun onLoadSuccess(companies: List<Company>) {
@@ -100,7 +100,7 @@ class CompanyFragment : BaseFragment() {
     /**
      * アダプター
      */
-    inner class CompanyAdapter(context: Context)
+    private inner class Adapter(context: Context)
         : ArrayRecyclerAdapter<Company, BindingHolder<CompanyItemBinding>>(context) {
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<CompanyItemBinding> {
