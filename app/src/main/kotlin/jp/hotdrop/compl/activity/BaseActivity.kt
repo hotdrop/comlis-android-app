@@ -4,7 +4,9 @@ import android.support.annotation.IdRes
 import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import jp.hotdrop.compl.MainApplication
+import jp.hotdrop.compl.R
 import jp.hotdrop.compl.di.ActivityComponent
 import jp.hotdrop.compl.di.ActivityModule
 
@@ -18,6 +20,13 @@ abstract class BaseActivity: AppCompatActivity() {
             activityComponent = mainApp.getComponent().plus(ActivityModule(this))
         }
         return activityComponent!!
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if(item?.itemId == R.id.home) {
+            onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     fun replaceFragment(fragment: Fragment, @IdRes @LayoutRes layoutResId: Int) {
