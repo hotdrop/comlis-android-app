@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="jp.hotdrop.compl.activity.MainActivity">
+    tools:context=".view.activity.MainActivity">
 
     <android.support.v4.widget.DrawerLayout
         android:layout_width="match_parent"

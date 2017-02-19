@@ -1,10 +1,10 @@
-package jp.hotdrop.compl.fragment
+package jp.hotdrop.compl.view.fragment
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
-import jp.hotdrop.compl.activity.BaseActivity
 import jp.hotdrop.compl.di.FragmentComponent
 import jp.hotdrop.compl.di.FragmentModule
+import jp.hotdrop.compl.view.activity.BaseActivity
 
 abstract class BaseFragment: Fragment() {
 

@@ -1,4 +1,4 @@
-package jp.hotdrop.compl.fragment
+package jp.hotdrop.compl.view.fragment
 
 import android.app.Activity
 import android.content.Context

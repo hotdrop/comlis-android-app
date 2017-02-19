@@ -1,6 +1,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="jp.hotdrop.compl.fragment.CompanyRegisterFragment">
+    tools:context=".view.fragment.CompanyRegisterFragment">
 
     <data>
         <variable name="company" type="jp.hotdrop.compl.model.Company" />

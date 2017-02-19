@@ -1,4 +1,4 @@
-package jp.hotdrop.compl.activity
+package jp.hotdrop.compl.view.activity
 
 import android.support.annotation.IdRes
 import android.support.annotation.LayoutRes

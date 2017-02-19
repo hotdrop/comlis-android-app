@@ -1,4 +1,4 @@
-package jp.hotdrop.compl.activity
+package jp.hotdrop.compl.view.activity
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -10,7 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.ActivityMainBinding
-import jp.hotdrop.compl.fragment.CompanyFragment
+import jp.hotdrop.compl.view.fragment.CompanyFragment
 
 class MainActivity : BaseActivity(),
         NavigationView.OnNavigationItemSelectedListener,

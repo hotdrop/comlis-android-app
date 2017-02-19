@@ -1,4 +1,4 @@
-package jp.hotdrop.compl.fragment
+package jp.hotdrop.compl.view.fragment
 
 import android.app.Activity
 import android.content.Context
@@ -12,7 +12,7 @@ import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.activity.ActivityNavigator
+import jp.hotdrop.compl.view.activity.ActivityNavigator
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.CompanyItemBinding
 import jp.hotdrop.compl.databinding.FragmentCompanyListBinding
