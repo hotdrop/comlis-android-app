@@ -12,13 +12,13 @@ import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.view.activity.ActivityNavigator
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.CompanyItemBinding
 import jp.hotdrop.compl.databinding.FragmentCompanyListBinding
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
+import jp.hotdrop.compl.view.activity.ActivityNavigator
 import org.parceler.Parcels
 import javax.inject.Inject
 
@@ -75,10 +75,6 @@ class CompanyFragment : BaseFragment() {
         adapter.add(company)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
     private fun loadData() {
         var disposable = CompanyDao.findAll()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -95,6 +91,18 @@ class CompanyFragment : BaseFragment() {
 
     private fun onLoadFailure(e: Throwable) {
         Toast.makeText(activity, "failed load companies.", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Stopの場合、clearで一旦addしているオブジェクトを全てDisposeする。
+        compositeDisposable.clear()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Destory時は以降addされることはないので完全にDisposeする。
+        compositeDisposable.dispose()
     }
 
     /**
