@@ -11,6 +11,7 @@ class Type {
     @PrimaryKey(autoincrement = true) var id: Int = 0
     @Column var name: String? = null
     @Column var point: Int = 0
+    @Column var viewOrder: Int = 0
 
     override fun equals(other: Any?): Boolean {
         return (other as Type).id == id || super.equals(other)
