@@ -19,7 +19,7 @@ class CompanyRegisterFragment : BaseFragment() {
     lateinit private var binding: FragmentCompanyRegisterBinding
 
     companion object {
-        @JvmStatic val TAG = this.javaClass.simpleName
+        @JvmStatic val TAG = CompanyRegisterFragment::class.java.simpleName!!
         fun create(): CompanyRegisterFragment = CompanyRegisterFragment()
     }
 
@@ -42,6 +42,9 @@ class CompanyRegisterFragment : BaseFragment() {
         getComponent().inject(this)
     }
 
+    /**
+     * TODO おかしいので後で変える
+     */
     private fun onClickRegister() {
         if(!canRegister()) {
             return
@@ -53,7 +56,7 @@ class CompanyRegisterFragment : BaseFragment() {
     }
 
     private fun canRegister(): Boolean {
-        if(company.name.trim().equals("")) {
+        if(company.name.trim() == "") {
             Toast.makeText(this.activity, "会社名を入力してください。", Toast.LENGTH_LONG).show()
             return false
         }
@@ -61,7 +64,7 @@ class CompanyRegisterFragment : BaseFragment() {
     }
 
     private fun setResult() {
-        var intent = Intent()
+        val intent = Intent()
         intent.putExtra(TAG, Parcels.wrap(company))
         activity.setResult(Activity.RESULT_OK, intent)
     }

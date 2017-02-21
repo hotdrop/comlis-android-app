@@ -2,6 +2,7 @@ package jp.hotdrop.compl.view
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import java.util.*
 
 abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(context: Context)
     : RecyclerView.Adapter<VH>(), Iterable<T> {
@@ -18,7 +19,7 @@ abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(context: Con
     }
 
     fun getItem(index: Int): T {
-        return list.get(index)
+        return list[index]
     }
 
     fun addItem(item: T) {
@@ -35,6 +36,12 @@ abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(context: Con
 
     fun clear() {
         list.clear()
+    }
+
+    fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
+        Collections.swap(list, fromPosition, toPosition)
+        notifyItemMoved(fromPosition, toPosition)
+        return true
     }
 
     override fun iterator(): Iterator<T> {

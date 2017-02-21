@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.fragment.CompanyFragment" >
+    tools:context=".view.fragment.CategoryFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -16,8 +16,8 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/view_background"
-                android:layout_below="@id/toolbar" />
+                android:layout_below="@id/toolbar"
+                android:background="@color/view_background" />
 
         </RelativeLayout>
 
@@ -32,5 +32,4 @@
             app:backgroundTint="@color/fab_background" />
 
     </FrameLayout>
-
 </layout>

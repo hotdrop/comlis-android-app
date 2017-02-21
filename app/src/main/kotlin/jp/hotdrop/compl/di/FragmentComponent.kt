@@ -2,6 +2,7 @@ package jp.hotdrop.compl.di
 
 import dagger.Subcomponent
 import jp.hotdrop.compl.di.scope.FragmentScope
+import jp.hotdrop.compl.view.fragment.CategoryFragment
 import jp.hotdrop.compl.view.fragment.CompanyFragment
 import jp.hotdrop.compl.view.fragment.CompanyRegisterFragment
 
@@ -12,4 +13,6 @@ interface FragmentComponent {
     fun inject(fragment: CompanyFragment)
 
     fun inject(fragment: CompanyRegisterFragment)
+
+    fun inject(fragment: CategoryFragment)
 }

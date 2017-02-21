@@ -8,7 +8,21 @@ import jp.hotdrop.compl.view.activity.BaseActivity
 
 abstract class BaseFragment: Fragment() {
 
-    val REQ_CODE_COMPANY_REGISTER: Int = 1
+    companion object {
+        @JvmStatic val REQ_CODE_COMPANY_REGISTER = 1
+        @JvmStatic val REQ_CODE_COMPANY_UPDATE = 2
+        @JvmStatic val REQ_CODE_CATEGORY_REGISTER = 3
+        @JvmStatic val REQ_CODE_CATEGORY_UPDATE = 4
+
+        @JvmStatic val ARG_REFRESH_MODE = "refreshMode"
+        @JvmStatic val REFRESH_NONE = 0
+        @JvmStatic val REFRESH_ONE = 1
+        @JvmStatic val REFRESH_ALL = 2
+
+        @JvmStatic val REFRESH_INSERT = 0
+        @JvmStatic val REFRESH_UPDATE = 1
+        @JvmStatic val REFRESH_DELETE = 2
+    }
 
     var fragmentComponent: FragmentComponent? = null
 

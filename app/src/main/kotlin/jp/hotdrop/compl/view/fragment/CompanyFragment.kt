@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.CompanyItemBinding
@@ -32,7 +33,7 @@ class CompanyFragment : BaseFragment() {
     private lateinit var adapter: Adapter
 
     companion object {
-        fun newInstance(): CompanyFragment = CompanyFragment()
+        fun newInstance() = CompanyFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +59,7 @@ class CompanyFragment : BaseFragment() {
 
         loadData()
 
-        binding.fabAddButton.setOnClickListener { v ->
+        binding.fabButton.setOnClickListener { v ->
             ActivityNavigator.showCompanyRegister(this, REQ_CODE_COMPANY_REGISTER)
         }
 
@@ -112,7 +113,7 @@ class CompanyFragment : BaseFragment() {
         : ArrayRecyclerAdapter<Company, BindingHolder<CompanyItemBinding>>(context) {
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<CompanyItemBinding> {
-            return BindingHolder(getContext(), parent!!, R.layout.company_item)
+            return BindingHolder(getContext(), parent, R.layout.company_item)
         }
 
         override fun onBindViewHolder(holder: BindingHolder<CompanyItemBinding>?, position: Int) {
