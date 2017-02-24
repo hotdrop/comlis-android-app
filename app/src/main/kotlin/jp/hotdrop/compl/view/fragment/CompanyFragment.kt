@@ -24,7 +24,7 @@ import org.parceler.Parcels
 import javax.inject.Inject
 
 
-class CompanyFragment : BaseFragment() {
+class CompanyFragment: BaseFragment() {
 
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
@@ -33,6 +33,7 @@ class CompanyFragment : BaseFragment() {
     private lateinit var adapter: Adapter
 
     companion object {
+        @JvmStatic val TAG = CompanyFragment::class.java.simpleName!!
         fun newInstance() = CompanyFragment()
     }
 
@@ -91,7 +92,7 @@ class CompanyFragment : BaseFragment() {
     }
 
     private fun onLoadFailure(e: Throwable) {
-        Toast.makeText(activity, "failed load companies.", Toast.LENGTH_LONG).show()
+        Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
     }
 
     override fun onStop() {

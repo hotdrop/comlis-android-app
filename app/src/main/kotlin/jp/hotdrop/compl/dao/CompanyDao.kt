@@ -3,11 +3,10 @@ package jp.hotdrop.compl.dao
 import io.reactivex.Single
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Company_Relation
-import jp.hotdrop.compl.model.OrmaDatabase
 
 object CompanyDao {
 
-    var orma: OrmaDatabase = OrmaHolder.ORMA
+    var orma = OrmaHolder.ORMA
 
     fun insert(company: Company) {
         companyRelation().inserter().execute(company)

@@ -7,22 +7,22 @@ import org.parceler.Parcel
 
 @Parcel
 @Table
-class Category {
+class Group {
 
     @PrimaryKey(autoincrement = true) var id: Int = 0
     @Column var name: String? = null
     @Column var point: Int = 0
     @Column var viewOrder: Int = 0
 
-    fun change(category: Category) {
-        this.id = category.id
-        this.name = category.name
-        this.point = category.point
-        this.viewOrder = category.viewOrder
+    fun change(group: Group) {
+        this.id = group.id
+        this.name = group.name
+        this.point = group.point
+        this.viewOrder = group.viewOrder
     }
 
     override fun equals(other: Any?): Boolean {
-        return (other as Category).id == id || super.equals(other)
+        return (other as Group).id == id || super.equals(other)
     }
 
     override fun hashCode(): Int {

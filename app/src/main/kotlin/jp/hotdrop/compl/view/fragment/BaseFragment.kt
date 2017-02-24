@@ -14,7 +14,8 @@ abstract class BaseFragment: Fragment() {
         @JvmStatic val REQ_CODE_CATEGORY_REGISTER = 3
         @JvmStatic val REQ_CODE_CATEGORY_UPDATE = 4
 
-        @JvmStatic val ARG_REFRESH_MODE = "refreshMode"
+        @JvmStatic val REFRESH_MODE = "refreshMode"
+
         @JvmStatic val REFRESH_NONE = 0
         @JvmStatic val REFRESH_ONE = 1
         @JvmStatic val REFRESH_ALL = 2

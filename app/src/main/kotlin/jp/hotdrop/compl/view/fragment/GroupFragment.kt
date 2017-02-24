@@ -14,26 +14,26 @@ import android.view.View
 import android.view.ViewGroup
 import io.reactivex.disposables.CompositeDisposable
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.databinding.FragmentCategoryBinding
-import jp.hotdrop.compl.databinding.ItemCategoryBinding
-import jp.hotdrop.compl.model.Category
+import jp.hotdrop.compl.databinding.FragmentGroupBinding
+import jp.hotdrop.compl.databinding.ItemGroupBinding
+import jp.hotdrop.compl.model.Group
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
 import org.parceler.Parcels
 import javax.inject.Inject
 
-class CategoryFragment: BaseFragment() {
+class GroupFragment : BaseFragment() {
 
     @Inject
     lateinit var compositeSubscription: CompositeDisposable
 
     lateinit var adapter: Adapter
     lateinit var helper: ItemTouchHelper
-    lateinit var binding: FragmentCategoryBinding
+    lateinit var binding: FragmentGroupBinding
 
     companion object {
-        @JvmStatic val TAG = CategoryFragment::class.java.simpleName!!
-        fun newInstance() = CategoryFragment()
+        @JvmStatic val TAG = GroupFragment::class.java.simpleName!!
+        fun newInstance() = GroupFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +46,7 @@ class CategoryFragment: BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentCategoryBinding.inflate(inflater, container, false)
+        binding = FragmentGroupBinding.inflate(inflater, container, false)
         adapter = Adapter(context)
 
         helper = ItemTouchHelper(CategoryItemTouchHelperCallback(adapter))
@@ -56,10 +56,22 @@ class CategoryFragment: BaseFragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        // TODO categoryでfindAllする
+        // TODO groupでfindAllする
+        adapter.addAll(dummyList())
+
         binding.fabButton.setOnClickListener { v -> /* todo implements to register activity */}
 
         return binding.root
+    }
+
+    private fun dummyList(): MutableList<Group> {
+        var group1 = Group()
+        group1.id = 1
+        group1.name = "テストその１"
+        var group2 = Group()
+        group2.id = 2
+        group2.name = "テストその２"
+        return mutableListOf(group1, group2)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -69,13 +81,13 @@ class CategoryFragment: BaseFragment() {
             return
         }
 
-        val refreshMode = data.getIntExtra(ARG_REFRESH_MODE, REFRESH_NONE)
-        val category = Parcels.unwrap<Category>(data.getParcelableExtra(TAG)) ?: return
+        val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
+        val group = Parcels.unwrap<Group>(data.getParcelableExtra(TAG)) ?: return
 
         when (refreshMode) {
-            REFRESH_INSERT -> adapter.add(category)
-            REFRESH_UPDATE -> adapter.refresh(category)
-            REFRESH_DELETE -> adapter.remove(category)
+            REFRESH_INSERT -> adapter.add(group)
+            REFRESH_UPDATE -> adapter.refresh(group)
+            REFRESH_DELETE -> adapter.remove(group)
         }
     }
 
@@ -84,15 +96,15 @@ class CategoryFragment: BaseFragment() {
     }
 
     inner class Adapter(context: Context)
-        : ArrayRecyclerAdapter<Category, BindingHolder<ItemCategoryBinding>>(context) {
+        : ArrayRecyclerAdapter<Group, BindingHolder<ItemGroupBinding>>(context) {
 
-        override fun onBindViewHolder(holder: BindingHolder<ItemCategoryBinding>?, position: Int) {
+        override fun onBindViewHolder(holder: BindingHolder<ItemGroupBinding>?, position: Int) {
             if(holder == null) {
                 return
             }
             val binding = holder.binding
-            binding.category = getItem(position)
-            binding.iconReorderCategory.setOnTouchListener { view, motionEvent ->
+            binding.group = getItem(position)
+            binding.iconReorderGroup.setOnTouchListener { view, motionEvent ->
                 if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
                     onStartDrag(holder)
                 }
@@ -102,32 +114,32 @@ class CategoryFragment: BaseFragment() {
             // TODO クリック時のリスナーを設定する
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCategoryBinding> {
-            return BindingHolder(getContext(), parent, R.layout.item_category)
+        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemGroupBinding> {
+            return BindingHolder(getContext(), parent, R.layout.item_group)
         }
 
-        fun refresh(category: Category) {
+        fun refresh(group: Group) {
             (0..itemCount).forEach { i ->
                 val c = getItem(i)
-                if (category == c) {
-                    c.change(category)
+                if (group == c) {
+                    c.change(group)
                     notifyItemRemoved(i)
                 }
             }
         }
 
-        fun remove(category: Category) {
+        fun remove(group: Group) {
             (0..itemCount).forEach { i ->
                 val c = getItem(i)
-                if (category == c) {
+                if (group == c) {
                     removeItem(i)
                     notifyItemRemoved(i)
                 }
             }
         }
 
-        fun add(category: Category) {
-            addItem(category)
+        fun add(group: Group) {
+            addItem(group)
             notifyItemInserted(itemCount)
         }
     }

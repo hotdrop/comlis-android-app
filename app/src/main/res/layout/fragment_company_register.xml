@@ -39,7 +39,7 @@
                 android:id="@+id/text_category"
                 style="@style/EditText"
                 android:layout_below="@id/label_category"
-                android:text="@={company.category.name}" />
+                android:text="@={company.group.name}" />
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -5,9 +5,9 @@
     tools:context=".view.activity.MainActivity">
 
     <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/drawer"
         android:fitsSystemWindows="true"
         tools:openDrawer="start">
 
@@ -17,17 +17,17 @@
             android:orientation="vertical">
 
             <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:id="@+id/toolbar"
                 android:background="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
             <FrameLayout
+                android:id="@+id/content_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/content_view"/>
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 

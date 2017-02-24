@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="category" type="jp.hotdrop.compl.model.Category" />
+        <variable name="group" type="jp.hotdrop.compl.model.Group" />
     </data>
 
     <RelativeLayout
@@ -30,7 +30,7 @@
                 android:padding="@dimen/spacing">
                 
                 <ImageView
-                    android:id="@+id/icon_reorder_category"
+                    android:id="@+id/icon_reorder_group"
                     android:layout_width="@dimen/reorder_icon_width"
                     android:layout_height="@dimen/reorder_icon_height"
                     android:src="@drawable/ic_reorder" />
@@ -39,18 +39,18 @@
                     android:id="@+id/txt_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/icon_reorder_category"
+                    android:layout_toEndOf="@id/icon_reorder_group"
                     android:layout_marginStart="@dimen/spacing_small"
                     android:textSize="@dimen/text_large"
                     android:textColor="@color/item_list_text"
-                    android:text="@{category.name}" />
+                    android:text="@{group.name}" />
 
                 <TextView
                     android:id="@+id/label_register_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/txt_name"
-                    android:layout_toEndOf="@id/icon_reorder_category"
+                    android:layout_toEndOf="@id/icon_reorder_group"
                     android:layout_marginStart="@dimen/spacing_small"
                     android:textColor="@color/item_list_text"
                     android:textSize="@dimen/text_small"
