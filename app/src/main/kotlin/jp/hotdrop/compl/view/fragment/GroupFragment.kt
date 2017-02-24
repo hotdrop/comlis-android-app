@@ -12,20 +12,24 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import jp.hotdrop.compl.R
+import jp.hotdrop.compl.dao.GroupDao
 import jp.hotdrop.compl.databinding.FragmentGroupBinding
 import jp.hotdrop.compl.databinding.ItemGroupBinding
 import jp.hotdrop.compl.model.Group
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
+import jp.hotdrop.compl.view.activity.ActivityNavigator
 import org.parceler.Parcels
 import javax.inject.Inject
 
 class GroupFragment : BaseFragment() {
 
     @Inject
-    lateinit var compositeSubscription: CompositeDisposable
+    lateinit var compositeDisposable: CompositeDisposable
 
     lateinit var adapter: Adapter
     lateinit var helper: ItemTouchHelper
@@ -56,28 +60,18 @@ class GroupFragment : BaseFragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        // TODO groupでfindAllする
-        adapter.addAll(dummyList())
+        loadData()
 
-        binding.fabButton.setOnClickListener { v -> /* todo implements to register activity */}
+        binding.fabButton.setOnClickListener { v ->
+            ActivityNavigator.showGroupRegister(this, REQ_CODE_GROUP_REGISTER)}
 
         return binding.root
-    }
-
-    private fun dummyList(): MutableList<Group> {
-        var group1 = Group()
-        group1.id = 1
-        group1.name = "テストその１"
-        var group2 = Group()
-        group2.id = 2
-        group2.name = "テストその２"
-        return mutableListOf(group1, group2)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_CATEGORY_REGISTER || data == null) {
+        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_GROUP_REGISTER || data == null) {
             return
         }
 
@@ -91,8 +85,35 @@ class GroupFragment : BaseFragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        compositeDisposable.clear()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
+    }
+
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
         helper.startDrag(viewHolder)
+    }
+
+    private fun loadData() {
+        val disposable = GroupDao.findAll()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        {list -> onLoadSuccess(list) },
+                        {throwable -> onLoadFailure(throwable) })
+        compositeDisposable.add(disposable)
+    }
+
+    private fun onLoadSuccess(groups: List<Group>) {
+        adapter.addAll(groups)
+    }
+
+    private fun onLoadFailure(e: Throwable) {
+        Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
     }
 
     inner class Adapter(context: Context)

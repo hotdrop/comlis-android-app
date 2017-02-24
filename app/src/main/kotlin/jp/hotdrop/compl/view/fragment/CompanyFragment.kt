@@ -41,11 +41,6 @@ class CompanyFragment: BaseFragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        getComponent().inject(this)
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyListBinding.inflate(inflater, container, false)
@@ -60,7 +55,7 @@ class CompanyFragment: BaseFragment() {
 
         loadData()
 
-        binding.fabButton.setOnClickListener { v ->
+        binding.fab.setOnClickListener { v ->
             ActivityNavigator.showCompanyRegister(this, REQ_CODE_COMPANY_REGISTER)
         }
 
@@ -75,6 +70,23 @@ class CompanyFragment: BaseFragment() {
 
         val company = Parcels.unwrap<Company>(data.getParcelableExtra(CompanyRegisterFragment.TAG))
         adapter.add(company)
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        getComponent().inject(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Stopの場合、clearで一旦addしているオブジェクトを全てDisposeする。
+        compositeDisposable.clear()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Destory時は以降addされることはないので完全にDisposeする。
+        compositeDisposable.dispose()
     }
 
     private fun loadData() {
@@ -93,18 +105,6 @@ class CompanyFragment: BaseFragment() {
 
     private fun onLoadFailure(e: Throwable) {
         Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        // Stopの場合、clearで一旦addしているオブジェクトを全てDisposeする。
-        compositeDisposable.clear()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // Destory時は以降addされることはないので完全にDisposeする。
-        compositeDisposable.dispose()
     }
 
     /**

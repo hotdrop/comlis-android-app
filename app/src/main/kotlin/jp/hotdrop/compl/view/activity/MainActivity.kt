@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
-import android.view.View
 import io.reactivex.disposables.CompositeDisposable
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.ActivityMainBinding
@@ -68,9 +67,6 @@ class MainActivity : BaseActivity(),
         binding.navView.setNavigationItemSelectedListener(this)
         binding.navView.itemIconTintList = null
         binding.navView.setCheckedItem(R.id.nav_main_list)
-
-        // TODO 今はなぜか隠れないので下の処理を入れているが、本来は不要のはず
-        binding.navView.visibility = View.GONE
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -84,7 +80,7 @@ class MainActivity : BaseActivity(),
     override fun onBackStackChanged() {
         val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.content_view)
         if(currentFragment == null) {
-            finish()
+            //TODO finish()
             return
         }
         val navPage = NavigationPage.forName(currentFragment)

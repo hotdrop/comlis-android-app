@@ -11,6 +11,7 @@ import jp.hotdrop.compl.view.fragment.CompanyRegisterFragment
 class CompanyRegisterActivity : BaseActivity() {
 
     companion object {
+        // TODO GroupRegisterActivityに合わせて修正する
         fun newInstance(): CompanyRegisterActivity = CompanyRegisterActivity()
         fun startForResult(fragment: Fragment, requestCode: Int) {
             var intent = Intent(fragment.context, newInstance().javaClass)

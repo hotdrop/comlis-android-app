@@ -11,8 +11,8 @@ abstract class BaseFragment: Fragment() {
     companion object {
         @JvmStatic val REQ_CODE_COMPANY_REGISTER = 1
         @JvmStatic val REQ_CODE_COMPANY_UPDATE = 2
-        @JvmStatic val REQ_CODE_CATEGORY_REGISTER = 3
-        @JvmStatic val REQ_CODE_CATEGORY_UPDATE = 4
+        @JvmStatic val REQ_CODE_GROUP_REGISTER = 3
+        @JvmStatic val REQ_CODE_GROUP_UPDATE = 4
 
         @JvmStatic val REFRESH_MODE = "refreshMode"
 

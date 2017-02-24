@@ -14,6 +14,7 @@ object GroupDao {
 
     fun findAll(): Single<List<Group>> {
         return groupRelation().selector()
+                .orderByViewOrderAsc()
                 .executeAsObservable()
                 .toList()
     }

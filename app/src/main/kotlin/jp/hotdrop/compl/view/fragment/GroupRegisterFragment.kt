@@ -8,32 +8,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import jp.hotdrop.compl.dao.CompanyDao
-import jp.hotdrop.compl.databinding.FragmentCompanyRegisterBinding
-import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.dao.GroupDao
+import jp.hotdrop.compl.databinding.FragmentGroupRegisterBinding
+import jp.hotdrop.compl.model.Group
 import org.parceler.Parcels
 
-class CompanyRegisterFragment : BaseFragment() {
+class GroupRegisterFragment: BaseFragment() {
 
-    lateinit private var company: Company
-    lateinit private var binding: FragmentCompanyRegisterBinding
+    lateinit private var group: Group
+    lateinit private var binding: FragmentGroupRegisterBinding
 
     companion object {
-        @JvmStatic val TAG = CompanyRegisterFragment::class.java.simpleName!!
-        fun create() = CompanyRegisterFragment()
+        @JvmStatic val TAG = GroupRegisterFragment::class.java.simpleName
+        fun create() = GroupRegisterFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        company = Company()
+        group = Group()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentCompanyRegisterBinding.inflate(inflater, container, false)
+        binding = FragmentGroupRegisterBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
 
-        binding.registerButton.setOnClickListener { onClickRegister() }
-        binding.company = company
+        //binding.registerButton.setOnClickListener { onClickRegister() }
+        binding.group = group
+
         return binding.root
     }
 
@@ -42,22 +43,18 @@ class CompanyRegisterFragment : BaseFragment() {
         getComponent().inject(this)
     }
 
-    /**
-     * TODO おかしいので後で変える
-     */
     private fun onClickRegister() {
         if(!canRegister()) {
             return
         }
-        CompanyDao.insert(company)
+        GroupDao.insert(group)
         setResult()
         exit()
-
     }
 
     private fun canRegister(): Boolean {
-        if(company.name.trim() == "") {
-            Toast.makeText(this.activity, "会社名を入力してください。", Toast.LENGTH_LONG).show()
+        if(group.name.trim() == "") {
+            Toast.makeText(this.activity, "名称を入力してください。", Toast.LENGTH_LONG).show()
             return false
         }
         return true
@@ -65,7 +62,7 @@ class CompanyRegisterFragment : BaseFragment() {
 
     private fun setResult() {
         val intent = Intent()
-        intent.putExtra(TAG, Parcels.wrap(company))
+        intent.putExtra(TAG, Parcels.wrap(group))
         activity.setResult(Activity.RESULT_OK, intent)
     }
 
