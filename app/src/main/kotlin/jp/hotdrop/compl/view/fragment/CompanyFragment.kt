@@ -114,15 +114,15 @@ class CompanyFragment: BaseFragment() {
         : ArrayRecyclerAdapter<Company, BindingHolder<CompanyItemBinding>>(context) {
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<CompanyItemBinding> {
-            return BindingHolder(getContext(), parent, R.layout.company_item)
+            return BindingHolder(context, parent, R.layout.company_item)
         }
 
         override fun onBindViewHolder(holder: BindingHolder<CompanyItemBinding>?, position: Int) {
-            var company: Company = getItem(position)
-            var binding: CompanyItemBinding = holder!!.binding
+            val company: Company = getItem(position)
+            val binding: CompanyItemBinding = holder!!.binding
             binding.company = company
 
-            // TODO clicklistener
+            // TODO clickListener
         }
 
         fun add(company: Company) {

@@ -25,7 +25,9 @@ class MainActivity : BaseActivity(),
 
     private val EXTRA_MENU = "menu"
 
-    lateinit var binding: ActivityMainBinding
+    private val binding by lazy {
+        DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+    }
 
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
@@ -33,9 +35,7 @@ class MainActivity : BaseActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         DataBindingUtil.bind<ActivityMainBinding>(binding.navView.getHeaderView(0))
-
         getComponent().inject(this)
 
         compositeDisposable.add(PageStateBus
@@ -61,7 +61,7 @@ class MainActivity : BaseActivity(),
 
     private fun initView() {
         setSupportActionBar(binding.toolbar)
-        var toggle = ActionBarDrawerToggle(this, binding.drawer, binding.toolbar, R.string.open, R.string.close)
+        val toggle = ActionBarDrawerToggle(this, binding.drawer, binding.toolbar, R.string.open, R.string.close)
         binding.drawer.addDrawerListener(toggle)
         toggle.syncState()
         binding.navView.setNavigationItemSelectedListener(this)
@@ -78,11 +78,7 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onBackStackChanged() {
-        val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.content_view)
-        if(currentFragment == null) {
-            //TODO finish()
-            return
-        }
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.content_view) ?: return
         val navPage = NavigationPage.forName(currentFragment)
         binding.navView.setCheckedItem(navPage.menuId)
         binding.toolbar.setTitle(navPage.titleResId)

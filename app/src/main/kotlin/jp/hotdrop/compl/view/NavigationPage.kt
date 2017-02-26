@@ -25,7 +25,7 @@ enum class NavigationPage(val menuId: Int, val titleResId: Int, val toggleToolba
     companion object {
 
         /**
-         * emunのオブジェクトを取得する
+         * eumnのオブジェクトを取得する
          */
         fun forMenuId(item: MenuItem): NavigationPage {
             return forMenuId(item.itemId)

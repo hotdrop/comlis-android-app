@@ -18,7 +18,7 @@ class GroupRegisterActivity : BaseActivity() {
             fragment.startActivityForResult(intent, requestCode)
         }
 
-        fun createIntent(context: Context) = Intent(context, GroupRegisterActivity::class.java).apply {  }
+        fun createIntent(context: Context) = Intent(context, GroupRegisterActivity::class.java).apply{}
 
     }
 
@@ -26,7 +26,6 @@ class GroupRegisterActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         DataBindingUtil.setContentView<ActivityGroupRegisterBinding>(this, R.layout.activity_group_register)
         getComponent().inject(this)
-
         replaceFragment(GroupRegisterFragment.create(), R.id.content_view)
     }
 }

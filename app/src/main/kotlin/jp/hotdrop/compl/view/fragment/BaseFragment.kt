@@ -27,6 +27,7 @@ abstract class BaseFragment: Fragment() {
 
     var fragmentComponent: FragmentComponent? = null
 
+
     fun getComponent() : FragmentComponent {
         if(fragmentComponent != null) {
             return fragmentComponent!!

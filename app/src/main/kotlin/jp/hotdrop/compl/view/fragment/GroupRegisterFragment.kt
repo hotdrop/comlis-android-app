@@ -19,7 +19,7 @@ class GroupRegisterFragment: BaseFragment() {
     lateinit private var binding: FragmentGroupRegisterBinding
 
     companion object {
-        @JvmStatic val TAG = GroupRegisterFragment::class.java.simpleName
+        @JvmStatic val TAG = GroupRegisterFragment::class.java.simpleName!!
         fun create() = GroupRegisterFragment()
     }
 
