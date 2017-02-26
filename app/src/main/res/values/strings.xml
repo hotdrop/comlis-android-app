@@ -7,10 +7,12 @@
     <string name="nav_group_list">分類一覧</string>
 
     <!-- group -->
-    <string name="label_group_name">分類名</string>
+    <string name="label_group_name">名前</string>
     <string name="label_group_point">点数</string>
 
     <string name="add_button">Add</string>
+
+    <string name="group_dialog_title">グループ登録</string>
 
     <string name="open">open</string>
     <string name="close">close</string>

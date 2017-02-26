@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/label_group_name"
+        style="@style/ItemLabel"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:text="@string/label_group_name" />
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/text_group_name"
+        android:layout_width="200dp"
+        style="@style/EditText"
+        android:text="" />
+
+</LinearLayout>

@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.MotionEventCompat
+import android.support.v7.app.AlertDialog
+import android.support.v7.widget.AppCompatEditText
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
@@ -22,7 +24,6 @@ import jp.hotdrop.compl.databinding.ItemGroupBinding
 import jp.hotdrop.compl.model.Group
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
-import jp.hotdrop.compl.view.activity.ActivityNavigator
 import org.parceler.Parcels
 import javax.inject.Inject
 
@@ -63,7 +64,9 @@ class GroupFragment : BaseFragment() {
         loadData()
 
         binding.fabButton.setOnClickListener { v ->
-            ActivityNavigator.showGroupRegister(this, REQ_CODE_GROUP_REGISTER)}
+            //ActivityNavigator.showGroupRegister(this, REQ_CODE_GROUP_REGISTER)
+            showGroupRegisterDialog()
+        }
 
         return binding.root
     }
@@ -92,6 +95,7 @@ class GroupFragment : BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        // TODO 並び順の更新を行う
         compositeDisposable.dispose()
     }
 
@@ -116,6 +120,21 @@ class GroupFragment : BaseFragment() {
         Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
     }
 
+    private fun showGroupRegisterDialog() {
+        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_group_register, null)
+        // TODO ダイアログのところから
+        AlertDialog.Builder(activity, R.style.DialogTheme)
+                .setTitle(R.string.group_dialog_title)
+                .setView(view)
+                .setPositiveButton("登録する", { dialogInterface, i ->
+                    // TODO 同名チェックする。
+                    val editText = view.findViewById(R.id.text_group_name) as AppCompatEditText
+                    Toast.makeText(activity, editText.text, Toast.LENGTH_LONG).show()
+                    dialogInterface.dismiss()
+                })
+                .show()
+    }
+
     inner class Adapter(context: Context)
         : ArrayRecyclerAdapter<Group, BindingHolder<ItemGroupBinding>>(context) {
 
@@ -136,7 +155,7 @@ class GroupFragment : BaseFragment() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemGroupBinding> {
-            return BindingHolder(getContext(), parent, R.layout.item_group)
+            return BindingHolder(context, parent, R.layout.item_group)
         }
 
         fun refresh(group: Group) {

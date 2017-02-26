@@ -29,18 +29,6 @@
                 android:layout_below="@id/label_group_name"
                 android:text="@={group.name}" />
 
-            <TextView
-                android:id="@+id/label_group_point"
-                style="@style/ItemLabel"
-                android:layout_below="@id/text_group_name"
-                android:text="@string/label_group_point" />
-
-            <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/text_group_point"
-                style="@style/EditText"
-                android:layout_below="@id/label_group_point"
-                android:text="@={group.point}" />
-
         </RelativeLayout>
 
         <LinearLayout
