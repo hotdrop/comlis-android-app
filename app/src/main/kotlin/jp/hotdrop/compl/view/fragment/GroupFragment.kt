@@ -1,8 +1,6 @@
 package jp.hotdrop.compl.view.fragment
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.MotionEventCompat
 import android.support.v7.app.AlertDialog
@@ -10,13 +8,12 @@ import android.support.v7.widget.AppCompatEditText
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.GroupDao
 import jp.hotdrop.compl.databinding.FragmentGroupBinding
@@ -24,13 +21,8 @@ import jp.hotdrop.compl.databinding.ItemGroupBinding
 import jp.hotdrop.compl.model.Group
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
-import org.parceler.Parcels
-import javax.inject.Inject
 
 class GroupFragment : BaseFragment() {
-
-    @Inject
-    lateinit var compositeDisposable: CompositeDisposable
 
     lateinit var adapter: Adapter
     lateinit var helper: ItemTouchHelper
@@ -61,78 +53,98 @@ class GroupFragment : BaseFragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        loadData()
+        adapter.addAll(GroupDao.findAll())
 
         binding.fabButton.setOnClickListener { v ->
-            //ActivityNavigator.showGroupRegister(this, REQ_CODE_GROUP_REGISTER)
             showGroupRegisterDialog()
         }
 
         return binding.root
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_GROUP_REGISTER || data == null) {
-            return
-        }
-
-        val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
-        val group = Parcels.unwrap<Group>(data.getParcelableExtra(TAG)) ?: return
-
-        when (refreshMode) {
-            REFRESH_INSERT -> adapter.add(group)
-            REFRESH_UPDATE -> adapter.refresh(group)
-            REFRESH_DELETE -> adapter.remove(group)
-        }
-    }
-
     override fun onStop() {
         super.onStop()
-        compositeDisposable.clear()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         // TODO 並び順の更新を行う
-        compositeDisposable.dispose()
     }
 
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
         helper.startDrag(viewHolder)
     }
 
-    private fun loadData() {
-        val disposable = GroupDao.findAll()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        {list -> onLoadSuccess(list) },
-                        {throwable -> onLoadFailure(throwable) })
-        compositeDisposable.add(disposable)
-    }
-
-    private fun onLoadSuccess(groups: List<Group>) {
-        adapter.addAll(groups)
-    }
-
-    private fun onLoadFailure(e: Throwable) {
-        Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
-    }
+    /**
+     * ダイアログにて、入力したグループ名に応じてボタンと注意書きの制御を行う拡張関数
+     */
+    fun AppCompatEditText.changeTextListener(view: View, dialog: AlertDialog, editText: AppCompatEditText, id: Int = -1) =
+            addTextChangedListener(object: TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/*no op*/}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {/*no op*/ }
+                override fun afterTextChanged(s: Editable?) {
+                    when (id) {
+                        -1 -> {
+                            if(GroupDao.exist(editText.text.toString())) {
+                                duplicateGroupName()
+                            } else {
+                                allRightGroupName()
+                            }
+                        }
+                        else -> {
+                            if(GroupDao.exist(editText.text.toString(), id)) {
+                                duplicateGroupName()
+                            } else {
+                                allRightGroupName()
+                            }
+                        }
+                    }
+                }
+                private fun duplicateGroupName() {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+                    view.findViewById(R.id.label_group_attention).visibility = View.VISIBLE
+                }
+                private fun allRightGroupName() {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
+                    view.findViewById(R.id.label_group_attention).visibility = View.GONE
+                }
+            })
 
     private fun showGroupRegisterDialog() {
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_group_register, null)
-        // TODO ダイアログのところから
-        AlertDialog.Builder(activity, R.style.DialogTheme)
+        val editText = view.findViewById(R.id.text_group_name) as AppCompatEditText
+        val dialog = AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setTitle(R.string.group_dialog_title)
                 .setView(view)
-                .setPositiveButton("登録する", { dialogInterface, i ->
-                    // TODO 同名チェックする。
-                    val editText = view.findViewById(R.id.text_group_name) as AppCompatEditText
-                    Toast.makeText(activity, editText.text, Toast.LENGTH_LONG).show()
+                .setPositiveButton(R.string.group_dialog_add_button, { dialogInterface, i ->
+                    GroupDao.insert(editText.text.toString())
+                    val group = GroupDao.find(editText.text.toString())
+                    adapter.add(group)
                     dialogInterface.dismiss()
                 })
-                .show()
+                .create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+        editText.changeTextListener(view, dialog, editText)
+    }
+
+    private fun showUpdateDialog(group: Group) {
+        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_group_register, null)
+        val editText = view.findViewById(R.id.text_group_name) as AppCompatEditText
+        editText.setText(group.name as CharSequence)
+        val dialog = AlertDialog.Builder(activity, R.style.DialogTheme)
+                .setTitle(R.string.group_dialog_title)
+                .setView(view)
+                .setPositiveButton(R.string.group_dialog_update_button, { dialogInterface, i ->
+                    group.name = editText.text.toString()
+                    GroupDao.update(group)
+                    adapter.refresh(group)
+                    dialogInterface.dismiss()
+                })
+                .create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+        editText.changeTextListener(view, dialog, editText, group.id)
     }
 
     inner class Adapter(context: Context)
@@ -151,7 +163,7 @@ class GroupFragment : BaseFragment() {
                 false
             }
 
-            // TODO クリック時のリスナーを設定する
+            binding.cardView.setOnClickListener { showUpdateDialog(binding.group) }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemGroupBinding> {
@@ -191,7 +203,7 @@ class GroupFragment : BaseFragment() {
 
         /**
          * dragとswipeの動作指定
-         * dragの上下のみ許容する。
+         * TODO ここはdragの上下のみ許容するようになっているのでswipeも指定する
          */
         override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
             val dragFrags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN
@@ -210,7 +222,7 @@ class GroupFragment : BaseFragment() {
         }
 
         /**
-         * swipe時は何もしない
+         * swipe時は削除。ただしアイテムが１個以上登録されている場合は削除できないものとする。
          */
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
             return

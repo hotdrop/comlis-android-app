@@ -10,7 +10,7 @@ import org.parceler.Parcel
 class Group {
 
     @PrimaryKey(autoincrement = true) var id: Int = 0
-    @Column var name: String = ""
+    @Column(indexed = true) var name: String = ""
     // TODO 今はViewに直接bindingしているためIntではなくStringにしている
     // これはダメなのでさっさとViewModelにする
     @Column var point: String = ""
