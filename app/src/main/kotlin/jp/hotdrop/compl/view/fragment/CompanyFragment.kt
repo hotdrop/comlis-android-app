@@ -11,11 +11,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CompanyDao
-import jp.hotdrop.compl.databinding.CompanyItemBinding
 import jp.hotdrop.compl.databinding.FragmentCompanyListBinding
+import jp.hotdrop.compl.databinding.ItemCompanyBinding
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
@@ -85,7 +84,7 @@ class CompanyFragment: BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // Destory時は以降addされることはないので完全にDisposeする。
+        // Destroy時は以降addされることはないので完全にDisposeする。
         compositeDisposable.dispose()
     }
 
@@ -111,16 +110,15 @@ class CompanyFragment: BaseFragment() {
      * アダプター
      */
     private inner class Adapter(context: Context)
-        : ArrayRecyclerAdapter<Company, BindingHolder<CompanyItemBinding>>(context) {
+        : ArrayRecyclerAdapter<Company, BindingHolder<ItemCompanyBinding>>(context) {
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<CompanyItemBinding> {
-            return BindingHolder(context, parent, R.layout.company_item)
+        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCompanyBinding> {
+            return BindingHolder(context, parent, R.layout.item_company)
         }
 
-        override fun onBindViewHolder(holder: BindingHolder<CompanyItemBinding>?, position: Int) {
-            val company: Company = getItem(position)
-            val binding: CompanyItemBinding = holder!!.binding
-            binding.company = company
+        override fun onBindViewHolder(holder: BindingHolder<ItemCompanyBinding>?, position: Int) {
+            val binding = holder!!.binding
+            binding.company = getItem(position)
 
             // TODO clickListener
         }

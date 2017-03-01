@@ -11,11 +11,15 @@ import android.widget.Toast
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyRegisterBinding
 import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.view.GroupSpinner
 import org.parceler.Parcels
 
 class CompanyRegisterFragment : BaseFragment() {
 
-    lateinit private var company: Company
+    private val company by lazy {
+        Company()
+    }
+
     lateinit private var binding: FragmentCompanyRegisterBinding
 
     companion object {
@@ -25,13 +29,13 @@ class CompanyRegisterFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        company = Company()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyRegisterBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
 
+        GroupSpinner(binding.spinnerGroup, activity)
         binding.registerButton.setOnClickListener { onClickRegister() }
         binding.company = company
         return binding.root

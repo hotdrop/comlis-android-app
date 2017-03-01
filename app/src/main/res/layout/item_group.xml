@@ -64,7 +64,7 @@
                     android:layout_toEndOf="@id/label_register_count"
                     android:textColor="@color/item_list_text"
                     android:textSize="@dimen/text_small"
-                    android:text="viewModelで出力する。" />
+                    android:text="TODO" />
 
             </RelativeLayout>
 
