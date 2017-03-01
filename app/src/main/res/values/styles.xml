@@ -76,6 +76,16 @@
         <item name="android:textSize">@dimen/text_large</item>
     </style>
 
+    <style name="GroupSpinner">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_margin">7dp</item>
+        <item name="android:background">@drawable/spinner_shape</item>
+        <item name="android:popupBackground">@drawable/spinner_popup_shape</item>
+        <item name="android:clickable">true</item>
+        <item name="android:spinnerMode">dropdown</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 

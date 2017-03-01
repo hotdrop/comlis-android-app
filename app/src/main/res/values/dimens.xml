@@ -28,6 +28,11 @@
     <dimen name="reorder_icon_width">36dp</dimen>
     <dimen name="reorder_icon_height">40dp</dimen>
 
+    <!-- spinner -->
+    <dimen name="spinner_radius">6dip</dimen>
+    <dimen name="spinner_border">1dp</dimen>
+    <dimen name="spinner_stock_width">100dp</dimen>
+
     <!-- Elevation -->
     <dimen name="elevation">4dp</dimen>
 

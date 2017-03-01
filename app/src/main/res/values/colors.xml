@@ -21,4 +21,8 @@
     <color name="ok_button_text">@color/white</color>
     <color name="ok_button_background">@color/light_dark_more_blue</color>
 
+    <!-- spinner -->
+    <color name="spinner_background">@color/white</color>
+    <color name="spinner_border">@color/black</color>
+
 </resources>
