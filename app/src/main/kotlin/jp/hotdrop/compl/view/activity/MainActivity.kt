@@ -20,8 +20,7 @@ import jp.hotdrop.compl.view.fragment.CompanyFragment
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(),
-        NavigationView.OnNavigationItemSelectedListener,
-        FragmentManager.OnBackStackChangedListener{
+        NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener{
 
     private val EXTRA_MENU = "menu"
 
@@ -38,8 +37,7 @@ class MainActivity : BaseActivity(),
         DataBindingUtil.bind<ActivityMainBinding>(binding.navView.getHeaderView(0))
         getComponent().inject(this)
 
-        compositeDisposable.add(PageStateBus
-                                .observe()
+        compositeDisposable.add(PageStateBus.observe()
                                 .subscribe { page ->
                                     toggleToolbarElevation(page.toggleToolbar)
                                     changePage(page.titleResId, page.createFragment())

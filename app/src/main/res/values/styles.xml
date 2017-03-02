@@ -30,6 +30,14 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="RecyclerViewTheme">
+        <item name="android:clipToPadding">false</item>
+        <item name="android:fadingEdge">none</item>
+        <item name="android:padding">@dimen/spacing_small</item>
+        <item name="android:scrollbarStyle">outsideOverlay</item>
+        <item name="android:scrollingCache">false</item>
+    </style>
+
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/black</item>
     </style>

@@ -16,11 +16,11 @@ class Group {
     @Column var point: String = ""
     @Column(indexed = true) var viewOrder: Int = 0
 
-    fun change(group: Group) {
-        this.id = group.id
-        this.name = group.name
-        this.point = group.point
-        this.viewOrder = group.viewOrder
+    fun change(o: Group) {
+        this.id = o.id
+        this.name = o.name
+        this.point = o.point
+        this.viewOrder = o.viewOrder
     }
 
     override fun equals(other: Any?): Boolean {

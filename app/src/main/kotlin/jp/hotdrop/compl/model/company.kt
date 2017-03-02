@@ -1,6 +1,5 @@
 package jp.hotdrop.compl.model
 
-import android.support.annotation.Nullable
 import com.github.gfx.android.orma.annotation.Column
 import com.github.gfx.android.orma.annotation.PrimaryKey
 import com.github.gfx.android.orma.annotation.Table
@@ -32,6 +31,22 @@ class Company {
 
     override fun hashCode(): Int {
         return id
+    }
+
+    fun change(o: Company) {
+        id = o.id
+        name = o.name
+        group = o.group
+        type = o.type
+        employeesNum = o.employeesNum
+        content = o.content
+        salaryLow = o.salaryLow
+        salaryHigh = o.salaryHigh
+        jobCategory = o.jobCategory
+        url = o.url
+        note = o.note
+        evaluation = o.evaluation
+        registerDate = o.registerDate
     }
 }
 
