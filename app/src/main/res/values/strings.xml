@@ -6,25 +6,28 @@
     <string name="nav_company_list">一覧</string>
     <string name="nav_group_list">分類一覧</string>
 
-    <!-- company -->
+    <!-- company main -->
+    <string name="empty_company_list">何も登録されていません。グループを登録してから登録してください。</string>
+
+    <!-- company register/update -->
     <string name="label_company">会社名:</string>
     <string name="label_group">グループ:</string>
     <string name="label_salary">年収:</string>
     <string name="label_salary_unit">万円</string>
     <string name="label_salary_range_mark">〜</string>
-
-    <string name="add_button">Add</string>
+    <string name="add_button">登録</string>
 
     <!-- group -->
+    <string name="empty_group_list">まだ何も登録されていません。好きなグループ名を登録してください。このグループ名が会社一覧のタブになります。</string>
     <string name="label_register_count">登録数:</string>
     <string name="label_group_point">点数</string>
 
     <!-- dialog -->
     <string name="group_dialog_label_name">グループ名:</string>
     <string name="group_dialog_title">グループ登録</string>
+    <string name="group_dialog_attention">このグループ名は既に登録されています</string>
     <string name="group_dialog_add_button">登録</string>
     <string name="group_dialog_update_button">更新</string>
-    <string name="group_dialog_attention">このグループ名は既に登録されています</string>
 
     <string name="open">open</string>
     <string name="close">close</string>

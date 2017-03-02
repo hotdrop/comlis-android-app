@@ -126,6 +126,9 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
 
         if(companyByGroup.size > 0) {
             companyByGroup.forEach { title, list -> addFragment(title, list) }
+            binding.listEmptyView.visibility = View.GONE
+        } else {
+            binding.listEmptyView.visibility = View.VISIBLE
         }
 
         adapter = Adapter(fragmentManager)

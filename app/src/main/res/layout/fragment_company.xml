@@ -35,6 +35,15 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/list_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_small"
+            android:text="@string/empty_company_list"
+            android:textColor="@color/empty_text"
+            android:visibility="gone" />
+
         <RelativeLayout
             android:id="@+id/progress_bar_container"
             android:layout_width="match_parent"
@@ -59,4 +68,5 @@
             app:backgroundTint="@color/fab_background" />
 
     </FrameLayout>
+
 </layout>

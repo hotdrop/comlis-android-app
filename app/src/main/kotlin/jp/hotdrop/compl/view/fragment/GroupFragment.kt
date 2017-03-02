@@ -37,11 +37,6 @@ class GroupFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        getComponent().inject(this)
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentGroupBinding.inflate(inflater, container, false)
         adapter = Adapter(context)
@@ -54,12 +49,19 @@ class GroupFragment : BaseFragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
 
         adapter.addAll(GroupDao.findAll())
+        // TODO これだと最初の１回目はずっと表示され続ける。。画面遷移すれば大丈夫
+        binding.listEmptyView.visibility = if(adapter.itemCount > 0) View.GONE else View.VISIBLE
 
         binding.fabButton.setOnClickListener { v ->
             showGroupRegisterDialog()
         }
 
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        getComponent().inject(this)
     }
 
     override fun onStop() {

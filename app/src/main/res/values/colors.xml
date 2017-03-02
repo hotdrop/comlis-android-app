@@ -24,6 +24,7 @@
 
     <color name="label">@color/black</color>
     <color name="text">@color/black</color>
+    <color name="empty_text">@color/gray</color>
     <color name="attention">@color/red</color>
     <color name="ok_button_text">@color/white</color>
     <color name="ok_button_background">@color/light_dark_more_blue</color>
