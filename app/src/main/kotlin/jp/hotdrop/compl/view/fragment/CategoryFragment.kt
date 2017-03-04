@@ -24,8 +24,14 @@ import jp.hotdrop.compl.view.BindingHolder
 
 class CategoryFragment : BaseFragment() {
 
-    lateinit var adapter: Adapter
-    lateinit var helper: ItemTouchHelper
+    private val adapter by lazy {
+        Adapter(context)
+    }
+
+    private val helper by lazy {
+        ItemTouchHelper(CategoryItemTouchHelperCallback(adapter))
+    }
+
     lateinit var binding: FragmentCategoryBinding
 
     companion object {
@@ -39,21 +45,15 @@ class CategoryFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCategoryBinding.inflate(inflater, container, false)
-        adapter = Adapter(context)
-
-        helper = ItemTouchHelper(CategoryItemTouchHelperCallback(adapter))
-        helper.attachToRecyclerView(binding.recyclerView)
-
         binding.recyclerView.addItemDecoration(helper)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
+        helper.attachToRecyclerView(binding.recyclerView)
 
         adapter.addAll(CategoryDao.findAll())
-        // TODO これだと最初の１回目はずっと表示され続ける。。画面遷移すれば大丈夫
+        // TODO これだと最初の１回目はずっと表示され続けてしまうので考える。
         binding.listEmptyView.visibility = if(adapter.itemCount > 0) View.GONE else View.VISIBLE
-
         binding.fabButton.setOnClickListener { showGroupRegisterDialog() }
-
         return binding.root
     }
 
@@ -76,28 +76,18 @@ class CategoryFragment : BaseFragment() {
     }
 
     /**
-     * ダイアログにて、入力したグループ名に応じてボタンと注意書きの制御を行う拡張関数
+     * ダイアログで、入力した分類名に応じてボタンと注意書きの制御を行う拡張関数
      */
-    fun AppCompatEditText.changeTextListener(view: View, dialog: AlertDialog, editText: AppCompatEditText, id: Int = -1) =
+    private val NONE: Int = -1
+    fun AppCompatEditText.changeTextListener(view: View, dialog: AlertDialog, editText: AppCompatEditText, categoryId: Int = NONE) =
             addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/*no op*/}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {/*no op*/ }
                 override fun afterTextChanged(s: Editable?) {
-                    when (id) {
-                        -1 -> {
-                            if(CategoryDao.exist(editText.text.toString())) {
-                                duplicateGroupName()
-                            } else {
-                                allRightGroupName()
-                            }
-                        }
-                        else -> {
-                            if(CategoryDao.exist(editText.text.toString(), id)) {
-                                duplicateGroupName()
-                            } else {
-                                allRightGroupName()
-                            }
-                        }
+                    val editTxt = editText.text.toString()
+                    when (categoryId) {
+                        NONE -> if(CategoryDao.exist(editTxt)) duplicateGroupName() else allRightGroupName()
+                        else ->  if(CategoryDao.exist(editTxt, categoryId)) duplicateGroupName() else allRightGroupName()
                     }
                 }
                 private fun duplicateGroupName() {
@@ -116,7 +106,7 @@ class CategoryFragment : BaseFragment() {
         val dialog = AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setTitle(R.string.group_dialog_title)
                 .setView(view)
-                .setPositiveButton(R.string.group_dialog_add_button, { dialogInterface, i ->
+                .setPositiveButton(R.string.group_dialog_add_button, { dialogInterface, _ ->
                     CategoryDao.insert(editText.text.toString())
                     val group = CategoryDao.find(editText.text.toString())
                     adapter.add(group)
@@ -135,7 +125,7 @@ class CategoryFragment : BaseFragment() {
         val dialog = AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setTitle(R.string.group_dialog_title)
                 .setView(view)
-                .setPositiveButton(R.string.group_dialog_update_button, { dialogInterface, i ->
+                .setPositiveButton(R.string.group_dialog_update_button, { dialogInterface, _ ->
                     category.name = editText.text.toString()
                     CategoryDao.update(category)
                     adapter.refresh(category)
@@ -151,12 +141,10 @@ class CategoryFragment : BaseFragment() {
         : ArrayRecyclerAdapter<Category, BindingHolder<ItemCategoryBinding>>(context) {
 
         override fun onBindViewHolder(holder: BindingHolder<ItemCategoryBinding>?, position: Int) {
-            if(holder == null) {
-                return
-            }
+            holder ?: return
             val binding = holder.binding
             binding.category = getItem(position)
-            binding.iconReorderGroup.setOnTouchListener { view, motionEvent ->
+            binding.iconReorderGroup.setOnTouchListener { _, motionEvent ->
                 if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
                     onStartDrag(holder)
                 }

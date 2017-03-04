@@ -20,7 +20,9 @@ class CompanyRegisterFragment : BaseFragment() {
         Company()
     }
 
-    lateinit private var categorySpinner: CategorySpinner
+    private val categorySpinner by lazy {
+        CategorySpinner(binding.spinnerGroup, activity)
+    }
 
     lateinit private var binding: FragmentCompanyRegisterBinding
 
@@ -36,8 +38,6 @@ class CompanyRegisterFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyRegisterBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
-
-        categorySpinner = CategorySpinner(binding.spinnerGroup, activity)
         binding.registerButton.setOnClickListener { onClickRegister() }
         binding.company = company
         return binding.root

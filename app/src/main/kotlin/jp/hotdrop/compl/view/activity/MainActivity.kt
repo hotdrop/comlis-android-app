@@ -33,19 +33,15 @@ class MainActivity : BaseActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         DataBindingUtil.bind<ActivityMainBinding>(binding.navView.getHeaderView(0))
         getComponent().inject(this)
-
         compositeDisposable.add(PageStateBus.observe()
                                 .subscribe { page ->
                                     toggleToolbarElevation(page.toggleToolbar)
                                     changePage(page.titleResId, page.createFragment())
                                     binding.navView.setCheckedItem(page.menuId)
                                 })
-
         initView()
-
         if(savedInstanceState == null) {
             replaceFragment(CompanyFragment.newInstance())
         } else if(savedInstanceState.getInt(EXTRA_MENU) != 0) {
@@ -53,15 +49,14 @@ class MainActivity : BaseActivity(),
             toggleToolbarElevation(navPage.toggleToolbar)
             binding.toolbar.setTitle(navPage.titleResId)
         }
-
         supportFragmentManager.addOnBackStackChangedListener(this)
     }
 
     private fun initView() {
         setSupportActionBar(binding.toolbar)
         val toggle = ActionBarDrawerToggle(this, binding.drawer, binding.toolbar, R.string.open, R.string.close)
-        binding.drawer.addDrawerListener(toggle)
         toggle.syncState()
+        binding.drawer.addDrawerListener(toggle)
         binding.navView.setNavigationItemSelectedListener(this)
         binding.navView.itemIconTintList = null
         binding.navView.setCheckedItem(R.id.nav_main_list)
@@ -70,9 +65,7 @@ class MainActivity : BaseActivity(),
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         val currentFragment = supportFragmentManager.findFragmentById(R.id.content_view)
-        if(currentFragment != null) {
-            outState!!.putInt(EXTRA_MENU, NavigationPage.forName(currentFragment).menuId)
-        }
+        currentFragment ?: outState!!.putInt(EXTRA_MENU, NavigationPage.forName(currentFragment).menuId)
     }
 
     override fun onBackStackChanged() {
@@ -81,18 +74,15 @@ class MainActivity : BaseActivity(),
         binding.navView.setCheckedItem(navPage.menuId)
         binding.toolbar.setTitle(navPage.titleResId)
         toggleToolbarElevation(navPage.toggleToolbar)
-
         currentFragment as? StackedPageListener ?: return
         currentFragment.onTop()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         binding.drawer.closeDrawer(GravityCompat.START)
-
         val navPage = NavigationPage.forMenuId(item)
         toggleToolbarElevation(navPage.toggleToolbar)
         changePage(navPage.titleResId, navPage.createFragment())
-
         return true
     }
 
