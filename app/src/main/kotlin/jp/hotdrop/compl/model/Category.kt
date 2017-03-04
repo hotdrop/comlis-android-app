@@ -7,16 +7,23 @@ import org.parceler.Parcel
 
 @Parcel
 @Table
-class Group {
+class Category {
 
-    @PrimaryKey(autoincrement = true) var id: Int = 0
-    @Column(indexed = true) var name: String = ""
+    @PrimaryKey(autoincrement = true)
+    var id: Int = 0
+
+    @Column(indexed = true)
+    var name: String = ""
+
     // TODO 今はViewに直接bindingしているためIntではなくStringにしている
-    // これはダメなのでさっさとViewModelにする
-    @Column var point: String = ""
-    @Column(indexed = true) var viewOrder: Int = 0
+    // TODO これはダメなのでさっさとViewModelにする
+    @Column
+    var point: String = ""
 
-    fun change(o: Group) {
+    @Column(indexed = true)
+    var viewOrder: Int = 0
+
+    fun change(o: Category) {
         this.id = o.id
         this.name = o.name
         this.point = o.point
@@ -24,7 +31,7 @@ class Group {
     }
 
     override fun equals(other: Any?): Boolean {
-        return (other as Group).id == id || super.equals(other)
+        return (other as Category).id == id || super.equals(other)
     }
 
     override fun hashCode(): Int {

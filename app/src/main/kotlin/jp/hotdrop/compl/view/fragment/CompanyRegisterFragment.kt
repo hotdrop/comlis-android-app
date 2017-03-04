@@ -11,7 +11,7 @@ import android.widget.Toast
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyRegisterBinding
 import jp.hotdrop.compl.model.Company
-import jp.hotdrop.compl.view.GroupSpinner
+import jp.hotdrop.compl.view.CategorySpinner
 import org.parceler.Parcels
 
 class CompanyRegisterFragment : BaseFragment() {
@@ -19,6 +19,8 @@ class CompanyRegisterFragment : BaseFragment() {
     private val company by lazy {
         Company()
     }
+
+    lateinit private var categorySpinner: CategorySpinner
 
     lateinit private var binding: FragmentCompanyRegisterBinding
 
@@ -35,7 +37,7 @@ class CompanyRegisterFragment : BaseFragment() {
         binding = FragmentCompanyRegisterBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
 
-        GroupSpinner(binding.spinnerGroup, activity)
+        categorySpinner = CategorySpinner(binding.spinnerGroup, activity)
         binding.registerButton.setOnClickListener { onClickRegister() }
         binding.company = company
         return binding.root
@@ -53,6 +55,8 @@ class CompanyRegisterFragment : BaseFragment() {
         if(!canRegister()) {
             return
         }
+
+        company.categoryId = categorySpinner.getSelection()
         CompanyDao.insert(company)
         setResult()
         exit()

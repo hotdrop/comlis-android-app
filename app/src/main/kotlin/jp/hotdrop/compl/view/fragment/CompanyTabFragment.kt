@@ -1,6 +1,8 @@
 package jp.hotdrop.compl.view.fragment
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -49,6 +51,17 @@ class CompanyTabFragment: BaseFragment() {
         getComponent().inject(this)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_REGISTER || data == null) {
+            return
+        }
+
+        // TODO これだとタブに対応できないので考える
+        val company = Parcels.unwrap<Company>(data.getParcelableExtra(CompanyRegisterFragment.TAG))
+        adapter.add(company)
+    }
+
     fun scrollUpToTop() {
         binding.recyclerView.smoothScrollToPosition(0)
     }
@@ -67,7 +80,7 @@ class CompanyTabFragment: BaseFragment() {
             val binding = holder!!.binding
             binding.company = getItem(position)
             binding.cardView.setOnClickListener { v ->
-                // TODO clickListener
+                // TODO
             }
         }
 
@@ -79,6 +92,11 @@ class CompanyTabFragment: BaseFragment() {
                     adapter.notifyItemChanged(i)
                 }
             }
+        }
+
+        fun add(company: Company) {
+            adapter.addItem(company)
+            adapter.notifyItemInserted(adapter.itemCount)
         }
     }
 }

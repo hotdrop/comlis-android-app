@@ -14,8 +14,8 @@ object CompanyDao {
 
     fun findAll(): Single<List<Company>> {
         return companyRelation().selector()
-                .executeAsObservable()
-                .toList()
+                                .executeAsObservable()
+                                .toList()
     }
 
     private fun companyRelation(): Company_Relation {

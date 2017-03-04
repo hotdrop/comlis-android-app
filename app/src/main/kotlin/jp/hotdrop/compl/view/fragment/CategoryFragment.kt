@@ -15,22 +15,22 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.dao.GroupDao
-import jp.hotdrop.compl.databinding.FragmentGroupBinding
-import jp.hotdrop.compl.databinding.ItemGroupBinding
-import jp.hotdrop.compl.model.Group
+import jp.hotdrop.compl.dao.CategoryDao
+import jp.hotdrop.compl.databinding.FragmentCategoryBinding
+import jp.hotdrop.compl.databinding.ItemCategoryBinding
+import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
 
-class GroupFragment : BaseFragment() {
+class CategoryFragment : BaseFragment() {
 
     lateinit var adapter: Adapter
     lateinit var helper: ItemTouchHelper
-    lateinit var binding: FragmentGroupBinding
+    lateinit var binding: FragmentCategoryBinding
 
     companion object {
-        @JvmStatic val TAG = GroupFragment::class.java.simpleName!!
-        fun newInstance() = GroupFragment()
+        @JvmStatic val TAG = CategoryFragment::class.java.simpleName!!
+        fun newInstance() = CategoryFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class GroupFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentGroupBinding.inflate(inflater, container, false)
+        binding = FragmentCategoryBinding.inflate(inflater, container, false)
         adapter = Adapter(context)
 
         helper = ItemTouchHelper(CategoryItemTouchHelperCallback(adapter))
@@ -48,13 +48,11 @@ class GroupFragment : BaseFragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        adapter.addAll(GroupDao.findAll())
+        adapter.addAll(CategoryDao.findAll())
         // TODO これだと最初の１回目はずっと表示され続ける。。画面遷移すれば大丈夫
         binding.listEmptyView.visibility = if(adapter.itemCount > 0) View.GONE else View.VISIBLE
 
-        binding.fabButton.setOnClickListener { v ->
-            showGroupRegisterDialog()
-        }
+        binding.fabButton.setOnClickListener { showGroupRegisterDialog() }
 
         return binding.root
     }
@@ -87,14 +85,14 @@ class GroupFragment : BaseFragment() {
                 override fun afterTextChanged(s: Editable?) {
                     when (id) {
                         -1 -> {
-                            if(GroupDao.exist(editText.text.toString())) {
+                            if(CategoryDao.exist(editText.text.toString())) {
                                 duplicateGroupName()
                             } else {
                                 allRightGroupName()
                             }
                         }
                         else -> {
-                            if(GroupDao.exist(editText.text.toString(), id)) {
+                            if(CategoryDao.exist(editText.text.toString(), id)) {
                                 duplicateGroupName()
                             } else {
                                 allRightGroupName()
@@ -119,8 +117,8 @@ class GroupFragment : BaseFragment() {
                 .setTitle(R.string.group_dialog_title)
                 .setView(view)
                 .setPositiveButton(R.string.group_dialog_add_button, { dialogInterface, i ->
-                    GroupDao.insert(editText.text.toString())
-                    val group = GroupDao.find(editText.text.toString())
+                    CategoryDao.insert(editText.text.toString())
+                    val group = CategoryDao.find(editText.text.toString())
                     adapter.add(group)
                     dialogInterface.dismiss()
                 })
@@ -130,34 +128,34 @@ class GroupFragment : BaseFragment() {
         editText.changeTextListener(view, dialog, editText)
     }
 
-    private fun showUpdateDialog(group: Group) {
+    private fun showUpdateDialog(category: Category) {
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_group_register, null)
         val editText = view.findViewById(R.id.text_group_name) as AppCompatEditText
-        editText.setText(group.name as CharSequence)
+        editText.setText(category.name as CharSequence)
         val dialog = AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setTitle(R.string.group_dialog_title)
                 .setView(view)
                 .setPositiveButton(R.string.group_dialog_update_button, { dialogInterface, i ->
-                    group.name = editText.text.toString()
-                    GroupDao.update(group)
-                    adapter.refresh(group)
+                    category.name = editText.text.toString()
+                    CategoryDao.update(category)
+                    adapter.refresh(category)
                     dialogInterface.dismiss()
                 })
                 .create()
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
-        editText.changeTextListener(view, dialog, editText, group.id)
+        editText.changeTextListener(view, dialog, editText, category.id)
     }
 
     inner class Adapter(context: Context)
-        : ArrayRecyclerAdapter<Group, BindingHolder<ItemGroupBinding>>(context) {
+        : ArrayRecyclerAdapter<Category, BindingHolder<ItemCategoryBinding>>(context) {
 
-        override fun onBindViewHolder(holder: BindingHolder<ItemGroupBinding>?, position: Int) {
+        override fun onBindViewHolder(holder: BindingHolder<ItemCategoryBinding>?, position: Int) {
             if(holder == null) {
                 return
             }
             val binding = holder.binding
-            binding.group = getItem(position)
+            binding.category = getItem(position)
             binding.iconReorderGroup.setOnTouchListener { view, motionEvent ->
                 if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
                     onStartDrag(holder)
@@ -165,14 +163,14 @@ class GroupFragment : BaseFragment() {
                 false
             }
 
-            binding.cardView.setOnClickListener { showUpdateDialog(binding.group) }
+            binding.cardView.setOnClickListener { showUpdateDialog(binding.category) }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemGroupBinding> {
-            return BindingHolder(context, parent, R.layout.item_group)
+        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCategoryBinding> {
+            return BindingHolder(context, parent, R.layout.item_category)
         }
 
-        fun refresh(group: Group) {
+        fun refresh(group: Category) {
             (0..itemCount).forEach { i ->
                 val c = getItem(i)
                 if (group == c) {
@@ -182,7 +180,7 @@ class GroupFragment : BaseFragment() {
             }
         }
 
-        fun remove(group: Group) {
+        fun remove(group: Category) {
             (0..itemCount).forEach { i ->
                 val c = getItem(i)
                 if (group == c) {
@@ -192,7 +190,7 @@ class GroupFragment : BaseFragment() {
             }
         }
 
-        fun add(group: Group) {
+        fun add(group: Category) {
             addItem(group)
             notifyItemInserted(itemCount)
         }

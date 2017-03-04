@@ -16,6 +16,7 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyBinding
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.view.StackedPageListener
+import jp.hotdrop.compl.view.activity.ActivityNavigator
 import javax.inject.Inject
 
 
@@ -115,12 +116,10 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         // TODO タブごとにリストを生成してフラグメントを作成する
         val companyByGroup = linkedMapOf<String, MutableList<Company>>()
         companies.forEach { company ->
-            val key = company.group!!.name
-            if(companyByGroup.containsKey(key)) {
-                companyByGroup[key]!!.add(company)
-            } else {
-                val list = mutableListOf(company)
-                companyByGroup.put(key, list)
+            val key = company.getGroup()?.name
+            when {
+                companyByGroup.containsKey(key) -> companyByGroup[key]!!.add(company)
+                key != null -> companyByGroup.put(key, mutableListOf(company))
             }
         }
 
@@ -135,7 +134,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         binding.viewPager.adapter = adapter
         binding.tabLayout.setupWithViewPager(binding.viewPager)
         binding.tabLayout.addOnTabSelectedListener(SelectedTabListener(binding.viewPager))
-        binding.fab.setOnClickListener { v -> Toast.makeText(activity, "push fab", Toast.LENGTH_LONG).show() }
+        binding.fab.setOnClickListener { ActivityNavigator.showCompanyRegister(this, REQ_CODE_COMPANY_REGISTER) }
 
         if(isRefresh) {
             // もともと選択していたタブを選択状態にする

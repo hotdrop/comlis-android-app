@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="group" type="jp.hotdrop.compl.model.Group" />
+        <variable name="category" type="jp.hotdrop.compl.model.Category" />
     </data>
 
     <RelativeLayout
@@ -43,7 +43,7 @@
                     android:layout_marginStart="@dimen/spacing_small"
                     android:textSize="@dimen/text_large"
                     android:textColor="@color/item_list_text"
-                    android:text="@{group.name}" />
+                    android:text="@{category.name}" />
 
                 <TextView
                     android:id="@+id/label_register_count"

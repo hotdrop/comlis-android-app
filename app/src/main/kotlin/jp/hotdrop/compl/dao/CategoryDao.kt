@@ -1,33 +1,40 @@
 package jp.hotdrop.compl.dao
 
-import jp.hotdrop.compl.model.Group
-import jp.hotdrop.compl.model.Group_Relation
+import jp.hotdrop.compl.model.Category
+import jp.hotdrop.compl.model.Category_Relation
 
-object GroupDao {
+object CategoryDao {
 
     var orma = OrmaHolder.ORMA
 
     /**
      * 今はGroupNameが重複しない前提としている。あまり良くない・・
      */
-    fun find(name: String): Group {
+    fun find(name: String): Category {
         return groupRelation().selector().nameEq(name).first()
     }
 
-    fun findAll(): MutableList<Group> {
+    fun find(id: Int): Category {
+        // TODO ここは保持したコレクションから取得するよう修正する。上も
+        return groupRelation().selector().idEq(id).first()
+    }
+
+    fun findAll(): MutableList<Category> {
+        // TODO DBから取得したぜんGroup情報を保持していくように修正する
         return groupRelation().selector()
                 .orderByViewOrderAsc()
                 .toList()
     }
 
-    fun insert(name: String) {
-        val group = Group()
-        group.name = name
-        group.viewOrder = maxGroupOrder() + 1
+    fun insert(argName: String) {
+        val group = Category().apply {
+            name = argName
+            viewOrder = maxGroupOrder() + 1
+        }
         groupRelation().inserter().execute(group)
     }
 
-    fun update(group: Group) {
+    fun update(group: Category) {
         groupRelation().updater().name(group.name).execute()
     }
 
@@ -39,8 +46,8 @@ object GroupDao {
         return !groupRelation().selector().nameEq(name).idNotEq(id).isEmpty
     }
 
-    private fun groupRelation(): Group_Relation {
-        return orma.relationOfGroup()
+    private fun groupRelation(): Category_Relation {
+        return orma.relationOfCategory()
     }
 
     private fun maxGroupOrder(): Int {
