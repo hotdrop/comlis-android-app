@@ -12,12 +12,11 @@ import jp.hotdrop.compl.di.ActivityModule
 
 abstract class BaseActivity: AppCompatActivity() {
 
-    private var activityComponent: ActivityComponent? = null
-
-    fun getComponent(): ActivityComponent {
-        activityComponent = activityComponent ?: (application as MainApplication).getComponent().plus(ActivityModule(this))
-        return activityComponent!!
+    private val activityComponent by lazy {
+        (application as MainApplication).getComponent().plus(ActivityModule(this))
     }
+
+    fun getComponent(): ActivityComponent = activityComponent
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if(item?.itemId == R.id.home) {

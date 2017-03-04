@@ -12,7 +12,7 @@ class Category {
     @PrimaryKey(autoincrement = true)
     var id: Int = 0
 
-    @Column(indexed = true)
+    @Column(indexed = true, unique = true)
     var name: String = ""
 
     // TODO 今はViewに直接bindingしているためIntではなくStringにしている

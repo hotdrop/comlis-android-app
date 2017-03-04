@@ -1,6 +1,5 @@
 package jp.hotdrop.compl.view.activity
 
-import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -12,13 +11,10 @@ import jp.hotdrop.compl.view.fragment.CompanyRegisterFragment
 class CompanyRegisterActivity : BaseActivity() {
 
     companion object {
-
         fun startForResult(fragment: Fragment, requestCode: Int) {
-            var intent = createIntent(fragment.context)
+            val intent = Intent(fragment.context, CompanyRegisterActivity::class.java).apply{}
             fragment.startActivityForResult(intent, requestCode)
         }
-
-        fun createIntent(context: Context) = Intent(context, CompanyRegisterActivity::class.java).apply{}
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
