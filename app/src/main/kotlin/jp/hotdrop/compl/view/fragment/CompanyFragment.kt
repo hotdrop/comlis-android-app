@@ -116,12 +116,14 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         // TODO タブごとにリストを生成してフラグメントを作成する
         val companyByGroup = linkedMapOf<String, MutableList<Company>>()
         companies.forEach { company ->
-            val key = company.getGroup()?.name
+            val key = company.getGroup().name
             when {
                 companyByGroup.containsKey(key) -> companyByGroup[key]!!.add(company)
-                key != null -> companyByGroup.put(key, mutableListOf(company))
+                else -> companyByGroup.put(key, mutableListOf(company))
             }
         }
+
+        adapter = Adapter(fragmentManager)
 
         if(companyByGroup.size > 0) {
             companyByGroup.forEach { title, list -> addFragment(title, list) }
@@ -130,7 +132,6 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
             binding.listEmptyView.visibility = View.VISIBLE
         }
 
-        adapter = Adapter(fragmentManager)
         binding.viewPager.adapter = adapter
         binding.tabLayout.setupWithViewPager(binding.viewPager)
         binding.tabLayout.addOnTabSelectedListener(SelectedTabListener(binding.viewPager))
