@@ -15,13 +15,9 @@ import jp.hotdrop.compl.view.CategorySpinner
 
 class CompanyRegisterFragment : BaseFragment() {
 
-    private val company by lazy {
-        Company()
-    }
-
     private lateinit var categorySpinner: CategorySpinner
-
     private lateinit var binding: FragmentCompanyRegisterBinding
+    private lateinit var company: Company
 
     companion object {
         @JvmStatic val TAG = CompanyRegisterFragment::class.java.simpleName!!
@@ -39,6 +35,8 @@ class CompanyRegisterFragment : BaseFragment() {
         categorySpinner = CategorySpinner(binding.spinnerGroup, activity)
 
         binding.registerButton.setOnClickListener { onClickRegister() }
+
+        company = Company()
         binding.company = company
         return binding.root
     }
@@ -48,9 +46,6 @@ class CompanyRegisterFragment : BaseFragment() {
         getComponent().inject(this)
     }
 
-    /**
-     * TODO おかしいので後で変える
-     */
     private fun onClickRegister() {
         if(!canRegister()) {
             return
@@ -60,7 +55,6 @@ class CompanyRegisterFragment : BaseFragment() {
         CompanyDao.insert(company)
         setResult()
         exit()
-
     }
 
     private fun canRegister(): Boolean {

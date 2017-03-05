@@ -33,15 +33,19 @@ class MainActivity : BaseActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         DataBindingUtil.bind<ActivityMainBinding>(binding.navView.getHeaderView(0))
         getComponent().inject(this)
+
         compositeDisposable.add(PageStateBus.observe()
                                 .subscribe { page ->
                                     toggleToolbarElevation(page.toggleToolbar)
                                     changePage(page.titleResId, page.createFragment())
                                     binding.navView.setCheckedItem(page.menuId)
                                 })
+
         initView()
+
         if(savedInstanceState == null) {
             replaceFragment(CompanyFragment.newInstance())
         } else if(savedInstanceState.getInt(EXTRA_MENU) != 0) {
@@ -56,6 +60,7 @@ class MainActivity : BaseActivity(),
         setSupportActionBar(binding.toolbar)
         val toggle = ActionBarDrawerToggle(this, binding.drawer, binding.toolbar, R.string.open, R.string.close)
         toggle.syncState()
+
         binding.drawer.addDrawerListener(toggle)
         binding.navView.setNavigationItemSelectedListener(this)
         binding.navView.itemIconTintList = null
@@ -65,15 +70,40 @@ class MainActivity : BaseActivity(),
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         val currentFragment = supportFragmentManager.findFragmentById(R.id.content_view)
-        currentFragment ?: outState!!.putInt(EXTRA_MENU, NavigationPage.forName(currentFragment).menuId)
+        if(currentFragment != null) {
+            outState!!.putInt(EXTRA_MENU, NavigationPage.forName(currentFragment).menuId)
+        }
     }
 
+    /**
+     * 戻る操作をした時の動作
+     * バックスタックに積んだフラグメントがあれば取り出す
+     */
+    override fun onBackPressed() {
+        if(binding.drawer.isDrawerOpen(GravityCompat.START)) {
+            binding.drawer.closeDrawer(GravityCompat.START)
+            return
+        }
+        val fm = supportFragmentManager
+        if(fm.backStackEntryCount > 0) {
+            fm.popBackStack()
+            return
+        }
+        super.onBackPressed()
+    }
+
+    /**
+     * onBackPressedやreplaceFragmentはフラグメントの操作しか行わないため
+     * バックスタックに変更があった場合、ハンドリングしてその他ナビゲーションビューや
+     * ツールバーなどのコントロールを変更する。
+     */
     override fun onBackStackChanged() {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.content_view) ?: return
         val navPage = NavigationPage.forName(currentFragment)
         binding.navView.setCheckedItem(navPage.menuId)
         binding.toolbar.setTitle(navPage.titleResId)
         toggleToolbarElevation(navPage.toggleToolbar)
+
         currentFragment as? StackedPageListener ?: return
         currentFragment.onTop()
     }

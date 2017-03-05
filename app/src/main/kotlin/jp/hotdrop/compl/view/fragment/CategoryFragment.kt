@@ -24,15 +24,9 @@ import jp.hotdrop.compl.view.BindingHolder
 
 class CategoryFragment : BaseFragment() {
 
-    private val adapter by lazy {
-        Adapter(context)
-    }
-
-    private val helper by lazy {
-        ItemTouchHelper(CategoryItemTouchHelperCallback(adapter))
-    }
-
     lateinit var binding: FragmentCategoryBinding
+    private lateinit var adapter: Adapter
+    private lateinit var helper: ItemTouchHelper
 
     companion object {
         @JvmStatic val TAG = CategoryFragment::class.java.simpleName!!
@@ -45,6 +39,9 @@ class CategoryFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCategoryBinding.inflate(inflater, container, false)
+        adapter = Adapter(context)
+
+        helper = ItemTouchHelper(CategoryItemTouchHelperCallback(adapter))
         binding.recyclerView.addItemDecoration(helper)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)

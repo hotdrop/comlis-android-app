@@ -20,9 +20,7 @@ class CompanyTabFragment: BaseFragment() {
 
     private lateinit var companyList: MutableList<Company>
     private lateinit var binding: FragmentCompanyTabBinding
-    private val adapter by lazy {
-        Adapter(context)
-    }
+    private lateinit var adapter: Adapter
 
     companion object {
         @JvmStatic val TAG = CompanyTabFragment::class.java.simpleName!!
@@ -40,9 +38,12 @@ class CompanyTabFragment: BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyTabBinding.inflate(inflater, container, false)
+
+        adapter = Adapter(context)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         adapter.addAll(companyList)
+
         return binding.root
     }
 
