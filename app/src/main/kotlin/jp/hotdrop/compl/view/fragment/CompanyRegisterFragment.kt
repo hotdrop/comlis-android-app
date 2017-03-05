@@ -12,7 +12,6 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyRegisterBinding
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.view.CategorySpinner
-import org.parceler.Parcels
 
 class CompanyRegisterFragment : BaseFragment() {
 
@@ -20,11 +19,9 @@ class CompanyRegisterFragment : BaseFragment() {
         Company()
     }
 
-    private val categorySpinner by lazy {
-        CategorySpinner(binding.spinnerGroup, activity)
-    }
+    private lateinit var categorySpinner: CategorySpinner
 
-    lateinit private var binding: FragmentCompanyRegisterBinding
+    private lateinit var binding: FragmentCompanyRegisterBinding
 
     companion object {
         @JvmStatic val TAG = CompanyRegisterFragment::class.java.simpleName!!
@@ -38,6 +35,9 @@ class CompanyRegisterFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyRegisterBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
+
+        categorySpinner = CategorySpinner(binding.spinnerGroup, activity)
+
         binding.registerButton.setOnClickListener { onClickRegister() }
         binding.company = company
         return binding.root
@@ -73,7 +73,7 @@ class CompanyRegisterFragment : BaseFragment() {
 
     private fun setResult() {
         val intent = Intent()
-        intent.putExtra(TAG, Parcels.wrap(company))
+        intent.putExtra(REFRESH_MODE, REFRESH_ALL)
         activity.setResult(Activity.RESULT_OK, intent)
     }
 

@@ -7,13 +7,11 @@ import jp.hotdrop.compl.model.Category
 
 class CategorySpinner(private val spinner: android.widget.Spinner, private val activity: Activity) {
 
-    private val groupList by lazy {
-        CategoryDao.findAll()
-    }
+    private val categoryList: MutableList<Category> = CategoryDao.findAll()
 
     private val adapter by lazy {
-        val groupNames = groupList.map(Category::name)
-        ArrayAdapter(activity, android.R.layout.simple_dropdown_item_1line, groupNames)
+        val categoryNames = categoryList.map(Category::name)
+        ArrayAdapter(activity, android.R.layout.simple_dropdown_item_1line, categoryNames)
     }
 
     init {
@@ -23,7 +21,7 @@ class CategorySpinner(private val spinner: android.widget.Spinner, private val a
 
     fun getSelection(): Int {
         val selectedName = spinner.selectedItem as String
-        return groupList.filter{ group -> group.name == selectedName }
+        return categoryList.filter{ it.name == selectedName }
                 .first()
                 .id
     }

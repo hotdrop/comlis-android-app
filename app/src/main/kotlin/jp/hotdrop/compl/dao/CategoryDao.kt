@@ -11,47 +11,47 @@ object CategoryDao {
      * 今はGroupNameが重複しない前提としている。あまり良くない・・
      */
     fun find(name: String): Category {
-        return groupRelation().selector().nameEq(name).first()
+        return categoryRelation().selector().nameEq(name).first()
     }
 
     fun find(id: Int): Category {
         // TODO ここは保持したコレクションから取得するよう修正する。上も
-        return groupRelation().selector().idEq(id).first()
+        return categoryRelation().selector().idEq(id).first()
     }
 
     fun findAll(): MutableList<Category> {
         // TODO DBから取得したぜんGroup情報を保持していくように修正する
-        return groupRelation().selector()
+        return categoryRelation().selector()
                 .orderByViewOrderAsc()
                 .toList()
     }
 
     fun insert(argName: String) {
-        val group = Category().apply {
+        val category = Category().apply {
             name = argName
             viewOrder = maxGroupOrder() + 1
         }
-        groupRelation().inserter().execute(group)
+        categoryRelation().inserter().execute(category)
     }
 
-    fun update(group: Category) {
-        groupRelation().updater().name(group.name).execute()
+    fun update(category: Category) {
+        categoryRelation().updater().name(category.name).execute()
     }
 
     fun exist(name: String): Boolean {
-        return !groupRelation().selector().nameEq(name).isEmpty
+        return !categoryRelation().selector().nameEq(name).isEmpty
     }
 
     fun exist(name:String, id: Int): Boolean {
-        return !groupRelation().selector().nameEq(name).idNotEq(id).isEmpty
+        return !categoryRelation().selector().nameEq(name).idNotEq(id).isEmpty
     }
 
-    private fun groupRelation(): Category_Relation {
+    private fun categoryRelation(): Category_Relation {
         return orma.relationOfCategory()
     }
 
     private fun maxGroupOrder(): Int {
-        return groupRelation().selector().maxByViewOrder() ?: 0
+        return categoryRelation().selector().maxByViewOrder() ?: 0
     }
 
 }

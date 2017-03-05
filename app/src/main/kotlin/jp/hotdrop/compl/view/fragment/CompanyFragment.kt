@@ -113,7 +113,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
     }
 
     private fun onLoadSuccess(companies: List<Company>) {
-        // TODO タブごとにリストを生成してフラグメントを作成する
+        // タブごとにリストを生成してフラグメントを作成する
         val companyByGroup = linkedMapOf<String, MutableList<Company>>()
         companies.forEach { company ->
             val key = company.getGroup().name

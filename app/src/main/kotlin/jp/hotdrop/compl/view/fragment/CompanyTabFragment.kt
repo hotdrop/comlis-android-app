@@ -87,7 +87,7 @@ class CompanyTabFragment: BaseFragment() {
         private fun refresh(company: Company) {
             (0..adapter.itemCount).forEach { i ->
                 val o = getItem(i)
-                if(company.equals(o)) {
+                if(company == o) {
                     o.change(company)
                     adapter.notifyItemChanged(i)
                 }

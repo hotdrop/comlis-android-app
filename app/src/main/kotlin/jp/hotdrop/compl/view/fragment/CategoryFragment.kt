@@ -51,6 +51,7 @@ class CategoryFragment : BaseFragment() {
         helper.attachToRecyclerView(binding.recyclerView)
 
         adapter.addAll(CategoryDao.findAll())
+
         // TODO これだと最初の１回目はずっと表示され続けてしまうので考える。
         binding.listEmptyView.visibility = if(adapter.itemCount > 0) View.GONE else View.VISIBLE
         binding.fabButton.setOnClickListener { showGroupRegisterDialog() }
@@ -66,8 +67,8 @@ class CategoryFragment : BaseFragment() {
         super.onStop()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         // TODO 並び順の更新を行う
     }
 
@@ -137,6 +138,9 @@ class CategoryFragment : BaseFragment() {
         editText.changeTextListener(view, dialog, editText, category.id)
     }
 
+    /**
+     * アダプター
+     */
     inner class Adapter(context: Context)
         : ArrayRecyclerAdapter<Category, BindingHolder<ItemCategoryBinding>>(context) {
 

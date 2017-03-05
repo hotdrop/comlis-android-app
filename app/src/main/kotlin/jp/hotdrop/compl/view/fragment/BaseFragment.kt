@@ -23,5 +23,5 @@ abstract class BaseFragment: Fragment() {
         activity.getComponent().plus(FragmentModule(this))
     }
 
-    fun getComponent() : FragmentComponent = fragmentComponent
+    fun getComponent(): FragmentComponent = fragmentComponent
 }
