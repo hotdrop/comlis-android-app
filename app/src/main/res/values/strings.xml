@@ -13,8 +13,6 @@
     <string name="label_company">会社名:</string>
     <string name="label_group">グループ:</string>
     <string name="label_salary">年収:</string>
-    <string name="label_salary_unit">万円</string>
-    <string name="label_salary_range_mark">〜</string>
     <string name="add_button">登録</string>
 
     <!-- group -->
