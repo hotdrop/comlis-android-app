@@ -30,21 +30,21 @@
                 android:text="@={companyViewModel.name}" />
 
             <TextView
-                android:id="@+id/label_group"
+                android:id="@+id/label_category"
                 style="@style/ItemLabel"
                 android:layout_below="@id/text_name"
-                android:text="@string/label_group" />
+                android:text="@string/label_category" />
 
             <Spinner
-                android:id="@+id/spinner_group"
-                style="@style/GroupSpinner"
-                android:layout_below="@id/label_group" />
+                android:id="@+id/spinner_category"
+                style="@style/CategorySpinner"
+                android:layout_below="@id/label_category" />
 
             <LinearLayout
                 android:id="@+id/linear_salary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/spinner_group"
+                android:layout_below="@id/spinner_category"
                 android:orientation="horizontal">
 
                 <TextView

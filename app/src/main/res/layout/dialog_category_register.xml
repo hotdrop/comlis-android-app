@@ -10,13 +10,13 @@
         android:layout_height="match_parent" >
 
         <TextView
-            android:id="@+id/label_group_name"
+            android:id="@+id/label_category_name"
             style="@style/ItemLabel"
             android:layout_marginTop="@dimen/spacing_small"
-            android:text="@string/group_dialog_label_name" />
+            android:text="@string/category_dialog_label_name" />
 
         <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/text_group_name"
+            android:id="@+id/text_category_name"
             android:layout_width="200dp"
             style="@style/EditText"
             android:text="" />
@@ -24,13 +24,13 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/label_group_attention"
+        android:id="@+id/label_category_attention"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_marginStart="@dimen/spacing_large"
         android:textColor="@color/attention"
         android:textSize="@dimen/text_small"
-        android:text="@string/group_dialog_attention"
+        android:text="@string/category_dialog_attention"
         android:visibility="gone" />
 
 </LinearLayout>

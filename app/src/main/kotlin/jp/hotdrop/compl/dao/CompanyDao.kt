@@ -18,6 +18,10 @@ object CompanyDao {
                                 .toList()
     }
 
+    fun countByCategory(categoryId: Int): Int {
+        return companyRelation().selector().categoryIdEq(categoryId).count()
+    }
+
     private fun companyRelation(): Company_Relation {
         return orma.relationOfCompany()
     }

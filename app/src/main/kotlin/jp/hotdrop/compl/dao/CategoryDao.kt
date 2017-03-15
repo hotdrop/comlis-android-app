@@ -2,6 +2,7 @@ package jp.hotdrop.compl.dao
 
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.model.Category_Relation
+import jp.hotdrop.compl.viewmodel.CategoryViewModel
 
 object CategoryDao {
 

@@ -2,7 +2,7 @@ package jp.hotdrop.compl.viewmodel
 
 import jp.hotdrop.compl.model.Company
 
-class CompanyViewModel(company: Company) {
+class CompanyViewModel(val company: Company) {
 
     companion object {
         @JvmStatic private val SALARY_UNIT = "万円"

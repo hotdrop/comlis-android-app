@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:padding="@dimen/spacing_small"
-                android:text="@string/empty_group_list"
+                android:text="@string/empty_category_list"
                 android:textColor="@color/empty_text"
                 android:visibility="gone" />
 

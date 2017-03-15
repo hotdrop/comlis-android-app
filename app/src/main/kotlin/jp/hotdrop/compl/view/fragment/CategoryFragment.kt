@@ -18,9 +18,9 @@ import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.databinding.FragmentCategoryBinding
 import jp.hotdrop.compl.databinding.ItemCategoryBinding
-import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
+import jp.hotdrop.compl.viewmodel.CategoryViewModel
 
 class CategoryFragment : BaseFragment() {
 
@@ -47,11 +47,11 @@ class CategoryFragment : BaseFragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         helper.attachToRecyclerView(binding.recyclerView)
 
-        adapter.addAll(CategoryDao.findAll())
+        adapter.addAll(CategoryDao.findAll().map(::CategoryViewModel))
 
         // TODO これだと最初の１回目はずっと表示され続けてしまうので考える。
         binding.listEmptyView.visibility = if(adapter.itemCount > 0) View.GONE else View.VISIBLE
-        binding.fabButton.setOnClickListener { showGroupRegisterDialog() }
+        binding.fabButton.setOnClickListener { showRegisterDialog() }
         return binding.root
     }
 
@@ -84,30 +84,30 @@ class CategoryFragment : BaseFragment() {
                 override fun afterTextChanged(s: Editable?) {
                     val editTxt = editText.text.toString()
                     when (categoryId) {
-                        NONE -> if(CategoryDao.exist(editTxt)) duplicateGroupName() else allRightGroupName()
-                        else ->  if(CategoryDao.exist(editTxt, categoryId)) duplicateGroupName() else allRightGroupName()
+                        NONE -> if(CategoryDao.exist(editTxt)) duplicateCategoryName() else allRightCategoryName()
+                        else ->  if(CategoryDao.exist(editTxt, categoryId)) duplicateCategoryName() else allRightCategoryName()
                     }
                 }
-                private fun duplicateGroupName() {
+                private fun duplicateCategoryName() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
-                    view.findViewById(R.id.label_group_attention).visibility = View.VISIBLE
+                    view.findViewById(R.id.label_category_attention).visibility = View.VISIBLE
                 }
-                private fun allRightGroupName() {
+                private fun allRightCategoryName() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
-                    view.findViewById(R.id.label_group_attention).visibility = View.GONE
+                    view.findViewById(R.id.label_category_attention).visibility = View.GONE
                 }
             })
 
-    private fun showGroupRegisterDialog() {
-        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_group_register, null)
-        val editText = view.findViewById(R.id.text_group_name) as AppCompatEditText
+    private fun showRegisterDialog() {
+        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category_register, null)
+        val editText = view.findViewById(R.id.text_category_name) as AppCompatEditText
         val dialog = AlertDialog.Builder(activity, R.style.DialogTheme)
-                .setTitle(R.string.group_dialog_title)
+                .setTitle(R.string.category_dialog_title)
                 .setView(view)
-                .setPositiveButton(R.string.group_dialog_add_button, { dialogInterface, _ ->
+                .setPositiveButton(R.string.category_dialog_add_button, { dialogInterface, _ ->
                     CategoryDao.insert(editText.text.toString())
-                    val group = CategoryDao.find(editText.text.toString())
-                    adapter.add(group)
+                    val vm = CategoryDao.find(editText.text.toString())
+                    adapter.add(CategoryViewModel(vm))
                     dialogInterface.dismiss()
                 })
                 .create()
@@ -116,35 +116,35 @@ class CategoryFragment : BaseFragment() {
         editText.changeTextListener(view, dialog, editText)
     }
 
-    private fun showUpdateDialog(category: Category) {
-        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_group_register, null)
-        val editText = view.findViewById(R.id.text_group_name) as AppCompatEditText
-        editText.setText(category.name as CharSequence)
+    private fun showUpdateDialog(vm: CategoryViewModel) {
+        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category_register, null)
+        val editText = view.findViewById(R.id.text_category_name) as AppCompatEditText
+        editText.setText(vm.name as CharSequence)
         val dialog = AlertDialog.Builder(activity, R.style.DialogTheme)
-                .setTitle(R.string.group_dialog_title)
+                .setTitle(R.string.category_dialog_title)
                 .setView(view)
-                .setPositiveButton(R.string.group_dialog_update_button, { dialogInterface, _ ->
-                    category.name = editText.text.toString()
-                    CategoryDao.update(category)
-                    adapter.refresh(category)
+                .setPositiveButton(R.string.category_dialog_update_button, { dialogInterface, _ ->
+                    vm.name = editText.text.toString()
+                    CategoryDao.update(vm.category)
+                    adapter.refresh(vm)
                     dialogInterface.dismiss()
                 })
                 .create()
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
-        editText.changeTextListener(view, dialog, editText, category.id)
+        editText.changeTextListener(view, dialog, editText, vm.id)
     }
 
     /**
      * アダプター
      */
     inner class Adapter(context: Context)
-        : ArrayRecyclerAdapter<Category, BindingHolder<ItemCategoryBinding>>(context) {
+        : ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context) {
 
         override fun onBindViewHolder(holder: BindingHolder<ItemCategoryBinding>?, position: Int) {
             holder ?: return
             val binding = holder.binding
-            binding.category = getItem(position)
+            binding.viewModel = getItem(position)
             binding.iconReorderGroup.setOnTouchListener { _, motionEvent ->
                 if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
                     onStartDrag(holder)
@@ -152,35 +152,35 @@ class CategoryFragment : BaseFragment() {
                 false
             }
 
-            binding.cardView.setOnClickListener { showUpdateDialog(binding.category) }
+            binding.cardView.setOnClickListener { showUpdateDialog(binding.viewModel) }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCategoryBinding> {
             return BindingHolder(context, parent, R.layout.item_category)
         }
 
-        fun refresh(group: Category) {
+        fun refresh(vm: CategoryViewModel) {
             (0..itemCount).forEach { i ->
                 val c = getItem(i)
-                if (group == c) {
-                    c.change(group)
+                if (vm == c) {
+                    c.change(vm)
                     notifyItemRemoved(i)
                 }
             }
         }
 
-        fun remove(group: Category) {
+        fun remove(vm: CategoryViewModel) {
             (0..itemCount).forEach { i ->
                 val c = getItem(i)
-                if (group == c) {
+                if (vm == c) {
                     removeItem(i)
                     notifyItemRemoved(i)
                 }
             }
         }
 
-        fun add(group: Category) {
-            addItem(group)
+        fun add(vm: CategoryViewModel) {
+            addItem(vm)
             notifyItemInserted(itemCount)
         }
     }

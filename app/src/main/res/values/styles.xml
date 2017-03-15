@@ -85,7 +85,7 @@
         <item name="android:textSize">@dimen/text_large</item>
     </style>
 
-    <style name="GroupSpinner">
+    <style name="CategorySpinner">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_margin">7dp</item>

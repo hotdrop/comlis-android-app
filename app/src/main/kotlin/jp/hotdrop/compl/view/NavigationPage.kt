@@ -2,10 +2,9 @@ package jp.hotdrop.compl.view
 
 import android.support.v4.app.Fragment
 import android.view.MenuItem
-
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.view.fragment.CompanyFragment
 import jp.hotdrop.compl.view.fragment.CategoryFragment
+import jp.hotdrop.compl.view.fragment.CompanyFragment
 
 enum class NavigationPage(val menuId: Int, val titleResId: Int, val toggleToolbar: Boolean, val pageName: String) {
 
@@ -14,7 +13,7 @@ enum class NavigationPage(val menuId: Int, val titleResId: Int, val toggleToolba
             return CompanyFragment.newInstance()
         }
     },
-    GROUP_LIST(R.id.nav_group_list, R.string.nav_group_list, true, CategoryFragment.TAG) {
+    GROUP_LIST(R.id.nav_group_list, R.string.nav_category_list, true, CategoryFragment.TAG) {
         override fun createFragment(): Fragment {
             return CategoryFragment.newInstance()
         }

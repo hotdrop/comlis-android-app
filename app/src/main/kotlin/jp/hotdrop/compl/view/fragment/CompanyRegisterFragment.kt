@@ -32,7 +32,7 @@ class CompanyRegisterFragment : BaseFragment() {
         binding = FragmentCompanyRegisterBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
 
-        categorySpinner = CategorySpinner(binding.spinnerGroup, activity)
+        categorySpinner = CategorySpinner(binding.spinnerCategory, activity)
 
         binding.registerButton.setOnClickListener { onClickRegister() }
         viewModel = CompanyRegisterViewModel()
