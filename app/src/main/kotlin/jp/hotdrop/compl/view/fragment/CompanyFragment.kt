@@ -136,7 +136,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         binding.viewPager.adapter = adapter
         binding.tabLayout.setupWithViewPager(binding.viewPager)
         binding.tabLayout.addOnTabSelectedListener(SelectedTabListener(binding.viewPager))
-        binding.fab.setOnClickListener { ActivityNavigator.showCompanyRegister(this, REQ_CODE_COMPANY_REGISTER) }
+        binding.fab.setOnClickListener { ActivityNavigator.showCompanyRegister(this, tabName, REQ_CODE_COMPANY_REGISTER) }
 
         if(isRefresh) {
             // もともと選択していたタブを選択状態にする

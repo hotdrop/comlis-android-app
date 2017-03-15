@@ -11,8 +11,11 @@ import jp.hotdrop.compl.view.fragment.CompanyRegisterFragment
 class CompanyRegisterActivity : BaseActivity() {
 
     companion object {
-        fun startForResult(fragment: Fragment, requestCode: Int) {
-            val intent = Intent(fragment.context, CompanyRegisterActivity::class.java).apply{}
+        @JvmStatic val TAG = CompanyRegisterActivity::class.java.simpleName!!
+        fun startForResult(fragment: Fragment, tabName: String, requestCode: Int) {
+            val intent = Intent(fragment.context, CompanyRegisterActivity::class.java).apply{
+                putExtra(TAG, tabName)
+            }
             fragment.startActivityForResult(intent, requestCode)
         }
     }
@@ -21,6 +24,7 @@ class CompanyRegisterActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         DataBindingUtil.setContentView<ActivityCompanyRegisterBinding>(this, R.layout.activity_company_register)
         getComponent().inject(this)
-        replaceFragment(CompanyRegisterFragment.create(), R.id.content_view)
+        val tabName = intent.getStringExtra(TAG)
+        replaceFragment(CompanyRegisterFragment.create(tabName), R.id.content_view)
     }
 }

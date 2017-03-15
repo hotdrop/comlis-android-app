@@ -18,19 +18,26 @@ class CompanyRegisterFragment : BaseFragment() {
     private lateinit var categorySpinner: CategorySpinner
     private lateinit var binding: FragmentCompanyRegisterBinding
     private lateinit var viewModel: CompanyRegisterViewModel
+    private lateinit var selectedTabName: String
 
     companion object {
-        fun create() = CompanyRegisterFragment()
+        @JvmStatic val TAG = CompanyRegisterFragment::class.java.simpleName!!
+        fun create(tabName: String) = CompanyRegisterFragment().apply {
+            arguments = Bundle().apply { putString(TAG, tabName) }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        selectedTabName = arguments.getString(TAG)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyRegisterBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
-        categorySpinner = CategorySpinner(binding.spinnerCategory, activity)
+        categorySpinner = CategorySpinner(binding.spinnerCategory, activity).apply {
+            setSelection(selectedTabName)
+        }
         binding.registerButton.setOnClickListener { onClickRegister() }
         viewModel = CompanyRegisterViewModel()
         binding.companyViewModel = viewModel
