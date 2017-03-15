@@ -8,8 +8,9 @@ import jp.hotdrop.compl.util.DataChecker
 class CompanyRegisterViewModel {
 
     var name = ""
-    var salaryLow = "0"
-    var salaryHigh = "0"
+    var employeesNum = ""
+    var salaryLow = ""
+    var salaryHigh = ""
 
     fun register(selectedCategorySpinnerId: Int): Int {
         val code = canRegister()
@@ -26,6 +27,9 @@ class CompanyRegisterViewModel {
         if(name.trim() == "") {
             return AppCode.ERROR_EMPTY_COMPANY_NAME
         }
+        if(!DataChecker.isNumber(employeesNum)) {
+            return AppCode.ERROR_NOT_NUMBER_EMPLOYEES_NUM
+        }
         if(!DataChecker.isNumber(salaryLow)) {
             return AppCode.ERROR_NOT_NUMBER_SALARY
         }
@@ -38,6 +42,7 @@ class CompanyRegisterViewModel {
     private fun makeData(selectedCategorySpinnerId: Int) = Company().apply {
         name = this@CompanyRegisterViewModel.name
         categoryId = selectedCategorySpinnerId
+        employeesNum = this@CompanyRegisterViewModel.employeesNum.toInt()
         salaryLow = if(this@CompanyRegisterViewModel.salaryLow != "") this@CompanyRegisterViewModel.salaryLow.toInt() else 0
         salaryHigh = if(this@CompanyRegisterViewModel.salaryHigh != "") this@CompanyRegisterViewModel.salaryHigh.toInt() else 0
     }

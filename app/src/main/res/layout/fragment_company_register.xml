@@ -41,10 +41,28 @@
                 android:layout_below="@id/label_category" />
 
             <LinearLayout
-                android:id="@+id/linear_salary"
+                android:id="@+id/linear_employees_num"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/spinner_category"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/label_employees_num"
+                    style="@style/ItemLabel"
+                    android:text="@string/label_employees_num" />
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/text_employees_num"
+                    style="@style/CompactEditText"
+                    android:text="@={companyViewModel.employeesNum}" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_salary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linear_employees_num"
                 android:orientation="horizontal">
 
                 <TextView

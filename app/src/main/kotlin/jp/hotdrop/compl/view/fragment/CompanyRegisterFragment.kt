@@ -45,10 +45,15 @@ class CompanyRegisterFragment : BaseFragment() {
     private fun onClickRegister() {
         val returnCode = viewModel.register(categorySpinner.getSelection())
         when(returnCode) {
-            AppCode.ERROR_EMPTY_COMPANY_NAME -> Toast.makeText(context, "会社名を入力してください。", Toast.LENGTH_LONG).show()
-            AppCode.ERROR_NOT_NUMBER_SALARY -> Toast.makeText(context, "年収は数値を入力してください。", Toast.LENGTH_LONG).show()
+            AppCode.ERROR_EMPTY_COMPANY_NAME -> showToast("会社名を入力してください。")
+            AppCode.ERROR_NOT_NUMBER_EMPLOYEES_NUM -> showToast("従業員は数値を入力してください。")
+            AppCode.ERROR_NOT_NUMBER_SALARY -> showToast("年収は数値を入力してください。")
             AppCode.OK -> onSuccess()
         }
+    }
+
+    private fun showToast(messages: String) {
+        Toast.makeText(context, messages, Toast.LENGTH_LONG).show()
     }
 
     private fun onSuccess() {
