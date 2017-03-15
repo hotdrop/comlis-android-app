@@ -3,7 +3,7 @@
     tools:context=".view.fragment.CompanyRegisterFragment">
 
     <data>
-        <variable name="company" type="jp.hotdrop.compl.model.Company" />
+        <variable name="companyViewModel" type="jp.hotdrop.compl.viewmodel.CompanyRegisterViewModel" />
     </data>
 
     <LinearLayout
@@ -27,7 +27,7 @@
                 android:id="@+id/text_name"
                 style="@style/EditText"
                 android:layout_below="@id/label_name"
-                android:text="@={company.name}" />
+                android:text="@={companyViewModel.name}" />
 
             <TextView
                 android:id="@+id/label_group"
@@ -54,7 +54,7 @@
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/text_salary_lower"
                     style="@style/CompactEditText"
-                    android:text="@{String.valueOf(company.salaryLow)}" />
+                    android:text="@={companyViewModel.salaryLow}" />
                 <TextView
                     android:id="@+id/label_salary_lower_unit"
                     style="@style/ItemLabel"
@@ -66,7 +66,7 @@
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/text_salary_high"
                     style="@style/CompactEditText"
-                    android:text="@{String.valueOf(company.salaryHigh)}" />
+                    android:text="@={companyViewModel.salaryHigh}" />
                 <TextView
                     android:id="@+id/label_salary_high_unit"
                     style="@style/ItemLabel"
