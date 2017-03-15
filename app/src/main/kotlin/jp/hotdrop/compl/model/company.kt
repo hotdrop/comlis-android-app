@@ -54,28 +54,4 @@ class Company {
     fun getGroup(): Category {
         return CategoryDao.find(categoryId)
     }
-
-    override fun equals(other: Any?): Boolean {
-        return (other as Company).id == id || super.equals(other)
-    }
-
-    override fun hashCode(): Int {
-        return id
-    }
-
-    fun change(o: Company) {
-        id = o.id
-        name = o.name
-        categoryId = o.categoryId
-        type = o.type
-        employeesNum = o.employeesNum
-        content = o.content
-        salaryLow = o.salaryLow
-        salaryHigh = o.salaryHigh
-        jobCategory = o.jobCategory
-        url = o.url
-        note = o.note
-        evaluation = o.evaluation
-        registerDate = o.registerDate
-    }
 }

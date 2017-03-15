@@ -17,6 +17,7 @@ import jp.hotdrop.compl.databinding.FragmentCompanyBinding
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.view.StackedPageListener
 import jp.hotdrop.compl.view.activity.ActivityNavigator
+import jp.hotdrop.compl.viewmodel.CompanyViewModel
 import javax.inject.Inject
 
 
@@ -114,12 +115,12 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
 
     private fun onLoadSuccess(companies: List<Company>) {
         // タブごとにリストを生成してフラグメントを作成する
-        val companyByGroup = linkedMapOf<String, MutableList<Company>>()
+        val companyByGroup = linkedMapOf<String, MutableList<CompanyViewModel>>()
         companies.forEach { company ->
             val key = company.getGroup().name
             when {
-                companyByGroup.containsKey(key) -> companyByGroup[key]!!.add(company)
-                else -> companyByGroup.put(key, mutableListOf(company))
+                companyByGroup.containsKey(key) -> companyByGroup[key]!!.add(CompanyViewModel(company))
+                else -> companyByGroup.put(key, mutableListOf(CompanyViewModel(company)))
             }
         }
 
@@ -157,7 +158,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         binding.progressBarContainer.visibility = View.GONE
     }
 
-    private fun addFragment(title: String, itemList: MutableList<Company>) {
+    private fun addFragment(title: String, itemList: MutableList<CompanyViewModel>) {
         val fragment = CompanyTabFragment.newInstance(itemList)
         adapter.add(title, fragment)
     }

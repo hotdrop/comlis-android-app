@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="company" type="jp.hotdrop.compl.model.Company" />
+        <variable name="viewModel" type="jp.hotdrop.compl.viewmodel.CompanyViewModel" />
     </data>
 
     <RelativeLayout
@@ -34,7 +34,7 @@
                     android:layout_marginStart="@dimen/spacing_small"
                     android:textSize="@dimen/text_large"
                     android:textColor="@color/item_list_text"
-                    android:text="@{company.name}" />
+                    android:text="@{viewModel.name}" />
 
                 <TextView
                     android:id="@+id/label_employees_num"
@@ -55,7 +55,7 @@
                     android:layout_toEndOf="@id/label_employees_num"
                     android:textColor="@color/item_list_subtext"
                     android:textSize="@dimen/text_small"
-                    android:text="@{String.valueOf(company.employeesNum)}" />
+                    android:text="@{viewModel.employeesNum}" />
 
                 <TextView
                     android:id="@+id/label_salary"
@@ -76,7 +76,7 @@
                     android:layout_toEndOf="@id/label_salary"
                     android:textColor="@color/item_list_subtext"
                     android:textSize="@dimen/text_small"
-                    android:text="@{String.valueOf(company.salaryLow)}"/>
+                    android:text="@{viewModel.viewSalary}"/>
 
             </RelativeLayout>
         </android.support.v7.widget.CardView>
