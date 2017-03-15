@@ -4,11 +4,9 @@ import com.github.gfx.android.orma.annotation.Column
 import com.github.gfx.android.orma.annotation.PrimaryKey
 import com.github.gfx.android.orma.annotation.Table
 import jp.hotdrop.compl.dao.CategoryDao
-import org.parceler.Parcel
 import java.sql.Timestamp
 
 
-@Parcel
 @Table
 class Company {
 

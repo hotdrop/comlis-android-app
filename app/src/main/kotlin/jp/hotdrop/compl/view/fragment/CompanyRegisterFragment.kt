@@ -20,7 +20,6 @@ class CompanyRegisterFragment : BaseFragment() {
     private lateinit var viewModel: CompanyRegisterViewModel
 
     companion object {
-        @JvmStatic val TAG = CompanyRegisterFragment::class.java.simpleName!!
         fun create() = CompanyRegisterFragment()
     }
 
@@ -31,13 +30,10 @@ class CompanyRegisterFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyRegisterBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
-
         categorySpinner = CategorySpinner(binding.spinnerCategory, activity)
-
         binding.registerButton.setOnClickListener { onClickRegister() }
         viewModel = CompanyRegisterViewModel()
         binding.companyViewModel = viewModel
-
         return binding.root
     }
 
