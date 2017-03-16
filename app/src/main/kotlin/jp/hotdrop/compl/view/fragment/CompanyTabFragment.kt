@@ -78,7 +78,7 @@ class CompanyTabFragment: BaseFragment() {
             val binding = holder!!.binding
             binding.viewModel = getItem(position)
             binding.cardView.setOnClickListener { v ->
-                // TODO
+                // TODO アイテムクリック時は更新画面を表示する
             }
         }
 
