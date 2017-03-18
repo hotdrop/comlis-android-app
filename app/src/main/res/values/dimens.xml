@@ -23,7 +23,7 @@
     <dimen name="text_margin">16dp</dimen>
 
     <!-- company detail fragment -->
-    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="app_bar_height">240dp</dimen>
 
     <!-- fab -->
     <dimen name="fab_margin">16dp</dimen>

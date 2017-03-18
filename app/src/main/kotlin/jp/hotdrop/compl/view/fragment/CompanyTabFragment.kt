@@ -13,6 +13,7 @@ import jp.hotdrop.compl.databinding.FragmentCompanyTabBinding
 import jp.hotdrop.compl.databinding.ItemCompanyBinding
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
+import jp.hotdrop.compl.view.activity.ActivityNavigator
 import jp.hotdrop.compl.viewmodel.CompanyViewModel
 import org.parceler.Parcels
 
@@ -52,7 +53,7 @@ class CompanyTabFragment: BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_UPDATE || data == null) {
+        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_DETAIL || data == null) {
             return
         }
 
@@ -78,7 +79,7 @@ class CompanyTabFragment: BaseFragment() {
             val binding = holder!!.binding
             binding.viewModel = getItem(position)
             binding.cardView.setOnClickListener { v ->
-                // TODO アイテムクリック時は更新画面を表示する
+                ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.id, REQ_CODE_COMPANY_DETAIL)
             }
         }
 

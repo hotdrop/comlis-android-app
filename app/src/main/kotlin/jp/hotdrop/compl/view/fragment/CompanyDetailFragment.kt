@@ -1,11 +1,18 @@
 package jp.hotdrop.compl.view.fragment
 
+import android.content.Context
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
+import jp.hotdrop.compl.viewmodel.CompanyDetailViewModel
 
 class CompanyDetailFragment: BaseFragment() {
+
+    private lateinit var binding: FragmentCompanyDetailBinding
+    private lateinit var viewModel: CompanyDetailViewModel
 
     private val companyId by lazy {
         arguments.getInt(EXTRA_COMPANY_ID)
@@ -23,6 +30,28 @@ class CompanyDetailFragment: BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
+        binding = FragmentCompanyDetailBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(false)
+        viewModel = CompanyDetailViewModel()
+        binding.viewModel = viewModel
+        // TODO 更新ボタンつけるならここで
+        initToolbar()
+        return binding.root
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        getComponent().inject(this)
+    }
+
+    private fun initToolbar() {
+        val activity = (activity as AppCompatActivity)
+        activity.setSupportActionBar(binding.toolbar)
+        activity.supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+            setDisplayShowTitleEnabled(false)
+            setHomeButtonEnabled(true)
+        }
     }
 }

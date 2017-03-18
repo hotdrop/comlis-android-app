@@ -17,6 +17,7 @@
 
     <!-- fragment -->
     <color name="view_background">@color/light_gray</color>
+    <color name="nested_scroll_view_background">@color/white</color>
     <color name="item_list_background">@color/white</color>
     <color name="item_list_text">@color/black</color>
     <color name="item_list_subtext">@color/gray</color>
