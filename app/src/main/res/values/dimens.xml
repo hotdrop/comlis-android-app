@@ -14,12 +14,16 @@
     <dimen name="text_small">11sp</dimen>
     <dimen name="text_normal">14sp</dimen>
     <dimen name="text_large">16sp</dimen>
+    <dimen name="text_title">32sp</dimen>
 
     <!-- navigation menu -->
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="drawer_header">170dp</dimen>
     <dimen name="drawer_header_icon">40dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+
+    <!-- company detail fragment -->
+    <dimen name="app_bar_height">180dp</dimen>
 
     <!-- fab -->
     <dimen name="fab_margin">16dp</dimen>

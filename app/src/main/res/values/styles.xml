@@ -38,6 +38,11 @@
         <item name="android:scrollingCache">false</item>
     </style>
 
+    <style name="CompanyDetailTitle">
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:maxLines">4</item>
+    </style>
+
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/black</item>
     </style>

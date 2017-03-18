@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="jp.hotdrop.compl.view.fragment.CompanyDetailFragment">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true" >
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_bar_height"
+            android:fitsSystemWindows="true"
+            app:elevation="@dimen/elevation" >
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:expandedTitleMarginBottom="@dimen/spacing_large"
+                app:expandedTitleTextAppearance="@style/CompanyDetailTitle"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:title="会社名です" >
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin" />
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:text="@string/large_text" />
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            app:backgroundTint="@color/tab_background"
+            app:layout_anchor="@id/app_bar"
+            app:layout_anchorGravity="bottom|end"
+            app:srcCompat="@drawable/fab_star_icon" />
+
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

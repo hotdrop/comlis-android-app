@@ -2,6 +2,7 @@ package jp.hotdrop.compl.di
 
 import dagger.Subcomponent
 import jp.hotdrop.compl.di.scope.ActivityScope
+import jp.hotdrop.compl.view.activity.CompanyDetailActivity
 import jp.hotdrop.compl.view.activity.CompanyRegisterActivity
 import jp.hotdrop.compl.view.activity.MainActivity
 
@@ -12,6 +13,8 @@ interface ActivityComponent {
     fun inject(activity: MainActivity)
 
     fun inject(activity: CompanyRegisterActivity)
+
+    fun inject(activity: CompanyDetailActivity)
 
     fun plus(module: FragmentModule): FragmentComponent
 }
