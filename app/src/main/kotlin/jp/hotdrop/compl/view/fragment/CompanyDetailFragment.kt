@@ -32,7 +32,7 @@ class CompanyDetailFragment: BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyDetailBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
-        viewModel = CompanyDetailViewModel()
+        viewModel = CompanyDetailViewModel(companyId)
         binding.viewModel = viewModel
         // TODO 更新ボタンつけるならここで
         initToolbar()

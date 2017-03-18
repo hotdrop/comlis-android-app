@@ -18,6 +18,10 @@ object CompanyDao {
                                 .toList()
     }
 
+    fun find(id: Int): Company {
+        return companyRelation().selector().idEq(id).first()
+    }
+
     fun countByCategory(categoryId: Int): Int {
         return companyRelation().selector().categoryIdEq(categoryId).count()
     }

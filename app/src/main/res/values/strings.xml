@@ -9,7 +9,11 @@
     <!-- company main -->
     <string name="empty_company_list">何も登録されていません。カテゴリーを登録してから登録してください。</string>
 
-    <!-- company register/update -->
+    <!-- company detail -->
+    <string name="label_abstract_title">概要</string>
+    <string name="label_detail_title">詳細</string>
+
+    <!-- company register -->
     <string name="label_company">会社名:</string>
     <string name="label_category">カテゴリー:</string>
     <string name="label_employees_num">従業員数:</string>

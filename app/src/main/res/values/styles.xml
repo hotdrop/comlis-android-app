@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -12,7 +12,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <!-- Navigation Menu Style -->
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/black</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="NavigationImageIcon">
         <item name="android:layout_marginTop">@dimen/spacing</item>
         <item name="android:layout_marginLeft">@dimen/spacing</item>
@@ -40,11 +46,19 @@
 
     <style name="CompanyDetailTitle">
         <item name="android:textSize">@dimen/text_title</item>
-        <item name="android:maxLines">4</item>
+        <item name="android:maxLines">2</item>
     </style>
 
-    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/black</item>
+    <style name="SectionTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/spacing_small</item>
+        <item name="android:layout_marginRight">@dimen/spacing_small</item>
+        <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">@dimen/spacing_small</item>
+        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@dimen/spacing_small</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:textSize">@dimen/text_sub_title</item>
     </style>
 
     <style name="ItemLabel">
@@ -100,7 +114,11 @@
         <item name="android:spinnerMode">dropdown</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Border">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/border_line</item>
+    </style>
+
 
 </resources>

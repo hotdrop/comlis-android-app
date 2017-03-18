@@ -44,7 +44,7 @@
                     android:layout_below="@id/txt_name"
                     android:textColor="@color/item_list_subtext"
                     android:textSize="@dimen/text_small"
-                    android:text="従業員数:" />
+                    android:text="@string/label_employees_num" />
 
                 <TextView
                     android:id="@+id/txt_employees_num"
@@ -65,7 +65,7 @@
                     android:layout_below="@id/label_employees_num"
                     android:textColor="@color/item_list_subtext"
                     android:textSize="@dimen/text_small"
-                    android:text="年収:" />
+                    android:text="@string/label_salary" />
 
                 <TextView
                     android:id="@+id/txt_salary"

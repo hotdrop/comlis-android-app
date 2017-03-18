@@ -21,6 +21,7 @@
     <color name="item_list_background">@color/white</color>
     <color name="item_list_text">@color/black</color>
     <color name="item_list_subtext">@color/gray</color>
+    <color name="item_subtext">@color/gray</color>
     <color name="fab_background">@color/more_light_blue</color>
 
     <color name="label">@color/black</color>
@@ -33,5 +34,8 @@
     <!-- spinner -->
     <color name="spinner_background">@color/white</color>
     <color name="spinner_border">@color/black</color>
+
+    <!-- parts -->
+    <color name="border_line">@color/gray</color>
 
 </resources>

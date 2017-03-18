@@ -22,7 +22,7 @@
             android:fitsSystemWindows="true"
             app:elevation="@dimen/elevation" >
 
-            <android.support.design.widget.CollapsingToolbarLayout
+            <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
                 android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -30,7 +30,7 @@
                 app:expandedTitleMarginBottom="@dimen/spacing_large"
                 app:expandedTitleTextAppearance="@style/CompanyDetailTitle"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:title="会社名です" >
+                app:title="@{viewModel.name}" >
                 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -54,7 +54,7 @@
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin" />
 
-            </android.support.design.widget.CollapsingToolbarLayout>
+            </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.NestedScrollView
@@ -64,11 +64,83 @@
             android:background="@color/nested_scroll_view_background"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
-            <TextView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:text="@string/large_text" />
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:padding="@dimen/spacing" >
+
+                <TextView
+                    android:id="@+id/label_abstract_title"
+                    style="@style/SectionTitle"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:text="@string/label_abstract_title"/>
+
+                <View
+                    android:id="@+id/line_abstract_title"
+                    style="@style/Border"
+                    android:layout_below="@id/label_abstract_title"
+                    android:layout_marginTop="@dimen/spacing" />
+
+                <TextView
+                    android:id="@+id/label_employees_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_below="@id/line_abstract_title"
+                    android:textColor="@color/item_subtext"
+                    android:textSize="@dimen/text_small"
+                    android:text="@string/label_employees_num" />
+
+                <TextView
+                    android:id="@+id/txt_employees_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/label_abstract_title"
+                    android:layout_alignTop="@id/label_employees_num"
+                    android:layout_toEndOf="@id/label_employees_num"
+                    android:textColor="@color/item_subtext"
+                    android:textSize="@dimen/text_small"
+                    android:text="@{viewModel.employeesNum}" />
+
+                <TextView
+                    android:id="@+id/label_salary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_below="@id/label_employees_num"
+                    android:textColor="@color/item_list_subtext"
+                    android:textSize="@dimen/text_small"
+                    android:text="@string/label_salary" />
+
+                <TextView
+                    android:id="@+id/txt_salary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_employees_num"
+                    android:layout_alignTop="@id/label_salary"
+                    android:layout_toEndOf="@id/label_salary"
+                    android:textColor="@color/item_list_subtext"
+                    android:textSize="@dimen/text_small"
+                    android:text="@{viewModel.viewSalary}"/>
+
+                <TextView
+                    android:id="@+id/label_detail_title"
+                    style="@style/SectionTitle"
+                    android:layout_below="@id/label_salary"
+                    android:layout_marginTop="@dimen/spacing_large"
+                    android:text="@string/label_detail_title"/>
+
+                <View
+                    android:id="@+id/line_detail_title"
+                    style="@style/Border"
+                    android:layout_below="@id/label_detail_title"
+                    android:layout_marginTop="@dimen/spacing" />
+
+            </RelativeLayout>
+
 
         </android.support.v4.widget.NestedScrollView>
 

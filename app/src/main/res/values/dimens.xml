@@ -14,6 +14,7 @@
     <dimen name="text_small">11sp</dimen>
     <dimen name="text_normal">14sp</dimen>
     <dimen name="text_large">16sp</dimen>
+    <dimen name="text_sub_title">24sp</dimen>
     <dimen name="text_title">32sp</dimen>
 
     <!-- navigation menu -->
