@@ -7,12 +7,12 @@ import jp.hotdrop.compl.util.DataChecker
 
 class CompanyRegisterViewModel {
 
-    var name = ""
-    var overview = ""
-    var employeesNum = ""
-    var salaryLow = ""
-    var salaryHigh = ""
-    var url = ""
+    var viewName = ""
+    var viewOverview = ""
+    var viewEmployeesNum = ""
+    var viewSalaryLow = ""
+    var viewSalaryHigh = ""
+    var viewUrl = ""
 
 
     fun register(selectedCategorySpinnerId: Int): Int {
@@ -27,29 +27,29 @@ class CompanyRegisterViewModel {
     }
 
     private fun canRegister(): Int {
-        if(name.trim() == "") {
+        if(viewName.trim() == "") {
             return AppCode.ERROR_EMPTY_COMPANY_NAME
         }
-        if(!DataChecker.isNumber(employeesNum)) {
+        if(!DataChecker.isNumber(viewEmployeesNum)) {
             return AppCode.ERROR_NOT_NUMBER_EMPLOYEES_NUM
         }
-        if(!DataChecker.isNumber(salaryLow)) {
+        if(!DataChecker.isNumber(viewSalaryLow)) {
             return AppCode.ERROR_NOT_NUMBER_SALARY
         }
-        if(salaryHigh != "" && !DataChecker.isNumber(salaryHigh)) {
+        if(viewSalaryHigh != "" && !DataChecker.isNumber(viewSalaryHigh)) {
             return AppCode.ERROR_NOT_NUMBER_SALARY
         }
         return AppCode.OK
     }
 
     private fun makeData(selectedCategorySpinnerId: Int) = Company().apply {
-        name = this@CompanyRegisterViewModel.name
+        name = viewName
         categoryId = selectedCategorySpinnerId
-        overview = if(this@CompanyRegisterViewModel.overview != "") this@CompanyRegisterViewModel.overview else null
-        employeesNum = if(this@CompanyRegisterViewModel.employeesNum != "") this@CompanyRegisterViewModel.employeesNum.toInt() else 0
-        salaryLow = if(this@CompanyRegisterViewModel.salaryLow != "") this@CompanyRegisterViewModel.salaryLow.toInt() else 0
-        salaryHigh = if(this@CompanyRegisterViewModel.salaryHigh != "") this@CompanyRegisterViewModel.salaryHigh.toInt() else 0
-        url = if(this@CompanyRegisterViewModel.url != "") this@CompanyRegisterViewModel.url else null
+        overview = if(viewOverview != "") viewOverview else null
+        employeesNum = if(viewEmployeesNum != "") viewEmployeesNum.toInt() else 0
+        salaryLow = if(viewSalaryLow != "") viewSalaryLow.toInt() else 0
+        salaryHigh = if(viewSalaryHigh != "") viewSalaryHigh.toInt() else 0
+        url = if(viewUrl != "") viewUrl else null
     }
 
 }

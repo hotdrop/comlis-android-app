@@ -40,7 +40,7 @@ class CompanyRegisterFragment : BaseFragment() {
         }
         binding.registerButton.setOnClickListener { onClickRegister() }
         viewModel = CompanyRegisterViewModel()
-        binding.companyViewModel = viewModel
+        binding.viewModel = viewModel
         return binding.root
     }
 

@@ -30,7 +30,7 @@
                 app:expandedTitleMarginBottom="@dimen/spacing_large"
                 app:expandedTitleTextAppearance="@style/CompanyDetailTitle"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:title="@{viewModel.name}" >
+                app:title="@{viewModel.viewName}" >
                 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -92,7 +92,7 @@
                     android:layout_below="@id/line_abstract_title"
                     android:textColor="@color/subtext"
                     android:textSize="@dimen/text_normal"
-                    android:text="@{viewModel.overview}"/>
+                    android:text="@{viewModel.viewOverview}"/>
 
                 <TextView
                     android:id="@+id/label_employees_num"
@@ -116,7 +116,7 @@
                     android:layout_marginStart="@dimen/spacing_small"
                     android:textColor="@color/subtext"
                     android:textSize="@dimen/text_small"
-                    android:text="@{viewModel.employeesNum}" />
+                    android:text="@{viewModel.viewEmployeesNum}" />
 
                 <TextView
                     android:id="@+id/label_salary"
@@ -164,7 +164,7 @@
                     android:autoLink="web"
                     android:textSize="@dimen/text_small"
                     android:visibility="@{viewModel.visibleUrl}"
-                    android:text="@{viewModel.url}" />
+                    android:text="@{viewModel.viewUrl}" />
 
                 <TextView
                     android:id="@+id/label_detail_title"

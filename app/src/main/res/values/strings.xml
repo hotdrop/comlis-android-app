@@ -11,17 +11,18 @@
 
     <!-- company detail -->
     <string name="label_abstract_title">概要</string>
-    <string name="label_detail_title">詳細</string>
+    <string name="label_detail_title">自分用メモ</string>
 
     <!-- company register -->
     <string name="label_company">会社名:</string>
     <string name="label_category">カテゴリー:</string>
-    <string name="label_overview">会社概要:</string>
+    <string name="label_overview">概要メモ:</string>
     <string name="label_employees_num">従業員数:</string>
     <string name="label_salary_unit">万円</string>
     <string name="label_salary_range_mark">〜</string>
     <string name="label_salary">年収:</string>
     <string name="label_url">URL: </string>
+    <string name="label_memo">自分用メモ: </string>
 
     <string name="add_button">登録</string>
 

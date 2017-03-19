@@ -12,19 +12,19 @@ class CompanyDetailViewModel(companyId: Int) {
         @JvmStatic private val EMPTY_VALUE = "未入力"
     }
 
-    var name: String
-    var overview: String
-    var employeesNum: String
+    var viewName: String
+    var viewOverview: String
+    var viewEmployeesNum: String
     var viewSalary = ""
-    var url: String? = null
+    var viewUrl: String? = null
     var visibleUrl: Int = View.GONE
 
     init {
         val company = CompanyDao.find(companyId)
-        name = company.name
-        overview = company.overview ?: EMPTY_VALUE
+        viewName = company.name
+        viewOverview = company.overview ?: EMPTY_VALUE
 
-        employeesNum = if(company.employeesNum > 0) company.employeesNum.toString() + EMPLOYEES_NUM_UNIT else EMPTY_VALUE
+        viewEmployeesNum = if(company.employeesNum > 0) company.employeesNum.toString() + EMPLOYEES_NUM_UNIT else EMPTY_VALUE
 
         viewSalary = if(company.salaryLow > 0) company.salaryLow.toString() + SALARY_UNIT else EMPTY_VALUE
         if(company.salaryHigh > 0) {
@@ -32,7 +32,7 @@ class CompanyDetailViewModel(companyId: Int) {
         }
 
         if(company.url != null) {
-            url = company.url
+            viewUrl = company.url
             visibleUrl = View.VISIBLE
         }
 
