@@ -16,6 +16,7 @@
     <!-- company register -->
     <string name="label_company">会社名:</string>
     <string name="label_category">カテゴリー:</string>
+    <string name="label_overview">会社概要:</string>
     <string name="label_employees_num">従業員数:</string>
     <string name="label_salary_unit">万円</string>
     <string name="label_salary_range_mark">〜</string>

@@ -63,13 +63,5 @@ class CompanyDetailFragment: BaseFragment() {
             val checked = !binding.fab.isSelected
             binding.fab.isSelected = checked
         }
-        //binding.imageUrl.setOnClickListener { onClickUrl() }
-    }
-
-    private fun onClickUrl() {
-        if(viewModel.url != null) {
-            val uri = Uri.parse(viewModel.url)
-            context.startActivity(Intent(Intent.ACTION_VIEW, uri))
-        }
     }
 }

@@ -13,6 +13,7 @@ class CompanyDetailViewModel(companyId: Int) {
     }
 
     var name: String
+    var overview: String
     var employeesNum: String
     var viewSalary = ""
     var url: String? = null
@@ -21,6 +22,8 @@ class CompanyDetailViewModel(companyId: Int) {
     init {
         val company = CompanyDao.find(companyId)
         name = company.name
+        overview = company.overview ?: EMPTY_VALUE
+
         employeesNum = if(company.employeesNum > 0) company.employeesNum.toString() + EMPLOYEES_NUM_UNIT else EMPTY_VALUE
 
         viewSalary = if(company.salaryLow > 0) company.salaryLow.toString() + SALARY_UNIT else EMPTY_VALUE

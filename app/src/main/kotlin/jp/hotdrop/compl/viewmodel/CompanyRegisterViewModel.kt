@@ -8,6 +8,7 @@ import jp.hotdrop.compl.util.DataChecker
 class CompanyRegisterViewModel {
 
     var name = ""
+    var overview = ""
     var employeesNum = ""
     var salaryLow = ""
     var salaryHigh = ""
@@ -44,10 +45,11 @@ class CompanyRegisterViewModel {
     private fun makeData(selectedCategorySpinnerId: Int) = Company().apply {
         name = this@CompanyRegisterViewModel.name
         categoryId = selectedCategorySpinnerId
-        employeesNum = this@CompanyRegisterViewModel.employeesNum.toInt()
+        overview = if(this@CompanyRegisterViewModel.overview != "") this@CompanyRegisterViewModel.overview else null
+        employeesNum = if(this@CompanyRegisterViewModel.employeesNum != "") this@CompanyRegisterViewModel.employeesNum.toInt() else 0
         salaryLow = if(this@CompanyRegisterViewModel.salaryLow != "") this@CompanyRegisterViewModel.salaryLow.toInt() else 0
         salaryHigh = if(this@CompanyRegisterViewModel.salaryHigh != "") this@CompanyRegisterViewModel.salaryHigh.toInt() else 0
-        url = this@CompanyRegisterViewModel.url
+        url = if(this@CompanyRegisterViewModel.url != "") this@CompanyRegisterViewModel.url else null
     }
 
 }

@@ -15,17 +15,18 @@
     <color name="tab_unselected_text">@color/light_dark_blue</color>
     <color name="tab_selected_text">@color/light_green</color>
 
-    <!-- fragment -->
+    <!-- list fragment -->
     <color name="view_background">@color/light_gray</color>
     <color name="nested_scroll_view_background">@color/white</color>
     <color name="item_list_background">@color/white</color>
     <color name="item_list_text">@color/black</color>
     <color name="item_list_subtext">@color/gray</color>
-    <color name="item_subtext">@color/gray</color>
-    <color name="fab_background">@color/more_light_blue</color>
 
+    <!-- company fragment -->
+    <color name="fab_background">@color/more_light_blue</color>
     <color name="label">@color/black</color>
     <color name="text">@color/black</color>
+    <color name="subtext">@color/gray</color>
     <color name="empty_text">@color/gray</color>
     <color name="attention">@color/red</color>
     <color name="ok_button_text">@color/white</color>
