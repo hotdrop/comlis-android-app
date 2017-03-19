@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Compl</string>
+    <string name="app_name">CompanyList</string>
 
     <!-- navigation menu -->
-    <string name="nav_company_list">一覧</string>
+    <string name="nav_company_list">会社一覧</string>
     <string name="nav_category_list">分類一覧</string>
 
     <!-- company main -->
