@@ -18,6 +18,7 @@ class CompanyDetailViewModel(companyId: Int) {
     var viewSalary = ""
     var viewUrl: String? = null
     var visibleUrl: Int = View.GONE
+    var viewNote: String? = null
 
     init {
         val company = CompanyDao.find(companyId)
@@ -35,6 +36,8 @@ class CompanyDetailViewModel(companyId: Int) {
             viewUrl = company.url
             visibleUrl = View.VISIBLE
         }
+
+        viewNote = company.note ?: EMPTY_VALUE
 
     }
 }

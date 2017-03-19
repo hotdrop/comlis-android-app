@@ -13,6 +13,7 @@ class CompanyRegisterViewModel {
     var viewSalaryLow = ""
     var viewSalaryHigh = ""
     var viewUrl = ""
+    var viewNote = ""
 
 
     fun register(selectedCategorySpinnerId: Int): Int {
@@ -50,6 +51,7 @@ class CompanyRegisterViewModel {
         salaryLow = if(viewSalaryLow != "") viewSalaryLow.toInt() else 0
         salaryHigh = if(viewSalaryHigh != "") viewSalaryHigh.toInt() else 0
         url = if(viewUrl != "") viewUrl else null
+        note = if(viewNote != "") viewNote else null
     }
 
 }
