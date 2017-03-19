@@ -14,6 +14,9 @@ class Category {
     var name: String = ""
 
     @Column
+    var colorType: Int = 0
+
+    @Column
     var point: Int = 0
 
     @Column(indexed = true)

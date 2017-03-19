@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import jp.hotdrop.compl.databinding.FragmentCompanyRegisterBinding
 import jp.hotdrop.compl.util.AppCode
-import jp.hotdrop.compl.view.CategorySpinner
+import jp.hotdrop.compl.view.parts.CategorySpinner
 import jp.hotdrop.compl.viewmodel.CompanyRegisterViewModel
 
 class CompanyRegisterFragment : BaseFragment() {

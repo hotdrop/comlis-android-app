@@ -7,6 +7,7 @@ class CategoryViewModel(val category: Category) {
 
     var id = category.id
     var name = category.name
+    var viewColorType = category.colorType
     var point = category.point.toString()
     var viewOrder = category.viewOrder
     var itemCount = "0"
@@ -18,6 +19,7 @@ class CategoryViewModel(val category: Category) {
     fun change(vm: CategoryViewModel) {
         id = vm.id
         name = vm.name
+        viewColorType = vm.viewColorType
         point = vm.point
         viewOrder = vm.viewOrder
         itemCount = vm.itemCount

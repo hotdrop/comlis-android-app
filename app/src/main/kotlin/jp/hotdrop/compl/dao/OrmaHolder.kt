@@ -6,13 +6,13 @@ import jp.hotdrop.compl.model.OrmaDatabase
 
 object OrmaHolder {
 
-    private val DBNAME = "compl.orma.db"
+    private val DB_NAME = "compl.orma.db"
     lateinit var ORMA: OrmaDatabase
 
     fun initialize(context: Context) {
         ORMA = OrmaDatabase.builder(context)
                 .writeOnMainThread(AccessThreadConstraint.NONE)
-                .name(DBNAME)
+                .name(DB_NAME)
                 .build()
     }
 }

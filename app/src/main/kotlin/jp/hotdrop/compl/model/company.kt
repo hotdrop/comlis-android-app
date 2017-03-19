@@ -37,8 +37,14 @@ class Company {
     @Column
     var note: String? = null
 
+    @Column(indexed = true)
+    var favorite: Boolean = false
+
     @Column
     var registerDate: Timestamp? = null
+
+    @Column
+    var updateDate: Timestamp? = null
 
     fun getGroup(): Category {
         return CategoryDao.find(categoryId)
