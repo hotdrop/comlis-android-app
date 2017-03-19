@@ -43,7 +43,7 @@
                     android:layout_marginStart="@dimen/spacing_small"
                     android:textSize="@dimen/text_large"
                     android:textColor="@color/item_list_text"
-                    android:text="@{viewModel.name}" />
+                    android:text="@{viewModel.viewName}" />
 
                 <TextView
                     android:id="@+id/label_register_count"

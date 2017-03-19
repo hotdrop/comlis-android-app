@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">@color/light_green</color>
-    <color name="colorPrimaryDark">@color/dark_blue</color>
-    <color name="colorAccent">@color/pink</color>
+    <color name="colorPrimaryDark">@color/blue</color>
+    <color name="colorAccent">@color/light_red</color>
 
     <!-- Navigation -->
     <color name="nav_header_background">@color/light_gray</color>
@@ -23,18 +23,20 @@
     <color name="item_list_subtext">@color/gray</color>
 
     <!-- company fragment -->
-    <color name="fab_background">@color/more_light_blue</color>
+    <color name="fab_background">@color/light_blue</color>
     <color name="label">@color/black</color>
     <color name="text">@color/black</color>
     <color name="subtext">@color/gray</color>
     <color name="empty_text">@color/gray</color>
     <color name="attention">@color/red</color>
+
     <color name="ok_button_text">@color/white</color>
-    <color name="ok_button_background">@color/light_dark_more_blue</color>
+    <color name="ok_button_background">@color/light_dark_blue</color>
 
     <!-- spinner -->
-    <color name="spinner_background">@color/white</color>
-    <color name="spinner_border">@color/black</color>
+    <color name="spinner_background">@color/light_gray</color>
+    <color name="spinner_border">@color/gray</color>
+    <color name="spinner_selected_item">@color/gray</color>
 
     <!-- parts -->
     <color name="border_line">@color/gray</color>

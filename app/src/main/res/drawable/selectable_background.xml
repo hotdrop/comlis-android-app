@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:exitFadeDuration="@android:integer/config_mediumAnimTime">
+    <item android:state_pressed="false" android:state_checked="true" android:drawable="@color/spinner_selected_item" />
+    <item android:state_pressed="true" android:drawable="@color/spinner_selected_item" />
+    <item android:drawable="@android:color/transparent" />
+</selector>

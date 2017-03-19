@@ -13,12 +13,16 @@ class Category {
     @Column(indexed = true, unique = true)
     var name: String = ""
 
+    /**
+     * このColorTypeはColorDataUtilで定義した文字列を持っている・・
+     * ColorResとして使う場合はColorDataUtilコンバートする
+     */
     @Column
-    var colorType: Int = 0
+    var colorType: String = ""
 
     @Column
     var point: Int = 0
 
     @Column(indexed = true)
-    var viewOrder: Int = 0
+    var order: Int = 0
 }

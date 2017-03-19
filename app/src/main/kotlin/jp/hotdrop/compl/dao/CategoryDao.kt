@@ -20,20 +20,25 @@ object CategoryDao {
 
     fun findAll(): MutableList<Category> {
         return categoryRelation().selector()
-                .orderByViewOrderAsc()
+                .orderByOrderAsc()
                 .toList()
     }
 
-    fun insert(argName: String) {
+    fun insert(argName: String, argColorType: String) {
         val category = Category().apply {
             name = argName
-            viewOrder = maxGroupOrder() + 1
+            colorType = argColorType
+            order = maxGroupOrder() + 1
         }
         categoryRelation().inserter().execute(category)
     }
 
     fun update(category: Category) {
-        categoryRelation().updater().name(category.name).execute()
+        categoryRelation().updater()
+                .name(category.name)
+                .colorType(category.colorType)
+                .idEq(category.id)
+                .execute()
     }
 
     fun exist(name: String): Boolean {
@@ -49,7 +54,7 @@ object CategoryDao {
     }
 
     private fun maxGroupOrder(): Int {
-        return categoryRelation().selector().maxByViewOrder() ?: 0
+        return categoryRelation().selector().maxByOrder() ?: 0
     }
 
 }

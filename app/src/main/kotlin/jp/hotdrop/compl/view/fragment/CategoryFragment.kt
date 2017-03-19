@@ -14,17 +14,20 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Spinner
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.databinding.FragmentCategoryBinding
 import jp.hotdrop.compl.databinding.ItemCategoryBinding
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
+import jp.hotdrop.compl.view.parts.ColorSpinner
 import jp.hotdrop.compl.viewmodel.CategoryViewModel
 
 class CategoryFragment : BaseFragment() {
 
     lateinit var binding: FragmentCategoryBinding
+    private lateinit var colorSpinner: ColorSpinner
     private lateinit var adapter: Adapter
     private lateinit var helper: ItemTouchHelper
 
@@ -77,22 +80,22 @@ class CategoryFragment : BaseFragment() {
      * ダイアログで、入力した分類名に応じてボタンと注意書きの制御を行う拡張関数
      */
     private val NONE: Int = -1
-    fun AppCompatEditText.changeTextListener(view: View, dialog: AlertDialog, editText: AppCompatEditText, categoryId: Int = NONE) =
+    fun AppCompatEditText.changeTextListener(view: View, dialog: AlertDialog, editText: AppCompatEditText, categoryId: Int = NONE, originName: String = "") =
             addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/*no op*/}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {/*no op*/ }
                 override fun afterTextChanged(s: Editable?) {
                     val editTxt = editText.text.toString()
                     when (categoryId) {
-                        NONE -> if(CategoryDao.exist(editTxt)) duplicateCategoryName() else allRightCategoryName()
-                        else ->  if(CategoryDao.exist(editTxt, categoryId)) duplicateCategoryName() else allRightCategoryName()
+                        NONE -> if(CategoryDao.exist(editTxt)) disableButton() else enableButton()
+                        else -> if(editTxt != originName && CategoryDao.exist(editTxt, categoryId)) disableButton() else enableButton()
                     }
                 }
-                private fun duplicateCategoryName() {
+                private fun disableButton() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
                     view.findViewById(R.id.label_category_attention).visibility = View.VISIBLE
                 }
-                private fun allRightCategoryName() {
+                private fun enableButton() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
                     view.findViewById(R.id.label_category_attention).visibility = View.GONE
                 }
@@ -101,11 +104,12 @@ class CategoryFragment : BaseFragment() {
     private fun showRegisterDialog() {
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category_register, null)
         val editText = view.findViewById(R.id.text_category_name) as AppCompatEditText
+        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, activity)
         val dialog = AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setTitle(R.string.category_dialog_title)
                 .setView(view)
                 .setPositiveButton(R.string.category_dialog_add_button, { dialogInterface, _ ->
-                    CategoryDao.insert(editText.text.toString())
+                    CategoryDao.insert(editText.text.toString(), spinner.getSelection())
                     val vm = CategoryDao.find(editText.text.toString())
                     adapter.add(CategoryViewModel(vm))
                     dialogInterface.dismiss()
@@ -119,20 +123,23 @@ class CategoryFragment : BaseFragment() {
     private fun showUpdateDialog(vm: CategoryViewModel) {
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category_register, null)
         val editText = view.findViewById(R.id.text_category_name) as AppCompatEditText
-        editText.setText(vm.name as CharSequence)
+        editText.setText(vm.viewName as CharSequence)
+        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, activity)
+        spinner.setSelection(vm.viewColorType)
         val dialog = AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setTitle(R.string.category_dialog_title)
                 .setView(view)
                 .setPositiveButton(R.string.category_dialog_update_button, { dialogInterface, _ ->
-                    vm.name = editText.text.toString()
-                    CategoryDao.update(vm.category)
+                    vm.viewName = editText.text.toString()
+                    vm.viewColorType = spinner.getSelection()
+                    CategoryDao.update(vm.makeCategory())
                     adapter.refresh(vm)
                     dialogInterface.dismiss()
                 })
                 .create()
         dialog.show()
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
-        editText.changeTextListener(view, dialog, editText, vm.id)
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
+        editText.changeTextListener(view, dialog, editText, vm.viewId, vm.viewName)
     }
 
     /**
@@ -160,17 +167,17 @@ class CategoryFragment : BaseFragment() {
         }
 
         fun refresh(vm: CategoryViewModel) {
-            (0..itemCount).forEach { i ->
+            (0..itemCount - 1).forEach { i ->
                 val c = getItem(i)
                 if (vm == c) {
                     c.change(vm)
-                    notifyItemRemoved(i)
+                    notifyItemChanged(i)
                 }
             }
         }
 
         fun remove(vm: CategoryViewModel) {
-            (0..itemCount).forEach { i ->
+            (0..itemCount - 1).forEach { i ->
                 val c = getItem(i)
                 if (vm == c) {
                     removeItem(i)

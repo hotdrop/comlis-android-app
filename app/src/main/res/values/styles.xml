@@ -5,6 +5,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem</item>
+        <item name="android:dropDownListViewStyle">@style/SpinnerDropDownBorder</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -132,6 +134,16 @@
         <item name="android:popupBackground">@drawable/spinner_popup_shape</item>
         <item name="android:clickable">true</item>
         <item name="android:spinnerMode">dropdown</item>
+    </style>
+
+    <style name="SpinnerDropDownItem" parent="android:style/Widget.DropDownItem.Spinner">
+        <item name="android:background">@drawable/selectable_background</item>
+        <item name="android:checkMark">@null</item>
+    </style>
+
+    <style name="SpinnerDropDownBorder" parent="android:style/Widget.ListView.DropDown">
+        <item name="android:divider">@color/spinner_border</item>
+        <item name="android:dividerHeight">1dp</item>
     </style>
 
     <style name="Border">

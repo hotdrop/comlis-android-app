@@ -45,7 +45,7 @@
 
         <Spinner
             android:id="@+id/spinner_color_type"
-            style="@style/CategorySpinner" />
+            style="@style/ColorSpinner" />
 
     </LinearLayout>
 

@@ -84,7 +84,7 @@ class CompanyTabFragment: BaseFragment() {
         }
 
         private fun refresh(vm: CompanyViewModel) {
-            (0..adapter.itemCount).forEach { i ->
+            (0..adapter.itemCount - 1).forEach { i ->
                 val o = getItem(i)
                 if(vm == o) {
                     o.change(vm)
