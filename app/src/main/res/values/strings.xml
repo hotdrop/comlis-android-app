@@ -2,7 +2,6 @@
     <string name="app_name">Compl</string>
 
     <!-- navigation menu -->
-    <string name="nav_description">ここにアプリの説明</string>
     <string name="nav_company_list">一覧</string>
     <string name="nav_category_list">分類一覧</string>
 

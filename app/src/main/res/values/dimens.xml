@@ -19,8 +19,7 @@
 
     <!-- navigation menu -->
     <dimen name="nav_header_height">160dp</dimen>
-    <dimen name="drawer_header">170dp</dimen>
-    <dimen name="drawer_header_icon">40dp</dimen>
+    <dimen name="nav_drawer_header_icon">40dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 
     <!-- company detail fragment -->

@@ -20,7 +20,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="NavigationImageIcon">
-        <item name="android:layout_marginTop">@dimen/spacing</item>
+        <item name="android:layout_marginTop">@dimen/spacing_large</item>
         <item name="android:layout_marginLeft">@dimen/spacing</item>
         <item name="android:layout_marginStart">@dimen/spacing_large</item>
     </style>
