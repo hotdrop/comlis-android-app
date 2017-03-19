@@ -21,15 +21,15 @@ class CompanyRegisterFragment : BaseFragment() {
     private lateinit var selectedTabName: String
 
     companion object {
-        @JvmStatic val TAG = CompanyRegisterFragment::class.java.simpleName!!
+        @JvmStatic val EXTRA_TAB_NAME = "tabName"
         fun create(tabName: String) = CompanyRegisterFragment().apply {
-            arguments = Bundle().apply { putString(TAG, tabName) }
+            arguments = Bundle().apply { putString(EXTRA_TAB_NAME, tabName) }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        selectedTabName = arguments.getString(TAG)
+        selectedTabName = arguments.getString(EXTRA_TAB_NAME)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {

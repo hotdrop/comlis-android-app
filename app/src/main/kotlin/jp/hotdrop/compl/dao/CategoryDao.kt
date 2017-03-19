@@ -2,7 +2,6 @@ package jp.hotdrop.compl.dao
 
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.model.Category_Relation
-import jp.hotdrop.compl.viewmodel.CategoryViewModel
 
 object CategoryDao {
 
@@ -16,12 +15,10 @@ object CategoryDao {
     }
 
     fun find(id: Int): Category {
-        // TODO ここは保持したコレクションから取得するよう修正する。上も
         return categoryRelation().selector().idEq(id).first()
     }
 
     fun findAll(): MutableList<Category> {
-        // TODO DBから取得したぜんGroup情報を保持していくように修正する
         return categoryRelation().selector()
                 .orderByViewOrderAsc()
                 .toList()

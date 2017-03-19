@@ -1,6 +1,8 @@
 package jp.hotdrop.compl.view.fragment
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
@@ -32,10 +34,9 @@ class CompanyDetailFragment: BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyDetailBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
-        viewModel = CompanyDetailViewModel(companyId)
-        binding.viewModel = viewModel
         // TODO 更新ボタンつけるならここで
         initToolbar()
+        initLayout()
         return binding.root
     }
 
@@ -52,6 +53,23 @@ class CompanyDetailFragment: BaseFragment() {
             setDisplayShowHomeEnabled(true)
             setDisplayShowTitleEnabled(false)
             setHomeButtonEnabled(true)
+        }
+    }
+
+    private fun initLayout() {
+        viewModel = CompanyDetailViewModel(companyId)
+        binding.viewModel = viewModel
+        binding.fab.setOnClickListener {
+            val checked = !binding.fab.isSelected
+            binding.fab.isSelected = checked
+        }
+        //binding.imageUrl.setOnClickListener { onClickUrl() }
+    }
+
+    private fun onClickUrl() {
+        if(viewModel.url != null) {
+            val uri = Uri.parse(viewModel.url)
+            context.startActivity(Intent(Intent.ACTION_VIEW, uri))
         }
     }
 }

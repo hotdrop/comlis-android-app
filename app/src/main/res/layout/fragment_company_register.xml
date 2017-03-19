@@ -91,6 +91,19 @@
                     android:text="@string/label_salary_unit" />
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/label_url"
+                style="@style/ItemLabel"
+                android:layout_below="@id/linear_salary"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:text="@string/label_url" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/text_url"
+                style="@style/EditText"
+                android:layout_below="@id/label_url"
+                android:text="@={companyViewModel.url}" />
             
         </RelativeLayout>
 

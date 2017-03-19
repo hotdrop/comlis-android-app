@@ -78,7 +78,7 @@ class CompanyTabFragment: BaseFragment() {
         override fun onBindViewHolder(holder: BindingHolder<ItemCompanyBinding>?, position: Int) {
             val binding = holder!!.binding
             binding.viewModel = getItem(position)
-            binding.cardView.setOnClickListener { v ->
+            binding.cardView.setOnClickListener {
                 ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.id, REQ_CODE_COMPANY_DETAIL)
             }
         }

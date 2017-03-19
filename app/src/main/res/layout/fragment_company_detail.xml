@@ -87,6 +87,7 @@
                     android:id="@+id/label_employees_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_people"
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginStart="@dimen/spacing_small"
                     android:layout_below="@id/line_abstract_title"
@@ -101,6 +102,7 @@
                     android:layout_below="@id/label_abstract_title"
                     android:layout_alignTop="@id/label_employees_num"
                     android:layout_toEndOf="@id/label_employees_num"
+                    android:layout_marginStart="@dimen/spacing_small"
                     android:textColor="@color/item_subtext"
                     android:textSize="@dimen/text_small"
                     android:text="@{viewModel.employeesNum}" />
@@ -109,6 +111,7 @@
                     android:id="@+id/label_salary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_attach_money"
                     android:layout_marginStart="@dimen/spacing_small"
                     android:layout_below="@id/label_employees_num"
                     android:textColor="@color/item_list_subtext"
@@ -122,9 +125,35 @@
                     android:layout_below="@id/txt_employees_num"
                     android:layout_alignTop="@id/label_salary"
                     android:layout_toEndOf="@id/label_salary"
+                    android:layout_marginStart="@dimen/spacing_small"
                     android:textColor="@color/item_list_subtext"
                     android:textSize="@dimen/text_small"
                     android:text="@{viewModel.viewSalary}"/>
+
+                <TextView
+                    android:id="@+id/label_url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_open_in_browser"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_below="@id/label_salary"
+                    android:textColor="@color/item_list_subtext"
+                    android:textSize="@dimen/text_small"
+                    android:visibility="@{viewModel.visibleUrl}"
+                    android:text="@string/label_url" />
+
+                <TextView
+                    android:id="@+id/text_link_url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/label_salary"
+                    android:layout_alignTop="@id/label_url"
+                    android:layout_toEndOf="@id/label_url"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:autoLink="web"
+                    android:textSize="@dimen/text_small"
+                    android:visibility="@{viewModel.visibleUrl}"
+                    android:text="@{viewModel.url}" />
 
                 <TextView
                     android:id="@+id/label_detail_title"

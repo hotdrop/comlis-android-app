@@ -11,6 +11,8 @@ class CompanyRegisterViewModel {
     var employeesNum = ""
     var salaryLow = ""
     var salaryHigh = ""
+    var url = ""
+
 
     fun register(selectedCategorySpinnerId: Int): Int {
         val code = canRegister()
@@ -45,6 +47,7 @@ class CompanyRegisterViewModel {
         employeesNum = this@CompanyRegisterViewModel.employeesNum.toInt()
         salaryLow = if(this@CompanyRegisterViewModel.salaryLow != "") this@CompanyRegisterViewModel.salaryLow.toInt() else 0
         salaryHigh = if(this@CompanyRegisterViewModel.salaryHigh != "") this@CompanyRegisterViewModel.salaryHigh.toInt() else 0
+        url = this@CompanyRegisterViewModel.url
     }
 
 }
