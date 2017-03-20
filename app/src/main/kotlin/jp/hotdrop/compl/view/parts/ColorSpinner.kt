@@ -3,6 +3,7 @@ package jp.hotdrop.compl.view.parts
 import android.R
 import android.app.Activity
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -33,25 +34,25 @@ class ColorSpinner(private val spinner: Spinner, private val activity: Activity)
     private inner class Adapter(context: Context?, textViewResourceId: Int, var colorNames: List<String>)
         : ArrayAdapter<String>(context, textViewResourceId, colorNames) {
 
-        private val itemTextSize = 20.toFloat()
+        private val ITEM_TEXT_SIZE = 20.toFloat()
 
-        @Suppress("DEPRECATION")
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val v = convertView ?: View.inflate(context, android.R.layout.simple_dropdown_item_1line, null)
-            val textView = ((v as TextView).findViewById(android.R.id.text1) as TextView)
-            textView.setTextColor(context.resources.getColor(ColorDataUtil.getColorNormal(colorNames[position])))
-            textView.text = colorNames[position]
-            textView.textSize = itemTextSize
+            val textView = ((v as TextView).findViewById(android.R.id.text1) as TextView).apply {
+                setTextColor(ContextCompat.getColor(context, ColorDataUtil.getColorNormal(colorNames[position])))
+                text = colorNames[position]
+                textSize = ITEM_TEXT_SIZE
+            }
             return textView
         }
 
-        @Suppress("DEPRECATION")
         override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val v = convertView ?: View.inflate(context, android.R.layout.simple_dropdown_item_1line, null)
-            val textView = (v.findViewById(android.R.id.text1) as TextView)
-            textView.setTextColor(context.resources.getColor(ColorDataUtil.getColorNormal(colorNames[position])))
-            textView.text = colorNames[position]
-            textView.textSize = itemTextSize
+            val textView = ((v as TextView).findViewById(android.R.id.text1) as TextView).apply {
+                setTextColor(ContextCompat.getColor(context, ColorDataUtil.getColorNormal(colorNames[position])))
+                text = colorNames[position]
+                textSize = ITEM_TEXT_SIZE
+            }
             return textView
         }
     }
