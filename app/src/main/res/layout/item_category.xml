@@ -19,7 +19,7 @@
             android:clickable="true"
             android:clipChildren="false"
             android:foreground="?android:attr/selectableItemBackground"
-            app:cardBackgroundColor="@color/item_list_background"
+            app:cardBackgroundColor="@{viewModel.colorRes}"
             app:cardUseCompatPadding="true">
 
             <RelativeLayout

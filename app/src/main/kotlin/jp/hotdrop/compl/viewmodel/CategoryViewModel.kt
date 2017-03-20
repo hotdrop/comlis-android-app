@@ -1,9 +1,13 @@
 package jp.hotdrop.compl.viewmodel
 
+import android.content.Context
+import android.support.annotation.ColorRes
+import android.support.v4.content.ContextCompat
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Category
+import jp.hotdrop.compl.util.ColorDataUtil
 
-class CategoryViewModel(val category: Category) {
+class CategoryViewModel(val category: Category, val context: Context) {
 
     var viewId = category.id
     var viewName = category.name
@@ -14,6 +18,11 @@ class CategoryViewModel(val category: Category) {
 
     init {
         itemCount = CompanyDao.countByCategory(viewId).toString()
+    }
+
+    @ColorRes
+    fun getColorRes(): Int {
+        return ContextCompat.getColor(context, ColorDataUtil.getColorLight(viewColorType))
     }
 
     fun change(vm: CategoryViewModel) {

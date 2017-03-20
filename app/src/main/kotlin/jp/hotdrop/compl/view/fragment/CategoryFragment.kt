@@ -50,7 +50,7 @@ class CategoryFragment : BaseFragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         helper.attachToRecyclerView(binding.recyclerView)
 
-        adapter.addAll(CategoryDao.findAll().map(::CategoryViewModel))
+        adapter.addAll(CategoryDao.findAll().map{ c -> CategoryViewModel(c, context) })
 
         // TODO これだと最初の１回目はずっと表示され続けてしまうので考える。
         binding.listEmptyView.visibility = if(adapter.itemCount > 0) View.GONE else View.VISIBLE
@@ -111,7 +111,7 @@ class CategoryFragment : BaseFragment() {
                 .setPositiveButton(R.string.category_dialog_add_button, { dialogInterface, _ ->
                     CategoryDao.insert(editText.text.toString(), spinner.getSelection())
                     val vm = CategoryDao.find(editText.text.toString())
-                    adapter.add(CategoryViewModel(vm))
+                    adapter.add(CategoryViewModel(vm, context))
                     dialogInterface.dismiss()
                 })
                 .create()

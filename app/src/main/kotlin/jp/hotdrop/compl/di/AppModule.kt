@@ -18,4 +18,5 @@ class AppModule(app: Application) {
     fun provideCompositeDisposable(): CompositeDisposable {
         return CompositeDisposable()
     }
+
 }
