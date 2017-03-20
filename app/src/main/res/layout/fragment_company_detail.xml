@@ -179,9 +179,18 @@
                     android:layout_below="@id/label_detail_title"
                     android:layout_marginTop="@dimen/spacing" />
 
+                <TextView
+                    android:id="@+id/text_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_below="@id/line_detail_title"
+                    android:textColor="@color/subtext"
+                    android:textSize="@dimen/text_normal"
+                    android:text="@{viewModel.viewNote}"/>
+
             </RelativeLayout>
-
-
         </android.support.v4.widget.NestedScrollView>
 
         <android.support.design.widget.FloatingActionButton

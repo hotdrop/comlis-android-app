@@ -26,8 +26,7 @@ import jp.hotdrop.compl.viewmodel.CategoryViewModel
 
 class CategoryFragment : BaseFragment() {
 
-    lateinit var binding: FragmentCategoryBinding
-    private lateinit var colorSpinner: ColorSpinner
+    private lateinit var binding: FragmentCategoryBinding
     private lateinit var adapter: Adapter
     private lateinit var helper: ItemTouchHelper
 
