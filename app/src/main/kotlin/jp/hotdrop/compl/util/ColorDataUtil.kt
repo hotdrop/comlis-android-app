@@ -28,6 +28,6 @@ object ColorDataUtil {
     fun getColorLight(name: String): Int {
         return colorMap[name]!!.light
     }
-}
 
-data class ColorData(val normal: Int, val light: Int)
+    data class ColorData(val normal: Int, val light: Int)
+}

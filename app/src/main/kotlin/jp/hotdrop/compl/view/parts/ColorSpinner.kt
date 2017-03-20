@@ -33,21 +33,25 @@ class ColorSpinner(private val spinner: Spinner, private val activity: Activity)
     private inner class Adapter(context: Context?, textViewResourceId: Int, var colorNames: List<String>)
         : ArrayAdapter<String>(context, textViewResourceId, colorNames) {
 
+        private val itemTextSize = 20.toFloat()
+
         @Suppress("DEPRECATION")
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val v = convertView ?: View.inflate(context, android.R.layout.simple_dropdown_item_1line, null)
             val textView = ((v as TextView).findViewById(android.R.id.text1) as TextView)
             textView.setTextColor(context.resources.getColor(ColorDataUtil.getColorNormal(colorNames[position])))
             textView.text = colorNames[position]
+            textView.textSize = itemTextSize
             return textView
         }
 
         @Suppress("DEPRECATION")
         override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            val v = convertView ?: View.inflate(context, android.R.layout.simple_spinner_dropdown_item, null)
+            val v = convertView ?: View.inflate(context, android.R.layout.simple_dropdown_item_1line, null)
             val textView = (v.findViewById(android.R.id.text1) as TextView)
             textView.setTextColor(context.resources.getColor(ColorDataUtil.getColorNormal(colorNames[position])))
             textView.text = colorNames[position]
+            textView.textSize = itemTextSize
             return textView
         }
     }
