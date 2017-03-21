@@ -27,11 +27,18 @@
                 android:clipToPadding="false"
                 android:padding="@dimen/spacing">
 
+                <ImageView
+                    android:id="@+id/icon_reorder_group"
+                    android:layout_width="@dimen/reorder_icon_width"
+                    android:layout_height="@dimen/reorder_icon_height"
+                    android:src="@drawable/ic_reorder" />
+
                 <TextView
                     android:id="@+id/txt_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_toEndOf="@id/icon_reorder_group"
                     android:textSize="@dimen/text_large"
                     android:textColor="@color/item_list_text"
                     android:text="@{viewModel.name}" />
@@ -41,6 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_toEndOf="@id/icon_reorder_group"
                     android:layout_below="@id/txt_name"
                     android:textColor="@color/item_list_subtext"
                     android:textSize="@dimen/text_small"
@@ -62,6 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_toEndOf="@id/icon_reorder_group"
                     android:layout_below="@id/label_employees_num"
                     android:textColor="@color/item_list_subtext"
                     android:textSize="@dimen/text_small"

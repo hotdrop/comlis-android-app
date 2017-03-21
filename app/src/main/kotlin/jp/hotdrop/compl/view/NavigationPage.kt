@@ -6,6 +6,10 @@ import jp.hotdrop.compl.R
 import jp.hotdrop.compl.view.fragment.CategoryFragment
 import jp.hotdrop.compl.view.fragment.CompanyFragment
 
+/**
+ * ここはGithubに上がっていたdroidkaigi2016アプリのKeithYokomaさんのenum芸を
+ * 参考にさせていただきました。
+ */
 enum class NavigationPage(val menuId: Int, val titleResId: Int, val toggleToolbar: Boolean, val pageName: String) {
 
     COMPANY_LIST(R.id.nav_main_list, R.string.nav_company_list, false, CompanyFragment.TAG) {
@@ -24,7 +28,7 @@ enum class NavigationPage(val menuId: Int, val titleResId: Int, val toggleToolba
     companion object {
 
         /**
-         * eumnのオブジェクトを取得する
+         * enumのオブジェクトを取得する
          */
         fun forMenuId(item: MenuItem): NavigationPage {
             return forMenuId(item.itemId)

@@ -197,7 +197,7 @@ class CategoryFragment : BaseFragment() {
     inner class CategoryItemTouchHelperCallback(val adapter: Adapter): ItemTouchHelper.Callback() {
 
         /**
-         * dragとswipeの動作指定
+         * dragとswipeの動作指定。今はdragのみ
          */
         override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
             val dragFrags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN
@@ -216,14 +216,14 @@ class CategoryFragment : BaseFragment() {
         }
 
         /**
-         * swipe時は削除。ただしアイテムが１個以上登録されている場合は削除できないものとする。
+         * swipe時は何もしない
          */
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
             return
         }
 
         /**
-         * 今は長押し時は何もしない
+         * とりあえず長押し時も何もしない
          */
         override fun isLongPressDragEnabled(): Boolean {
             return false
