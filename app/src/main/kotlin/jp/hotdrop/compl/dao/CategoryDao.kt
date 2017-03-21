@@ -2,6 +2,7 @@ package jp.hotdrop.compl.dao
 
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.model.Category_Relation
+import jp.hotdrop.compl.viewmodel.CategoryViewModel
 
 object CategoryDao {
 
@@ -39,6 +40,15 @@ object CategoryDao {
                 .colorType(category.colorType)
                 .idEq(category.id)
                 .execute()
+    }
+
+    fun updateAllOrder(iterator: Iterator<CategoryViewModel>) {
+        for((index, vm) in iterator.withIndex()) {
+            categoryRelation().updater()
+                    .order(index)
+                    .idEq(vm.viewId)
+                    .execute()
+        }
     }
 
     fun exist(name: String): Boolean {

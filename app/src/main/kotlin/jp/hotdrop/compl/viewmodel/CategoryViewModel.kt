@@ -7,7 +7,7 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.util.ColorDataUtil
 
-class CategoryViewModel(val category: Category, val context: Context) {
+class CategoryViewModel(category: Category, val context: Context) {
 
     var viewId = category.id
     var viewName = category.name

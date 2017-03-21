@@ -11,9 +11,9 @@
 
     <!-- Tab -->
     <color name="tab_background">@color/white</color>
-    <color name="tab_indicator">@color/black</color>
-    <color name="tab_unselected_text">@color/light_dark_blue</color>
-    <color name="tab_selected_text">@color/light_green</color>
+    <color name="tab_indicator">@color/green</color>
+    <color name="tab_unselected_text">@color/light_gray</color>
+    <color name="tab_selected_text">@color/black</color>
 
     <!-- list fragment -->
     <color name="view_background">@color/light_gray</color>

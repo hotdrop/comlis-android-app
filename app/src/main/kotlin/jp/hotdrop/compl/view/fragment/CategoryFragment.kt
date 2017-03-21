@@ -68,7 +68,7 @@ class CategoryFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // TODO 並び順の更新を行う
+        CategoryDao.updateAllOrder(adapter.iterator())
     }
 
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
@@ -198,7 +198,6 @@ class CategoryFragment : BaseFragment() {
 
         /**
          * dragとswipeの動作指定
-         * TODO ここはdragの上下のみ許容するようになっているのでswipeも指定する
          */
         override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
             val dragFrags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN
