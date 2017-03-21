@@ -31,6 +31,7 @@
                     android:id="@+id/icon_reorder_group"
                     android:layout_width="@dimen/reorder_icon_width"
                     android:layout_height="@dimen/reorder_icon_height"
+
                     android:src="@drawable/ic_reorder" />
 
                 <TextView
@@ -41,7 +42,7 @@
                     android:layout_toEndOf="@id/icon_reorder_group"
                     android:textSize="@dimen/text_large"
                     android:textColor="@color/item_list_text"
-                    android:text="@{viewModel.name}" />
+                    android:text="@{viewModel.viewName}" />
 
                 <TextView
                     android:id="@+id/label_employees_num"
@@ -63,7 +64,7 @@
                     android:layout_toEndOf="@id/label_employees_num"
                     android:textColor="@color/item_list_subtext"
                     android:textSize="@dimen/text_small"
-                    android:text="@{viewModel.employeesNum}" />
+                    android:text="@{viewModel.viewEmployeesNum}" />
 
                 <TextView
                     android:id="@+id/label_salary"

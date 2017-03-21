@@ -11,30 +11,33 @@ class CompanyViewModel() {
         @JvmStatic private val SALARY_RANGE_MARK = "〜"
     }
 
-    var id = 0
-    var name = ""
-    var employeesNum = ""
+    var viewId = 0
+    var viewName = ""
+    var viewEmployeesNum = ""
     var viewSalary = ""
+    var viewOrder = 0
 
     constructor(company: Company) : this() {
         // Parcelはデフォルトコンストラクタを定義しないといけないため、セカンダリコンストラクタを持ってModelを保持する
-        id = company.id
-        name = company.name
-        employeesNum = company.employeesNum.toString()
+        viewId = company.id
+        viewName = company.name
+        viewEmployeesNum = company.employeesNum.toString()
         viewSalary = company.salaryLow.toString() + SALARY_UNIT
         if(company.salaryHigh > 0) {
             viewSalary += SALARY_RANGE_MARK + company.salaryHigh.toString() + SALARY_UNIT
         }
+        viewOrder = company.order
     }
 
     override fun equals(other: Any?): Boolean {
-        return (other as CompanyViewModel).id == id || super.equals(other)
+        return (other as CompanyViewModel).viewId == viewId || super.equals(other)
     }
 
     fun change(vm: CompanyViewModel) {
-        id = vm.id
-        name = vm.name
-        employeesNum = vm.employeesNum
+        viewId = vm.viewId
+        viewName = vm.viewName
+        viewEmployeesNum = vm.viewEmployeesNum
         viewSalary = vm.viewSalary
+        viewOrder = vm.viewOrder
     }
 }

@@ -29,7 +29,7 @@ object CategoryDao {
         val category = Category().apply {
             name = argName
             colorType = argColorType
-            order = maxGroupOrder() + 1
+            order = maxOrder() + 1
         }
         categoryRelation().inserter().execute(category)
     }
@@ -63,7 +63,7 @@ object CategoryDao {
         return orma.relationOfCategory()
     }
 
-    private fun maxGroupOrder(): Int {
+    private fun maxOrder(): Int {
         return categoryRelation().selector().maxByOrder() ?: 0
     }
 

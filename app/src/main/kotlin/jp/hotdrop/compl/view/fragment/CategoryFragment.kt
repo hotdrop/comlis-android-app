@@ -51,8 +51,11 @@ class CategoryFragment : BaseFragment() {
 
         adapter.addAll(CategoryDao.findAll().map{ c -> CategoryViewModel(c, context) })
 
-        // TODO これだと最初の１回目はずっと表示され続けてしまうので考える。
-        binding.listEmptyView.visibility = if(adapter.itemCount > 0) View.GONE else View.VISIBLE
+        if(adapter.itemCount > 0) {
+            goneInitView()
+        } else {
+            visibleInitView()
+        }
         binding.fabButton.setOnClickListener { showRegisterDialog() }
         return binding.root
     }
@@ -73,6 +76,14 @@ class CategoryFragment : BaseFragment() {
 
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
         helper.startDrag(viewHolder)
+    }
+
+    private fun visibleInitView() {
+        binding.listEmptyView.visibility = View.VISIBLE
+    }
+
+    private fun goneInitView() {
+        binding.listEmptyView.visibility = View.GONE
     }
 
     /**
@@ -112,6 +123,7 @@ class CategoryFragment : BaseFragment() {
                     val vm = CategoryDao.find(editText.text.toString())
                     adapter.add(CategoryViewModel(vm, context))
                     dialogInterface.dismiss()
+                    goneInitView()
                 })
                 .create()
         dialog.show()

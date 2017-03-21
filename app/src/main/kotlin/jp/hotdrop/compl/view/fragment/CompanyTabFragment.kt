@@ -28,7 +28,7 @@ class CompanyTabFragment: BaseFragment() {
     private lateinit var adapter: Adapter
     private lateinit var helper: ItemTouchHelper
 
-    // new instanceのやり方はshiraj_i氏のブログを参考にさせていただきました。ありがとうございます。
+    // new instanceのやり方はshiraji氏のブログを参考にしました。
     companion object {
         @JvmStatic val TAG = CompanyTabFragment::class.java.simpleName!!
         fun newInstance(itemList: MutableList<CompanyViewModel>) =
@@ -73,13 +73,16 @@ class CompanyTabFragment: BaseFragment() {
         // TODO カテゴリーを更新しなかった場合、該当するアイテムのみ更新する
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // 画面起動時に呼ばれるので何かおかしい・・
+        // TODO どこでこれを呼ぶか・・ CompanyDao.updateAllOrder(adapter.iterator())
+    }
+
     fun scrollUpToTop() {
         binding.recyclerView.smoothScrollToPosition(0)
     }
 
-    /**
-     * TODO 並び替えられるようにしたはいいが、いつorderを反映させるか・・onResumeにするか？
-     */
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
         helper.startDrag(viewHolder)
     }
@@ -107,7 +110,7 @@ class CompanyTabFragment: BaseFragment() {
             }
 
             binding.cardView.setOnClickListener {
-                ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.id, REQ_CODE_COMPANY_DETAIL)
+                ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.viewId, REQ_CODE_COMPANY_DETAIL)
             }
         }
 

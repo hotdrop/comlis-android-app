@@ -14,6 +14,7 @@ class CompanyRegisterViewModel {
     var viewSalaryHigh = ""
     var viewUrl = ""
     var viewNote = ""
+    // orderはinsert時にMAX値を入れる
 
 
     fun register(selectedCategorySpinnerId: Int): Int {
