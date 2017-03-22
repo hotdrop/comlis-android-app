@@ -30,7 +30,7 @@ import javax.inject.Inject
 class CompanyTabFragment: BaseFragment() {
 
     @Inject
-    lateinit var compositDisposable: CompositeDisposable
+    lateinit var compositeDisposable: CompositeDisposable
     private var categoryId: Int = 0
 
     private lateinit var binding: FragmentCompanyTabBinding
@@ -52,9 +52,7 @@ class CompanyTabFragment: BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyTabBinding.inflate(inflater, container, false)
         adapter = Adapter(context)
-
         loadData()
-
         return binding.root
     }
 
@@ -66,7 +64,7 @@ class CompanyTabFragment: BaseFragment() {
                         { companies -> onLoadSuccess(companies) },
                         { throwable -> onLoadFailure(throwable) }
                 )
-        compositDisposable.add(disposable)
+        compositeDisposable.add(disposable)
     }
 
     private fun onLoadSuccess(companies: List<Company>) {
@@ -78,7 +76,6 @@ class CompanyTabFragment: BaseFragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         helper.attachToRecyclerView(binding.recyclerView)
-
     }
 
     private fun onLoadFailure(e: Throwable) {
@@ -100,10 +97,23 @@ class CompanyTabFragment: BaseFragment() {
         // TODO カテゴリーを更新しなかった場合、該当するアイテムのみ更新する
     }
 
+    /**
+     * Stopの場合、clearで一旦addしているオブジェクトを全てDisposeする。
+     */
+    override fun onStop() {
+        super.onStop()
+        compositeDisposable.clear()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         // 画面起動時に呼ばれるので何かおかしい・・
         // TODO どこでこれを呼ぶか・・ CompanyDao.updateAllOrder(adapter.iterator())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
     }
 
     fun scrollUpToTop() {

@@ -31,6 +31,7 @@ object CategoryDao {
      */
     fun findAll2(): Single<List<Category>> {
         return categoryRelation().selector()
+                .orderByViewOrderAsc()
                 .executeAsObservable()
                 .toList()
                 .subscribeOn(Schedulers.io())

@@ -118,6 +118,8 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
     }
 
     private fun onLoadSuccess(categories: List<Category>) {
+
+        // addFragmentの中でadapter使ってるのでここで初期化する
         adapter = Adapter(fragmentManager)
 
         if(categories.isNotEmpty()) {
@@ -128,6 +130,9 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
             binding.listEmptyView.visibility = View.VISIBLE
         }
 
+        // tablayoutを再作成するとonTabSelectedが呼ばれてしまうため保持しておく。これでいいのかとは思うが・・
+        val stockSelectedTabName = tabName
+
         binding.viewPager.adapter = adapter
         binding.tabLayout.setupWithViewPager(binding.viewPager)
         binding.tabLayout.addOnTabSelectedListener(SelectedTabListener(binding.viewPager))
@@ -135,7 +140,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
 
         if(isRefresh) {
             // もともと選択していたタブを選択状態にする
-            binding.viewPager.currentItem = adapter.getPagePosition(tabName)
+            binding.viewPager.currentItem = adapter.getPagePosition(stockSelectedTabName)
         }
 
         hideProgress()
