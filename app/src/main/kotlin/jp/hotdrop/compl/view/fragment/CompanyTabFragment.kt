@@ -69,7 +69,7 @@ class CompanyTabFragment: BaseFragment() {
 
     private fun onLoadSuccess(companies: List<Company>) {
         if(companies.isNotEmpty()) {
-            adapter.addAll(companies.map(::CompanyViewModel))
+            adapter.addAll(companies.map{ company -> CompanyViewModel(company, context) })
         }
         helper = ItemTouchHelper(CompanyItemTouchHelperCallback(adapter))
         binding.recyclerView.addItemDecoration(helper)
@@ -139,7 +139,7 @@ class CompanyTabFragment: BaseFragment() {
             // applyにしようと思ったがネストが深くなるのでこのままにした。
             val binding = holder.binding
             binding.viewModel = getItem(position)
-            binding.iconReorderGroup.setOnTouchListener { _, motionEvent ->
+            binding.iconReorder.setOnTouchListener { _, motionEvent ->
                 if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
                     onStartDrag(holder)
                 }
