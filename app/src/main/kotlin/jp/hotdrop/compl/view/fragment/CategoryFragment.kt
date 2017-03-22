@@ -1,6 +1,7 @@
 package jp.hotdrop.compl.view.fragment
 
 import android.content.Context
+import android.databinding.repacked.google.common.collect.ImmutableList
 import android.os.Bundle
 import android.support.v4.view.MotionEventCompat
 import android.support.v7.app.AlertDialog
@@ -15,10 +16,13 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Spinner
+import io.reactivex.Completable
+import io.reactivex.Flowable
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.databinding.FragmentCategoryBinding
 import jp.hotdrop.compl.databinding.ItemCategoryBinding
+import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
 import jp.hotdrop.compl.view.parts.ColorSpinner
@@ -71,7 +75,7 @@ class CategoryFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        CategoryDao.updateAllOrder(adapter.iterator())
+        CategoryDao.updateAllOrder(adapter.getModels())
     }
 
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
@@ -136,13 +140,13 @@ class CategoryFragment : BaseFragment() {
         val editText = view.findViewById(R.id.text_category_name) as AppCompatEditText
         editText.setText(vm.viewName as CharSequence)
         val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, activity)
-        spinner.setSelection(vm.viewColorType)
+        spinner.setSelection(vm.category.colorType)
         val dialog = AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setTitle(R.string.category_dialog_title)
                 .setView(view)
                 .setPositiveButton(R.string.category_dialog_update_button, { dialogInterface, _ ->
                     vm.viewName = editText.text.toString()
-                    vm.viewColorType = spinner.getSelection()
+                    vm.category.colorType = spinner.getSelection()
                     CategoryDao.update(vm.makeCategory())
                     adapter.refresh(vm)
                     dialogInterface.dismiss()
@@ -150,7 +154,7 @@ class CategoryFragment : BaseFragment() {
                 .create()
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
-        editText.changeTextListener(view, dialog, editText, vm.viewId, vm.viewName)
+        editText.changeTextListener(view, dialog, editText, vm.category.id, vm.viewName)
     }
 
     /**
@@ -200,6 +204,10 @@ class CategoryFragment : BaseFragment() {
         fun add(vm: CategoryViewModel) {
             addItem(vm)
             notifyItemInserted(itemCount)
+        }
+
+        fun getModels(): MutableList<Category> {
+            return list.map {vm -> vm.category}.toMutableList()
         }
     }
 

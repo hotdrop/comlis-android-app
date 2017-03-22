@@ -3,7 +3,6 @@ package jp.hotdrop.compl.dao
 import io.reactivex.Single
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Company_Relation
-import jp.hotdrop.compl.viewmodel.CompanyViewModel
 
 object CompanyDao {
 
@@ -12,6 +11,13 @@ object CompanyDao {
     fun insert(company: Company) {
         company.order = maxOrder() + 1
         companyRelation().inserter().execute(company)
+    }
+
+    fun updateFavorite(company: Company) {
+        companyRelation().updater()
+                .favorite(company.favorite)
+                .idEq(company.id)
+                .execute()
     }
 
     fun findAll(): Single<List<Company>> {
@@ -28,11 +34,12 @@ object CompanyDao {
         return companyRelation().selector().categoryIdEq(categoryId).count()
     }
 
-    fun updateAllOrder(iterator: Iterator<CompanyViewModel>) {
-        for((index, vm) in iterator.withIndex()) {
+    fun updateAllOrder(companies: MutableList<Company>) {
+        // TODO Completableにすべき
+        for((index, company) in companies.withIndex()) {
             companyRelation().updater()
                     .order(index)
-                    .idEq(vm.viewId)
+                    .idEq(company.id)
                     .execute()
         }
     }

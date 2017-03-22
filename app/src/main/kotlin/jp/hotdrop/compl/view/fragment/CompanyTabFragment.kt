@@ -110,7 +110,7 @@ class CompanyTabFragment: BaseFragment() {
             }
 
             binding.cardView.setOnClickListener {
-                ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.viewId, REQ_CODE_COMPANY_DETAIL)
+                ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.company.id, REQ_CODE_COMPANY_DETAIL)
             }
         }
 

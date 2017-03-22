@@ -4,10 +4,11 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import java.util.*
 
-abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val context: Context)
-    : RecyclerView.Adapter<VH>(), Iterable<T> {
 
-    private val list: MutableList<T> = mutableListOf()
+abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val context: Context)
+    : RecyclerView.Adapter<VH>() {
+
+    protected val list: MutableList<T> = mutableListOf()
 
     override fun getItemCount(): Int {
         return list.size
@@ -37,9 +38,5 @@ abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val 
         Collections.swap(list, fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
         return true
-    }
-
-    override fun iterator(): Iterator<T> {
-        return list.iterator()
     }
 }

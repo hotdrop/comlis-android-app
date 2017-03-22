@@ -60,6 +60,7 @@ class CompanyDetailFragment: BaseFragment() {
         binding.fab.setOnClickListener {
             val checked = !binding.fab.isSelected
             binding.fab.isSelected = checked
+            // TODO お気に入りスターをDBに反映させる
         }
     }
 }

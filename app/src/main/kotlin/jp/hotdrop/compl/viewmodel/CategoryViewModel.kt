@@ -7,42 +7,33 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.util.ColorDataUtil
 
-class CategoryViewModel(category: Category, val context: Context) {
+class CategoryViewModel(var category: Category, val context: Context) {
 
-    var viewId = category.id
+    // 画面表示に使うデータだけmodelとは別にフィールド値を持たせる
     var viewName = category.name
-    var viewColorType = category.colorType
-    var viewPoint = category.point.toString()
-    var viewOrder = category.order
     var itemCount = "0"
 
     init {
-        itemCount = CompanyDao.countByCategory(viewId).toString()
+        itemCount = CompanyDao.countByCategory(category.id).toString()
     }
 
     @ColorRes
     fun getColorRes(): Int {
-        return ContextCompat.getColor(context, ColorDataUtil.getColorLight(viewColorType))
+        return ContextCompat.getColor(context, ColorDataUtil.getColorLight(category.colorType))
     }
 
     fun change(vm: CategoryViewModel) {
-        viewId = vm.viewId
+        this.category = vm.category
         viewName = vm.viewName
-        viewColorType = vm.viewColorType
-        viewPoint = vm.viewPoint
-        viewOrder = vm.viewOrder
         itemCount = vm.itemCount
     }
 
     override fun equals(other: Any?): Boolean {
-        return (other as CategoryViewModel).viewId == viewId || super.equals(other)
+        return (other as CategoryViewModel).category.id == category.id || super.equals(other)
     }
 
-    fun makeCategory(): Category = Category().apply {
-        id = viewId
+    fun makeCategory(): Category = category.apply {
         name = viewName
-        colorType = viewColorType
-        point = if(viewPoint != "") viewPoint.toInt() else 0
-        order = viewOrder
+        itemCount = itemCount
     }
 }

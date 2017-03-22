@@ -2,7 +2,6 @@ package jp.hotdrop.compl.dao
 
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.model.Category_Relation
-import jp.hotdrop.compl.viewmodel.CategoryViewModel
 
 object CategoryDao {
 
@@ -42,11 +41,11 @@ object CategoryDao {
                 .execute()
     }
 
-    fun updateAllOrder(iterator: Iterator<CategoryViewModel>) {
-        for((index, vm) in iterator.withIndex()) {
+    fun updateAllOrder(categories: MutableList<Category>) {
+        for((index, category) in categories.withIndex()) {
             categoryRelation().updater()
                     .order(index)
-                    .idEq(vm.viewId)
+                    .idEq(category.id)
                     .execute()
         }
     }
