@@ -1,7 +1,6 @@
 package jp.hotdrop.compl.view.fragment
 
 import android.content.Context
-import android.databinding.repacked.google.common.collect.ImmutableList
 import android.os.Bundle
 import android.support.v4.view.MotionEventCompat
 import android.support.v7.app.AlertDialog
@@ -16,8 +15,10 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Spinner
-import io.reactivex.Completable
-import io.reactivex.Flowable
+import android.widget.Toast
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.databinding.FragmentCategoryBinding
@@ -27,8 +28,12 @@ import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
 import jp.hotdrop.compl.view.parts.ColorSpinner
 import jp.hotdrop.compl.viewmodel.CategoryViewModel
+import javax.inject.Inject
 
 class CategoryFragment : BaseFragment() {
+
+    @Inject
+    lateinit var compositeDisposable: CompositeDisposable
 
     private lateinit var binding: FragmentCategoryBinding
     private lateinit var adapter: Adapter
@@ -45,15 +50,36 @@ class CategoryFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCategoryBinding.inflate(inflater, container, false)
+
+
+        loadData()
+
+        return binding.root
+    }
+
+    private fun loadData() {
+        var disposable = CategoryDao.findAll()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                        { categories -> onLoadSuccess(categories) },
+                        { throwable -> onLoadFailure(throwable) }
+                )
+        compositeDisposable.add(disposable)
+    }
+
+    private fun onLoadSuccess(categories: List<Category>) {
         adapter = Adapter(context)
 
+        if(categories.isNotEmpty()) {
+            adapter.addAll(categories.map{ c -> CategoryViewModel(c, context) })
+        }
+        
         helper = ItemTouchHelper(CategoryItemTouchHelperCallback(adapter))
         binding.recyclerView.addItemDecoration(helper)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         helper.attachToRecyclerView(binding.recyclerView)
-
-        adapter.addAll(CategoryDao.findAll().map{ c -> CategoryViewModel(c, context) })
 
         if(adapter.itemCount > 0) {
             goneInitView()
@@ -61,7 +87,10 @@ class CategoryFragment : BaseFragment() {
             visibleInitView()
         }
         binding.fabButton.setOnClickListener { showRegisterDialog() }
-        return binding.root
+    }
+
+    private fun onLoadFailure(e: Throwable) {
+        Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
     }
 
     override fun onAttach(context: Context) {

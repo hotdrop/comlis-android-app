@@ -9,7 +9,7 @@ import jp.hotdrop.compl.model.Category
 
 class CategorySpinner(private val spinner: Spinner, private val activity: Activity) {
 
-    private val categoryList = CategoryDao.findAll()
+    private val categoryList = CategoryDao.findAll().blockingGet()
     private val adapter by lazy {
         val categoryNames = categoryList.map(Category::name)
         ArrayAdapter(activity, R.layout.simple_dropdown_item_1line, categoryNames)

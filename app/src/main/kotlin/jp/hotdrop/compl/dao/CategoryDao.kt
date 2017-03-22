@@ -20,16 +20,7 @@ object CategoryDao {
         return categoryRelation().selector().idEq(id).first()
     }
 
-    fun findAll(): List<Category> {
-        return categoryRelation().selector()
-                .orderByViewOrderAsc()
-                .toList()
-    }
-
-    /**
-     * 試作。いずれ上は消す
-     */
-    fun findAll2(): Single<List<Category>> {
+    fun findAll(): Single<List<Category>> {
         return categoryRelation().selector()
                 .orderByViewOrderAsc()
                 .executeAsObservable()

@@ -12,6 +12,7 @@ import android.view.*
 import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyBinding
@@ -108,8 +109,9 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
 
     private fun loadData() {
         showProgress()
-        val disposable = CategoryDao.findAll2()
+        val disposable = CategoryDao.findAll()
                 .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe(
                         { list -> onLoadSuccess(list) },
                         { throwable -> onLoadFailure(throwable) }
