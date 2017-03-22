@@ -13,8 +13,10 @@ object OrmaHolder {
 
     fun initialize(context: Context) {
         ORMA = OrmaDatabase.builder(context)
-                /*.migrationStep(2, object : ManualStepMigration.ChangeStep() {
+                /*.migrationStep(3, object : ManualStepMigration.ChangeStep() {
                     override fun change(helper: ManualStepMigration.Helper) {
+                        helper.renameColumn("Category", "order", "viewOrder")
+                        helper.renameColumn("Company", "order", "viewOrder")
                     }
                 })*/
                 .writeOnMainThread(AccessThreadConstraint.NONE)

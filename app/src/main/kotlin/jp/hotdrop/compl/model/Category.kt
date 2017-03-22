@@ -24,5 +24,5 @@ class Category {
     var point: Int = 0
 
     @Column(indexed = true)
-    var order: Int = 0
+    var viewOrder: Int = 0
 }

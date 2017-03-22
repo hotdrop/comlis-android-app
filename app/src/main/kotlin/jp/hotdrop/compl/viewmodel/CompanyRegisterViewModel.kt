@@ -16,7 +16,6 @@ class CompanyRegisterViewModel {
     var viewNote = ""
     // orderはinsert時にMAX値を入れる
 
-
     fun register(selectedCategorySpinnerId: Int): Int {
         val code = canRegister()
         if(code != AppCode.OK) {

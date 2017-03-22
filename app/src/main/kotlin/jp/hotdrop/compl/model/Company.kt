@@ -37,8 +37,8 @@ class Company {
     @Column
     var note: String? = null
 
-    @Column
-    var order: Int = 0
+    @Column(indexed = true)
+    var viewOrder: Int = 0
 
     @Column(indexed = true)
     var favorite: Boolean = false

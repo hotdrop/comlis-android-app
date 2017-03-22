@@ -30,6 +30,10 @@ abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val 
         list.addAll(items)
     }
 
+    fun addAll(items: List<T>) {
+        list.addAll(items)
+    }
+
     fun clear() {
         list.clear()
     }

@@ -12,12 +12,12 @@ import android.view.*
 import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyBinding
-import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.view.StackedPageListener
 import jp.hotdrop.compl.view.activity.ActivityNavigator
-import jp.hotdrop.compl.viewmodel.CompanyViewModel
 import javax.inject.Inject
 
 
@@ -52,20 +52,9 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         getComponent().inject(this)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        data ?: return
-        val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
-        if(refreshMode == REFRESH_ALL) {
-            isRefresh = true
-            loadData()
-            activity.intent.removeExtra(REFRESH_MODE)
-        }
-    }
-
     /**
      * Tabの切り替えとupdateFragmentでの更新時に無条件で呼ばれる。
-     * そのため、グループなど修正した場合はここで検知してリフレッシュする。
+     * そのため、分類など修正した場合はここで検知してリフレッシュする。
      */
     override fun onResume() {
         super.onResume()
@@ -78,16 +67,31 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         }
     }
 
+    /**
+     * Stopの場合、clearで一旦addしているオブジェクトを全てDisposeする。
+     */
     override fun onStop() {
         super.onStop()
-        // Stopの場合、clearで一旦addしているオブジェクトを全てDisposeする。
         compositeDisposable.clear()
     }
 
+    /**
+     * Destroy時は以降addされることはないので完全にDisposeする。
+     */
     override fun onDestroy() {
         super.onDestroy()
-        // Destroy時は以降addされることはないので完全にDisposeする。
         compositeDisposable.dispose()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        data ?: return
+        val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
+        if(refreshMode == REFRESH_ALL) {
+            isRefresh = true
+            loadData()
+            activity.intent.removeExtra(REFRESH_MODE)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -104,7 +108,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
 
     private fun loadData() {
         showProgress()
-        val disposable = CompanyDao.findAll()
+        val disposable = CategoryDao.findAll2()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { list -> onLoadSuccess(list) },
@@ -113,21 +117,12 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         compositeDisposable.add(disposable)
     }
 
-    private fun onLoadSuccess(companies: List<Company>) {
-        // タブごとにリストを生成してフラグメントを作成する
-        val companyByGroup = linkedMapOf<String, MutableList<CompanyViewModel>>()
-        companies.forEach { company ->
-            val key = company.getGroup().name
-            when {
-                companyByGroup.containsKey(key) -> companyByGroup[key]!!.add(CompanyViewModel(company))
-                else -> companyByGroup.put(key, mutableListOf(CompanyViewModel(company)))
-            }
-        }
-
+    private fun onLoadSuccess(categories: List<Category>) {
         adapter = Adapter(fragmentManager)
 
-        if(companyByGroup.size > 0) {
-            companyByGroup.forEach { title, list -> addFragment(title, list) }
+        if(categories.isNotEmpty()) {
+            categories.filter { category -> CompanyDao.countByCategory(category.id) > 0 }
+                      .forEach { category -> addFragment(category.name, category.id) }
             binding.listEmptyView.visibility = View.GONE
         } else {
             binding.listEmptyView.visibility = View.VISIBLE
@@ -158,8 +153,8 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         binding.progressBarContainer.visibility = View.GONE
     }
 
-    private fun addFragment(title: String, itemList: MutableList<CompanyViewModel>) {
-        val fragment = CompanyTabFragment.newInstance(itemList)
+    private fun addFragment(title: String, categoryId: Int) {
+        val fragment = CompanyTabFragment.create(categoryId)
         adapter.add(title, fragment)
     }
 

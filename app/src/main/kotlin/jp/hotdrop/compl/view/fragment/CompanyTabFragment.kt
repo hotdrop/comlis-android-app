@@ -12,50 +12,77 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
+import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyTabBinding
 import jp.hotdrop.compl.databinding.ItemCompanyBinding
+import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
 import jp.hotdrop.compl.view.activity.ActivityNavigator
 import jp.hotdrop.compl.viewmodel.CompanyViewModel
-import org.parceler.Parcels
+import javax.inject.Inject
 
 class CompanyTabFragment: BaseFragment() {
 
-    private lateinit var companyList: MutableList<CompanyViewModel>
+    @Inject
+    lateinit var compositDisposable: CompositeDisposable
+    private var categoryId: Int = 0
+
     private lateinit var binding: FragmentCompanyTabBinding
     private lateinit var adapter: Adapter
     private lateinit var helper: ItemTouchHelper
 
-    // new instanceのやり方はshiraji氏のブログを参考にしました。
     companion object {
-        @JvmStatic val TAG = CompanyTabFragment::class.java.simpleName!!
-        fun newInstance(itemList: MutableList<CompanyViewModel>) =
-                CompanyTabFragment().apply {
-                    arguments = Bundle().itemList(itemList)
-                }
-        private fun Bundle.itemList(itemList: MutableList<CompanyViewModel>) = apply { putParcelable(TAG, Parcels.wrap(itemList)) }
+        @JvmStatic val EXTRA_CATEGORY_ID = "categoryId"
+        fun create(categoryId: Int) = CompanyTabFragment().apply {
+            arguments = Bundle().apply { putInt(EXTRA_CATEGORY_ID, categoryId) }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        companyList = Parcels.unwrap(arguments.getParcelable(TAG))
+        categoryId = arguments.getInt(EXTRA_CATEGORY_ID)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyTabBinding.inflate(inflater, container, false)
         adapter = Adapter(context)
 
+        loadData()
+
+        return binding.root
+    }
+
+    private fun loadData() {
+        val disposable = CompanyDao.findByCategory(categoryId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                        { companies -> onLoadSuccess(companies) },
+                        { throwable -> onLoadFailure(throwable) }
+                )
+        compositDisposable.add(disposable)
+    }
+
+    private fun onLoadSuccess(companies: List<Company>) {
+        if(companies.isNotEmpty()) {
+            adapter.addAll(companies.map(::CompanyViewModel))
+        }
         helper = ItemTouchHelper(CompanyItemTouchHelperCallback(adapter))
         binding.recyclerView.addItemDecoration(helper)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         helper.attachToRecyclerView(binding.recyclerView)
 
-        adapter.addAll(companyList)
+    }
 
-        return binding.root
+    private fun onLoadFailure(e: Throwable) {
+        Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
     }
 
     override fun onAttach(context: Context?) {

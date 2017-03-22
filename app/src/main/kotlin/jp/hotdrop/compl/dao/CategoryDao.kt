@@ -1,5 +1,7 @@
 package jp.hotdrop.compl.dao
 
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.model.Category_Relation
 
@@ -18,17 +20,27 @@ object CategoryDao {
         return categoryRelation().selector().idEq(id).first()
     }
 
-    fun findAll(): MutableList<Category> {
+    fun findAll(): List<Category> {
         return categoryRelation().selector()
-                .orderByOrderAsc()
+                .orderByViewOrderAsc()
                 .toList()
+    }
+
+    /**
+     * 試作。いずれ上は消す
+     */
+    fun findAll2(): Single<List<Category>> {
+        return categoryRelation().selector()
+                .executeAsObservable()
+                .toList()
+                .subscribeOn(Schedulers.io())
     }
 
     fun insert(argName: String, argColorType: String) {
         val category = Category().apply {
             name = argName
             colorType = argColorType
-            order = maxOrder() + 1
+            viewOrder = maxOrder() + 1
         }
         categoryRelation().inserter().execute(category)
     }
@@ -41,10 +53,10 @@ object CategoryDao {
                 .execute()
     }
 
-    fun updateAllOrder(categories: MutableList<Category>) {
+    fun updateAllOrder(categories: List<Category>) {
         for((index, category) in categories.withIndex()) {
             categoryRelation().updater()
-                    .order(index)
+                    .viewOrder(index)
                     .idEq(category.id)
                     .execute()
         }
@@ -63,7 +75,7 @@ object CategoryDao {
     }
 
     private fun maxOrder(): Int {
-        return categoryRelation().selector().maxByOrder() ?: 0
+        return categoryRelation().selector().maxByViewOrder() ?: 0
     }
 
 }
