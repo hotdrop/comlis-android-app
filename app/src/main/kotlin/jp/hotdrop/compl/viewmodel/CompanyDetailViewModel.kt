@@ -2,6 +2,7 @@ package jp.hotdrop.compl.viewmodel
 
 import android.view.View
 import jp.hotdrop.compl.dao.CompanyDao
+import jp.hotdrop.compl.model.Company
 
 class CompanyDetailViewModel(companyId: Int) {
 
@@ -12,16 +13,16 @@ class CompanyDetailViewModel(companyId: Int) {
         @JvmStatic private val EMPTY_VALUE = "未入力"
     }
 
-    var viewName: String
-    var viewOverview: String
-    var viewEmployeesNum: String
+    val company: Company = CompanyDao.find(companyId)
+    val viewName: String
+    val viewOverview: String
+    val viewEmployeesNum: String
     var viewSalary = ""
     var viewUrl: String? = null
     var visibleUrl: Int = View.GONE
-    var viewNote: String? = null
+    val viewNote: String
 
     init {
-        val company = CompanyDao.find(companyId)
         viewName = company.name
         viewOverview = company.overview ?: EMPTY_VALUE
 

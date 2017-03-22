@@ -14,10 +14,10 @@ object CompanyDao {
         companyRelation().inserter().execute(company)
     }
 
-    fun updateFavorite(company: Company) {
+    fun updateFavorite(id: Int, favorite: Boolean) {
         companyRelation().updater()
-                .favorite(company.favorite)
-                .idEq(company.id)
+                .favorite(favorite)
+                .idEq(id)
                 .execute()
     }
 

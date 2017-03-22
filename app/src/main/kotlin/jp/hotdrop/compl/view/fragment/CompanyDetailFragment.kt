@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
 import jp.hotdrop.compl.viewmodel.CompanyDetailViewModel
 
@@ -57,10 +58,11 @@ class CompanyDetailFragment: BaseFragment() {
     private fun initLayout() {
         viewModel = CompanyDetailViewModel(companyId)
         binding.viewModel = viewModel
+        binding.fab.isSelected = viewModel.company.favorite
         binding.fab.setOnClickListener {
             val checked = !binding.fab.isSelected
             binding.fab.isSelected = checked
-            // TODO お気に入りスターをDBに反映させる
+            CompanyDao.updateFavorite(viewModel.company.id, checked)
         }
     }
 }
