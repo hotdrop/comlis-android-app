@@ -147,8 +147,8 @@ class CategoryFragment : BaseFragment() {
     private fun showRegisterDialog() {
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category_register, null)
         val editText = view.findViewById(R.id.text_category_name) as AppCompatEditText
-        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, activity)
-        val dialog = AlertDialog.Builder(activity, R.style.DialogTheme)
+        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
+        val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setTitle(R.string.category_dialog_title)
                 .setView(view)
                 .setPositiveButton(R.string.category_dialog_add_button, { dialogInterface, _ ->
@@ -168,9 +168,9 @@ class CategoryFragment : BaseFragment() {
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category_register, null)
         val editText = view.findViewById(R.id.text_category_name) as AppCompatEditText
         editText.setText(vm.viewName as CharSequence)
-        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, activity)
+        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
         spinner.setSelection(vm.category.colorType)
-        val dialog = AlertDialog.Builder(activity, R.style.DialogTheme)
+        val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setTitle(R.string.category_dialog_title)
                 .setView(view)
                 .setPositiveButton(R.string.category_dialog_update_button, { dialogInterface, _ ->

@@ -1,7 +1,6 @@
 package jp.hotdrop.compl.view.parts
 
 import android.R
-import android.app.Activity
 import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.view.View
@@ -11,10 +10,10 @@ import android.widget.Spinner
 import android.widget.TextView
 import jp.hotdrop.compl.util.ColorDataUtil
 
-class ColorSpinner(private val spinner: Spinner, private val activity: Activity) {
+class ColorSpinner(private val spinner: Spinner, private val context: Context) {
 
     private val adapter by lazy {
-        Adapter(activity, R.layout.simple_dropdown_item_1line, ColorDataUtil.getNames())
+        Adapter(context, R.layout.simple_dropdown_item_1line, ColorDataUtil.getNames())
     }
 
     init {
