@@ -48,8 +48,4 @@ class Company {
 
     @Column
     var updateDate: Timestamp? = null
-
-    fun getGroup(): Category {
-        return CategoryDao.find(categoryId)
-    }
 }

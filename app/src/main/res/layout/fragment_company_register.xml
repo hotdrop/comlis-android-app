@@ -177,7 +177,7 @@
                         android:layout_marginStart="@dimen/spacing"
                         android:layout_marginEnd="@dimen/spacing"
                         android:layout_below="@id/label_note"
-                        android:text="@={viewModel.viewOverview}" />
+                        android:text="@={viewModel.viewNote}" />
 
                 </RelativeLayout>
 
