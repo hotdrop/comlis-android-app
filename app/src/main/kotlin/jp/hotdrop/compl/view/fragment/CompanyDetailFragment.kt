@@ -58,6 +58,7 @@ class CompanyDetailFragment: BaseFragment() {
     private fun initLayout() {
         viewModel = CompanyDetailViewModel(companyId)
         binding.viewModel = viewModel
+
         binding.fab.isSelected = viewModel.company.favorite
         binding.fab.setOnClickListener {
             val checked = !binding.fab.isSelected

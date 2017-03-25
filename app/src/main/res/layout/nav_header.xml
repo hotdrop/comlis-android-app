@@ -5,7 +5,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_header_height"
-        android:background="@drawable/img_cover"
+        android:background="@drawable/default_cover"
         android:orientation="vertical"
         android:theme="@style/ThemeOverlay.AppCompat.Dark">
 

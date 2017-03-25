@@ -6,7 +6,7 @@ import android.support.v4.content.ContextCompat
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
-import jp.hotdrop.compl.util.ColorDataUtil
+import jp.hotdrop.compl.util.ColorUtil
 
 class CompanyViewModel(var company: Company, val context: Context) {
 
@@ -32,7 +32,7 @@ class CompanyViewModel(var company: Company, val context: Context) {
 
     @ColorRes
     fun getColorRes(): Int {
-        return ContextCompat.getColor(context, ColorDataUtil.getColorLight(colorName))
+        return ContextCompat.getColor(context, ColorUtil.getColorLight(colorName))
     }
 
     override fun equals(other: Any?): Boolean {

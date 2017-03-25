@@ -1,6 +1,7 @@
 package jp.hotdrop.compl.viewmodel
 
 import android.view.View
+import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
 
@@ -22,6 +23,8 @@ class CompanyDetailViewModel(companyId: Int) {
     var visibleUrl: Int = View.GONE
     val viewNote: String
 
+    var colorName: String
+
     init {
         viewName = company.name
         viewOverview = company.overview ?: EMPTY_VALUE
@@ -40,5 +43,6 @@ class CompanyDetailViewModel(companyId: Int) {
 
         viewNote = company.note ?: EMPTY_VALUE
 
+        colorName = CategoryDao.find(company.categoryId).colorType
     }
 }

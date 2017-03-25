@@ -5,7 +5,7 @@ import android.support.annotation.ColorRes
 import android.support.v4.content.ContextCompat
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Category
-import jp.hotdrop.compl.util.ColorDataUtil
+import jp.hotdrop.compl.util.ColorUtil
 
 class CategoryViewModel(var category: Category, val context: Context) {
 
@@ -19,7 +19,7 @@ class CategoryViewModel(var category: Category, val context: Context) {
 
     @ColorRes
     fun getColorRes(): Int {
-        return ContextCompat.getColor(context, ColorDataUtil.getColorLight(category.colorType))
+        return ContextCompat.getColor(context, ColorUtil.getColorLight(category.colorType))
     }
 
     fun change(vm: CategoryViewModel) {
