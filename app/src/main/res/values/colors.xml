@@ -24,14 +24,15 @@
 
     <!-- company fragment -->
     <color name="fab_background">@color/light_blue</color>
-    <color name="label">@color/black</color>
+    <color name="label">@color/gray</color>
     <color name="text">@color/black</color>
     <color name="subtext">@color/gray</color>
     <color name="empty_text">@color/gray</color>
     <color name="attention">@color/red</color>
 
     <color name="ok_button_text">@color/white</color>
-    <color name="ok_button_background">@color/light_dark_blue</color>
+    <color name="ok_button_normal">@color/clear_blue</color>
+    <color name="ok_button_Highlight">@color/blue</color>
 
     <!-- spinner -->
     <color name="spinner_background">@color/light_gray</color>

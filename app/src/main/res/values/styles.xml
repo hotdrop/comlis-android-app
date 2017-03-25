@@ -81,19 +81,21 @@
     <style name="ItemLabel">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">@dimen/spacing_small</item>
-        <item name="android:layout_marginRight">@dimen/spacing_small</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:ellipsize">end</item>
         <item name="android:lines">1</item>
         <item name="android:textColor">@color/label</item>
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="ItemUnitLabel" parent="ItemLabel">
         <item name="android:textSize">@dimen/text_large</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="EditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/spacing_small</item>
         <item name="android:lines">1</item>
         <item name="android:inputType">text</item>
         <item name="android:textColor">@color/text</item>
@@ -103,7 +105,6 @@
     <style name="MultiLineEditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/spacing_small</item>
         <item name="android:maxLines">5</item>
         <item name="android:inputType">textMultiLine</item>
         <item name="android:textColor">@color/text</item>
@@ -111,22 +112,18 @@
     </style>
 
     <style name="CompactEditText">
-        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_width">100dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/spacing_small</item>
+        <item name="android:gravity">center</item>
         <item name="android:lines">1</item>
         <item name="android:inputType">text</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:textSize">@dimen/text_large</item>
     </style>
 
-    <style name="OKButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">50dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_marginLeft">@dimen/spacing_small</item>
-        <item name="android:layout_marginRight">@dimen/spacing_small</item>
-        <item name="android:background">@color/ok_button_background</item>
+    <style name="OkButton" parent="Theme.AppCompat">
+        <item name="colorButtonNormal">@color/ok_button_normal</item>
+        <item name="colorControlHighlight">@color/ok_button_Highlight</item>
         <item name="android:textColor">@color/ok_button_text</item>
         <item name="android:textSize">@dimen/text_large</item>
     </style>
@@ -134,7 +131,6 @@
     <style name="CategorySpinner">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">40dp</item>
-        <item name="android:layout_margin">7dp</item>
         <item name="android:background">@drawable/spinner_shape</item>
         <item name="android:popupBackground">@drawable/spinner_popup_shape</item>
         <item name="android:clickable">true</item>

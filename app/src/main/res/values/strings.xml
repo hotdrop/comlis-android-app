@@ -8,22 +8,26 @@
     <!-- company main -->
     <string name="empty_company_list">何も登録されていません。分類を登録してから登録してください。</string>
 
-    <!-- company detail -->
-    <string name="label_abstract_title">概要</string>
-    <string name="label_detail_title">詳細</string>
-
     <!-- company register -->
-    <string name="label_company">会社名:</string>
-    <string name="label_category">分類:</string>
-    <string name="label_overview">概要メモ:</string>
-    <string name="label_employees_num">従業員数:</string>
+    <string name="label_company">会社名</string>
+    <string name="label_category">分類</string>
+    <string name="label_overview">概要</string>
+    <string name="label_employees_num">従業員数</string>
+    <string name="label_salary">年収</string>
     <string name="label_salary_unit">万円</string>
     <string name="label_salary_range_mark">〜</string>
-    <string name="label_salary">年収:</string>
-    <string name="label_url">URL: </string>
-    <string name="label_note">詳細メモ: </string>
-
+    <string name="label_url">URL</string>
+    <string name="label_description">詳細</string>
+    <string name="hint_salary">任意</string>
+    <string name="hint_url">https://www.sample.co.jp</string>
     <string name="add_button">登録</string>
+
+    <!-- company detail -->
+    <string name="label_abstract_title">概要</string>
+    <string name="label_description_title">詳細</string>
+    <string name="label_detail_employees_num">従業員数: </string>
+    <string name="label_detail_salary">年収: </string>
+    <string name="label_detail_url">URL: </string>
 
     <!-- category -->
     <string name="empty_category_list">まだ何も登録されていません。好きな分類名を登録してください。この分類名が会社一覧のタブになります。</string>
