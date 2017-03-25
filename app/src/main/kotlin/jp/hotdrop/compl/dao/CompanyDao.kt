@@ -1,6 +1,7 @@
 package jp.hotdrop.compl.dao
 
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Company_Relation
@@ -45,13 +46,15 @@ object CompanyDao {
     }
 
     fun updateAllOrder(companies: List<Company>) {
-        // TODO Completableにすべき
-        for((index, company) in companies.withIndex()) {
-            companyRelation().updater()
-                    .viewOrder(index)
-                    .idEq(company.id)
-                    .execute()
-        }
+        orma.transactionAsCompletable {
+            for((index, company) in companies.withIndex()) {
+                companyRelation().updater()
+                        .viewOrder(index)
+                        .idEq(company.id)
+                        .execute()
+            }
+        }.subscribeOn(Schedulers.io())
+         .observeOn(AndroidSchedulers.mainThread())
     }
 
     private fun companyRelation(): Company_Relation {
