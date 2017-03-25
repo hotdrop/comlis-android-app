@@ -73,6 +73,7 @@ class CompanyTabFragment: BaseFragment() {
         }
         helper = ItemTouchHelper(CompanyItemTouchHelperCallback(adapter))
         binding.recyclerView.addItemDecoration(helper)
+
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         helper.attachToRecyclerView(binding.recyclerView)
@@ -149,9 +150,27 @@ class CompanyTabFragment: BaseFragment() {
             binding.cardView.setOnClickListener {
                 ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.company.id, REQ_CODE_COMPANY_DETAIL)
             }
+
+            val animView = binding.animationView.apply {
+                progress = binding.viewModel.viewFavorite
+            }
+
+            animView.setOnClickListener {
+                if(binding.viewModel.isFavorite()) {
+                    animView.progress = 0.toFloat()
+                } else {
+                    animView.playAnimation()
+                }
+                binding.viewModel.tapFavorite()
+            }
         }
 
-        private fun refresh(vm: CompanyViewModel) {
+        fun add(vm: CompanyViewModel) {
+            adapter.addItem(vm)
+            adapter.notifyItemInserted(adapter.itemCount)
+        }
+
+        fun refresh(vm: CompanyViewModel) {
             (0..adapter.itemCount - 1).forEach { i ->
                 val o = getItem(i)
                 if(vm == o) {
@@ -159,11 +178,6 @@ class CompanyTabFragment: BaseFragment() {
                     adapter.notifyItemChanged(i)
                 }
             }
-        }
-
-        fun add(vm: CompanyViewModel) {
-            adapter.addItem(vm)
-            adapter.notifyItemInserted(adapter.itemCount)
         }
     }
 
