@@ -46,46 +46,32 @@
 
                 <TextView
                     android:id="@+id/label_employees_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_small"
-                    android:layout_toEndOf="@id/icon_reorder"
+                    style="@style/ListSubItemLabel"
                     android:layout_below="@id/txt_name"
-                    android:textColor="@color/item_list_subtext"
-                    android:textSize="@dimen/text_small"
+                    android:layout_toEndOf="@id/icon_reorder"
                     android:text="@string/label_employees_num" />
 
                 <TextView
                     android:id="@+id/txt_employees_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/ListSubItemText"
                     android:layout_below="@id/txt_name"
                     android:layout_alignTop="@id/label_employees_num"
                     android:layout_toEndOf="@id/label_employees_num"
-                    android:textColor="@color/item_list_subtext"
-                    android:textSize="@dimen/text_small"
                     android:text="@{viewModel.viewEmployeesNum}" />
 
                 <TextView
                     android:id="@+id/label_salary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_small"
-                    android:layout_toEndOf="@id/icon_reorder"
+                    style="@style/ListSubItemLabel"
                     android:layout_below="@id/label_employees_num"
-                    android:textColor="@color/item_list_subtext"
-                    android:textSize="@dimen/text_small"
+                    android:layout_toEndOf="@id/icon_reorder"
                     android:text="@string/label_salary" />
 
                 <TextView
                     android:id="@+id/txt_salary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/ListSubItemText"
                     android:layout_below="@id/txt_employees_num"
                     android:layout_alignTop="@id/label_salary"
                     android:layout_toEndOf="@id/label_salary"
-                    android:textColor="@color/item_list_subtext"
-                    android:textSize="@dimen/text_small"
                     android:text="@{viewModel.viewSalary}"/>
 
                 <LinearLayout

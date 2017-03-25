@@ -63,6 +63,21 @@
         <item name="android:textSize">@dimen/text_sub_title</item>
     </style>
 
+    <style name="ListSubItemLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/spacing_small</item>
+        <item name="android:textColor">@color/item_list_subtext</item>
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="ListSubItemText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/item_list_subtext</item>
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
     <style name="ItemLabel">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
