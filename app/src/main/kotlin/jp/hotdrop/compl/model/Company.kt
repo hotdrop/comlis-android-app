@@ -3,7 +3,6 @@ package jp.hotdrop.compl.model
 import com.github.gfx.android.orma.annotation.Column
 import com.github.gfx.android.orma.annotation.PrimaryKey
 import com.github.gfx.android.orma.annotation.Table
-import jp.hotdrop.compl.dao.CategoryDao
 import java.sql.Timestamp
 
 
@@ -30,6 +29,9 @@ class Company {
 
     @Column
     var salaryHigh: Int = 0
+
+    @Column
+    var wantedJob: String? = ""
 
     @Column
     var url: String? = null

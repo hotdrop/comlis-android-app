@@ -29,10 +29,12 @@
 
                 <ImageView
                     android:id="@+id/icon_reorder"
-                    android:layout_width="@dimen/reorder_icon_width"
-                    android:layout_height="@dimen/reorder_icon_height"
-                    android:tint="@{viewModel.ColorRes}"
-                    android:src="@drawable/ic_reorder" />
+                    android:layout_width="@dimen/reorder_icon_company_list_width"
+                    android:layout_height="@dimen/reorder_icon_company_list_height"
+                    android:layout_alignTop="@id/txt_name"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_reorder"
+                    android:tint="@{viewModel.ColorRes}" />
 
                 <TextView
                     android:id="@+id/txt_name"
@@ -73,6 +75,21 @@
                     android:layout_alignTop="@id/label_salary"
                     android:layout_toEndOf="@id/label_salary"
                     android:text="@{viewModel.viewSalary}"/>
+
+                <TextView
+                    android:id="@+id/label_wanted_job"
+                    style="@style/ListSubItemLabel"
+                    android:layout_below="@id/label_salary"
+                    android:layout_toEndOf="@id/icon_reorder"
+                    android:text="@string/label_detail_wanted_job"/>
+
+                <TextView
+                    android:id="@+id/txt_wanted_job"
+                    style="@style/ListSubItemText"
+                    android:layout_below="@id/txt_salary"
+                    android:layout_alignTop="@id/label_wanted_job"
+                    android:layout_toEndOf="@id/label_wanted_job"
+                    android:text="@{viewModel.viewWantedJob}"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"

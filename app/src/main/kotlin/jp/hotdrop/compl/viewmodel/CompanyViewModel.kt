@@ -19,6 +19,8 @@ class CompanyViewModel(var company: Company, val context: Context) {
     var viewName = company.name
     var viewEmployeesNum = company.employeesNum.toString()
     var viewSalary = company.salaryLow.toString() + SALARY_UNIT
+    var viewWantedJob = company.wantedJob ?: ""
+
     var colorName: String
     var viewFavorite: Float
 
@@ -43,6 +45,7 @@ class CompanyViewModel(var company: Company, val context: Context) {
         viewName = vm.viewName
         viewEmployeesNum = vm.viewEmployeesNum
         viewSalary = vm.viewSalary
+        viewWantedJob = vm.viewWantedJob
     }
 
     fun isFavorite(): Boolean {

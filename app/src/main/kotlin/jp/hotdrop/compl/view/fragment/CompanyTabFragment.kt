@@ -106,12 +106,6 @@ class CompanyTabFragment: BaseFragment() {
         compositeDisposable.clear()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        // 画面起動時に呼ばれるので何かおかしい・・
-        // TODO どこでこれを呼ぶか・・ CompanyDao.updateAllOrder(adapter.iterator())
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         compositeDisposable.dispose()
@@ -178,6 +172,10 @@ class CompanyTabFragment: BaseFragment() {
                     adapter.notifyItemChanged(i)
                 }
             }
+        }
+
+        fun getModels(): MutableList<Company> {
+            return list.map {vm -> vm.company }.toMutableList()
         }
     }
 

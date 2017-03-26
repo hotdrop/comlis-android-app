@@ -11,6 +11,7 @@
     <dimen name="icon_spacing">4dp</dimen>
     <dimen name="icon_spacing_large">8dp</dimen>
 
+    <dimen name="text_more_small">9sp</dimen>
     <dimen name="text_small">12sp</dimen>
     <dimen name="text_normal">14sp</dimen>
     <dimen name="text_large">16sp</dimen>
@@ -29,6 +30,8 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- list -->
+    <dimen name="reorder_icon_company_list_width">60dp</dimen>
+    <dimen name="reorder_icon_company_list_height">72dp</dimen>
     <dimen name="reorder_icon_width">36dp</dimen>
     <dimen name="reorder_icon_height">40dp</dimen>
 

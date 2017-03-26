@@ -14,6 +14,7 @@
     <string name="label_overview">概要</string>
     <string name="label_employees_num">従業員数</string>
     <string name="label_salary">年収</string>
+    <string name="label_wanted_job">募集職種</string>
     <string name="label_salary_unit">万円</string>
     <string name="label_salary_range_mark">〜</string>
     <string name="label_url">URL</string>
@@ -22,11 +23,12 @@
     <string name="hint_url">https://www.sample.co.jp</string>
     <string name="add_button">登録</string>
 
-    <!-- company detail -->
+    <!-- company list and detail -->
     <string name="label_abstract_title">概要</string>
     <string name="label_description_title">詳細</string>
     <string name="label_detail_employees_num">従業員数: </string>
     <string name="label_detail_salary">年収: </string>
+    <string name="label_detail_wanted_job">募集職種: </string>
     <string name="label_detail_url">URL: </string>
 
     <!-- category -->
