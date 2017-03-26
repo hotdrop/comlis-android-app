@@ -74,120 +74,97 @@
                 <TextView
                     android:id="@+id/label_abstract_title"
                     style="@style/SectionTitle"
-                    android:layout_marginTop="@dimen/spacing_small"
                     android:text="@string/label_overview"/>
 
                 <View
                     android:id="@+id/line_abstract_title"
-                    style="@style/Border"
-                    android:layout_below="@id/label_abstract_title"
-                    android:layout_marginTop="@dimen/spacing" />
+                    style="@style/TitleBorder"
+                    android:layout_below="@id/label_abstract_title" />
 
                 <TextView
                     android:id="@+id/txt_overview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_small"
-                    android:layout_marginStart="@dimen/spacing_small"
+                    style="@style/MultiLineDisplayText"
                     android:layout_below="@id/line_abstract_title"
-                    android:textColor="@color/subtext"
-                    android:textSize="@dimen/text_normal"
                     android:text="@{viewModel.viewOverview}"/>
 
                 <TextView
                     android:id="@+id/label_employees_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/OverViewItemLabel"
                     android:drawableStart="@drawable/ic_people"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:layout_marginStart="@dimen/spacing_small"
                     android:layout_below="@id/txt_overview"
-                    android:textColor="@color/subtext"
-                    android:textSize="@dimen/text_small"
                     android:text="@string/label_display_employees_num" />
 
                 <TextView
                     android:id="@+id/txt_employees_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/label_abstract_title"
+                    style="@style/OverViewItemText"
                     android:layout_alignTop="@id/label_employees_num"
                     android:layout_toEndOf="@id/label_employees_num"
-                    android:layout_marginStart="@dimen/spacing_small"
-                    android:textColor="@color/subtext"
-                    android:textSize="@dimen/text_small"
+                    android:layout_below="@id/txt_overview"
                     android:text="@{viewModel.viewEmployeesNum}" />
 
                 <TextView
                     android:id="@+id/label_salary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/OverViewItemLabel"
                     android:drawableStart="@drawable/ic_attach_money"
-                    android:layout_marginStart="@dimen/spacing_small"
                     android:layout_below="@id/label_employees_num"
-                    android:textColor="@color/item_list_subtext"
-                    android:textSize="@dimen/text_small"
                     android:text="@string/label_display_salary" />
 
                 <TextView
                     android:id="@+id/txt_salary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/txt_employees_num"
+                    style="@style/OverViewItemText"
                     android:layout_alignTop="@id/label_salary"
                     android:layout_toEndOf="@id/label_salary"
-                    android:layout_marginStart="@dimen/spacing_small"
-                    android:textColor="@color/item_list_subtext"
-                    android:textSize="@dimen/text_small"
+                    android:layout_below="@id/txt_employees_num"
                     android:text="@{viewModel.viewSalary}"/>
 
                 <TextView
-                    android:id="@+id/label_url"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_open_in_browser"
-                    android:layout_marginStart="@dimen/spacing_small"
+                    android:id="@+id/label_wanted_job"
+                    style="@style/OverViewItemLabel"
+                    android:drawableStart="@drawable/ic_contacts"
                     android:layout_below="@id/label_salary"
-                    android:textColor="@color/item_list_subtext"
-                    android:textSize="@dimen/text_small"
+                    android:text="@string/label_display_wanted_job" />
+
+                <TextView
+                    android:id="@+id/txt_wanted_job"
+                    style="@style/OverViewItemText"
+                    android:layout_alignTop="@id/label_wanted_job"
+                    android:layout_toEndOf="@id/label_wanted_job"
+                    android:layout_below="@id/txt_salary"
+                    android:text="@{viewModel.viewWantedJob}"/>
+
+                <TextView
+                    android:id="@+id/label_url"
+                    style="@style/OverViewItemLabel"
+                    android:drawableStart="@drawable/ic_open_in_browser"
+                    android:layout_below="@id/label_wanted_job"
                     android:visibility="@{viewModel.visibleUrl}"
                     android:text="@string/label_display_url" />
 
                 <TextView
                     android:id="@+id/text_link_url"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/label_salary"
+                    style="@style/OverViewItemText"
                     android:layout_alignTop="@id/label_url"
                     android:layout_toEndOf="@id/label_url"
-                    android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_below="@id/txt_wanted_job"
                     android:autoLink="web"
-                    android:textSize="@dimen/text_small"
                     android:visibility="@{viewModel.visibleUrl}"
                     android:text="@{viewModel.viewUrl}" />
 
                 <TextView
                     android:id="@+id/label_detail_title"
                     style="@style/SectionTitle"
-                    android:layout_below="@id/label_salary"
-                    android:layout_marginTop="@dimen/spacing_large"
+                    android:layout_below="@id/label_url"
                     android:text="@string/label_description"/>
 
                 <View
                     android:id="@+id/line_detail_title"
-                    style="@style/Border"
-                    android:layout_below="@id/label_detail_title"
-                    android:layout_marginTop="@dimen/spacing" />
+                    style="@style/TitleBorder"
+                    android:layout_below="@id/label_detail_title" />
 
                 <TextView
                     android:id="@+id/text_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_small"
-                    android:layout_marginStart="@dimen/spacing_small"
+                    style="@style/MultiLineDisplayText"
                     android:layout_below="@id/line_detail_title"
-                    android:textColor="@color/subtext"
-                    android:textSize="@dimen/text_normal"
                     android:text="@{viewModel.viewNote}"/>
 
             </RelativeLayout>

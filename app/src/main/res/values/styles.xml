@@ -46,24 +46,6 @@
         <item name="android:scrollingCache">false</item>
     </style>
 
-    <!-- company detail fragment -->
-    <style name="CompanyDetailTitle">
-        <item name="android:textSize">@dimen/text_title</item>
-        <item name="android:maxLines">2</item>
-    </style>
-
-    <style name="SectionTitle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">@dimen/spacing_small</item>
-        <item name="android:layout_marginRight">@dimen/spacing_small</item>
-        <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">@dimen/spacing_small</item>
-        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@dimen/spacing_small</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:lines">1</item>
-        <item name="android:textSize">@dimen/text_sub_title</item>
-    </style>
-
     <!-- list -->
     <style name="ListSubItemLabel">
         <item name="android:layout_width">wrap_content</item>
@@ -159,13 +141,70 @@
 
     <style name="SpinnerDropDownBorder" parent="android:style/Widget.ListView.DropDown">
         <item name="android:divider">@color/spinner_border</item>
-        <item name="android:dividerHeight">@dimen/spinner_border_height</item>
+        <item name="android:dividerHeight">@dimen/border_height</item>
     </style>
 
     <style name="Border">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/spinner_border_height</item>
+        <item name="android:layout_height">@dimen/border_height</item>
         <item name="android:background">@color/border_line</item>
+    </style>
+
+    <!-- company detail fragment -->
+    <style name="CompanyDetailTitle">
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:maxLines">2</item>
+    </style>
+
+    <style name="SectionTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/spacing</item>
+        <item name="android:layout_marginTop">@dimen/spacing</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:textSize">@dimen/text_sub_title</item>
+    </style>
+
+    <style name="TitleBorder">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/border_height</item>
+        <item name="android:layout_marginStart">@dimen/spacing</item>
+        <item name="android:layout_marginEnd">@dimen/spacing</item>
+        <item name="android:background">@color/border_line</item>
+    </style>
+
+    <style name="MultiLineDisplayText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/spacing_small</item>
+        <item name="android:layout_marginStart">@dimen/spacing</item>
+        <item name="android:layout_marginEnd">@dimen/spacing</item>
+        <item name="android:layout_marginBottom">@dimen/spacing</item>
+        <item name="android:textColor">@color/subtext</item>
+        <item name="android:textSize">@dimen/text_normal</item>
+    </style>
+
+    <style name="OverViewItemLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginStart">@dimen/spacing</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:textColor">@color/label</item>
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="OverViewItemText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginStart">@dimen/spacing_small</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:textColor">@color/label</item>
+        <item name="android:textSize">@dimen/text_small</item>
     </style>
 
 </resources>

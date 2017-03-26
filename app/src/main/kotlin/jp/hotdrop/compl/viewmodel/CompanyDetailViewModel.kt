@@ -11,7 +11,7 @@ class CompanyDetailViewModel(companyId: Int) {
         @JvmStatic private val SALARY_UNIT = "万円"
         @JvmStatic private val SALARY_RANGE_MARK = "〜"
         @JvmStatic private val EMPLOYEES_NUM_UNIT = "名"
-        @JvmStatic private val EMPTY_VALUE = "未入力"
+        @JvmStatic private val EMPTY_VALUE = "未登録"
     }
 
     val company: Company = CompanyDao.find(companyId)
@@ -19,6 +19,7 @@ class CompanyDetailViewModel(companyId: Int) {
     val viewOverview: String
     val viewEmployeesNum: String
     var viewSalary = ""
+    var viewWantedJob = ""
     var viewUrl: String? = null
     var visibleUrl: Int = View.GONE
     val viewNote: String
@@ -35,6 +36,8 @@ class CompanyDetailViewModel(companyId: Int) {
         if(company.salaryHigh > 0) {
             viewSalary += SALARY_RANGE_MARK + company.salaryHigh.toString() + SALARY_UNIT
         }
+
+        viewWantedJob = company.wantedJob ?: EMPTY_VALUE
 
         if(company.url != null) {
             viewUrl = company.url
