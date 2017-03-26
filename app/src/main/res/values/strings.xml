@@ -8,7 +8,6 @@
     <!-- company main -->
     <string name="empty_company_list">何も登録されていません。分類を登録してから登録してください。</string>
 
-    <!-- company register -->
     <string name="label_company">会社名</string>
     <string name="label_category">分類</string>
     <string name="label_overview">概要</string>
@@ -19,29 +18,29 @@
     <string name="label_salary_range_mark">〜</string>
     <string name="label_url">URL</string>
     <string name="label_description">詳細</string>
+
     <string name="hint_salary">任意</string>
     <string name="hint_wanted_job">PM, インフラエンジニア, プログラマー等</string>
     <string name="hint_url">https://www.sample.co.jp</string>
+
     <string name="add_button">登録</string>
 
-    <!-- company list and detail -->
-    <string name="label_abstract_title">概要</string>
-    <string name="label_description_title">詳細</string>
-    <string name="label_detail_employees_num">従業員数: </string>
-    <string name="label_detail_salary">年収: </string>
-    <string name="label_detail_wanted_job">募集職種: </string>
-    <string name="label_detail_url">URL: </string>
+    <!-- display label -->
+    <string name="label_display_employees_num">従業員数: </string>
+    <string name="label_display_salary">年収: </string>
+    <string name="label_display_wanted_job">募集職種: </string>
+    <string name="label_display_url">URL: </string>
 
     <!-- category -->
     <string name="empty_category_list">まだ何も登録されていません。好きな分類名を登録してください。この分類名が会社一覧のタブになります。</string>
     <string name="label_register_count">登録数:</string>
-    <string name="label_category_point">点数</string>
 
     <!-- dialog -->
-    <string name="category_dialog_label_name">分類名:</string>
+    <string name="category_dialog_label_name">分類名</string>
     <string name="category_dialog_title">分類登録</string>
     <string name="category_dialog_attention">この分類名は既に登録されています</string>
-    <string name="category_dialog_color_type">テーマカラー:</string>
+    <string name="category_dialog_color_type">テーマカラー</string>
+
     <string name="category_dialog_add_button">登録</string>
     <string name="category_dialog_update_button">更新</string>
 

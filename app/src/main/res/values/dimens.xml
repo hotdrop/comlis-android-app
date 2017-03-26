@@ -39,6 +39,8 @@
     <dimen name="spinner_radius">6dip</dimen>
     <dimen name="spinner_border">1dp</dimen>
     <dimen name="spinner_stock_width">100dp</dimen>
+    <dimen name="spinner_height">40dp</dimen>
+    <dimen name="spinner_border_height">1dp</dimen>
 
     <!-- Elevation -->
     <dimen name="elevation">4dp</dimen>

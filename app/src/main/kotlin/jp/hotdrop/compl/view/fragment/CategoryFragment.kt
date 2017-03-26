@@ -122,19 +122,25 @@ class CategoryFragment : BaseFragment() {
     /**
      * ダイアログで、入力した分類名に応じてボタンと注意書きの制御を行う拡張関数
      */
-    private val NONE: Int = -1
-    fun AppCompatEditText.changeTextListener(view: View, dialog: AlertDialog, editText: AppCompatEditText, categoryId: Int = NONE, originName: String = "") =
+    private val REGISTER_MODE: Int = -1
+    fun AppCompatEditText.changeTextListener(view: View, dialog: AlertDialog, editText: AppCompatEditText,
+                                             categoryId: Int = REGISTER_MODE, originName: String = "") =
             addTextChangedListener(object: TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/*no op*/}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {/*no op*/ }
                 override fun afterTextChanged(s: Editable?) {
                     val editTxt = editText.text.toString()
-                    when (categoryId) {
-                        NONE -> if(CategoryDao.exist(editTxt)) disableButton() else enableButton()
-                        else -> if(editTxt != originName && CategoryDao.exist(editTxt, categoryId)) disableButton() else enableButton()
+                    when {
+                        editTxt == "" -> disableButton()
+                        categoryId == REGISTER_MODE -> if(CategoryDao.exist(editTxt)) disableButtonWithAttention() else enableButton()
+                        else -> if(editTxt != originName && CategoryDao.exist(editTxt, categoryId)) disableButtonWithAttention() else enableButton()
                     }
                 }
                 private fun disableButton() {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+                    view.findViewById(R.id.label_category_attention).visibility = View.GONE
+                }
+                private fun disableButtonWithAttention() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
                     view.findViewById(R.id.label_category_attention).visibility = View.VISIBLE
                 }
@@ -149,7 +155,6 @@ class CategoryFragment : BaseFragment() {
         val editText = view.findViewById(R.id.text_category_name) as AppCompatEditText
         val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
-                .setTitle(R.string.category_dialog_title)
                 .setView(view)
                 .setPositiveButton(R.string.category_dialog_add_button, { dialogInterface, _ ->
                     CategoryDao.insert(editText.text.toString(), spinner.getSelection())
@@ -171,7 +176,6 @@ class CategoryFragment : BaseFragment() {
         val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
         spinner.setSelection(vm.category.colorType)
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
-                .setTitle(R.string.category_dialog_title)
                 .setView(view)
                 .setPositiveButton(R.string.category_dialog_update_button, { dialogInterface, _ ->
                     vm.viewName = editText.text.toString()

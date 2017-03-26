@@ -75,7 +75,7 @@
                     android:id="@+id/label_abstract_title"
                     style="@style/SectionTitle"
                     android:layout_marginTop="@dimen/spacing_small"
-                    android:text="@string/label_abstract_title"/>
+                    android:text="@string/label_overview"/>
 
                 <View
                     android:id="@+id/line_abstract_title"
@@ -104,7 +104,7 @@
                     android:layout_below="@id/txt_overview"
                     android:textColor="@color/subtext"
                     android:textSize="@dimen/text_small"
-                    android:text="@string/label_detail_employees_num" />
+                    android:text="@string/label_display_employees_num" />
 
                 <TextView
                     android:id="@+id/txt_employees_num"
@@ -127,7 +127,7 @@
                     android:layout_below="@id/label_employees_num"
                     android:textColor="@color/item_list_subtext"
                     android:textSize="@dimen/text_small"
-                    android:text="@string/label_detail_salary" />
+                    android:text="@string/label_display_salary" />
 
                 <TextView
                     android:id="@+id/txt_salary"
@@ -151,7 +151,7 @@
                     android:textColor="@color/item_list_subtext"
                     android:textSize="@dimen/text_small"
                     android:visibility="@{viewModel.visibleUrl}"
-                    android:text="@string/label_detail_url" />
+                    android:text="@string/label_display_url" />
 
                 <TextView
                     android:id="@+id/text_link_url"
@@ -171,7 +171,7 @@
                     style="@style/SectionTitle"
                     android:layout_below="@id/label_salary"
                     android:layout_marginTop="@dimen/spacing_large"
-                    android:text="@string/label_description_title"/>
+                    android:text="@string/label_description"/>
 
                 <View
                     android:id="@+id/line_detail_title"
