@@ -1,6 +1,7 @@
 package jp.hotdrop.compl.view.fragment
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
+import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.viewmodel.CompanyDetailViewModel
 
 class CompanyDetailFragment: BaseFragment() {
@@ -58,6 +60,8 @@ class CompanyDetailFragment: BaseFragment() {
     private fun initLayout() {
         viewModel = CompanyDetailViewModel(companyId)
         binding.viewModel = viewModel
+
+        binding.fab.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResNormal(viewModel.colorName, context))
 
         binding.fab.isSelected = viewModel.company.favorite
         binding.fab.setOnClickListener {

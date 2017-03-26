@@ -32,7 +32,6 @@
                     android:layout_width="@dimen/reorder_icon_company_list_width"
                     android:layout_height="@dimen/reorder_icon_company_list_height"
                     android:layout_alignTop="@id/txt_name"
-                    android:scaleType="fitXY"
                     android:src="@drawable/ic_reorder"
                     android:tint="@{viewModel.ColorRes}" />
 
@@ -100,10 +99,7 @@
                     <com.airbnb.lottie.LottieAnimationView
                         android:id="@+id/animation_view"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:lottie_fileName="FavoriteStar.json"
-                        app:lottie_loop="false"
-                        app:lottie_autoPlay="false" />
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 

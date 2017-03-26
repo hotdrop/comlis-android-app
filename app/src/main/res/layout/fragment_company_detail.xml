@@ -176,10 +176,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             android:scaleType="center"
-            app:backgroundTint="@color/tab_background"
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|end"
-            app:srcCompat="@drawable/fab_star_icon" />
+            app:srcCompat="@drawable/ic_mode_edit" />
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

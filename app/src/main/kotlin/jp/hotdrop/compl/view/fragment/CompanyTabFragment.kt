@@ -13,6 +13,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.airbnb.lottie.LottieAnimationView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -146,6 +147,8 @@ class CompanyTabFragment: BaseFragment() {
             }
 
             val animView = binding.animationView.apply {
+                // ロード時にキャッシュして問題ないのでStrongにした
+                setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Strong)
                 progress = binding.viewModel.viewFavorite
             }
 

@@ -1,6 +1,8 @@
 package jp.hotdrop.compl.util
 
+import android.content.Context
 import android.support.annotation.ColorRes
+import android.support.v4.content.ContextCompat
 import jp.hotdrop.compl.R
 
 object ColorUtil {
@@ -26,13 +28,13 @@ object ColorUtil {
     }
 
     @ColorRes
-    fun getColorNormal(name: String): Int {
-        return colorMap[name]!!.normal
+    fun getResNormal(name: String, context: Context): Int {
+        return ContextCompat.getColor(context, colorMap[name]!!.normal)
     }
 
     @ColorRes
-    fun getColorLight(name: String): Int {
-        return colorMap[name]!!.light
+    fun getResLight(name: String, context: Context): Int {
+        return ContextCompat.getColor(context, colorMap[name]!!.light)
     }
 
     data class ColorData(val normal: Int, val light: Int)
