@@ -33,7 +33,7 @@
                         android:text="@string/label_company" />
 
                     <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/text_name"
+                        android:id="@+id/txt_name"
                         style="@style/EditText"
                         android:layout_below="@id/label_name"
                         android:layout_marginTop="@dimen/spacing_small"
@@ -46,7 +46,7 @@
                         style="@style/ItemLabel"
                         android:layout_marginTop="@dimen/spacing"
                         android:layout_marginStart="@dimen/spacing"
-                        android:layout_below="@id/text_name"
+                        android:layout_below="@id/txt_name"
                         android:text="@string/label_category" />
 
                     <Spinner
@@ -66,7 +66,7 @@
                         android:text="@string/label_overview" />
 
                     <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/text_overview"
+                        android:id="@+id/txt_overview"
                         style="@style/MultiLineEditText"
                         android:layout_marginTop="@dimen/spacing_small"
                         android:layout_marginStart="@dimen/spacing"
@@ -79,11 +79,11 @@
                         style="@style/ItemLabel"
                         android:layout_marginTop="@dimen/spacing"
                         android:layout_marginStart="@dimen/spacing"
-                        android:layout_below="@id/text_overview"
+                        android:layout_below="@id/txt_overview"
                         android:text="@string/label_employees_num" />
 
                     <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/text_employees_num"
+                        android:id="@+id/txt_employees_num"
                         style="@style/CompactEditText"
                         android:layout_marginTop="@dimen/spacing"
                         android:layout_marginStart="@dimen/spacing"
@@ -96,11 +96,11 @@
                         style="@style/ItemLabel"
                         android:layout_marginTop="@dimen/spacing"
                         android:layout_marginStart="@dimen/spacing"
-                        android:layout_below="@id/text_employees_num"
+                        android:layout_below="@id/txt_employees_num"
                         android:text="@string/label_salary" />
 
                     <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/text_salary_lower"
+                        android:id="@+id/txt_salary_lower"
                         style="@style/CompactEditText"
                         android:layout_marginTop="@dimen/spacing_small"
                         android:layout_marginStart="@dimen/spacing"
@@ -111,9 +111,9 @@
                         android:id="@+id/label_salary_lower_unit"
                         style="@style/ItemUnitLabel"
                         android:layout_marginTop="@dimen/spacing_small"
-                        android:layout_toEndOf="@id/text_salary_lower"
+                        android:layout_toEndOf="@id/txt_salary_lower"
                         android:layout_below="@id/label_salary"
-                        android:layout_alignBottom="@id/text_salary_lower"
+                        android:layout_alignBottom="@id/txt_salary_lower"
                         android:text="@string/label_salary_unit" />
 
                     <TextView
@@ -122,11 +122,11 @@
                         android:layout_marginTop="@dimen/spacing_small"
                         android:layout_toEndOf="@id/label_salary_lower_unit"
                         android:layout_below="@id/label_salary"
-                        android:layout_alignBottom="@id/text_salary_lower"
+                        android:layout_alignBottom="@id/txt_salary_lower"
                         android:text="@string/label_salary_range_mark" />
 
                     <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/text_salary_high"
+                        android:id="@+id/txt_salary_high"
                         style="@style/CompactEditText"
                         android:layout_marginTop="@dimen/spacing_small"
                         android:layout_below="@id/label_salary"
@@ -138,10 +138,29 @@
                         android:id="@+id/label_salary_high_unit"
                         style="@style/ItemUnitLabel"
                         android:layout_marginTop="@dimen/spacing_small"
-                        android:layout_toEndOf="@id/text_salary_high"
+                        android:layout_toEndOf="@id/txt_salary_high"
                         android:layout_below="@id/label_salary"
-                        android:layout_alignBottom="@id/text_salary_lower"
+                        android:layout_alignBottom="@id/txt_salary_lower"
                         android:text="@string/label_salary_unit" />
+
+                    <TextView
+                        android:id="@+id/label_wanted_job"
+                        style="@style/ItemLabel"
+                        android:layout_marginTop="@dimen/spacing"
+                        android:layout_marginStart="@dimen/spacing"
+                        android:layout_marginEnd="@dimen/spacing"
+                        android:layout_below="@id/txt_salary_lower"
+                        android:text="@string/label_wanted_job" />
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/txt_wanted_job"
+                        style="@style/EditText"
+                        android:layout_below="@id/label_wanted_job"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:layout_marginStart="@dimen/spacing"
+                        android:layout_marginEnd="@dimen/spacing"
+                        android:hint="@string/hint_wanted_job"
+                        android:text="@={viewModel.viewWantedJob}" />
 
                     <TextView
                         android:id="@+id/label_url"
@@ -149,11 +168,11 @@
                         android:layout_marginTop="@dimen/spacing"
                         android:layout_marginStart="@dimen/spacing"
                         android:layout_marginEnd="@dimen/spacing"
-                        android:layout_below="@id/text_salary_lower"
+                        android:layout_below="@id/txt_wanted_job"
                         android:text="@string/label_url" />
 
                     <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/text_url"
+                        android:id="@+id/txt_url"
                         style="@style/EditText"
                         android:layout_below="@id/label_url"
                         android:layout_marginTop="@dimen/spacing_small"
@@ -168,11 +187,11 @@
                         android:layout_marginTop="@dimen/spacing"
                         android:layout_marginStart="@dimen/spacing"
                         android:layout_marginEnd="@dimen/spacing"
-                        android:layout_below="@id/text_url"
+                        android:layout_below="@id/txt_url"
                         android:text="@string/label_description" />
 
                     <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/text_note"
+                        android:id="@+id/txt_note"
                         style="@style/MultiLineEditText"
                         android:layout_marginStart="@dimen/spacing"
                         android:layout_marginEnd="@dimen/spacing"

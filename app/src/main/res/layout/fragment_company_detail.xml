@@ -84,7 +84,7 @@
                     android:layout_marginTop="@dimen/spacing" />
 
                 <TextView
-                    android:id="@+id/text_overview"
+                    android:id="@+id/txt_overview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_small"
@@ -101,7 +101,7 @@
                     android:drawableStart="@drawable/ic_people"
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginStart="@dimen/spacing_small"
-                    android:layout_below="@id/text_overview"
+                    android:layout_below="@id/txt_overview"
                     android:textColor="@color/subtext"
                     android:textSize="@dimen/text_small"
                     android:text="@string/label_detail_employees_num" />

@@ -12,6 +12,7 @@ class CompanyRegisterViewModel {
     var viewEmployeesNum = ""
     var viewSalaryLow = ""
     var viewSalaryHigh = ""
+    var viewWantedJob = ""
     var viewUrl = ""
     var viewNote = ""
     // orderはinsert時にMAX値を入れる
@@ -21,8 +22,8 @@ class CompanyRegisterViewModel {
         if(code != AppCode.OK) {
             return code
         }
-        val makeCompany =  makeData(selectedCategorySpinnerId)
-        CompanyDao.insert(makeCompany)
+        val company =  makeData(selectedCategorySpinnerId)
+        CompanyDao.insert(company)
 
         return AppCode.OK
     }
@@ -50,6 +51,7 @@ class CompanyRegisterViewModel {
         employeesNum = if(viewEmployeesNum != "") viewEmployeesNum.toInt() else 0
         salaryLow = if(viewSalaryLow != "") viewSalaryLow.toInt() else 0
         salaryHigh = if(viewSalaryHigh != "") viewSalaryHigh.toInt() else 0
+        wantedJob = if(viewWantedJob != "") viewWantedJob else null
         url = if(viewUrl != "") viewUrl else null
         note = if(viewNote != "") viewNote else null
     }
