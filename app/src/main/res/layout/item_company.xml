@@ -46,60 +46,77 @@
                     android:text="@{viewModel.viewName}" />
 
                 <TextView
-                    android:id="@+id/label_employees_num"
-                    style="@style/ListSubItemLabel"
-                    android:layout_below="@id/txt_name"
-                    android:layout_toEndOf="@id/icon_reorder"
-                    android:text="@string/label_display_employees_num" />
-
-                <TextView
-                    android:id="@+id/txt_employees_num"
-                    style="@style/ListSubItemText"
-                    android:layout_below="@id/txt_name"
-                    android:layout_alignTop="@id/label_employees_num"
-                    android:layout_toEndOf="@id/label_employees_num"
-                    android:text="@{viewModel.viewEmployeesNum}" />
-
-                <TextView
-                    android:id="@+id/label_salary"
-                    style="@style/ListSubItemLabel"
-                    android:layout_below="@id/label_employees_num"
-                    android:layout_toEndOf="@id/icon_reorder"
-                    android:text="@string/label_display_salary" />
-
-                <TextView
-                    android:id="@+id/txt_salary"
-                    style="@style/ListSubItemText"
-                    android:layout_below="@id/txt_employees_num"
-                    android:layout_alignTop="@id/label_salary"
-                    android:layout_toEndOf="@id/label_salary"
-                    android:text="@{viewModel.viewSalary}"/>
-
-                <TextView
                     android:id="@+id/label_wanted_job"
                     style="@style/ListSubItemLabel"
-                    android:layout_below="@id/label_salary"
+                    android:layout_below="@id/txt_name"
                     android:layout_toEndOf="@id/icon_reorder"
                     android:text="@string/label_display_wanted_job"/>
 
                 <TextView
                     android:id="@+id/txt_wanted_job"
                     style="@style/ListSubItemText"
-                    android:layout_below="@id/txt_salary"
+                    android:layout_below="@id/txt_name"
                     android:layout_alignTop="@id/label_wanted_job"
                     android:layout_toEndOf="@id/label_wanted_job"
                     android:text="@{viewModel.viewWantedJob}"/>
+
+                <TextView
+                    android:id="@+id/label_salary"
+                    style="@style/ListSubItemLabel"
+                    android:layout_below="@id/label_wanted_job"
+                    android:layout_toEndOf="@id/icon_reorder"
+                    android:text="@string/label_display_salary" />
+
+                <TextView
+                    android:id="@+id/txt_salary"
+                    style="@style/ListSubItemText"
+                    android:layout_below="@id/txt_wanted_job"
+                    android:layout_alignTop="@id/label_salary"
+                    android:layout_toEndOf="@id/label_salary"
+                    android:text="@{viewModel.viewSalary}"/>
+
+                <TextView
+                    android:id="@+id/label_employees_num"
+                    style="@style/ListSubItemLabel"
+                    android:layout_below="@id/label_salary"
+                    android:layout_toEndOf="@id/icon_reorder"
+                    android:text="@string/label_display_employees_num" />
+
+                <TextView
+                    android:id="@+id/txt_employees_num"
+                    style="@style/ListSubItemText"
+                    android:layout_below="@id/txt_salary"
+                    android:layout_alignTop="@id/label_employees_num"
+                    android:layout_toEndOf="@id/label_employees_num"
+                    android:text="@{viewModel.viewEmployeesNum}" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/txt_name"
+                    android:layout_alignBottom="@id/icon_reorder"
                     android:gravity="end">
 
                     <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/animation_view"
+                        android:id="@+id/animation_view_1"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"/>
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/animation_view_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"/>
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/animation_view_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"/>
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/animation_view_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"/>
 
                 </LinearLayout>
 

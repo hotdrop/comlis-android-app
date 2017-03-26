@@ -95,8 +95,7 @@ class CompanyTabFragment: BaseFragment() {
             return
         }
 
-        // TODO カテゴリーを更新した場合、面倒臭いのでTabを全リフレッシュする
-        // TODO カテゴリーを更新しなかった場合、該当するアイテムのみ更新する
+        // TODO 更新はTabを全リフレッシュする
     }
 
     /**
@@ -126,6 +125,8 @@ class CompanyTabFragment: BaseFragment() {
     inner class Adapter(context: Context):
             ArrayRecyclerAdapter<CompanyViewModel, BindingHolder<ItemCompanyBinding>>(context) {
 
+        private val RESET = 0.toFloat()
+
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCompanyBinding> {
             return BindingHolder(context, parent, R.layout.item_company)
         }
@@ -146,20 +147,7 @@ class CompanyTabFragment: BaseFragment() {
                 ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.company.id, REQ_CODE_COMPANY_DETAIL)
             }
 
-            val animView = binding.animationView.apply {
-                // ロード時にキャッシュして問題ないのでStrongにした
-                setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Strong)
-                progress = binding.viewModel.viewFavorite
-            }
-
-            animView.setOnClickListener {
-                if(binding.viewModel.isFavorite()) {
-                    animView.progress = 0.toFloat()
-                } else {
-                    animView.playAnimation()
-                }
-                binding.viewModel.tapFavorite()
-            }
+            initAnimationView(binding)
         }
 
         fun add(vm: CompanyViewModel) {
@@ -167,18 +155,24 @@ class CompanyTabFragment: BaseFragment() {
             adapter.notifyItemInserted(adapter.itemCount)
         }
 
-        fun refresh(vm: CompanyViewModel) {
-            (0..adapter.itemCount - 1).forEach { i ->
-                val o = getItem(i)
-                if(vm == o) {
-                    o.change(vm)
-                    adapter.notifyItemChanged(i)
-                }
+        private fun initAnimationView(binding: ItemCompanyBinding) {
+            // ロード時にキャッシュして問題ないのでStrongにした。コード読む限り最初の1つだけでいいと思う。
+            val animView1 = binding.animationView1.apply {
+                setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Strong)
+                progress = binding.viewModel.viewFavorite
             }
-        }
+            val animView2 = binding.animationView2.apply { setAnimation("FavoriteStar.json") }
+            val animView3 = binding.animationView3.apply { setAnimation("FavoriteStar.json") }
+            val animView4 = binding.animationView4.apply { setAnimation("FavoriteStar.json") }
 
-        fun getModels(): MutableList<Company> {
-            return list.map {vm -> vm.company }.toMutableList()
+            // TODO 4つのスターを扱うので今とやり方を変える必要がある。
+            val animViews = mutableListOf(animView2, animView3, animView4)
+            animViews.forEach { v -> v.setOnClickListener { if(v.progress == RESET) v.playAnimation() else v.progress = RESET } }
+
+            animView1.setOnClickListener {
+                if(binding.viewModel.isFavorite()) animView1.progress = RESET else animView1.playAnimation()
+                binding.viewModel.tapFavorite()
+            }
         }
     }
 
