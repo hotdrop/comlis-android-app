@@ -38,6 +38,8 @@ class CompanyTabFragment: BaseFragment() {
     private lateinit var adapter: Adapter
     private lateinit var helper: ItemTouchHelper
 
+    private var isMoveItem = false
+
     companion object {
         @JvmStatic val EXTRA_CATEGORY_ID = "categoryId"
         fun create(categoryId: Int) = CompanyTabFragment().apply {
@@ -104,7 +106,10 @@ class CompanyTabFragment: BaseFragment() {
     override fun onStop() {
         super.onStop()
         compositeDisposable.clear()
-        CompanyDao.updateAllOrder(adapter.getModels())
+        if(isMoveItem) {
+            CompanyDao.updateAllOrder(adapter.getModels())
+            isMoveItem = false
+        }
     }
 
     override fun onDestroy() {
@@ -225,6 +230,7 @@ class CompanyTabFragment: BaseFragment() {
             if(viewHolder == null || target == null) {
                 return false
             }
+            isMoveItem = true
             return adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
         }
 
