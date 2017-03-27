@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
 import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.viewmodel.CompanyDetailViewModel
@@ -63,11 +62,8 @@ class CompanyDetailFragment: BaseFragment() {
 
         binding.fab.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResNormal(viewModel.colorName, context))
 
-        binding.fab.isSelected = viewModel.company.favorite
         binding.fab.setOnClickListener {
-            val checked = !binding.fab.isSelected
-            binding.fab.isSelected = checked
-            CompanyDao.updateFavorite(viewModel.company.id, checked)
+            // TODO 編集画面に遷移する
         }
     }
 }

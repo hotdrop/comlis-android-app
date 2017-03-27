@@ -43,7 +43,7 @@ class Company {
     var viewOrder: Int = 0
 
     @Column(indexed = true)
-    var favorite: Boolean = false
+    var favorite: Int = 0
 
     @Column
     var registerDate: Timestamp? = null

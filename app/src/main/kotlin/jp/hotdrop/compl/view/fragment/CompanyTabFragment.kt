@@ -125,8 +125,6 @@ class CompanyTabFragment: BaseFragment() {
     inner class Adapter(context: Context):
             ArrayRecyclerAdapter<CompanyViewModel, BindingHolder<ItemCompanyBinding>>(context) {
 
-        private val RESET = 0.toFloat()
-
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCompanyBinding> {
             return BindingHolder(context, parent, R.layout.item_company)
         }
@@ -155,23 +153,48 @@ class CompanyTabFragment: BaseFragment() {
             adapter.notifyItemInserted(adapter.itemCount)
         }
 
+        private val RESET = 0.toFloat()
+        private val MARKED = 1.toFloat()
+
         private fun initAnimationView(binding: ItemCompanyBinding) {
             // ロード時にキャッシュして問題ないのでStrongにした。コード読む限り最初の1つだけでいいと思う。
-            val animView1 = binding.animationView1.apply {
-                setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Strong)
-                progress = binding.viewModel.viewFavorite
-            }
+            val animView1 = binding.animationView1.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Strong) }
             val animView2 = binding.animationView2.apply { setAnimation("FavoriteStar.json") }
             val animView3 = binding.animationView3.apply { setAnimation("FavoriteStar.json") }
-            val animView4 = binding.animationView4.apply { setAnimation("FavoriteStar.json") }
+            val animViews = mutableListOf(animView1, animView2, animView3)
 
-            // TODO 4つのスターを扱うので今とやり方を変える必要がある。
-            val animViews = mutableListOf(animView2, animView3, animView4)
-            animViews.forEach { v -> v.setOnClickListener { if(v.progress == RESET) v.playAnimation() else v.progress = RESET } }
+            val vm = binding.viewModel
+            animViews.take(vm.viewFavorite).forEach { it.playAnimation() }
 
             animView1.setOnClickListener {
-                if(binding.viewModel.isFavorite()) animView1.progress = RESET else animView1.playAnimation()
-                binding.viewModel.tapFavorite()
+                if(animView1.progress == MARKED) {
+                    animViews.forEach { it.progress = RESET }
+                    vm.resetFavorite()
+                } else {
+                    animView1.playAnimation()
+                    animView2.progress = RESET
+                    animView3.progress = RESET
+                    vm.tapFavorite(1)
+                }
+            }
+            animView2.setOnClickListener {
+                if(animView2.progress == MARKED) {
+                    animViews.forEach { it.progress = RESET }
+                    vm.resetFavorite()
+                } else {
+                    animViews.take(2).forEach { it.playAnimation() }
+                    animView3.progress = RESET
+                    vm.tapFavorite(2)
+                }
+            }
+            animView3.setOnClickListener {
+                if(animView3.progress == MARKED) {
+                    animViews.forEach { it.progress = RESET }
+                    vm.resetFavorite()
+                } else {
+                    animViews.forEach { it.playAnimation() }
+                    vm.tapFavorite(3)
+                }
             }
         }
     }

@@ -2,7 +2,6 @@ package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
 import android.support.annotation.ColorRes
-import android.support.v4.content.ContextCompat
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
@@ -22,14 +21,14 @@ class CompanyViewModel(var company: Company, val context: Context) {
     var viewWantedJob = company.wantedJob ?: ""
 
     var colorName: String
-    var viewFavorite: Float
+    var viewFavorite: Int
 
     init {
         if(company.salaryHigh > 0) {
             viewSalary += SALARY_RANGE_MARK + company.salaryHigh.toString() + SALARY_UNIT
         }
         colorName = CategoryDao.find(company.categoryId).colorType
-        viewFavorite = if(company.favorite) 1.toFloat() else 0.toFloat()
+        viewFavorite = company.favorite
     }
 
     @ColorRes
@@ -41,19 +40,13 @@ class CompanyViewModel(var company: Company, val context: Context) {
         return (other as CompanyViewModel).company.id == company.id || super.equals(other)
     }
 
-    fun change(vm: CompanyViewModel) {
-        viewName = vm.viewName
-        viewEmployeesNum = vm.viewEmployeesNum
-        viewSalary = vm.viewSalary
-        viewWantedJob = vm.viewWantedJob
+    fun tapFavorite(tapCnt: Int) {
+        CompanyDao.updateFavorite(company.id, tapCnt)
+        viewFavorite = tapCnt
     }
 
-    fun isFavorite(): Boolean {
-        return viewFavorite == 1.toFloat()
-    }
-
-    fun tapFavorite() {
-        viewFavorite = if(viewFavorite == 1.toFloat()) 0.toFloat() else 1.toFloat()
-        CompanyDao.updateFavorite(company.id, isFavorite())
+    fun resetFavorite() {
+        viewFavorite = 0
+        CompanyDao.updateFavorite(company.id, 0)
     }
 }
