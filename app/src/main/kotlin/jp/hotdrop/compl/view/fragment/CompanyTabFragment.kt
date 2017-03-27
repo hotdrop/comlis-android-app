@@ -104,6 +104,7 @@ class CompanyTabFragment: BaseFragment() {
     override fun onStop() {
         super.onStop()
         compositeDisposable.clear()
+        CompanyDao.updateAllOrder(adapter.getModels())
     }
 
     override fun onDestroy() {
@@ -151,6 +152,10 @@ class CompanyTabFragment: BaseFragment() {
         fun add(vm: CompanyViewModel) {
             adapter.addItem(vm)
             adapter.notifyItemInserted(adapter.itemCount)
+        }
+
+        fun getModels(): MutableList<Company> {
+            return list.map { vm -> vm.company }.toMutableList()
         }
 
         private val RESET = 0.toFloat()

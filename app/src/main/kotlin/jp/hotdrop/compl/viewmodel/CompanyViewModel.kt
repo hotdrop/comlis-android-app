@@ -7,7 +7,7 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.util.ColorUtil
 
-class CompanyViewModel(var company: Company, val context: Context) {
+class CompanyViewModel(val company: Company, val context: Context) {
 
     companion object {
         @JvmStatic private val SALARY_UNIT = "万円"
@@ -15,12 +15,12 @@ class CompanyViewModel(var company: Company, val context: Context) {
     }
 
     // 画面表示に使うデータだけmodelとは別にフィールド値を持たせる
-    var viewName = company.name
-    var viewEmployeesNum = company.employeesNum.toString()
+    val viewName = company.name
+    val viewEmployeesNum = company.employeesNum.toString()
     var viewSalary = company.salaryLow.toString() + SALARY_UNIT
-    var viewWantedJob = company.wantedJob ?: ""
+    val viewWantedJob = company.wantedJob ?: ""
 
-    var colorName: String
+    val colorName: String
     var viewFavorite: Int
 
     init {

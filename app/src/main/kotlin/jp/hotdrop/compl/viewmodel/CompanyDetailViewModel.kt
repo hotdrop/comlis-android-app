@@ -19,12 +19,12 @@ class CompanyDetailViewModel(companyId: Int) {
     val viewOverview: String
     val viewEmployeesNum: String
     var viewSalary = ""
-    var viewWantedJob = ""
+    val viewWantedJob: String
     var viewUrl: String? = null
     var visibleUrl: Int = View.GONE
     val viewNote: String
 
-    var colorName: String
+    val colorName: String
 
     init {
         viewName = company.name
