@@ -8,6 +8,8 @@ import jp.hotdrop.compl.util.DataChecker
 
 class CompanyEditViewModel(companyId: Int) {
 
+    val company: Company = CompanyDao.find(companyId)
+
     var viewName: String
     var viewOverview: String
     var viewEmployeesNum: String
@@ -16,12 +18,10 @@ class CompanyEditViewModel(companyId: Int) {
     var viewWantedJob: String
     var viewUrl: String
     var viewNote: String
-    val vmViewOrder: Int
 
     var categoryName: String
 
     init {
-        val company = CompanyDao.find(companyId)
         viewName = company.name
         viewOverview = company.overview ?: ""
 
@@ -31,7 +31,6 @@ class CompanyEditViewModel(companyId: Int) {
         viewWantedJob = company.wantedJob ?: ""
         viewUrl = company.url ?: ""
         viewNote = company.note ?: ""
-        vmViewOrder = company.viewOrder
 
         categoryName = CategoryDao.find(company.categoryId).name
     }
@@ -73,6 +72,8 @@ class CompanyEditViewModel(companyId: Int) {
         wantedJob = if(viewWantedJob != "") viewWantedJob else null
         url = if(viewUrl != "") viewUrl else null
         note = if(viewNote != "") viewNote else null
-        viewOrder = vmViewOrder
+
+        viewOrder = if(categoryId != company.categoryId) CompanyDao.maxOrder() + 1 else company.viewOrder
+        favorite = company.favorite
     }
 }

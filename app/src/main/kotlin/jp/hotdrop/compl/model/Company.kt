@@ -12,31 +12,32 @@ class Company {
     @PrimaryKey(autoincrement = true)
     var id: Int = 0
 
+    // 更新が必要なので全部indexed = trueにする・・
     @Column(indexed = true)
     var categoryId: Int = 0
 
-    @Column
+    @Column(indexed = true)
     var name: String = ""
 
-    @Column
+    @Column(indexed = true)
     var overview: String? = null
 
-    @Column
+    @Column(indexed = true)
     var employeesNum: Int = 0
 
-    @Column
+    @Column(indexed = true)
     var salaryLow: Int = 0
 
-    @Column
+    @Column(indexed = true)
     var salaryHigh: Int = 0
 
-    @Column
+    @Column(indexed = true)
     var wantedJob: String? = ""
 
-    @Column
+    @Column(indexed = true)
     var url: String? = null
 
-    @Column
+    @Column(indexed = true)
     var note: String? = null
 
     @Column(indexed = true)

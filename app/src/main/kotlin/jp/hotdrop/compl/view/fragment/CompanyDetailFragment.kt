@@ -54,7 +54,8 @@ class CompanyDetailFragment: BaseFragment() {
         }
         val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
         if(refreshMode == REFRESH) {
-            refresh()
+            viewModel = CompanyDetailViewModel(companyId)
+            binding.viewModel = viewModel
             activity.intent = data
         }
     }
@@ -77,10 +78,5 @@ class CompanyDetailFragment: BaseFragment() {
         binding.fab.setOnClickListener {
             ActivityNavigator.showCompanyEdit(this@CompanyDetailFragment, companyId, REQ_CODE_COMPANY_EDIT)
         }
-    }
-
-    private fun refresh() {
-        viewModel = CompanyDetailViewModel(companyId)
-        binding.viewModel = viewModel
     }
 }

@@ -38,8 +38,20 @@ object CompanyDao {
     }
 
     fun update(company: Company) {
-        // TODO 実験。upserterはindexedじゃない項目も更新してくれるのか？
-        companyRelation().upserter().execute(company)
+        companyRelation().updater()
+                .name(company.name)
+                .categoryId(company.categoryId)
+                .overview(company.overview)
+                .employeesNum(company.employeesNum)
+                .salaryLow(company.salaryLow)
+                .salaryHigh(company.salaryHigh)
+                .wantedJob((company.wantedJob))
+                .url(company.url)
+                .note(company.note)
+                .viewOrder(company.viewOrder)
+                .favorite(company.favorite)
+                .idEq(company.id)
+                .execute()
     }
 
     fun updateFavorite(id: Int, favorite: Int) {
@@ -58,12 +70,11 @@ object CompanyDao {
         }
     }
 
-    private fun companyRelation(): Company_Relation {
-        return orma.relationOfCompany()
-    }
-
-    private fun maxOrder(): Int {
+    fun maxOrder(): Int {
         return companyRelation().selector().maxByViewOrder() ?: 0
     }
 
+    private fun companyRelation(): Company_Relation {
+        return orma.relationOfCompany()
+    }
 }
