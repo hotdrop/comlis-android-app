@@ -9,16 +9,8 @@ object CompanyDao {
 
     var orma = OrmaHolder.ORMA
 
-    fun insert(company: Company) {
-        company.viewOrder = maxOrder() + 1
-        companyRelation().inserter().execute(company)
-    }
-
-    fun updateFavorite(id: Int, favorite: Int) {
-        companyRelation().updater()
-                .favorite(favorite)
-                .idEq(id)
-                .execute()
+    fun find(id: Int): Company {
+        return companyRelation().selector().idEq(id).first()
     }
 
     fun findAll(): Single<List<Company>> {
@@ -36,12 +28,25 @@ object CompanyDao {
                 .subscribeOn(Schedulers.io())
     }
 
-    fun find(id: Int): Company {
-        return companyRelation().selector().idEq(id).first()
-    }
-
     fun countByCategory(categoryId: Int): Int {
         return companyRelation().selector().categoryIdEq(categoryId).count()
+    }
+
+    fun insert(company: Company) {
+        company.viewOrder = maxOrder() + 1
+        companyRelation().inserter().execute(company)
+    }
+
+    fun update(company: Company) {
+        // TODO 実験。upserterはindexedじゃない項目も更新してくれるのか？
+        companyRelation().upserter().execute(company)
+    }
+
+    fun updateFavorite(id: Int, favorite: Int) {
+        companyRelation().updater()
+                .favorite(favorite)
+                .idEq(id)
+                .execute()
     }
 
     fun updateAllOrder(companies: List<Company>) {

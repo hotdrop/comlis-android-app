@@ -61,7 +61,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         super.onResume()
         // TODO REFRESH_NONEはちゃんとしたものにする
         val refreshMode = activity.intent.getIntExtra(REFRESH_MODE, REFRESH_NONE)
-        if(refreshMode == REFRESH_ALL) {
+        if(refreshMode == REFRESH) {
             isRefresh = true
             loadData()
             activity.intent.removeExtra(REFRESH_MODE)
@@ -88,7 +88,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         super.onActivityResult(requestCode, resultCode, data)
         data ?: return
         val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
-        if(refreshMode == REFRESH_ALL) {
+        if(refreshMode == REFRESH) {
             isRefresh = true
             loadData()
             activity.intent.removeExtra(REFRESH_MODE)

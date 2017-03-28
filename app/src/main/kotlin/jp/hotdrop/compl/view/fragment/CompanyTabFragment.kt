@@ -97,7 +97,9 @@ class CompanyTabFragment: BaseFragment() {
             return
         }
 
-        // TODO 更新はTabを全リフレッシュする
+        // TODO 暫定のデバッグコード
+        val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
+        Toast.makeText(activity, "refreshMode=" + refreshMode, Toast.LENGTH_SHORT).show()
     }
 
     /**

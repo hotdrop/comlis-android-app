@@ -1,6 +1,8 @@
 package jp.hotdrop.compl.view.fragment
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -9,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
 import jp.hotdrop.compl.util.ColorUtil
+import jp.hotdrop.compl.view.activity.ActivityNavigator
 import jp.hotdrop.compl.viewmodel.CompanyDetailViewModel
 
 class CompanyDetailFragment: BaseFragment() {
@@ -27,6 +30,11 @@ class CompanyDetailFragment: BaseFragment() {
         }
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        getComponent().inject(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -34,15 +42,21 @@ class CompanyDetailFragment: BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyDetailBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
-        // TODO 更新ボタンつけるならここで
         initToolbar()
         initLayout()
         return binding.root
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        getComponent().inject(this)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_EDIT || data == null) {
+            return
+        }
+        val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
+        if(refreshMode == REFRESH) {
+            refresh()
+            activity.intent = data
+        }
     }
 
     private fun initToolbar() {
@@ -59,11 +73,14 @@ class CompanyDetailFragment: BaseFragment() {
     private fun initLayout() {
         viewModel = CompanyDetailViewModel(companyId)
         binding.viewModel = viewModel
-
         binding.fab.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResNormal(viewModel.colorName, context))
-
         binding.fab.setOnClickListener {
-            // TODO 編集画面に遷移する
+            ActivityNavigator.showCompanyEdit(this@CompanyDetailFragment, companyId, REQ_CODE_COMPANY_EDIT)
         }
+    }
+
+    private fun refresh() {
+        viewModel = CompanyDetailViewModel(companyId)
+        binding.viewModel = viewModel
     }
 }

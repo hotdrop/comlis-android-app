@@ -98,6 +98,7 @@ class MainActivity : BaseActivity(),
      * ツールバーなどのコントロールを変更する。
      */
     override fun onBackStackChanged() {
+        // TODO onBackStackChangedがなぜか二回呼ばれてしまうのでなんか考える
         val currentFragment = supportFragmentManager.findFragmentById(R.id.content_view) ?: return
         val navPage = NavigationPage.forName(currentFragment)
         binding.navView.setCheckedItem(navPage.menuId)

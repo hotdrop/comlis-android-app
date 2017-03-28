@@ -24,6 +24,7 @@
     <string name="hint_url">https://www.sample.co.jp</string>
 
     <string name="add_button">登録</string>
+    <string name="update_button">更新</string>
 
     <!-- display label -->
     <string name="label_display_employees_num">従業員数:</string>

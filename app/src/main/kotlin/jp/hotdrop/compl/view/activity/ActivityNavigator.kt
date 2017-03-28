@@ -11,4 +11,8 @@ object ActivityNavigator {
     fun showCompanyDetail(fragment: Fragment, companyId: Int, requestCode: Int) {
         CompanyDetailActivity.startForResult(fragment, companyId, requestCode)
     }
+
+    fun showCompanyEdit(fragment: Fragment, companyId: Int, requestCode: Int) {
+        CompanyEditActivity.startForResult(fragment, companyId, requestCode)
+    }
 }

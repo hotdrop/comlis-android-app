@@ -12,10 +12,10 @@ abstract class BaseFragment: Fragment() {
 
         @JvmStatic val REQ_CODE_COMPANY_REGISTER = 1
         @JvmStatic val REQ_CODE_COMPANY_DETAIL = 2
+        @JvmStatic val REQ_CODE_COMPANY_EDIT = 3
 
         @JvmStatic val REFRESH_NONE = 0
-        @JvmStatic val REFRESH_ONE = 1
-        @JvmStatic val REFRESH_ALL = 2
+        @JvmStatic val REFRESH = 1
     }
 
     private val fragmentComponent by lazy {
