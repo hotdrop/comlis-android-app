@@ -54,8 +54,7 @@ class CompanyDetailFragment: BaseFragment() {
         }
         val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
         if(refreshMode == REFRESH) {
-            viewModel = CompanyDetailViewModel(companyId)
-            binding.viewModel = viewModel
+            refreshLayout()
             activity.intent = data
         }
     }
@@ -72,11 +71,15 @@ class CompanyDetailFragment: BaseFragment() {
     }
 
     private fun initLayout() {
-        viewModel = CompanyDetailViewModel(companyId)
-        binding.viewModel = viewModel
-        binding.fab.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResNormal(viewModel.colorName, context))
+        refreshLayout()
         binding.fab.setOnClickListener {
             ActivityNavigator.showCompanyEdit(this@CompanyDetailFragment, companyId, REQ_CODE_COMPANY_EDIT)
         }
+    }
+
+    private fun refreshLayout() {
+        viewModel = CompanyDetailViewModel(companyId)
+        binding.viewModel = viewModel
+        binding.fab.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResNormal(viewModel.colorName, context))
     }
 }
