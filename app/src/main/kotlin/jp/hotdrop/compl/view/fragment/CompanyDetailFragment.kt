@@ -55,7 +55,10 @@ class CompanyDetailFragment: BaseFragment() {
         val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
         if(refreshMode == REFRESH) {
             refreshLayout()
-            activity.intent = data
+            val intent = Intent().apply {
+                putExtra(REFRESH_MODE, REFRESH)
+            }
+            activity.setResult(Activity.RESULT_OK, intent)
         }
     }
 

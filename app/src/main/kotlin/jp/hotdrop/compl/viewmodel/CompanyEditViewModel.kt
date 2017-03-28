@@ -6,7 +6,7 @@ import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.util.AppCode
 import jp.hotdrop.compl.util.DataChecker
 
-class CompanyEditViewModel(companyId: Int) {
+class CompanyEditViewModel(val companyId: Int) {
 
     val company: Company = CompanyDao.find(companyId)
 
@@ -63,6 +63,7 @@ class CompanyEditViewModel(companyId: Int) {
     }
 
     private fun makeData(selectedCategorySpinnerId: Int) = Company().apply {
+        id = companyId
         name = viewName
         categoryId = selectedCategorySpinnerId
         overview = if(viewOverview != "") viewOverview else null

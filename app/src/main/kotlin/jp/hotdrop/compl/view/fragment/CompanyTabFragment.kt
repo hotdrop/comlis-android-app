@@ -97,7 +97,7 @@ class CompanyTabFragment: BaseFragment() {
             return
         }
 
-        // TODO 暫定のデバッグコード
+        // TODO 未実装
         val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
         Toast.makeText(activity, "refreshMode=" + refreshMode, Toast.LENGTH_SHORT).show()
     }

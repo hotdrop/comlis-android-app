@@ -39,6 +39,7 @@ object CompanyDao {
 
     fun update(company: Company) {
         companyRelation().updater()
+                .idEq(company.id)
                 .name(company.name)
                 .categoryId(company.categoryId)
                 .overview(company.overview)
@@ -50,7 +51,6 @@ object CompanyDao {
                 .note(company.note)
                 .viewOrder(company.viewOrder)
                 .favorite(company.favorite)
-                .idEq(company.id)
                 .execute()
     }
 
