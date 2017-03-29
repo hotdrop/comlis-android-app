@@ -76,5 +76,8 @@ class CompanyEditViewModel(val companyId: Int) {
 
         viewOrder = if(categoryId != company.categoryId) CompanyDao.maxOrder() + 1 else company.viewOrder
         favorite = company.favorite
+
+        registerDate = company.registerDate
+        updateDate = company.updateDate
     }
 }

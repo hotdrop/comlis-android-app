@@ -3,6 +3,7 @@ package jp.hotdrop.compl.model
 import com.github.gfx.android.orma.annotation.Column
 import com.github.gfx.android.orma.annotation.PrimaryKey
 import com.github.gfx.android.orma.annotation.Table
+import java.util.*
 
 @Table
 class Category {
@@ -25,4 +26,10 @@ class Category {
 
     @Column(indexed = true)
     var viewOrder: Int = 0
+
+    @Column
+    var registerDate: Date? = null
+
+    @Column
+    var updateDate: Date? = null
 }

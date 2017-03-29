@@ -4,6 +4,7 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Company_Relation
+import jp.hotdrop.compl.util.DateUtil
 
 object CompanyDao {
 
@@ -33,41 +34,53 @@ object CompanyDao {
     }
 
     fun insert(company: Company) {
-        company.viewOrder = maxOrder() + 1
-        companyRelation().inserter().execute(company)
+        orma.transactionSync {
+            company.viewOrder = maxOrder() + 1
+            company.registerDate = DateUtil.getNowDate()
+            companyRelation().inserter().execute(company)
+        }
     }
 
     fun update(company: Company) {
-        companyRelation().updater()
-                .idEq(company.id)
-                .name(company.name)
-                .categoryId(company.categoryId)
-                .overview(company.overview)
-                .employeesNum(company.employeesNum)
-                .salaryLow(company.salaryLow)
-                .salaryHigh(company.salaryHigh)
-                .wantedJob((company.wantedJob))
-                .url(company.url)
-                .note(company.note)
-                .viewOrder(company.viewOrder)
-                .favorite(company.favorite)
-                .execute()
-    }
-
-    fun updateFavorite(id: Int, favorite: Int) {
-        companyRelation().updater()
-                .favorite(favorite)
-                .idEq(id)
-                .execute()
-    }
-
-    fun updateAllOrder(companies: List<Company>) {
-        for((index, company) in companies.withIndex()) {
+        orma.transactionSync {
             companyRelation().updater()
-                    .viewOrder(index)
+                    .name(company.name)
+                    .categoryId(company.categoryId)
+                    .overview(company.overview)
+                    .employeesNum(company.employeesNum)
+                    .salaryLow(company.salaryLow)
+                    .salaryHigh(company.salaryHigh)
+                    .wantedJob((company.wantedJob))
+                    .url(company.url)
+                    .note(company.note)
+                    .updateDate(DateUtil.getNowDate())
                     .idEq(company.id)
                     .execute()
         }
+    }
+
+    fun updateFavorite(id: Int, favorite: Int) {
+        orma.transactionSync {
+            companyRelation().updater()
+                    .favorite(favorite)
+                    .idEq(id)
+                    .execute()
+        }
+    }
+
+    fun updateAllOrder(companies: List<Company>) {
+        orma.transactionSync {
+            for((index, company) in companies.withIndex()) {
+                companyRelation().updater()
+                        .viewOrder(index)
+                        .idEq(company.id)
+                        .execute()
+            }
+        }
+    }
+
+    fun delete(id: Int) {
+        companyRelation().deleter().idEq(id)
     }
 
     fun maxOrder(): Int {

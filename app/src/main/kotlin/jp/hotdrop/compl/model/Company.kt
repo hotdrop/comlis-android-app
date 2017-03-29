@@ -3,8 +3,7 @@ package jp.hotdrop.compl.model
 import com.github.gfx.android.orma.annotation.Column
 import com.github.gfx.android.orma.annotation.PrimaryKey
 import com.github.gfx.android.orma.annotation.Table
-import java.sql.Timestamp
-
+import java.util.*
 
 @Table
 class Company {
@@ -12,7 +11,7 @@ class Company {
     @PrimaryKey(autoincrement = true)
     var id: Int = 0
 
-    // 更新が必要なので全部indexed = trueにする・・
+    // 更新が必要なのでColumnは全てindexed = trueにする
     @Column(indexed = true)
     var categoryId: Int = 0
 
@@ -47,8 +46,11 @@ class Company {
     var favorite: Int = 0
 
     @Column
-    var registerDate: Timestamp? = null
+    var registerDate: Date? = null
 
+    /**
+     * 更新日はEditFragmentでの更新のみ反映する
+     */
     @Column
-    var updateDate: Timestamp? = null
+    var updateDate: Date? = null
 }
