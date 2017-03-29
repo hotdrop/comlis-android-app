@@ -1,5 +1,6 @@
 package jp.hotdrop.compl.view.fragment
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -53,8 +54,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
     }
 
     /**
-     * Tabの切り替えとDetailFragmentからの復帰で必ず呼ばれるので
-     * 更新通知を受け取ったらリフレッシュする。
+     * DetailFragmentからの更新通知をここで無理矢理受け取る。
      */
     override fun onResume() {
         super.onResume()
@@ -125,7 +125,9 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        data ?: return
+        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_REGISTER || data == null) {
+            return
+        }
         val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
         if(refreshMode == REFRESH) {
             loadData(isRefresh = true)
@@ -145,25 +147,16 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         loadData()
     }
 
-    /**
-     * Stopの場合、clearで一旦addしているオブジェクトを全てDisposeする。
-     */
     override fun onStop() {
         super.onStop()
         compositeDisposable.clear()
     }
 
-    /**
-     * Destroy時は以降addされることはないので完全にDisposeする。
-     */
     override fun onDestroy() {
         super.onDestroy()
         compositeDisposable.dispose()
     }
 
-    /**
-     * アダプター
-     */
     private inner class Adapter(fm: FragmentManager): FragmentStatePagerAdapter(fm) {
 
         private val fragments = mutableListOf<CompanyTabFragment>()

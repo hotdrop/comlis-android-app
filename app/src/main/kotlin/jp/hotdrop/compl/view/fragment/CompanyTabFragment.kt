@@ -96,15 +96,9 @@ class CompanyTabFragment: BaseFragment() {
         if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_DETAIL || data == null) {
             return
         }
-
-        // TODO 一覧画面をリフレッシュするようにする。未実装
-        val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
-        Toast.makeText(activity, "refreshMode=" + refreshMode, Toast.LENGTH_SHORT).show()
+        activity.intent = data
     }
 
-    /**
-     * Stopの場合、clearで一旦addしているオブジェクトを全てDisposeする。
-     */
     override fun onStop() {
         super.onStop()
         compositeDisposable.clear()
@@ -127,9 +121,6 @@ class CompanyTabFragment: BaseFragment() {
         helper.startDrag(viewHolder)
     }
 
-    /**
-     * アダプター
-     */
     inner class Adapter(context: Context):
             ArrayRecyclerAdapter<CompanyViewModel, BindingHolder<ItemCompanyBinding>>(context) {
 
