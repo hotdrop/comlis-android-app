@@ -97,7 +97,7 @@ class CompanyTabFragment: BaseFragment() {
             return
         }
 
-        // TODO 未実装
+        // TODO 一覧画面をリフレッシュするようにする。未実装
         val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
         Toast.makeText(activity, "refreshMode=" + refreshMode, Toast.LENGTH_SHORT).show()
     }
@@ -178,9 +178,10 @@ class CompanyTabFragment: BaseFragment() {
             val vm = binding.viewModel
             animViews.take(vm.viewFavorite).forEach { it.playAnimation() }
 
+            // ここの書き方が単調すぎるのでなんとかならないものか・・
             animView1.setOnClickListener {
-                if(animView1.progress == MARKED) {
-                    animViews.forEach { it.progress = RESET }
+                if(vm.isOneFavorite()) {
+                    animView1.progress = RESET
                     vm.resetFavorite()
                 } else {
                     animView1.playAnimation()
@@ -190,17 +191,19 @@ class CompanyTabFragment: BaseFragment() {
                 }
             }
             animView2.setOnClickListener {
-                if(animView2.progress == MARKED) {
-                    animViews.forEach { it.progress = RESET }
+                if(vm.isTwoFavorite()) {
+                    animView1.progress = RESET
+                    animView2.progress = RESET
                     vm.resetFavorite()
                 } else {
-                    animViews.take(2).forEach { it.playAnimation() }
+                    animView1.playAnimation()
+                    animView2.playAnimation()
                     animView3.progress = RESET
                     vm.tapFavorite(2)
                 }
             }
             animView3.setOnClickListener {
-                if(animView3.progress == MARKED) {
+                if(vm.isThreeFacorite()) {
                     animViews.forEach { it.progress = RESET }
                     vm.resetFavorite()
                 } else {

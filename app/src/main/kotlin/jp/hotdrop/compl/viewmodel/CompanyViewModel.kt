@@ -40,6 +40,21 @@ class CompanyViewModel(val company: Company, val context: Context) {
         return (other as CompanyViewModel).company.id == company.id || super.equals(other)
     }
 
+    /**
+     * 単調だ・・なんとかいい方法はないものか
+     */
+    fun isOneFavorite(): Boolean {
+        return viewFavorite == 1
+    }
+
+    fun isTwoFavorite(): Boolean {
+        return viewFavorite == 2
+    }
+
+    fun isThreeFacorite(): Boolean {
+        return viewFavorite == 3
+    }
+
     fun tapFavorite(tapCnt: Int) {
         CompanyDao.updateFavorite(company.id, tapCnt)
         viewFavorite = tapCnt
