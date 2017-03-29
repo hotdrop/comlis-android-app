@@ -4,6 +4,7 @@ import android.view.View
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.util.DateUtil
 
 class CompanyDetailViewModel(companyId: Int) {
 
@@ -50,8 +51,8 @@ class CompanyDetailViewModel(companyId: Int) {
 
         viewNote = company.note ?: EMPTY_VALUE
 
-        viewRegisterDate = company.registerDate.toString()
-        viewUpdateDate = company.updateDate?.toString() ?: EMPTY_DATE
+        viewRegisterDate = DateUtil.format(company.registerDate) ?: EMPTY_DATE
+        viewUpdateDate = DateUtil.format(company.updateDate) ?: EMPTY_DATE
 
         colorName = CategoryDao.find(company.categoryId).colorType
     }

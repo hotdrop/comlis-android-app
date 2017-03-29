@@ -18,6 +18,7 @@
     <string name="label_salary_range_mark">〜</string>
     <string name="label_url">URL</string>
     <string name="label_description">詳細</string>
+    <string name="label_etc">その他</string>
 
     <string name="hint_salary">任意</string>
     <string name="hint_wanted_job">PM, インフラエンジニア, プログラマー等</string>

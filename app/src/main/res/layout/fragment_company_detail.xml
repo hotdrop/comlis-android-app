@@ -151,11 +151,39 @@
                     android:text="@{viewModel.viewUrl}" />
 
                 <TextView
+                    android:id="@+id/label_detail_title"
+                    style="@style/SectionTitle"
+                    android:layout_below="@id/label_url"
+                    android:text="@string/label_description"/>
+
+                <View
+                    android:id="@+id/line_detail_title"
+                    style="@style/TitleBorder"
+                    android:layout_below="@id/label_detail_title" />
+
+                <TextView
+                    android:id="@+id/text_detail"
+                    style="@style/MultiLineDisplayText"
+                    android:layout_below="@id/line_detail_title"
+                    android:text="@{viewModel.viewNote}"/>
+
+                <TextView
+                    android:id="@+id/label_etc_title"
+                    style="@style/SectionTitle"
+                    android:layout_below="@id/text_detail"
+                    android:text="@string/label_etc"/>
+
+                <View
+                    android:id="@+id/line_etc_title"
+                    style="@style/TitleBorder"
+                    android:layout_below="@id/label_etc_title" />
+
+                <TextView
                     android:id="@+id/label_register_date"
                     style="@style/OverViewItemLabel"
                     android:layout_marginTop="@dimen/spacing"
                     android:drawableStart="@drawable/ic_query_builder"
-                    android:layout_below="@id/label_url"
+                    android:layout_below="@id/line_etc_title"
                     android:text="@string/label_register_date" />
 
                 <TextView
@@ -180,23 +208,6 @@
                     android:layout_toEndOf="@id/label_update_date"
                     android:layout_below="@id/label_update_date"
                     android:text="@{viewModel.viewUpdateDate}"/>
-
-                <TextView
-                    android:id="@+id/label_detail_title"
-                    style="@style/SectionTitle"
-                    android:layout_below="@id/label_update_date"
-                    android:text="@string/label_description"/>
-
-                <View
-                    android:id="@+id/line_detail_title"
-                    style="@style/TitleBorder"
-                    android:layout_below="@id/label_detail_title" />
-
-                <TextView
-                    android:id="@+id/text_detail"
-                    style="@style/MultiLineDisplayText"
-                    android:layout_below="@id/line_detail_title"
-                    android:text="@{viewModel.viewNote}"/>
 
             </RelativeLayout>
         </android.support.v4.widget.NestedScrollView>
