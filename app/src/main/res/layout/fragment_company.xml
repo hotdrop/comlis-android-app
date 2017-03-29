@@ -20,6 +20,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/tab_background"
                 android:elevation="@dimen/elevation"
+                style="@style/TabLayoutTextAppearance"
                 app:elevation="@dimen/elevation"
                 app:tabIndicatorColor="@color/tab_indicator"
                 app:tabMode="scrollable"
