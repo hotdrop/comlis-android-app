@@ -27,6 +27,11 @@ class CompanyRegisterFragment : BaseFragment() {
         }
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        getComponent().inject(this)
+    }
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         selectedTabName = arguments.getString(EXTRA_TAB_NAME)
@@ -42,11 +47,6 @@ class CompanyRegisterFragment : BaseFragment() {
         viewModel = CompanyRegisterViewModel()
         binding.viewModel = viewModel
         return binding.root
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        getComponent().inject(this)
     }
 
     private fun onClickRegister() {

@@ -44,21 +44,23 @@ class CategoryFragment : BaseFragment() {
         fun newInstance() = CategoryFragment()
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        getComponent().inject(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCategoryBinding.inflate(inflater, container, false)
-
-
         loadData()
-
         return binding.root
     }
 
     private fun loadData() {
-        var disposable = CategoryDao.findAll()
+        val disposable = CategoryDao.findAll()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
@@ -93,9 +95,12 @@ class CategoryFragment : BaseFragment() {
         Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        getComponent().inject(this)
+    private fun visibleInitView() {
+        binding.listEmptyView.visibility = View.VISIBLE
+    }
+
+    private fun goneInitView() {
+        binding.listEmptyView.visibility = View.GONE
     }
 
     override fun onStop() {
@@ -109,14 +114,6 @@ class CategoryFragment : BaseFragment() {
 
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
         helper.startDrag(viewHolder)
-    }
-
-    private fun visibleInitView() {
-        binding.listEmptyView.visibility = View.VISIBLE
-    }
-
-    private fun goneInitView() {
-        binding.listEmptyView.visibility = View.GONE
     }
 
     /**

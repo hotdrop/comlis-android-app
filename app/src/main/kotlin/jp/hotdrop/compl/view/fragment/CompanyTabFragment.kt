@@ -47,6 +47,11 @@ class CompanyTabFragment: BaseFragment() {
         }
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        getComponent().inject(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         categoryId = arguments.getInt(EXTRA_CATEGORY_ID)
@@ -84,11 +89,6 @@ class CompanyTabFragment: BaseFragment() {
 
     private fun onLoadFailure(e: Throwable) {
         Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        getComponent().inject(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -166,8 +166,6 @@ class CompanyTabFragment: BaseFragment() {
         }
 
         private val RESET = 0.toFloat()
-        private val MARKED = 1.toFloat()
-
         private fun initAnimationView(binding: ItemCompanyBinding) {
             // ロード時にキャッシュして問題ないのでStrongにした。コード読む限り最初の1つだけでいいと思う。
             val animView1 = binding.animationView1.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Strong) }

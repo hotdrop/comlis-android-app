@@ -30,11 +30,15 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
     private lateinit var binding: FragmentCompanyBinding
     private lateinit var adapter: Adapter
     private var tabName = ""
-    private var isRefresh = false
 
     companion object {
         @JvmStatic val TAG = CompanyFragment::class.java.simpleName!!
         fun newInstance() = CompanyFragment()
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        getComponent().inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,85 +52,39 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         return binding.root
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        getComponent().inject(this)
-    }
-
     /**
-     * Tabの切り替えとupdateFragmentでの更新時に無条件で呼ばれる。
-     * そのため、分類など修正した場合はここで検知してリフレッシュする。
+     * Tabの切り替えとDetailFragmentからの復帰で必ず呼ばれるので
+     * 更新通知を受け取ったらリフレッシュする。
      */
     override fun onResume() {
         super.onResume()
-        // TODO REFRESH_NONEはちゃんとしたものにする
         val refreshMode = activity.intent.getIntExtra(REFRESH_MODE, REFRESH_NONE)
         if(refreshMode == REFRESH) {
-            isRefresh = true
-            loadData()
+            loadData(isRefresh = true)
             activity.intent.removeExtra(REFRESH_MODE)
         }
     }
 
-    /**
-     * Stopの場合、clearで一旦addしているオブジェクトを全てDisposeする。
-     */
-    override fun onStop() {
-        super.onStop()
-        compositeDisposable.clear()
-    }
-
-    /**
-     * Destroy時は以降addされることはないので完全にDisposeする。
-     */
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.dispose()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        data ?: return
-        val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
-        if(refreshMode == REFRESH) {
-            isRefresh = true
-            loadData()
-            activity.intent.removeExtra(REFRESH_MODE)
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onTop() {
-        loadData()
-    }
-
-    private fun loadData() {
+    private fun loadData(isRefresh: Boolean = false) {
         showProgress()
         val disposable = CategoryDao.findAll()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                        { list -> onLoadSuccess(list) },
+                        { list -> onLoadSuccess(list, isRefresh) },
                         { throwable -> onLoadFailure(throwable) }
                 )
         compositeDisposable.add(disposable)
     }
 
-    private fun onLoadSuccess(categories: List<Category>) {
+    private fun onLoadSuccess(categories: List<Category>, isRefresh: Boolean = false) {
 
         // addFragmentの中でadapter使ってるのでここで初期化する
         adapter = Adapter(fragmentManager)
 
         if(categories.isNotEmpty()) {
             categories.filter { category -> CompanyDao.countByCategory(category.id) > 0 }
-                      .forEach { category -> addFragment(category.name, category.id) }
+                    .forEach { category -> addFragment(category.name, category.id) }
             binding.listEmptyView.visibility = View.GONE
         } else {
             binding.listEmptyView.visibility = View.VISIBLE
@@ -163,6 +121,44 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
     private fun addFragment(title: String, categoryId: Int) {
         val fragment = CompanyTabFragment.create(categoryId)
         adapter.add(title, fragment)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        data ?: return
+        val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
+        if(refreshMode == REFRESH) {
+            loadData(isRefresh = true)
+            activity.intent.removeExtra(REFRESH_MODE)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onTop() {
+        loadData()
+    }
+
+    /**
+     * Stopの場合、clearで一旦addしているオブジェクトを全てDisposeする。
+     */
+    override fun onStop() {
+        super.onStop()
+        compositeDisposable.clear()
+    }
+
+    /**
+     * Destroy時は以降addされることはないので完全にDisposeする。
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
     }
 
     /**
