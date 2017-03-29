@@ -141,7 +141,7 @@
                     android:text="@string/label_display_url" />
 
                 <TextView
-                    android:id="@+id/text_link_url"
+                    android:id="@+id/txt_link_url"
                     style="@style/OverViewItemText"
                     android:layout_alignTop="@id/label_url"
                     android:layout_toEndOf="@id/label_url"
@@ -151,9 +151,40 @@
                     android:text="@{viewModel.viewUrl}" />
 
                 <TextView
+                    android:id="@+id/label_register_date"
+                    style="@style/OverViewItemLabel"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:drawableStart="@drawable/ic_query_builder"
+                    android:layout_below="@id/label_url"
+                    android:text="@string/label_register_date" />
+
+                <TextView
+                    android:id="@+id/txt_register_date"
+                    style="@style/OverViewItemText"
+                    android:layout_alignTop="@id/label_register_date"
+                    android:layout_toEndOf="@id/label_register_date"
+                    android:layout_below="@id/txt_link_url"
+                    android:text="@{viewModel.viewRegisterDate}"/>
+
+                <TextView
+                    android:id="@+id/label_update_date"
+                    style="@style/OverViewItemLabel"
+                    android:drawableStart="@drawable/ic_query_builder"
+                    android:layout_below="@id/label_register_date"
+                    android:text="@string/label_update_date" />
+
+                <TextView
+                    android:id="@+id/txt_update_date"
+                    style="@style/OverViewItemText"
+                    android:layout_alignTop="@id/label_update_date"
+                    android:layout_toEndOf="@id/label_update_date"
+                    android:layout_below="@id/label_update_date"
+                    android:text="@{viewModel.viewUpdateDate}"/>
+
+                <TextView
                     android:id="@+id/label_detail_title"
                     style="@style/SectionTitle"
-                    android:layout_below="@id/label_url"
+                    android:layout_below="@id/label_update_date"
                     android:text="@string/label_description"/>
 
                 <View

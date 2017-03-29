@@ -12,6 +12,7 @@ class CompanyDetailViewModel(companyId: Int) {
         @JvmStatic private val SALARY_RANGE_MARK = "〜"
         @JvmStatic private val EMPLOYEES_NUM_UNIT = "名"
         @JvmStatic private val EMPTY_VALUE = "未登録"
+        @JvmStatic private val EMPTY_DATE = "ー"
     }
 
     val company: Company = CompanyDao.find(companyId)
@@ -23,6 +24,9 @@ class CompanyDetailViewModel(companyId: Int) {
     var viewUrl: String? = null
     var visibleUrl: Int = View.GONE
     val viewNote: String
+
+    val viewRegisterDate: String
+    val viewUpdateDate: String
 
     val colorName: String
 
@@ -45,6 +49,9 @@ class CompanyDetailViewModel(companyId: Int) {
         }
 
         viewNote = company.note ?: EMPTY_VALUE
+
+        viewRegisterDate = company.registerDate.toString()
+        viewUpdateDate = company.updateDate?.toString() ?: EMPTY_DATE
 
         colorName = CategoryDao.find(company.categoryId).colorType
     }

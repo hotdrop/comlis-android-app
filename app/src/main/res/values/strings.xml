@@ -31,6 +31,8 @@
     <string name="label_display_salary">年収:</string>
     <string name="label_display_wanted_job">募集職種:</string>
     <string name="label_display_url">URL:</string>
+    <string name="label_register_date">登録日:</string>
+    <string name="label_update_date">更新日:</string>
 
     <!-- category -->
     <string name="empty_category_list">まだ何も登録されていません。好きな分類名を登録してください。この分類名が会社一覧のタブになります。</string>

@@ -7,5 +7,4 @@ object DateUtil {
     fun getNowDate(): Date {
         return Date(System.currentTimeMillis())
     }
-
 }
