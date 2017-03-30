@@ -40,6 +40,18 @@
             style="@style/Spinner"
             android:layout_below="@id/label_color_type" />
 
+        <TextView
+            android:id="@+id/label_category_delete_attention"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            android:layout_marginStart="@dimen/spacing"
+            android:layout_below="@id/spinner_color_type"
+            android:textColor="@color/attention"
+            android:textSize="@dimen/text_small"
+            android:text="@string/category_dialog_delete_attention"
+            android:visibility="gone" />
+
     </RelativeLayout>
 
 </LinearLayout>

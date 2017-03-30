@@ -125,8 +125,20 @@ class CategoryFragment : BaseFragment() {
                     val editTxt = editText.text.toString()
                     when {
                         editTxt == "" -> disableButton()
-                        categoryId == REGISTER_MODE -> if(CategoryDao.exist(editTxt)) disableButtonWithAttention() else enableButton()
-                        else -> if(editTxt != originName && CategoryDao.exist(editTxt, categoryId)) disableButtonWithAttention() else enableButton()
+                        categoryId == REGISTER_MODE -> {
+                            if(CategoryDao.exist(editTxt)) {
+                                disableButtonWithAttention()
+                            } else {
+                                enableButton()
+                            }
+                        }
+                        else -> {
+                            if(editTxt != originName && CategoryDao.exist(editTxt, categoryId)) {
+                                disableButtonWithAttention()
+                            } else {
+                                enableButton()
+                            }
+                        }
                     }
                 }
                 private fun disableButton() {
@@ -144,7 +156,7 @@ class CategoryFragment : BaseFragment() {
             })
 
     private fun showRegisterDialog() {
-        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category_register, null)
+        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category, null)
         val editText = view.findViewById(R.id.text_category_name) as AppCompatEditText
         val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
@@ -163,7 +175,7 @@ class CategoryFragment : BaseFragment() {
     }
 
     private fun showUpdateDialog(vm: CategoryViewModel) {
-        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category_register, null)
+        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category, null)
         val editText = view.findViewById(R.id.text_category_name) as AppCompatEditText
         editText.setText(vm.viewName as CharSequence)
         val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
@@ -177,9 +189,18 @@ class CategoryFragment : BaseFragment() {
                     adapter.refresh(vm)
                     dialogInterface.dismiss()
                 })
+                .setNegativeButton(R.string.category_dialog_delete_button, { dialogInterface, _ ->
+                    CategoryDao.delete(vm.category)
+                    loadData()
+                    dialogInterface.dismiss()
+                })
                 .create()
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
+        if(vm.itemCount.toInt() > 0) {
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).isEnabled = false
+            view.findViewById(R.id.label_category_delete_attention).visibility = View.VISIBLE
+        }
         editText.changeTextListener(view, dialog, editText, vm.category.id, vm.viewName)
     }
 
@@ -213,16 +234,6 @@ class CategoryFragment : BaseFragment() {
                 if (vm == c) {
                     c.change(vm)
                     notifyItemChanged(i)
-                }
-            }
-        }
-
-        fun remove(vm: CategoryViewModel) {
-            (0..itemCount - 1).forEach { i ->
-                val c = getItem(i)
-                if (vm == c) {
-                    removeItem(i)
-                    notifyItemRemoved(i)
                 }
             }
         }

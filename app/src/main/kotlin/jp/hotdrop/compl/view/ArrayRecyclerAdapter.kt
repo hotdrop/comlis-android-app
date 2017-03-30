@@ -22,14 +22,6 @@ abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val 
         list.add(item)
     }
 
-    fun removeItem(index: Int) {
-        list.removeAt(index)
-    }
-
-    fun addAll(items: Collection<T>) {
-        list.addAll(items)
-    }
-
     fun addAll(items: List<T>) {
         list.addAll(items)
     }

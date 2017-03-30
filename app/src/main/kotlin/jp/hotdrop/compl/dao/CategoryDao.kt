@@ -36,21 +36,35 @@ object CategoryDao {
             viewOrder = maxOrder() + 1
             registerDate = Date(System.currentTimeMillis())
         }
-        categoryRelation().inserter().execute(category)
+        orma.transactionSync {
+            categoryRelation().inserter().execute(category)
+        }
     }
 
     fun update(category: Category) {
-        categoryRelation().updater()
-                .name(category.name)
-                .colorType(category.colorType)
-                .idEq(category.id)
-                .execute()
+        orma.transactionSync {
+            categoryRelation().updater()
+                    .name(category.name)
+                    .colorType(category.colorType)
+                    .idEq(category.id)
+                    .execute()
+        }
     }
 
     fun updateAllOrder(categories: List<Category>) {
-        for((index, category) in categories.withIndex()) {
-            categoryRelation().updater()
-                    .viewOrder(index)
+        orma.transactionSync {
+            for((index, category) in categories.withIndex()) {
+                categoryRelation().updater()
+                        .viewOrder(index)
+                        .idEq(category.id)
+                        .execute()
+            }
+        }
+    }
+
+    fun delete(category: Category) {
+        orma.transactionSync {
+            categoryRelation().deleter()
                     .idEq(category.id)
                     .execute()
         }

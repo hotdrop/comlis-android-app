@@ -10,11 +10,7 @@ class CategoryViewModel(var category: Category, val context: Context): ViewModel
 
     // 画面表示に使うデータだけmodelとは別にフィールド値を持たせる
     var viewName = category.name
-    var itemCount = "0"
-
-    init {
-        itemCount = CompanyDao.countByCategory(category.id).toString()
-    }
+    var itemCount = CompanyDao.countByCategory(category.id).toString()
 
     @ColorRes
     fun getColorRes(): Int {

@@ -44,9 +44,11 @@
     <string name="category_dialog_title">分類登録</string>
     <string name="category_dialog_attention">この分類名は既に登録されています</string>
     <string name="category_dialog_color_type">テーマカラー</string>
+    <string name="category_dialog_delete_attention">登録数が1以上の場合は削除できません。</string>
 
     <string name="category_dialog_add_button">登録</string>
     <string name="category_dialog_update_button">更新</string>
+    <string name="category_dialog_delete_button">削除</string>
 
     <string name="open">open</string>
     <string name="close">close</string>
