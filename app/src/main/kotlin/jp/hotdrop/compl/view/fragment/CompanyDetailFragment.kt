@@ -142,6 +142,6 @@ class CompanyDetailFragment: BaseFragment() {
     private fun refreshLayout() {
         viewModel = CompanyDetailViewModel(companyId, context)
         binding.viewModel = viewModel
-        binding.fab.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResNormal(viewModel.colorName, context))
+        binding.fab.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
     }
 }

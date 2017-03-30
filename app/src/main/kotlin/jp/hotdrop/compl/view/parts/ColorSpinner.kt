@@ -37,7 +37,7 @@ class ColorSpinner(private val spinner: Spinner, private val context: Context) {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val v = convertView ?: View.inflate(context, android.R.layout.simple_dropdown_item_1line, null)
             val textView = ((v as TextView).findViewById(android.R.id.text1) as TextView).apply {
-                setTextColor(ColorUtil.getResNormal(colorNames[position], context))
+                setTextColor(ColorUtil.getResDark(colorNames[position], context))
                 text = colorNames[position]
                 textSize = ITEM_TEXT_SIZE
             }
@@ -47,7 +47,7 @@ class ColorSpinner(private val spinner: Spinner, private val context: Context) {
         override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val v = convertView ?: View.inflate(context, android.R.layout.simple_dropdown_item_1line, null)
             val textView = ((v as TextView).findViewById(android.R.id.text1) as TextView).apply {
-                setTextColor(ColorUtil.getResNormal(colorNames[position], context))
+                setTextColor(ColorUtil.getResDark(colorNames[position], context))
                 text = colorNames[position]
                 textSize = ITEM_TEXT_SIZE
             }

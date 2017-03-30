@@ -65,7 +65,7 @@ class CompanyDetailViewModel(companyId: Int, val context: Context) {
 
     @ColorRes
     fun getColorRes(): Int {
-        return ColorUtil.getResNormal(colorName, context)
+        return ColorUtil.getResDark(colorName, context)
     }
 
     fun isOneFavorite(): Boolean {

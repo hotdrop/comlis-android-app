@@ -28,11 +28,11 @@
     <color name="text">@color/black</color>
     <color name="subtext">@color/gray</color>
     <color name="empty_text">@color/gray</color>
-    <color name="attention">@color/original_red</color>
+    <color name="attention">@color/red</color>
 
     <color name="ok_button_text">@color/white</color>
     <color name="ok_button_normal">@color/clear_blue</color>
-    <color name="ok_button_Highlight">@color/blue</color>
+    <color name="ok_button_Highlight">@color/dark_blue</color>
 
     <!-- spinner -->
     <color name="spinner_background">@color/light_gray</color>

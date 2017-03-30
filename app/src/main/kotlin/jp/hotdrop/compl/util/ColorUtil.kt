@@ -16,11 +16,11 @@ object ColorUtil {
     private var colorMap = mutableMapOf<String, ColorData>()
 
     init {
-        colorMap.put(BLUE_NAME, ColorData(R.color.blue, R.color.light_blue))
-        colorMap.put(RED_NAME, ColorData(R.color.red, R.color.light_red))
-        colorMap.put(YELLOW_NAME, ColorData(R.color.yellow, R.color.light_yellow))
-        colorMap.put(GREEN_NAME, ColorData(R.color.green, R.color.light_green))
-        colorMap.put(PURPLE_NAME, ColorData(R.color.purple, R.color.light_purple))
+        colorMap.put(BLUE_NAME, ColorData(R.color.dark_blue, R.color.light_blue, R.color.dark_blue))
+        colorMap.put(RED_NAME, ColorData(R.color.red, R.color.light_red, R.color.dark_red))
+        colorMap.put(YELLOW_NAME, ColorData(R.color.yellow, R.color.light_yellow, R.color.dark_yellow))
+        colorMap.put(GREEN_NAME, ColorData(R.color.green, R.color.light_green, R.color.dark_green))
+        colorMap.put(PURPLE_NAME, ColorData(R.color.purple, R.color.light_purple, R.color.dark_purple))
     }
 
     fun getNames(): List<String> {
@@ -33,9 +33,14 @@ object ColorUtil {
     }
 
     @ColorRes
+    fun getResDark(name: String, context: Context): Int {
+        return ContextCompat.getColor(context, colorMap[name]!!.dark)
+    }
+
+    @ColorRes
     fun getResLight(name: String, context: Context): Int {
         return ContextCompat.getColor(context, colorMap[name]!!.light)
     }
 
-    data class ColorData(val normal: Int, val light: Int)
+    data class ColorData(val normal: Int, val light: Int,val dark: Int)
 }

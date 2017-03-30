@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="blue">#0202ab</color>
+    <color name="blue">#0000ff</color>
+    <color name="dark_blue">#0202ab</color>
     <color name="light_dark_blue">#5dbaff</color>
     <color name="light_blue">#c1e8fa</color>
     <color name="clear_blue">#2089f1</color>
 
-    <color name="green">#028902</color>
+    <color name="green">#00ff00</color>
+    <color name="dark_green">#028902</color>
     <color name="light_green">#94f9a9</color>
-    <color name="dark_green">#005e14</color>
 
-    <color name="original_red">#ff0000</color>
-    <color name="red">#8e0000</color>
+    <color name="red">#ff0000</color>
+    <color name="dark_red">#8e0000</color>
     <color name="light_red">#ffb1b3</color>
 
-    <color name="yellow">#999901</color>
+    <color name="yellow">#ffff00</color>
+    <color name="dark_yellow">#999901</color>
     <color name="light_yellow">#fafaa5</color>
 
-    <color name="purple">#8c008c</color>
-    <color name="light_purple">#fc9ffc</color>
+    <color name="purple">#8400ff</color>
+    <color name="dark_purple">#46008c</color>
+    <color name="light_purple">#c79ffc</color>
 
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
