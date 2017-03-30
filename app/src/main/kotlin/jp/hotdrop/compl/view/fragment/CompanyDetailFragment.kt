@@ -124,7 +124,7 @@ class CompanyDetailFragment: BaseFragment() {
             changedFavorite()
         }
         animView3.setOnClickListener {
-            if(viewModel.isThreeFacorite()) {
+            if(viewModel.isThreeFavorite()) {
                 animViews.forEach { it.progress = RESET }
                 viewModel.resetFavorite()
             } else {

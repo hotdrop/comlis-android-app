@@ -4,7 +4,7 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.model.Category_Relation
-import jp.hotdrop.compl.util.DateUtil
+import java.util.*
 
 object CategoryDao {
 
@@ -34,7 +34,7 @@ object CategoryDao {
             name = argName
             colorType = argColorType
             viewOrder = maxOrder() + 1
-            registerDate = DateUtil.getNowDate()
+            registerDate = Date(System.currentTimeMillis())
         }
         categoryRelation().inserter().execute(category)
     }

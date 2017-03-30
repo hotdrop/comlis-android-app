@@ -7,7 +7,6 @@ import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.util.ColorUtil
-import jp.hotdrop.compl.util.DateUtil
 
 class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() {
 
@@ -57,8 +56,8 @@ class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() 
         viewNote = company.note ?: EMPTY_VALUE
         viewFavorite = company.favorite
 
-        viewRegisterDate = DateUtil.format(company.registerDate) ?: EMPTY_DATE
-        viewUpdateDate = DateUtil.format(company.updateDate) ?: EMPTY_DATE
+        viewRegisterDate = company.registerDate?.format() ?: EMPTY_DATE
+        viewUpdateDate = company.updateDate?.format() ?: EMPTY_DATE
 
         colorName = CategoryDao.find(company.categoryId).colorType
     }
@@ -76,7 +75,7 @@ class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() 
         return viewFavorite == 2
     }
 
-    fun isThreeFacorite(): Boolean {
+    fun isThreeFavorite(): Boolean {
         return viewFavorite == 3
     }
 

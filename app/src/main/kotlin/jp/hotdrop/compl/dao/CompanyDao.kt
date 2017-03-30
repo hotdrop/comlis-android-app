@@ -4,7 +4,7 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Company_Relation
-import jp.hotdrop.compl.util.DateUtil
+import java.util.*
 
 object CompanyDao {
 
@@ -36,7 +36,7 @@ object CompanyDao {
     fun insert(company: Company) {
         orma.transactionSync {
             company.viewOrder = maxOrder() + 1
-            company.registerDate = DateUtil.getNowDate()
+            company.registerDate = Date(System.currentTimeMillis())
             companyRelation().inserter().execute(company)
         }
     }
@@ -53,7 +53,7 @@ object CompanyDao {
                     .wantedJob((company.wantedJob))
                     .url(company.url)
                     .note(company.note)
-                    .updateDate(DateUtil.getNowDate())
+                    .updateDate(Date(System.currentTimeMillis()))
                     .idEq(company.id)
                     .execute()
         }
