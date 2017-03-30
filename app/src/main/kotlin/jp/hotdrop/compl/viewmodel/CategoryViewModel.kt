@@ -18,7 +18,7 @@ class CategoryViewModel(var category: Category, val context: Context) {
 
     @ColorRes
     fun getColorRes(): Int {
-        return ColorUtil.getResLight(category.colorType, context)
+        return ColorUtil.getResNormal(category.colorType, context)
     }
 
     fun change(vm: CategoryViewModel) {

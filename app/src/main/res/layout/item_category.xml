@@ -19,8 +19,14 @@
             android:clickable="true"
             android:clipChildren="false"
             android:foreground="?android:attr/selectableItemBackground"
-            app:cardBackgroundColor="@{viewModel.colorRes}"
+            app:cardBackgroundColor="@color/item_list_background"
+            app:cardCornerRadius="@dimen/card_view_item_corner_radius"
             app:cardUseCompatPadding="true">
+
+            <FrameLayout
+                android:background="@{viewModel.colorRes}"
+                android:layout_width="@dimen/card_view_item_border_width"
+                android:layout_height="match_parent"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
