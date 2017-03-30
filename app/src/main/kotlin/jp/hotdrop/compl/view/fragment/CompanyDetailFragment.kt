@@ -18,6 +18,7 @@ class CompanyDetailFragment: BaseFragment() {
 
     private lateinit var binding: FragmentCompanyDetailBinding
     private lateinit var viewModel: CompanyDetailViewModel
+    private var isRefresh = false
 
     private val companyId by lazy {
         arguments.getInt(EXTRA_COMPANY_ID)
@@ -55,11 +56,16 @@ class CompanyDetailFragment: BaseFragment() {
         val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
         if(refreshMode == REFRESH) {
             refreshLayout()
-            val intent = Intent().apply {
-                putExtra(REFRESH_MODE, REFRESH)
-            }
-            activity.setResult(Activity.RESULT_OK, intent)
+            setResult()
         }
+    }
+
+    private fun setResult() {
+        val intent = Intent().apply {
+            putExtra(REFRESH_MODE, REFRESH)
+        }
+        activity.setResult(Activity.RESULT_OK, intent)
+        isRefresh = true
     }
 
     private fun initToolbar() {
@@ -73,15 +79,68 @@ class CompanyDetailFragment: BaseFragment() {
         }
     }
 
+    private val RESET = 0.toFloat()
     private fun initLayout() {
         refreshLayout()
+        val animView1 = binding.animationView1.apply { setAnimation("FavoriteStar.json") }
+        val animView2 = binding.animationView2.apply { setAnimation("FavoriteStar.json") }
+        val animView3 = binding.animationView3.apply { setAnimation("FavoriteStar.json") }
+        val animViews = mutableListOf(animView1, animView2, animView3)
+
+        animViews.take(viewModel.viewFavorite).forEach { it.playAnimation() }
+
+        // スターつけて一覧画面に戻った時にスターの状態を一覧に反映したいが、その通知契機がないのでここで対応する。
+        // スター2つ→3つつける→やっぱ2つに戻す、としても変更した時点でsetIntentが走っているので元のスター数に戻しても
+        // 画面更新される。
+        fun changedFavorite() {
+            if(viewModel.company.favorite != viewModel.viewFavorite && !isRefresh) {
+                setResult()
+            }
+        }
+
+        animView1.setOnClickListener {
+            if(viewModel.isOneFavorite()) {
+                animView1.progress = RESET
+                viewModel.resetFavorite()
+            } else {
+                animView1.playAnimation()
+                animView2.progress = RESET
+                animView3.progress = RESET
+                viewModel.tapFavorite(1)
+            }
+            changedFavorite()
+        }
+        animView2.setOnClickListener {
+            if(viewModel.isTwoFavorite()) {
+                animView1.progress = RESET
+                animView2.progress = RESET
+                viewModel.resetFavorite()
+            } else {
+                animView1.playAnimation()
+                animView2.playAnimation()
+                animView3.progress = RESET
+                viewModel.tapFavorite(2)
+            }
+            changedFavorite()
+        }
+        animView3.setOnClickListener {
+            if(viewModel.isThreeFacorite()) {
+                animViews.forEach { it.progress = RESET }
+                viewModel.resetFavorite()
+            } else {
+                animViews.forEach { it.playAnimation() }
+                viewModel.tapFavorite(3)
+            }
+            changedFavorite()
+        }
+
         binding.fab.setOnClickListener {
             ActivityNavigator.showCompanyEdit(this@CompanyDetailFragment, companyId, REQ_CODE_COMPANY_EDIT)
         }
     }
 
     private fun refreshLayout() {
-        viewModel = CompanyDetailViewModel(companyId)
+        viewModel = CompanyDetailViewModel(companyId, context)
         binding.viewModel = viewModel
         binding.fab.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResNormal(viewModel.colorName, context))
     }

@@ -1,12 +1,15 @@
 package jp.hotdrop.compl.viewmodel
 
+import android.content.Context
+import android.support.annotation.ColorRes
 import android.view.View
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.util.DateUtil
 
-class CompanyDetailViewModel(companyId: Int) {
+class CompanyDetailViewModel(companyId: Int, val context: Context) {
 
     companion object {
         @JvmStatic private val SALARY_UNIT = "万円"
@@ -25,6 +28,8 @@ class CompanyDetailViewModel(companyId: Int) {
     var viewUrl: String? = null
     var visibleUrl: Int = View.GONE
     val viewNote: String
+
+    var viewFavorite: Int
 
     val viewRegisterDate: String
     val viewUpdateDate: String
@@ -50,10 +55,38 @@ class CompanyDetailViewModel(companyId: Int) {
         }
 
         viewNote = company.note ?: EMPTY_VALUE
+        viewFavorite = company.favorite
 
         viewRegisterDate = DateUtil.format(company.registerDate) ?: EMPTY_DATE
         viewUpdateDate = DateUtil.format(company.updateDate) ?: EMPTY_DATE
 
         colorName = CategoryDao.find(company.categoryId).colorType
+    }
+
+    @ColorRes
+    fun getColorRes(): Int {
+        return ColorUtil.getResNormal(colorName, context)
+    }
+
+    fun isOneFavorite(): Boolean {
+        return viewFavorite == 1
+    }
+
+    fun isTwoFavorite(): Boolean {
+        return viewFavorite == 2
+    }
+
+    fun isThreeFacorite(): Boolean {
+        return viewFavorite == 3
+    }
+
+    fun tapFavorite(tapCnt: Int) {
+        CompanyDao.updateFavorite(company.id, tapCnt)
+        viewFavorite = tapCnt
+    }
+
+    fun resetFavorite() {
+        viewFavorite = 0
+        CompanyDao.updateFavorite(company.id, 0)
     }
 }

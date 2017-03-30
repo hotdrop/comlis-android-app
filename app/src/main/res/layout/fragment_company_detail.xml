@@ -71,9 +71,31 @@
                 android:clipToPadding="false"
                 android:padding="@dimen/spacing" >
 
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animation_view_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animation_view_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/animation_view_1"
+                    android:layout_toEndOf="@id/animation_view_1" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animation_view_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/animation_view_2"
+                    android:layout_toEndOf="@id/animation_view_2" />
+
                 <TextView
                     android:id="@+id/label_abstract_title"
                     style="@style/SectionTitle"
+                    android:layout_below="@id/animation_view_3"
+                    android:textColor="@{viewModel.getColorRes}"
                     android:text="@string/label_overview"/>
 
                 <View
@@ -153,6 +175,7 @@
                 <TextView
                     android:id="@+id/label_detail_title"
                     style="@style/SectionTitle"
+                    android:textColor="@{viewModel.getColorRes}"
                     android:layout_below="@id/label_url"
                     android:text="@string/label_description"/>
 
@@ -170,6 +193,7 @@
                 <TextView
                     android:id="@+id/label_etc_title"
                     style="@style/SectionTitle"
+                    android:textColor="@{viewModel.getColorRes}"
                     android:layout_below="@id/text_detail"
                     android:text="@string/label_etc"/>
 

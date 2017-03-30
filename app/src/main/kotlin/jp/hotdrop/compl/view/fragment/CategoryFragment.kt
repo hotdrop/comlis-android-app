@@ -103,10 +103,6 @@ class CategoryFragment : BaseFragment() {
         binding.listEmptyView.visibility = View.GONE
     }
 
-    override fun onStop() {
-        super.onStop()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         CategoryDao.updateAllOrder(adapter.getModels())
