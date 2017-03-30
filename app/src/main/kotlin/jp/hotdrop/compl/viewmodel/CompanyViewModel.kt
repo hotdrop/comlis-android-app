@@ -51,7 +51,7 @@ class CompanyViewModel(val company: Company, val context: Context): ViewModel() 
         return viewFavorite == 2
     }
 
-    fun isThreeFacorite(): Boolean {
+    fun isThreeFavorite(): Boolean {
         return viewFavorite == 3
     }
 

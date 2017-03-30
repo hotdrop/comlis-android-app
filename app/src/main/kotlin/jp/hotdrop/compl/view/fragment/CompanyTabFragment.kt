@@ -192,7 +192,7 @@ class CompanyTabFragment: BaseFragment() {
                 }
             }
             animView3.setOnClickListener {
-                if(vm.isThreeFacorite()) {
+                if(vm.isThreeFavorite()) {
                     animViews.forEach { it.progress = RESET }
                     vm.resetFavorite()
                 } else {

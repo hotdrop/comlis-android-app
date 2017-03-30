@@ -48,8 +48,8 @@ class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() 
 
         viewWantedJob = company.wantedJob ?: EMPTY_VALUE
 
-        if(company.url != null) {
-            viewUrl = company.url
+        company.url?.let {
+            viewUrl = it
             visibleUrl = View.VISIBLE
         }
 
