@@ -4,9 +4,8 @@ import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.util.AppCode
-import jp.hotdrop.compl.util.DataChecker
 
-class CompanyEditViewModel(val companyId: Int) {
+class CompanyEditViewModel(val companyId: Int): ViewModel() {
 
     val company: Company = CompanyDao.find(companyId)
 
@@ -50,13 +49,13 @@ class CompanyEditViewModel(val companyId: Int) {
         if(viewName.trim() == "") {
             return AppCode.ERROR_EMPTY_COMPANY_NAME
         }
-        if(!DataChecker.isNumber(viewEmployeesNum)) {
+        if(!viewEmployeesNum.isNumber()) {
             return AppCode.ERROR_NOT_NUMBER_EMPLOYEES_NUM
         }
-        if(!DataChecker.isNumber(viewSalaryLow)) {
+        if(!viewSalaryLow.isNumber()) {
             return AppCode.ERROR_NOT_NUMBER_SALARY
         }
-        if(viewSalaryHigh != "" && !DataChecker.isNumber(viewSalaryHigh)) {
+        if(viewSalaryHigh != "" && !viewSalaryHigh.isNumber()) {
             return AppCode.ERROR_NOT_NUMBER_SALARY
         }
         return AppCode.OK

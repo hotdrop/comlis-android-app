@@ -7,7 +7,7 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.util.ColorUtil
 
-class CompanyViewModel(val company: Company, val context: Context) {
+class CompanyViewModel(val company: Company, val context: Context): ViewModel() {
 
     companion object {
         @JvmStatic private val SALARY_UNIT = "万円"

@@ -3,9 +3,8 @@ package jp.hotdrop.compl.viewmodel
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.util.AppCode
-import jp.hotdrop.compl.util.DataChecker
 
-class CompanyRegisterViewModel {
+class CompanyRegisterViewModel: ViewModel() {
 
     var viewName = ""
     var viewOverview = ""
@@ -32,13 +31,13 @@ class CompanyRegisterViewModel {
         if(viewName.trim() == "") {
             return AppCode.ERROR_EMPTY_COMPANY_NAME
         }
-        if(!DataChecker.isNumber(viewEmployeesNum)) {
+        if(!viewEmployeesNum.isNumber()) {
             return AppCode.ERROR_NOT_NUMBER_EMPLOYEES_NUM
         }
-        if(!DataChecker.isNumber(viewSalaryLow)) {
+        if(!viewSalaryLow.isNumber()) {
             return AppCode.ERROR_NOT_NUMBER_SALARY
         }
-        if(viewSalaryHigh != "" && !DataChecker.isNumber(viewSalaryHigh)) {
+        if(viewSalaryHigh != "" && !viewSalaryHigh.isNumber()) {
             return AppCode.ERROR_NOT_NUMBER_SALARY
         }
         return AppCode.OK
