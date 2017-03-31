@@ -1,6 +1,7 @@
 package jp.hotdrop.compl.view.fragment
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -9,6 +10,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import jp.hotdrop.compl.R
+import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
 import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.activity.ActivityNavigator
@@ -134,14 +137,35 @@ class CompanyDetailFragment: BaseFragment() {
             changedFavorite()
         }
 
-        binding.fab.setOnClickListener {
+        binding.fabEdit.setOnClickListener {
             ActivityNavigator.showCompanyEdit(this@CompanyDetailFragment, companyId, REQ_CODE_COMPANY_EDIT)
+        }
+
+        binding.fabTrash.setOnClickListener {
+            val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
+                    .setMessage(R.string.detail_dialog_trash_button_message)
+                    .setPositiveButton(R.string.dialog_ok, {dialogInterface, _ ->
+                        CompanyDao.delete(viewModel.company)
+                        dialogInterface.dismiss()
+                        setResult()
+                        exit()
+                    })
+                    .setNegativeButton(R.string.dialog_cancel, null)
+                    .create()
+            dialog.show()
         }
     }
 
     private fun refreshLayout() {
         viewModel = CompanyDetailViewModel(companyId, context)
         binding.viewModel = viewModel
-        binding.fab.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
+        binding.fabEdit.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
+        binding.fabTrash.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
+    }
+
+    fun exit() {
+        if(isResumed) {
+            activity.onBackPressed()
+        }
     }
 }

@@ -79,8 +79,12 @@ object CompanyDao {
         }
     }
 
-    fun delete(id: Int) {
-        companyRelation().deleter().idEq(id)
+    fun delete(company: Company) {
+        orma.transactionSync {
+            companyRelation().deleter()
+                    .idEq(company.id)
+                    .execute()
+        }
     }
 
     fun maxOrder(): Int {

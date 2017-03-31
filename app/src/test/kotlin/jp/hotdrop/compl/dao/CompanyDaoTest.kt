@@ -30,7 +30,7 @@ class CompanyDaoTest {
 
         CompanyDao.findAll()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.newThread())
                 .subscribe (
                     { list -> list.filter { c2 -> c2.name == testName }.forEach { c2 ->
                         assert(compareCompany(c1, c2))
@@ -38,7 +38,7 @@ class CompanyDaoTest {
                         assert(c2.registerDate != null)
                         println("register date = ${c2.registerDate}")
                         assert(c2.updateDate == null)
-                        CompanyDao.delete(c2.id)
+                        CompanyDao.delete(c2)
                     }},
                     { throwable -> println("Error! Super Error! No！ No！ Noooooo!" + throwable.message) }
         )
@@ -52,7 +52,7 @@ class CompanyDaoTest {
 
         CompanyDao.findAll()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.newThread())
                 .subscribe (
                     { list -> list.filter { c2 -> c2.name == testName }.forEach { c2 ->
                         c2.categoryId = 2
@@ -74,7 +74,7 @@ class CompanyDaoTest {
                                         assert(c2.registerDate == c3.registerDate)
                                         assert(c3.updateDate != null)
                                         println("update date = ${c3.updateDate}")
-                                        CompanyDao.delete(c3.id)
+                                        CompanyDao.delete(c3)
                                     }},
                                     { throwable -> println("More More Error! Noooooo!" + throwable.message) }
                                 )

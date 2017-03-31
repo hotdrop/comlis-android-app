@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="orange">#fd8402</color>
+    <color name="dark_orange">#894700</color>
+    <color name="light_orange">#ffb66f</color>
+
     <color name="blue">#0000ff</color>
     <color name="dark_blue">#0202ab</color>
     <color name="light_dark_blue">#5dbaff</color>
@@ -26,6 +31,7 @@
     <color name="white">#ffffff</color>
 
     <color name="gray">#868686</color>
+    <color name="dark_gray">#464646</color>
     <color name="light_gray">#d6d4d4</color>
 
 </resources>
