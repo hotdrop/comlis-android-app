@@ -15,7 +15,8 @@ abstract class ViewModel {
     }
 
     fun Date.format(): String? {
-        this ?: return null
         return DateFormat.format("yyyy-MM-dd, E, HH:mm:ss", this).toString()
     }
+
+    data class ErrorMessage(val message: String?)
 }

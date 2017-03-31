@@ -1,11 +1,12 @@
 package jp.hotdrop.compl.viewmodel
 
+import android.content.Context
+import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
-import jp.hotdrop.compl.util.AppCode
 
-class CompanyEditViewModel(val companyId: Int): ViewModel() {
+class CompanyEditViewModel(val companyId: Int, val context: Context): ViewModel() {
 
     val company: Company = CompanyDao.find(companyId)
 
@@ -34,31 +35,31 @@ class CompanyEditViewModel(val companyId: Int): ViewModel() {
         categoryName = CategoryDao.find(company.categoryId).name
     }
 
-    fun update(selectedCategorySpinnerId: Int): Int {
-        val code = canUpdate()
-        if(code != AppCode.OK) {
-            return code
+    fun update(selectedCategorySpinnerId: Int): ErrorMessage? {
+        val errorMessage = canUpdate()
+        if(errorMessage != null) {
+            return errorMessage
         }
         val company =  makeData(selectedCategorySpinnerId)
         CompanyDao.update(company)
 
-        return AppCode.OK
+        return null
     }
 
-    private fun canUpdate(): Int {
+    private fun canUpdate(): ErrorMessage? {
         if(viewName.trim() == "") {
-            return AppCode.ERROR_EMPTY_COMPANY_NAME
+            return ErrorMessage(context.getString(R.string.error_message_empty_company_name))
         }
         if(!viewEmployeesNum.isNumber()) {
-            return AppCode.ERROR_NOT_NUMBER_EMPLOYEES_NUM
+            return ErrorMessage(context.getString(R.string.error_message_employees_num_not_number))
         }
         if(!viewSalaryLow.isNumber()) {
-            return AppCode.ERROR_NOT_NUMBER_SALARY
+            return ErrorMessage(context.getString(R.string.error_message_salary_not_number))
         }
         if(viewSalaryHigh != "" && !viewSalaryHigh.isNumber()) {
-            return AppCode.ERROR_NOT_NUMBER_SALARY
+            return ErrorMessage(context.getString(R.string.error_message_salary_not_number))
         }
-        return AppCode.OK
+        return null
     }
 
     private fun makeData(selectedCategorySpinnerId: Int) = Company().apply {

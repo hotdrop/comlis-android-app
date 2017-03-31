@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import jp.hotdrop.compl.databinding.FragmentCompanyEditBinding
-import jp.hotdrop.compl.util.AppCode
 import jp.hotdrop.compl.view.parts.CategorySpinner
 import jp.hotdrop.compl.viewmodel.CompanyEditViewModel
 
@@ -42,7 +41,7 @@ class CompanyEditFragment: BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyEditBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
-        viewModel = CompanyEditViewModel(companyId)
+        viewModel = CompanyEditViewModel(companyId, context)
         binding.viewModel = viewModel
         categorySpinner = CategorySpinner(binding.spinnerCategory, activity).apply {
             setSelection(viewModel.categoryName)
@@ -52,17 +51,12 @@ class CompanyEditFragment: BaseFragment() {
     }
 
     private fun onClickUpdate() {
-        val returnCode = viewModel.update(categorySpinner.getSelection())
-        when(returnCode) {
-            AppCode.ERROR_EMPTY_COMPANY_NAME -> showToast("会社名を入力してください。")
-            AppCode.ERROR_NOT_NUMBER_EMPLOYEES_NUM -> showToast("従業員は数値を入力してください。")
-            AppCode.ERROR_NOT_NUMBER_SALARY -> showToast("年収は数値を入力してください。")
-            AppCode.OK -> onSuccess()
+        val errorMessage = viewModel.update(categorySpinner.getSelection())
+        if(errorMessage == null) {
+            onSuccess()
+        } else {
+            Toast.makeText(context, errorMessage.message, Toast.LENGTH_LONG).show()
         }
-    }
-
-    private fun showToast(messages: String) {
-        Toast.makeText(context, messages, Toast.LENGTH_LONG).show()
     }
 
     private fun onSuccess() {

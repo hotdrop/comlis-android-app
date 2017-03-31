@@ -5,9 +5,11 @@
     <string name="nav_company_list">会社一覧</string>
     <string name="nav_category_list">分類一覧</string>
 
-    <!-- company main -->
+    <!-- fragment list empty -->
     <string name="empty_company_list">何も登録されていません。分類を登録してから登録してください。</string>
+    <string name="empty_category_list">まだ何も登録されていません。好きな分類名を登録してください。この分類名が会社一覧のタブになります。</string>
 
+    <!-- company register and edit fragment -->
     <string name="label_company">会社名</string>
     <string name="label_category">分類</string>
     <string name="label_overview">概要</string>
@@ -24,10 +26,14 @@
     <string name="hint_wanted_job">PM, インフラエンジニア, プログラマー等</string>
     <string name="hint_url">https://www.sample.co.jp</string>
 
+    <string name="error_message_empty_company_name">会社名を入力してください。</string>
+    <string name="error_message_employees_num_not_number">従業員数には数字を入力してください。</string>
+    <string name="error_message_salary_not_number">年収には数値を入力してください。</string>
+
     <string name="add_button">登録</string>
     <string name="update_button">更新</string>
 
-    <!-- display label -->
+    <!-- company list and detail fragment label -->
     <string name="label_display_employees_num">従業員数:</string>
     <string name="label_display_salary">年収:</string>
     <string name="label_display_wanted_job">募集職種:</string>
@@ -35,8 +41,7 @@
     <string name="label_register_date">登録日:</string>
     <string name="label_update_date">更新日:</string>
 
-    <!-- category -->
-    <string name="empty_category_list">まだ何も登録されていません。好きな分類名を登録してください。この分類名が会社一覧のタブになります。</string>
+    <!-- category list fragment label -->
     <string name="label_register_count">登録数:</string>
 
     <!-- category dialog -->
