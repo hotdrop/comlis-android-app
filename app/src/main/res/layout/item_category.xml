@@ -39,6 +39,7 @@
                     android:id="@+id/icon_reorder_group"
                     android:layout_width="@dimen/reorder_icon_width"
                     android:layout_height="@dimen/reorder_icon_height"
+                    android:contentDescription="@string/description_category_reorder"
                     android:src="@drawable/ic_reorder" />
 
                 <TextView

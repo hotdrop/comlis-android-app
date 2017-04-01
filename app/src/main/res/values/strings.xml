@@ -5,11 +5,27 @@
     <string name="nav_company_list">会社一覧</string>
     <string name="nav_category_list">分類一覧</string>
 
-    <!-- fragment list empty -->
+    <!-- company list -->
     <string name="empty_company_list">何も登録されていません。分類を登録してから登録してください。</string>
-    <string name="empty_category_list">まだ何も登録されていません。好きな分類名を登録してください。この分類名が会社一覧のタブになります。</string>
+    <string name="description_company_reorder">並び順を変更するためのイメージアイコンです。</string>
 
-    <!-- company register and edit fragment -->
+    <!-- company list and detail -->
+    <string name="label_display_employees_num">従業員数:</string>
+    <string name="label_display_salary">年収:</string>
+    <string name="label_display_wanted_job">募集職種:</string>
+    <string name="label_display_url">URL:</string>
+    <string name="label_register_date">登録日:</string>
+    <string name="label_update_date">更新日:</string>
+
+    <!-- company detail -->
+    <string name="description_company_detail_cover">分類毎のテーマカラーに対応した背景イメージを表示します。</string>
+
+    <!-- category list -->
+    <string name="empty_category_list">まだ何も登録されていません。好きな分類名を登録してください。この分類名が会社一覧のタブになります。</string>
+    <string name="label_register_count">登録数:</string>
+    <string name="description_category_reorder">並び順を変更するためのイメージアイコンです。</string>
+
+    <!-- company register and edit -->
     <string name="label_company">会社名</string>
     <string name="label_category">分類</string>
     <string name="label_overview">概要</string>
@@ -37,17 +53,6 @@
     <string name="add_button">登録</string>
     <string name="update_button">更新</string>
 
-    <!-- company list and detail fragment label -->
-    <string name="label_display_employees_num">従業員数:</string>
-    <string name="label_display_salary">年収:</string>
-    <string name="label_display_wanted_job">募集職種:</string>
-    <string name="label_display_url">URL:</string>
-    <string name="label_register_date">登録日:</string>
-    <string name="label_update_date">更新日:</string>
-
-    <!-- category list fragment label -->
-    <string name="label_register_count">登録数:</string>
-
     <!-- category dialog -->
     <string name="category_dialog_label_name">分類名</string>
     <string name="category_dialog_title">分類登録</string>
@@ -59,7 +64,7 @@
     <string name="category_dialog_update_button">更新</string>
     <string name="category_dialog_delete_button">削除</string>
 
-    <!-- detail dialog -->
+    <!-- company detail dialog -->
     <string name="detail_dialog_trash_button_message">削除します。よろしいですか？（削除したら元に戻せません。）</string>
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
