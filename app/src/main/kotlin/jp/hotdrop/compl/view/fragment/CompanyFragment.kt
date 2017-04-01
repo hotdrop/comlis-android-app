@@ -73,7 +73,8 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
     private fun onLoadSuccess(categories: List<Category>, isRefresh: Boolean = false) {
 
         // addFragmentの中でadapter使ってるのでここで初期化する
-        adapter = Adapter(fragmentManager)
+        // また、FragmentをネスとするのでFragmentManagerではなくchildFragmentManagerを使う
+        adapter = Adapter(childFragmentManager)
 
         if(categories.isNotEmpty()) {
             categories.filter { category -> CompanyDao.countByCategory(category.id) > 0 }
