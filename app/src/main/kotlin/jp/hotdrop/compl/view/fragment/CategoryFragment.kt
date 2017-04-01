@@ -204,9 +204,6 @@ class CategoryFragment : BaseFragment() {
         editText.changeTextListener(view, dialog, editText, vm.category.id, vm.viewName)
     }
 
-    /**
-     * アダプター
-     */
     inner class Adapter(context: Context)
         : ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context) {
 

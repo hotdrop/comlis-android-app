@@ -7,6 +7,7 @@ import jp.hotdrop.compl.R
 
 object ColorUtil {
 
+    // 1とか2ではなく文字列にしている理由は、DBを直接見た時に分かりやすくするため
     val BLUE_NAME = "ブルー"
     val RED_NAME = "レッド"
     val YELLOW_NAME = "イエロー"

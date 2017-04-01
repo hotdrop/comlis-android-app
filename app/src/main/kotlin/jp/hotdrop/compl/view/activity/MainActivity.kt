@@ -75,10 +75,6 @@ class MainActivity : BaseActivity(),
         }
     }
 
-    /**
-     * 戻る操作をした時の動作
-     * バックスタックに積んだフラグメントがあれば取り出す
-     */
     override fun onBackPressed() {
         if(binding.drawer.isDrawerOpen(GravityCompat.START)) {
             binding.drawer.closeDrawer(GravityCompat.START)
@@ -94,7 +90,7 @@ class MainActivity : BaseActivity(),
 
     /**
      * onBackPressedやreplaceFragmentはフラグメントの操作しか行わないため
-     * バックスタックに変更があった場合、ハンドリングしてその他ナビゲーションビューや
+     * バックスタックに変更があった場合、ハンドリングしてナビゲーションビューや
      * ツールバーなどのコントロールを変更する。
      */
     override fun onBackStackChanged() {
