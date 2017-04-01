@@ -24,4 +24,10 @@ abstract class BaseFragment: Fragment() {
     }
 
     fun getComponent(): FragmentComponent = fragmentComponent
+
+    fun exit() {
+        if(isResumed) {
+            activity.onBackPressed()
+        }
+    }
 }

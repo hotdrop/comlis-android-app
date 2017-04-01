@@ -66,10 +66,4 @@ class CompanyEditFragment: BaseFragment() {
         activity.setResult(Activity.RESULT_OK, intent)
         exit()
     }
-
-    private fun exit() {
-        if(isResumed) {
-            activity.onBackPressed()
-        }
-    }
 }

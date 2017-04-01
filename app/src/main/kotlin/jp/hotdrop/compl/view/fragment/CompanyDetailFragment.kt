@@ -163,10 +163,4 @@ class CompanyDetailFragment: BaseFragment() {
         binding.fabEdit.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
         binding.fabTrash.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
     }
-
-    fun exit() {
-        if(isResumed) {
-            activity.onBackPressed()
-        }
-    }
 }
