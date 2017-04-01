@@ -8,16 +8,18 @@ import java.util.*
 
 object CompanyDao {
 
-    var orma = OrmaHolder.ORMA
+    var orma = OrmaHolder.buildDB
 
     fun find(id: Int): Company {
-        return companyRelation().selector().idEq(id).first()
+        return companyRelation().selector()
+                .idEq(id)
+                .first()
     }
 
     fun findAll(): Single<List<Company>> {
         return companyRelation().selector()
-                                .executeAsObservable()
-                                .toList()
+                .executeAsObservable()
+                .toList()
     }
 
     fun findByCategory(categoryId: Int): Single<List<Company>> {
@@ -30,14 +32,17 @@ object CompanyDao {
     }
 
     fun countByCategory(categoryId: Int): Int {
-        return companyRelation().selector().categoryIdEq(categoryId).count()
+        return companyRelation().selector()
+                .categoryIdEq(categoryId)
+                .count()
     }
 
     fun insert(company: Company) {
         orma.transactionSync {
             company.viewOrder = maxOrder() + 1
             company.registerDate = Date(System.currentTimeMillis())
-            companyRelation().inserter().execute(company)
+            companyRelation().inserter()
+                    .execute(company)
         }
     }
 

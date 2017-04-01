@@ -8,17 +8,18 @@ import java.util.*
 
 object CategoryDao {
 
-    var orma = OrmaHolder.ORMA
-
-    /**
-     * 今はGroupNameが重複しない前提としている。あまり良くない・・
-     */
-    fun find(name: String): Category {
-        return categoryRelation().selector().nameEq(name).first()
-    }
+    var orma = OrmaHolder.buildDB
 
     fun find(id: Int): Category {
-        return categoryRelation().selector().idEq(id).first()
+        return categoryRelation().selector()
+                .idEq(id)
+                .first()
+    }
+
+    fun find(name: String): Category {
+        return categoryRelation().selector()
+                .nameEq(name)
+                .first()
     }
 
     fun findAll(): Single<List<Category>> {
@@ -46,6 +47,7 @@ object CategoryDao {
             categoryRelation().updater()
                     .name(category.name)
                     .colorType(category.colorType)
+                    .updateDate(Date(System.currentTimeMillis()))
                     .idEq(category.id)
                     .execute()
         }
@@ -70,20 +72,25 @@ object CategoryDao {
         }
     }
 
-    fun exist(name: String): Boolean {
-        return !categoryRelation().selector().nameEq(name).isEmpty
-    }
-
-    fun exist(name:String, id: Int): Boolean {
-        return !categoryRelation().selector().nameEq(name).idNotEq(id).isEmpty
-    }
-
-    private fun categoryRelation(): Category_Relation {
-        return orma.relationOfCategory()
+    fun exist(name: String, id: Int = -1): Boolean {
+        if(id == -1) {
+            return !categoryRelation().selector()
+                    .nameEq(name)
+                    .isEmpty
+        } else {
+            return !categoryRelation().selector()
+                    .nameEq(name)
+                    .idNotEq(id)
+                    .isEmpty
+        }
     }
 
     private fun maxOrder(): Int {
         return categoryRelation().selector().maxByViewOrder() ?: 0
+    }
+
+    private fun categoryRelation(): Category_Relation {
+        return orma.relationOfCategory()
     }
 
 }
