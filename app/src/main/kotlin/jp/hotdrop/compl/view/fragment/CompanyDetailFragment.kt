@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.airbnb.lottie.LottieAnimationView
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
@@ -85,9 +86,9 @@ class CompanyDetailFragment: BaseFragment() {
     private val RESET = 0.toFloat()
     private fun initLayout() {
         refreshLayout()
-        val animView1 = binding.animationView1.apply { setAnimation("FavoriteStar.json") }
-        val animView2 = binding.animationView2.apply { setAnimation("FavoriteStar.json") }
-        val animView3 = binding.animationView3.apply { setAnimation("FavoriteStar.json") }
+        val animView1 = binding.animationView1.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
+        val animView2 = binding.animationView2.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
+        val animView3 = binding.animationView3.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
         val animViews = mutableListOf(animView1, animView2, animView3)
 
         animViews.take(viewModel.viewFavorite).forEach { it.playAnimation() }

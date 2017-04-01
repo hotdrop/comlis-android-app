@@ -158,10 +158,10 @@ class CompanyTabFragment: BaseFragment() {
 
         private val RESET = 0.toFloat()
         private fun initAnimationView(binding: ItemCompanyBinding) {
-            // ロード時にキャッシュして問題ないのでStrongにした。コード読む限り最初の1つだけでいいと思う。
-            val animView1 = binding.animationView1.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Strong) }
-            val animView2 = binding.animationView2.apply { setAnimation("FavoriteStar.json") }
-            val animView3 = binding.animationView3.apply { setAnimation("FavoriteStar.json") }
+            // 弱い参照でいいと思うのでこれにする
+            val animView1 = binding.animationView1.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
+            val animView2 = binding.animationView2.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
+            val animView3 = binding.animationView3.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
             val animViews = mutableListOf(animView1, animView2, animView3)
 
             val vm = binding.viewModel
