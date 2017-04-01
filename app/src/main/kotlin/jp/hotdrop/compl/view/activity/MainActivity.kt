@@ -4,86 +4,111 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.os.Handler
 import android.support.annotation.StringRes
-import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.view.GravityCompat
-import android.support.v7.app.ActionBarDrawerToggle
-import android.view.MenuItem
-import io.reactivex.disposables.CompositeDisposable
+import android.support.v4.app.FragmentTransaction
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.ActivityMainBinding
-import jp.hotdrop.compl.view.NavigationPage
-import jp.hotdrop.compl.view.PageStateBus
-import jp.hotdrop.compl.view.StackedPageListener
+import jp.hotdrop.compl.view.fragment.CategoryFragment
 import jp.hotdrop.compl.view.fragment.CompanyFragment
-import javax.inject.Inject
 
-class MainActivity : BaseActivity(),
-        NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener{
+class MainActivity : BaseActivity()
+        //, FragmentManager.OnBackStackChangedListener
+    {
 
-    private val EXTRA_MENU = "menu"
+    //private val EXTRA_MENU = "menu"
 
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
     }
 
-    @Inject
-    lateinit var compositeDisposable: CompositeDisposable
+    private lateinit var companyFragment: Fragment
+    private lateinit var categoryFragment: Fragment
+
+    //@Inject
+    //lateinit var compositeDisposable: CompositeDisposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        DataBindingUtil.bind<ActivityMainBinding>(binding.navView.getHeaderView(0))
+        setSupportActionBar(binding.toolbar)
         getComponent().inject(this)
 
-        compositeDisposable.add(PageStateBus.observe()
-                                .subscribe { page ->
-                                    toggleToolbarElevation(page.toggleToolbar)
-                                    changePage(page.titleResId, page.createFragment())
-                                    binding.navView.setCheckedItem(page.menuId)
-                                })
-
         initView()
+        initFragments(savedInstanceState)
 
-        if(savedInstanceState == null) {
-            replaceFragment(CompanyFragment.newInstance())
-        } else if(savedInstanceState.getInt(EXTRA_MENU) != 0) {
-            val navPage = NavigationPage.forMenuId(savedInstanceState.getInt(EXTRA_MENU))
-            toggleToolbarElevation(navPage.toggleToolbar)
-            binding.toolbar.setTitle(navPage.titleResId)
-        }
-        supportFragmentManager.addOnBackStackChangedListener(this)
+        //if(savedInstanceState == null) {
+        //    replaceFragment(CompanyFragment.newInstance())
+        //} else if(savedInstanceState.getInt(EXTRA_MENU) != 0) {
+            //val navPage = NavigationPage.forMenuId(savedInstanceState.getInt(EXTRA_MENU))
+            //toggleToolbarElevation(navPage.toggleToolbar)
+            //binding.toolbar.setTitle(navPage.titleResId)
+        //}
+        //supportFragmentManager.addOnBackStackChangedListener(this)
     }
 
     private fun initView() {
-        setSupportActionBar(binding.toolbar)
-        val toggle = ActionBarDrawerToggle(this, binding.drawer, binding.toolbar, R.string.open, R.string.close)
-        toggle.syncState()
+        // droidkaigi2017ではBottomNavigationViewHelperを作っているが・・
+        binding.bottomNav.setOnNavigationItemSelectedListener { item ->
+            binding.title.text= item.title
+            item.isChecked = true
+            when(item.itemId) {
+                R.id.nav_companies -> switchFragment(companyFragment, CompanyFragment.TAG)
+                R.id.nav_categories -> switchFragment(categoryFragment, CategoryFragment.TAG)
+                else -> false
+            }
+        }
+    }
 
-        binding.drawer.addDrawerListener(toggle)
-        binding.navView.setNavigationItemSelectedListener(this)
-        binding.navView.itemIconTintList = null
-        binding.navView.setCheckedItem(R.id.nav_main_list)
+    private fun initFragments(savedInstanceState: Bundle?) {
+        companyFragment = supportFragmentManager.findFragmentByTag(CompanyFragment.TAG) ?: CompanyFragment.newInstance()
+        categoryFragment = supportFragmentManager.findFragmentByTag(CategoryFragment.TAG) ?: CategoryFragment.newInstance()
+
+        if(savedInstanceState == null) {
+            switchFragment(companyFragment, CompanyFragment.TAG)
+        }
+    }
+
+    private fun switchFragment(fragment: Fragment, tag: String): Boolean {
+        if(fragment.isAdded) {
+            return false
+        }
+
+        val ft = supportFragmentManager.beginTransaction()
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.content_view)
+        if(currentFragment != null) {
+            ft.detach(currentFragment)
+        }
+        if(fragment.isDetached) {
+            ft.attach(fragment)
+        } else {
+            ft.add(R.id.content_view, fragment, tag)
+        }
+        // フラグメントの交換時にフェードイン/アウトをつける
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+        return true
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.content_view)
-        if(currentFragment != null) {
-            outState!!.putInt(EXTRA_MENU, NavigationPage.forName(currentFragment).menuId)
-        }
+        //val currentFragment = supportFragmentManager.findFragmentById(R.id.content_view)
+        //if(currentFragment != null) {
+        //    outState!!.putInt(EXTRA_MENU, NavigationPage.forName(currentFragment).menuId)
+        //}
     }
 
     override fun onBackPressed() {
-        if(binding.drawer.isDrawerOpen(GravityCompat.START)) {
-            binding.drawer.closeDrawer(GravityCompat.START)
-            return
-        }
-        val fm = supportFragmentManager
-        if(fm.backStackEntryCount > 0) {
-            fm.popBackStack()
-            return
+        //if(binding.drawer.isDrawerOpen(GravityCompat.START)) {
+        //    binding.drawer.closeDrawer(GravityCompat.START)
+         //   return
+        //}
+        //val fm = supportFragmentManager
+        //if(fm.backStackEntryCount > 0) {
+        //    fm.popBackStack()
+        //    return
+        //}
+        if(switchFragment(companyFragment, CompanyFragment.TAG)) {
+            binding.bottomNav.menu.findItem(R.id.nav_companies).isChecked = true
+            binding.title.text = getString(R.string.companies)
         }
         super.onBackPressed()
     }
@@ -93,6 +118,7 @@ class MainActivity : BaseActivity(),
      * バックスタックに変更があった場合、ハンドリングしてナビゲーションビューや
      * ツールバーなどのコントロールを変更する。
      */
+    /*
     override fun onBackStackChanged() {
         // TODO onBackStackChangedがなぜか二回呼ばれてしまうのでなんか考える
         val currentFragment = supportFragmentManager.findFragmentById(R.id.content_view) ?: return
@@ -103,15 +129,16 @@ class MainActivity : BaseActivity(),
 
         currentFragment as? StackedPageListener ?: return
         currentFragment.onTop()
-    }
+    }*/
 
+    /*
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         binding.drawer.closeDrawer(GravityCompat.START)
         val navPage = NavigationPage.forMenuId(item)
         toggleToolbarElevation(navPage.toggleToolbar)
         changePage(navPage.titleResId, navPage.createFragment())
         return true
-    }
+    }*/
 
     override fun finish() {
         super.finish()
@@ -120,8 +147,8 @@ class MainActivity : BaseActivity(),
 
     override fun onDestroy() {
         super.onDestroy()
-        supportFragmentManager.removeOnBackStackChangedListener(this)
-        compositeDisposable.dispose()
+        //supportFragmentManager.removeOnBackStackChangedListener(this)
+        //compositeDisposable.dispose()
     }
 
     private fun toggleToolbarElevation(enable: Boolean) {
@@ -135,6 +162,4 @@ class MainActivity : BaseActivity(),
             replaceFragment(fragment)
         }, 100)
     }
-
-
 }

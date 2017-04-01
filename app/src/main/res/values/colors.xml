@@ -4,9 +4,12 @@
     <color name="colorPrimaryDark">@color/gray</color>
     <color name="colorAccent">@color/light_orange</color>
 
-    <!-- Navigation -->
+    <!-- title -->
+    <color name="title">@color/white</color>
+
+    <!-- bottom navigation -->
     <color name="nav_header_background">@color/light_gray</color>
-    <color name="nav_menu_background">@color/white</color>
+    <color name="bottom_nav_menu_background">@color/white</color>
     <color name="nav_menu_text">@color/black</color>
 
     <!-- Tab -->

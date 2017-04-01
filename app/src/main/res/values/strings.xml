@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">CompanyList</string>
 
-    <!-- navigation menu -->
-    <string name="nav_company_list">会社一覧</string>
-    <string name="nav_category_list">分類一覧</string>
+    <!-- menu -->
+    <string name="companies">会社一覧</string>
+    <string name="categories">分類</string>
 
     <!-- company list -->
     <string name="empty_company_list">何も登録されていません。分類を登録してから登録してください。</string>
