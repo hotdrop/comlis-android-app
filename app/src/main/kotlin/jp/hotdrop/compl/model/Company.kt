@@ -11,45 +11,44 @@ class Company {
     @PrimaryKey(autoincrement = true)
     var id: Int = 0
 
-    // 更新が必要なのでColumnは全てindexed = trueにする
     @Column(indexed = true)
     var categoryId: Int = 0
 
     @Column(indexed = true)
     var name: String = ""
 
-    @Column(indexed = true)
+    @Column
     var overview: String? = null
 
-    @Column(indexed = true)
+    @Column
     var employeesNum: Int = 0
 
-    @Column(indexed = true)
+    @Column
     var salaryLow: Int = 0
 
-    @Column(indexed = true)
+    @Column
     var salaryHigh: Int = 0
 
-    @Column(indexed = true)
+    @Column
     var wantedJob: String? = ""
 
-    @Column(indexed = true)
+    @Column
     var url: String? = null
 
-    @Column(indexed = true)
+    @Column
     var note: String? = null
 
     @Column(indexed = true)
     var viewOrder: Int = 0
 
-    @Column(indexed = true)
+    @Column
     var favorite: Int = 0
 
     @Column
     var registerDate: Date? = null
 
     /**
-     * 更新日はEditFragmentでの更新のみ反映する
+     * 更新日の更新はEditFragmentで編集した場合のみ
      */
     @Column
     var updateDate: Date? = null
