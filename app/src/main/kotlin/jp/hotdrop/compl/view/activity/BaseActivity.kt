@@ -30,12 +30,4 @@ abstract class BaseActivity: AppCompatActivity() {
         ft.replace(layoutResId, fragment, fragment.javaClass.simpleName)
         ft.commit()
     }
-
-    fun replaceFragment(fragment: Fragment) {
-        val ft = supportFragmentManager.beginTransaction()
-        ft.setCustomAnimations(R.anim.activity_fade_enter, R.anim.activity_fade_exit)
-        ft.replace(R.id.content_view, fragment, fragment.javaClass.simpleName)
-        ft.addToBackStack(null)
-        ft.commit()
-    }
 }

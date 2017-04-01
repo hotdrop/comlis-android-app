@@ -64,6 +64,10 @@ class CompanyTabFragment: BaseFragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     private fun loadData() {
         val disposable = CompanyDao.findByCategory(categoryId)
                 .observeOn(AndroidSchedulers.mainThread())

@@ -42,10 +42,6 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         getComponent().inject(this)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
@@ -53,9 +49,6 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         return binding.root
     }
 
-    /**
-     * DetailFragmentからの更新通知をここで無理矢理受け取る。
-     */
     override fun onResume() {
         super.onResume()
         val refreshMode = activity.intent.getIntExtra(REFRESH_MODE, REFRESH_NONE)

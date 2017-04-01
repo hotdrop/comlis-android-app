@@ -16,11 +16,8 @@
 
     <dimen name="border_height">1dp</dimen>
 
-    <!-- navigation menu -->
+    <!-- bottom navigation menu -->
     <dimen name="bottom_nav_height">56dp</dimen>
-    <dimen name="nav_header_height">160dp</dimen>
-    <dimen name="nav_drawer_header_icon">40dp</dimen>
-    <dimen name="text_margin">16dp</dimen>
 
     <!-- company detail fragment -->
     <dimen name="app_bar_height">240dp</dimen>
