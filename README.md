@@ -1,6 +1,7 @@
 # colist-android-app
-自分用のデータ保持アプリです。少しずつ作っております。
-自分用なので要求APIレベルは25です。
+It is a company data holding application for yourself.  
+I make it little by little in vacant time.  
+The require API level is 25.
 
 ## SDK version
 * min_sdk_version: 23
