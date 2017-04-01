@@ -10,10 +10,6 @@ abstract class ViewModel {
         return true
     }
 
-    fun Date.now(): Date {
-        return Date(System.currentTimeMillis())
-    }
-
     fun Date.format(): String? {
         return DateFormat.format("yyyy-MM-dd, E, HH:mm:ss", this).toString()
     }

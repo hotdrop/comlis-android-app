@@ -21,6 +21,10 @@
     <string name="label_url">URL</string>
     <string name="label_description">詳細</string>
     <string name="label_etc">その他</string>
+    <string name="label_employees_num_unit">名</string>
+
+    <string name="label_empty_value">未登録</string>
+    <string name="label_empty_date">ー</string>
 
     <string name="hint_salary">任意</string>
     <string name="hint_wanted_job">PM, インフラエンジニア, プログラマー等</string>

@@ -2,6 +2,7 @@ package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
 import android.support.annotation.ColorRes
+import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
@@ -9,14 +10,13 @@ import jp.hotdrop.compl.util.ColorUtil
 
 class CompanyViewModel(val company: Company, val context: Context): ViewModel() {
 
-    companion object {
-        @JvmStatic private val SALARY_UNIT = "万円"
-        @JvmStatic private val SALARY_RANGE_MARK = "〜"
-    }
+    private val SALARY_UNIT = context.getString(R.string.label_salary_unit)
+    private val SALARY_RANGE_MARK = context.getString(R.string.label_salary_range_mark)
+    private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
 
     // 画面表示に使うデータだけmodelとは別にフィールド値を持たせる
     val viewName = company.name
-    val viewEmployeesNum = company.employeesNum.toString()
+    val viewEmployeesNum = company.employeesNum.toString() + EMPLOYEES_NUM_UNIT
     var viewSalary = company.salaryLow.toString() + SALARY_UNIT
     val viewWantedJob = company.wantedJob ?: ""
 
