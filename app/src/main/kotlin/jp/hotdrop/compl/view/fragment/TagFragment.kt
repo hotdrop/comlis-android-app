@@ -3,13 +3,18 @@ package jp.hotdrop.compl.view.fragment
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.view.MotionEventCompat
+import android.support.v7.app.AlertDialog
+import android.support.v7.widget.AppCompatEditText
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Spinner
 import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -21,6 +26,7 @@ import jp.hotdrop.compl.databinding.ItemTagBinding
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
+import jp.hotdrop.compl.view.parts.ColorSpinner
 import jp.hotdrop.compl.viewmodel.TagViewModel
 import javax.inject.Inject
 
@@ -79,7 +85,7 @@ class TagFragment: BaseFragment() {
         } else {
             visibleInitView()
         }
-        binding.fabButton.setOnClickListener { /* TODO */ }
+        binding.fabButton.setOnClickListener { showRegisterDialog() }
     }
 
     private fun onLoadFailure(e: Throwable) {
@@ -103,6 +109,94 @@ class TagFragment: BaseFragment() {
         helper.startDrag(viewHolder)
     }
 
+    /**
+     * ダイアログで、入力した分類名に応じてボタンと注意書きの制御を行う拡張関数
+     */
+    private val REGISTER_MODE: Int = -1
+    fun AppCompatEditText.changeTextListener(view: View, dialog: AlertDialog, editText: AppCompatEditText,
+                                             tagId: Int = REGISTER_MODE, originName: String = "") =
+            addTextChangedListener(object: TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/*no op*/}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {/*no op*/ }
+                override fun afterTextChanged(s: Editable?) {
+                    val editTxt = editText.text.toString()
+                    when {
+                        editTxt == "" -> disableButton()
+                        tagId == REGISTER_MODE -> {
+                            if(TagDao.exist(editTxt)) {
+                                disableButtonWithAttention()
+                            } else {
+                                enableButton()
+                            }
+                        }
+                        else -> {
+                            if(editTxt != originName && TagDao.exist(editTxt, tagId)) {
+                                disableButtonWithAttention()
+                            } else {
+                                enableButton()
+                            }
+                        }
+                    }
+                }
+                private fun disableButton() {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+                    view.findViewById(R.id.label_tag_attention).visibility = View.GONE
+                }
+                private fun disableButtonWithAttention() {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+                    view.findViewById(R.id.label_tag_attention).visibility = View.VISIBLE
+                }
+                private fun enableButton() {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
+                    view.findViewById(R.id.label_tag_attention).visibility = View.GONE
+                }
+            })
+
+    private fun showRegisterDialog() {
+        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_tag, null)
+        val editText = view.findViewById(R.id.text_tag_name) as AppCompatEditText
+        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
+        val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
+                .setView(view)
+                .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
+                    TagDao.insert(editText.text.toString(), spinner.getSelection())
+                    val tag = TagDao.find(editText.text.toString())
+                    adapter.add(TagViewModel(tag, context))
+                    dialogInterface.dismiss()
+                    goneInitView()
+                })
+                .create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+        editText.changeTextListener(view, dialog, editText)
+    }
+
+    private fun showUpdateDialog(vm: TagViewModel) {
+        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_tag, null)
+        val editText = view.findViewById(R.id.text_tag_name) as AppCompatEditText
+        editText.setText(vm.viewName as CharSequence)
+        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
+        spinner.setSelection(vm.tag.colorType)
+        val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
+                .setView(view)
+                .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
+                    vm.viewName = editText.text.toString()
+                    vm.tag.colorType = spinner.getSelection()
+                    TagDao.update(vm.makeTag())
+                    adapter.refresh(vm)
+                    dialogInterface.dismiss()
+                })
+                .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
+                    TagDao.delete(vm.tag)
+                    loadData()
+                    dialogInterface.dismiss()
+                })
+                .create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
+        editText.changeTextListener(view, dialog, editText, vm.tag.id, vm.viewName)
+    }
+
     inner class Adapter(context: Context)
         : ArrayRecyclerAdapter<TagViewModel, BindingHolder<ItemTagBinding>>(context) {
 
@@ -116,7 +210,7 @@ class TagFragment: BaseFragment() {
                 }
                 false
             }
-            binding.cardView.setOnClickListener { /* TODO */ }
+            binding.cardView.setOnClickListener { showUpdateDialog(binding.viewModel) }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemTagBinding> {

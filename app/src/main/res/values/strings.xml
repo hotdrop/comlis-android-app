@@ -61,14 +61,19 @@
 
     <!-- category dialog -->
     <string name="category_dialog_label_name">分類名</string>
-    <string name="category_dialog_title">分類登録</string>
     <string name="category_dialog_attention">この分類名は既に登録されています</string>
     <string name="category_dialog_color_type">テーマカラー</string>
     <string name="category_dialog_delete_attention">登録数が1以上の場合は削除できません。</string>
 
-    <string name="category_dialog_add_button">登録</string>
-    <string name="category_dialog_update_button">更新</string>
-    <string name="category_dialog_delete_button">削除</string>
+    <!-- tag dialog -->
+    <string name="tag_dialog_label_name">タグ名</string>
+    <string name="tag_dialog_attention">このタグ名は既に登録されています</string>
+    <string name="tag_dialog_color_type">タグカラー</string>
+
+    <!-- dialog common -->
+    <string name="dialog_add_button">登録</string>
+    <string name="dialog_update_button">更新</string>
+    <string name="dialog_delete_button">削除</string>
 
     <!-- company detail dialog -->
     <string name="detail_dialog_trash_button_message">削除します。よろしいですか？（削除したら元に戻せません。）</string>

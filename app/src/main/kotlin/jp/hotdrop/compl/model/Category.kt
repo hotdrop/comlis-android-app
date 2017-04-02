@@ -16,7 +16,7 @@ class Category {
 
     /**
      * このColorTypeはColorDataUtilで定義した文字列を持っている・・
-     * ColorResとして使う場合はColorDataUtilコンバートする
+     * ColorResとして使う場合はColorDataUtilでコンバートする
      */
     @Column
     var colorType: String = ""

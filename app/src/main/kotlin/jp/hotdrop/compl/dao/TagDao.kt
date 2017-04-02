@@ -1,15 +1,20 @@
 package jp.hotdrop.compl.dao
 
-import android.support.annotation.ColorRes
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.model.Tag_Relation
-import java.sql.Date
+import java.util.*
 
 object TagDao {
 
     var orma = OrmaHolder.buildDB
+
+    fun find(name: String): Tag {
+        return tagRelation().selector()
+                .nameEq(name)
+                .first()
+    }
 
     fun findAll(): Single<List<Tag>> {
         return tagRelation().selector()
@@ -19,15 +24,26 @@ object TagDao {
                 .subscribeOn(Schedulers.io())
     }
 
-    fun insert(argName: String, @ColorRes argColor: Int) {
+    fun insert(argName: String, argColorType: String) {
         val tag = Tag().apply {
             name = argName
-            colorRes = argColor
+            colorType = argColorType
             viewOrder = maxOrder() + 1
             registerDate = Date(System.currentTimeMillis())
         }
         orma.transactionSync {
             tagRelation().inserter().execute(tag)
+        }
+    }
+
+    fun update(tag: Tag) {
+        orma.transactionSync {
+            tagRelation().updater()
+                    .name(tag.name)
+                    .colorType(tag.colorType)
+                    .updateDate(Date(System.currentTimeMillis()))
+                    .idEq(tag.id)
+                    .execute()
         }
     }
 
@@ -47,6 +63,19 @@ object TagDao {
             tagRelation().deleter()
                     .idEq(tag.id)
                     .execute()
+        }
+    }
+
+    fun exist(name: String, id: Int = -1): Boolean {
+        if(id == -1) {
+            return !tagRelation().selector()
+                    .nameEq(name)
+                    .isEmpty
+        } else {
+            return !tagRelation().selector()
+                    .nameEq(name)
+                    .idNotEq(id)
+                    .isEmpty
         }
     }
 

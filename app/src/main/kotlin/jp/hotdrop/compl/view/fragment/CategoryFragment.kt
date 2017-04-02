@@ -158,10 +158,10 @@ class CategoryFragment : BaseFragment() {
         val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
-                .setPositiveButton(R.string.category_dialog_add_button, { dialogInterface, _ ->
+                .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
                     CategoryDao.insert(editText.text.toString(), spinner.getSelection())
-                    val vm = CategoryDao.find(editText.text.toString())
-                    adapter.add(CategoryViewModel(vm, context))
+                    val category = CategoryDao.find(editText.text.toString())
+                    adapter.add(CategoryViewModel(category, context))
                     dialogInterface.dismiss()
                     goneInitView()
                 })
@@ -179,14 +179,14 @@ class CategoryFragment : BaseFragment() {
         spinner.setSelection(vm.category.colorType)
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
-                .setPositiveButton(R.string.category_dialog_update_button, { dialogInterface, _ ->
+                .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
                     vm.viewName = editText.text.toString()
                     vm.category.colorType = spinner.getSelection()
                     CategoryDao.update(vm.makeCategory())
                     adapter.refresh(vm)
                     dialogInterface.dismiss()
                 })
-                .setNegativeButton(R.string.category_dialog_delete_button, { dialogInterface, _ ->
+                .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
                     CategoryDao.delete(vm.category)
                     loadData()
                     dialogInterface.dismiss()

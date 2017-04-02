@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="800dp">
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/label_tag_name"
+            style="@style/ItemLabel"
+            android:text="@string/tag_dialog_label_name" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/text_tag_name"
+            style="@style/EditText"
+            android:layout_below="@id/label_tag_name" />
+
+        <TextView
+            android:id="@+id/label_tag_attention"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:layout_below="@id/text_tag_name"
+            android:textColor="@color/attention"
+            android:textSize="@dimen/text_small"
+            android:text="@string/tag_dialog_attention"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/label_color_type"
+            style="@style/ItemLabel"
+            android:text="@string/tag_dialog_color_type"
+            android:layout_below="@id/label_tag_attention" />
+
+        <Spinner
+            android:id="@+id/spinner_color_type"
+            style="@style/Spinner"
+            android:layout_below="@id/label_color_type" />
+
+    </RelativeLayout>
+
+</LinearLayout>

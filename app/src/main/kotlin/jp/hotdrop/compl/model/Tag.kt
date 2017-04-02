@@ -14,9 +14,11 @@ class Tag {
     @Column(indexed = true, unique = true)
     var name: String = ""
 
-
+    /**
+     * このColorTypeもCategory同様、ColorDataUtilでコンバートする
+     */
     @Column
-    var colorRes: Int = 0
+    var colorType: String = ""
 
     @Column(indexed = true)
     var viewOrder: Int = 0
