@@ -11,4 +11,9 @@
         android:icon="@drawable/ic_list"
         android:title="@string/categories"/>
 
+    <item
+        android:id="@+id/nav_tags"
+        android:icon="@drawable/ic_action_tags"
+        android:title="@string/tags" />
+
 </menu>

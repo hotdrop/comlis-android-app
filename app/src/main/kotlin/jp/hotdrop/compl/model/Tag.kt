@@ -6,7 +6,7 @@ import com.github.gfx.android.orma.annotation.Table
 import java.util.*
 
 @Table
-class Category {
+class Tag {
 
     @PrimaryKey(autoincrement = true)
     var id: Int = 0
@@ -14,12 +14,9 @@ class Category {
     @Column(indexed = true, unique = true)
     var name: String = ""
 
-    /**
-     * このColorTypeはColorDataUtilで定義した文字列を持っている・・
-     * ColorResとして使う場合はColorDataUtilコンバートする
-     */
+
     @Column
-    var colorType: String = ""
+    var colorRes: Int = 0
 
     @Column(indexed = true)
     var viewOrder: Int = 0
@@ -29,4 +26,5 @@ class Category {
 
     @Column
     var updateDate: Date? = null
+
 }

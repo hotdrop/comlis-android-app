@@ -8,12 +8,14 @@ import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.ActivityMainBinding
 import jp.hotdrop.compl.view.fragment.CategoryFragment
 import jp.hotdrop.compl.view.fragment.CompanyFragment
+import jp.hotdrop.compl.view.fragment.TagFragment
 
 class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var companyFragment: Fragment
     private lateinit var categoryFragment: Fragment
+    private lateinit var tagFragment: Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +35,7 @@ class MainActivity : BaseActivity() {
             when(item.itemId) {
                 R.id.nav_companies -> switchFragment(companyFragment, CompanyFragment.TAG)
                 R.id.nav_categories -> switchFragment(categoryFragment, CategoryFragment.TAG)
+                R.id.nav_tags -> switchFragment(tagFragment, TagFragment.TAG)
                 else -> false
             }
         }
@@ -41,6 +44,7 @@ class MainActivity : BaseActivity() {
     private fun initFragments(savedInstanceState: Bundle?) {
         companyFragment = supportFragmentManager.findFragmentByTag(CompanyFragment.TAG) ?: CompanyFragment.newInstance()
         categoryFragment = supportFragmentManager.findFragmentByTag(CategoryFragment.TAG) ?: CategoryFragment.newInstance()
+        tagFragment = supportFragmentManager.findFragmentByTag(TagFragment.TAG) ?: TagFragment.newInstance()
 
         if(savedInstanceState == null) {
             switchFragment(companyFragment, CompanyFragment.TAG)

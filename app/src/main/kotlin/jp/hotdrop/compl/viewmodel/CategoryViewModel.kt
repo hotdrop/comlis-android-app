@@ -29,6 +29,5 @@ class CategoryViewModel(var category: Category, val context: Context): ViewModel
 
     fun makeCategory(): Category = category.apply {
         name = viewName
-        itemCount = itemCount
     }
 }

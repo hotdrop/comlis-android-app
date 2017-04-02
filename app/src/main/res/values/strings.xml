@@ -4,10 +4,11 @@
     <!-- menu -->
     <string name="companies">会社一覧</string>
     <string name="categories">分類</string>
+    <string name="tags">タグ</string>
 
     <!-- company list -->
     <string name="empty_company_list">何も登録されていません。分類を登録してから登録してください。</string>
-    <string name="description_company_reorder">並び順を変更するためのイメージアイコンです。</string>
+    <string name="description_company_reorder">会社情報の並び順を変更するためのイメージアイコンです。</string>
 
     <!-- company list and detail -->
     <string name="label_display_employees_num">従業員数:</string>
@@ -23,7 +24,12 @@
     <!-- category list -->
     <string name="empty_category_list">まだ何も登録されていません。好きな分類名を登録してください。この分類名が会社一覧のタブになります。</string>
     <string name="label_register_count">登録数:</string>
-    <string name="description_category_reorder">並び順を変更するためのイメージアイコンです。</string>
+    <string name="description_category_reorder">分類の並び順を変更するためのイメージアイコンです。</string>
+
+    <!-- tag list -->
+    <string name="empty_tag_list">まだ何も登録されていません。好きなタグを登録してください。</string>
+    <string name="label_tag_attach_count">添付数:</string>
+    <string name="description_tag_reorder">タグの並び順を変更するためのイメージアイコンです。</string>
 
     <!-- company register and edit -->
     <string name="label_company">会社名</string>
