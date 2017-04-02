@@ -11,7 +11,7 @@ abstract class ViewModel {
     }
 
     fun Date.format(): String? {
-        return DateFormat.format("yyyy-MM-dd, E, HH:mm:ss", this).toString()
+        return DateFormat.format("yyyy-MM-dd(E) HH:mm:ss", this).toString()
     }
 
     data class ErrorMessage(val message: String?)

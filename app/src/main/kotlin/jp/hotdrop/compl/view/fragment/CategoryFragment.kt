@@ -79,6 +79,7 @@ class CategoryFragment : BaseFragment() {
         
         helper = ItemTouchHelper(CategoryItemTouchHelperCallback(adapter))
         binding.recyclerView.addItemDecoration(helper)
+        binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         helper.attachToRecyclerView(binding.recyclerView)
