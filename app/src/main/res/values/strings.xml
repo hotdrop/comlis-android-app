@@ -68,7 +68,6 @@
     <!-- tag dialog -->
     <string name="tag_dialog_label_name">タグ名</string>
     <string name="tag_dialog_attention">このタグ名は既に登録されています</string>
-    <string name="tag_dialog_color_type">タグカラー</string>
 
     <!-- dialog common -->
     <string name="dialog_add_button">登録</string>

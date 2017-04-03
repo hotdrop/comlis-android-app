@@ -24,6 +24,7 @@
 
     <!-- fab -->
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_second_margin_bottom">72dp</dimen>
 
     <!-- list -->
     <dimen name="reorder_icon_company_list_width">60dp</dimen>

@@ -10,7 +10,7 @@ class TagViewModel(var tag: Tag, val context: Context): ViewModel() {
     // 画面表示に使うデータだけmodelとは別にフィールド値を持たせる
     var viewName = tag.name
     // TODO
-    var attachCount = ""
+    var attachCount = "0"
 
     @ColorRes
     fun getColorRes(): Int {

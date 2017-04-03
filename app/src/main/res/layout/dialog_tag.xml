@@ -29,16 +29,11 @@
             android:text="@string/tag_dialog_attention"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/label_color_type"
-            style="@style/ItemLabel"
-            android:text="@string/tag_dialog_color_type"
-            android:layout_below="@id/label_tag_attention" />
-
         <Spinner
             android:id="@+id/spinner_color_type"
             style="@style/Spinner"
-            android:layout_below="@id/label_color_type" />
+            android:layout_marginTop="@dimen/spacing"
+            android:layout_below="@id/label_tag_attention" />
 
     </RelativeLayout>
 

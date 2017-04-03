@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.fragment.TagFragment">
 
-    <FrameLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -39,6 +40,18 @@
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/ic_add_white"
             android:clickable="true" />
-    </FrameLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_view_order_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginBottom="@dimen/fab_second_margin_bottom"
+            android:src="@drawable/ic_view_list"
+            android:clickable="true"
+            app:layout_anchor="@id/fab_button"
+            app:layout_anchorGravity="top" />
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </layout>
