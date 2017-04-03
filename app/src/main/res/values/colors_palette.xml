@@ -19,8 +19,9 @@
     <color name="dark_red">#8e0000</color>
     <color name="light_red">#ffb1b3</color>
 
-    <color name="yellow">#ffff00</color>
-    <color name="dark_yellow">#999901</color>
+    <color name="origin_yellow">#ffff00</color>
+    <color name="yellow">#b1b100</color>
+    <color name="dark_yellow">#747400</color>
     <color name="light_yellow">#fafaa5</color>
 
     <color name="purple">#8400ff</color>

@@ -33,7 +33,7 @@ class CompanyViewModel(val company: Company, val context: Context): ViewModel() 
 
     @ColorRes
     fun getColorRes(): Int {
-        return ColorUtil.getResLight(colorName, context)
+        return ColorUtil.getResNormal(colorName, context)
     }
 
     override fun equals(other: Any?): Boolean {
