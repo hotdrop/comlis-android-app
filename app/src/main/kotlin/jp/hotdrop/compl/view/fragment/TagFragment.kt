@@ -29,6 +29,19 @@ import jp.hotdrop.compl.view.parts.ColorSpinner
 import jp.hotdrop.compl.viewmodel.TagViewModel
 import javax.inject.Inject
 
+/**
+ * Company情報に付与するタグを登録/更新するFragment
+ * タグっぽくしたかったのでalphaだがFlexbox-layoutのRecyclerView版を使用して実装した。
+ * 本当はItemTouchHelperで上下左右好きな所にタグをdragして並び順変更したかった。
+ * しかし、notifyMovedのところでRecyclerViewの中のitem表示が重複したり消えたりおかしな動きをしてどうしても解消できなかった。
+ * そもそもItemTouchHelperはLayoutManagerの特定条件下に特化して作られているっぽいのでそれなりに動くが挙動が結構おかしいという
+ * 状態になるのは仕方ないのかもしれない。
+ * カスタムTouchHelperを作成すればできるかもしれないが、そのルートは沼がたくさんありそうなので今回はやめた。
+ * 従って、並び順変更は専用の画面を作る。ならCategoryFragmentみたいに最初からRecyclerViewでいいのでは？となるかもしれないが
+ * Flexbox-Layoutが思ったより簡単に導入できて良い感じに使えたのでぜひ使いたくてそのままにした。
+ * 後、Categoryと同じUIにするとCategoryだかTagだか分からなくなりそうなので、初期画面ではなるべくTagであることをイメージさせる画面が
+ * いいなとも思ってこのような作りにした。
+ */
 class TagFragment: BaseFragment() {
 
     @Inject
@@ -60,7 +73,7 @@ class TagFragment: BaseFragment() {
         }
         val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
         if(refreshMode == REFRESH) {
-            adapter.notifyItemRangeChanged(0, adapter.itemCount)
+            loadData()
             activity.intent.removeExtra(REFRESH_MODE)
         }
     }
@@ -236,12 +249,5 @@ class TagFragment: BaseFragment() {
             addItem(vm)
             notifyItemInserted(itemCount)
         }
-
-        fun getModels(): MutableList<Tag> {
-            return list.map { vm -> vm.tag }.toMutableList()
-        }
     }
-    /**
-     * ItemTouchHelperでdragしたかったがうまくいかなかったので並び順は指定することにした。
-     */
 }

@@ -103,6 +103,10 @@ class TagViewOrderFragment: BaseFragment() {
     inner class Adapter(context: Context)
         : ArrayRecyclerAdapter<TagViewModel, BindingHolder<ItemTagViewOrderBinding>>(context) {
 
+        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemTagViewOrderBinding> {
+            return BindingHolder(context, parent, R.layout.item_tag_view_order)
+        }
+
         override fun onBindViewHolder(holder: BindingHolder<ItemTagViewOrderBinding>?, position: Int) {
             holder ?: return
             val binding = holder.binding
@@ -113,10 +117,6 @@ class TagViewOrderFragment: BaseFragment() {
                 }
                 false
             }
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemTagViewOrderBinding> {
-            return BindingHolder(context, parent, R.layout.item_tag)
         }
 
         fun getModels(): MutableList<Tag> {
