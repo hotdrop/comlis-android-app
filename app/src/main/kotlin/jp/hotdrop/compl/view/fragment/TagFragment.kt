@@ -90,10 +90,10 @@ class TagFragment: BaseFragment() {
 
         if(adapter.itemCount > 0) {
             goneInitView()
-            binding.fabViewOrderButton.visibility = View.GONE
+            binding.fabViewOrderButton.visibility = View.VISIBLE
         } else {
             visibleInitView()
-            binding.fabViewOrderButton.visibility = View.VISIBLE
+            binding.fabViewOrderButton.visibility = View.GONE
         }
 
         binding.fabViewOrderButton.setOnClickListener { ActivityNavigator.showTagViewOrder(this@TagFragment, REQ_CODE_TAG_VIEW_ORDER) }
