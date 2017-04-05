@@ -33,17 +33,6 @@
         </RelativeLayout>
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_view_order_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="@dimen/fab_second_margin_bottom"
-            android:src="@drawable/ic_view_list"
-            android:clickable="true"
-            app:layout_anchor="@id/fab_button"
-            app:layout_anchorGravity="top" />
-
-        <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

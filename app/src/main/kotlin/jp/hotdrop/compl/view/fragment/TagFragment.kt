@@ -4,11 +4,15 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.view.MotionEventCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.AppCompatEditText
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Spinner
@@ -24,7 +28,6 @@ import jp.hotdrop.compl.databinding.ItemTagBinding
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
-import jp.hotdrop.compl.view.activity.ActivityNavigator
 import jp.hotdrop.compl.view.parts.ColorSpinner
 import jp.hotdrop.compl.viewmodel.TagViewModel
 import javax.inject.Inject
@@ -49,6 +52,7 @@ class TagFragment: BaseFragment() {
 
     private lateinit var binding: FragmentTagBinding
     private lateinit var adapter: FlexItemAdapter
+    private lateinit var helper: ItemTouchHelper
 
     companion object {
         @JvmStatic val TAG = TagFragment::class.java.simpleName!!
@@ -101,15 +105,16 @@ class TagFragment: BaseFragment() {
         binding.recyclerView.layoutManager = FlexboxLayoutManager()
         binding.recyclerView.adapter = adapter
 
+        helper = ItemTouchHelper(TagItemTouchHelperCallback(adapter))
+        binding.recyclerView.addItemDecoration(helper)
+        helper.attachToRecyclerView(binding.recyclerView)
+
         if(adapter.itemCount > 0) {
             goneInitView()
-            binding.fabViewOrderButton.visibility = View.VISIBLE
         } else {
             visibleInitView()
-            binding.fabViewOrderButton.visibility = View.GONE
         }
 
-        binding.fabViewOrderButton.setOnClickListener { ActivityNavigator.showTagViewOrder(this@TagFragment, REQ_CODE_TAG_VIEW_ORDER) }
         binding.fabButton.setOnClickListener { showRegisterDialog() }
     }
 
@@ -128,6 +133,8 @@ class TagFragment: BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
     }
+
+
 
     /**
      * ダイアログで、入力した分類名に応じてボタンと注意書きの制御を行う拡張関数
@@ -216,24 +223,35 @@ class TagFragment: BaseFragment() {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
         editText.changeTextListener(view, dialog, editText, vm.tag.id, vm.viewName)
     }
+    
+    private fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
+        helper.startDrag(viewHolder)
+    }
+
 
     inner class FlexItemAdapter(context: Context)
         : ArrayRecyclerAdapter<TagViewModel, BindingHolder<ItemTagBinding>>(context) {
-
-        override fun onBindViewHolder(holder: BindingHolder<ItemTagBinding>?, position: Int) {
-            holder ?: return
-            val binding = holder.binding
-            binding.viewModel = getItem(position)
-            binding.cardView.setOnClickListener { showUpdateDialog(binding.viewModel) }
-        }
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemTagBinding> {
             return BindingHolder(context, parent, R.layout.item_tag)
         }
 
+        override fun onBindViewHolder(holder: BindingHolder<ItemTagBinding>?, position: Int) {
+            holder ?: return
+            val binding = holder.binding
+            binding.viewModel = getItem(position)
+            binding.cardView.setOnTouchListener { _, motionEvent ->
+                if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
+                    onStartDrag(holder)
+                }
+                false
+            }
+            binding.cardView.setOnClickListener { showUpdateDialog(binding.viewModel) }
+        }
+
         /**
          * Categoryと全く同じことやってるので
-         * これらはViewModelにメソッド実装してArrayRecyclerAdapterの中で実装したほうがいいのでは・・
+         * これらはViewModelに実装してArrayRecyclerAdapterの中で実装したほうがいいのでは・・
          */
         fun refresh(vm: TagViewModel) {
             (0..itemCount - 1).forEach { i ->
@@ -248,6 +266,33 @@ class TagFragment: BaseFragment() {
         fun add(vm: TagViewModel) {
             addItem(vm)
             notifyItemInserted(itemCount)
+        }
+    }
+
+    /**
+     * アイテム選択時のコールバッククラス
+     */
+    inner class TagItemTouchHelperCallback(val adapter: FlexItemAdapter): ItemTouchHelper.Callback() {
+
+        override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
+            val dragFrags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            val swipeFlags = 0
+            return makeMovementFlags(dragFrags, swipeFlags)
+        }
+
+        override fun onMove(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, target: RecyclerView.ViewHolder?): Boolean {
+            if(viewHolder == null || target == null) {
+                return false
+            }
+            return adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
+            return
+        }
+
+        override fun isLongPressDragEnabled(): Boolean {
+            return false
         }
     }
 }
