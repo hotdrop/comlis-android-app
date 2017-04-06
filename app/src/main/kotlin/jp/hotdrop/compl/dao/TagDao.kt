@@ -2,7 +2,7 @@ package jp.hotdrop.compl.dao
 
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import jp.hotdrop.compl.model.RelationCompanyAndTag_Relation
+import jp.hotdrop.compl.model.AssociateCompanyWithTag_Relation
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.model.Tag_Relation
 import java.util.*
@@ -30,7 +30,7 @@ object TagDao {
     }
 
     fun countByTag(tag: Tag): Int {
-        return relationCompanyAndTagRelation().selector()
+        return associateCompanyAndTagRelation().selector()
                 .tagIdEq(tag.id)
                 .count()
     }
@@ -98,7 +98,7 @@ object TagDao {
         return orma.relationOfTag()
     }
 
-    private fun relationCompanyAndTagRelation(): RelationCompanyAndTag_Relation {
-        return orma.relationOfRelationCompanyAndTag()
+    private fun associateCompanyAndTagRelation(): AssociateCompanyWithTag_Relation {
+        return orma.relationOfAssociateCompanyWithTag()
     }
 }

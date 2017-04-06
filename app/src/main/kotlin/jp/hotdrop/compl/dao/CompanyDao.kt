@@ -31,7 +31,7 @@ object CompanyDao {
     }
 
     fun findByTag(company: Company): List<Tag> {
-        val tagIds = relationCompanyAndTagRelation().selector().companyIdEq(company.id)
+        val tagIds = associateCompanyAndTagRelation().selector().companyIdEq(company.id)
         return TagDao.findInId(tagIds.map { it.tagId })
     }
 
@@ -53,8 +53,8 @@ object CompanyDao {
     fun upsertTagRelation(company: Company, tags: List<Tag>) {
         orma.transactionSync {
             tags.forEach {
-                relationCompanyAndTagRelation().upserter()
-                        .execute(RelationCompanyAndTag()
+                associateCompanyAndTagRelation().upserter()
+                        .execute(AssociateCompanyWithTag()
                         .apply {
                             companyId = company.id
                             tagId = it.id
@@ -117,7 +117,7 @@ object CompanyDao {
         return orma.relationOfCompany()
     }
 
-    private fun relationCompanyAndTagRelation(): RelationCompanyAndTag_Relation {
-        return orma.relationOfRelationCompanyAndTag()
+    private fun associateCompanyAndTagRelation(): AssociateCompanyWithTag_Relation {
+        return orma.relationOfAssociateCompanyWithTag()
     }
 }
