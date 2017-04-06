@@ -2,6 +2,7 @@ package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
 import android.support.annotation.ColorRes
+import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 
@@ -9,8 +10,7 @@ class TagViewModel(var tag: Tag, val context: Context): ViewModel() {
 
     // 画面表示に使うデータだけmodelとは別にフィールド値を持たせる
     var viewName = tag.name
-    // TODO
-    var attachCount = "0"
+    var attachCount = TagDao.countByTag(tag)
 
     @ColorRes
     fun getColorRes(): Int {

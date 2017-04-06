@@ -179,7 +179,10 @@ class TagFragment: BaseFragment() {
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
-                    TagDao.insert(editText.text.toString(), spinner.getSelection())
+                    TagDao.insert(Tag().apply {
+                        name = editText.text.toString()
+                        colorType = spinner.getSelection()
+                    })
                     val tag = TagDao.find(editText.text.toString())
                     adapter.add(TagViewModel(tag, context))
                     dialogInterface.dismiss()

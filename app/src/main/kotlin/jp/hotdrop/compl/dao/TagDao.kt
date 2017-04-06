@@ -2,6 +2,7 @@ package jp.hotdrop.compl.dao
 
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import jp.hotdrop.compl.model.RelationCompanyAndTag_Relation
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.model.Tag_Relation
 import java.util.*
@@ -16,6 +17,10 @@ object TagDao {
                 .first()
     }
 
+    fun findInId(ids: List<Int>): List<Tag> {
+        return tagRelation().selector().idIn(ids).toList()
+    }
+
     fun findAll(): Single<List<Tag>> {
         return tagRelation().selector()
                 .orderByViewOrderAsc()
@@ -24,10 +29,16 @@ object TagDao {
                 .subscribeOn(Schedulers.io())
     }
 
-    fun insert(argName: String, argColorType: String) {
+    fun countByTag(tag: Tag): Int {
+        return relationCompanyAndTagRelation().selector()
+                .tagIdEq(tag.id)
+                .count()
+    }
+
+    fun insert(tag: Tag) {
         val tag = Tag().apply {
-            name = argName
-            colorType = argColorType
+            name = tag.name
+            colorType = tag.colorType
             viewOrder = maxOrder() + 1
             registerDate = Date(System.currentTimeMillis())
         }
@@ -85,5 +96,9 @@ object TagDao {
 
     private fun tagRelation(): Tag_Relation {
         return orma.relationOfTag()
+    }
+
+    private fun relationCompanyAndTagRelation(): RelationCompanyAndTag_Relation {
+        return orma.relationOfRelationCompanyAndTag()
     }
 }

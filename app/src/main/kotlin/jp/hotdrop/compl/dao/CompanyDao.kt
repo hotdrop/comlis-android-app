@@ -2,8 +2,7 @@ package jp.hotdrop.compl.dao
 
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import jp.hotdrop.compl.model.Company
-import jp.hotdrop.compl.model.Company_Relation
+import jp.hotdrop.compl.model.*
 import java.util.*
 
 object CompanyDao {
@@ -31,6 +30,11 @@ object CompanyDao {
                 .subscribeOn(Schedulers.io())
     }
 
+    fun findByTag(company: Company): List<Tag> {
+        val tagIds = relationCompanyAndTagRelation().selector().companyIdEq(company.id)
+        return TagDao.findInId(tagIds.map { it.tagId })
+    }
+
     fun countByCategory(categoryId: Int): Int {
         return companyRelation().selector()
                 .categoryIdEq(categoryId)
@@ -43,6 +47,19 @@ object CompanyDao {
             company.registerDate = Date(System.currentTimeMillis())
             companyRelation().inserter()
                     .execute(company)
+        }
+    }
+
+    fun upsertTagRelation(company: Company, tags: List<Tag>) {
+        orma.transactionSync {
+            tags.forEach {
+                relationCompanyAndTagRelation().upserter()
+                        .execute(RelationCompanyAndTag()
+                        .apply {
+                            companyId = company.id
+                            tagId = it.id
+                        })
+            }
         }
     }
 
@@ -98,5 +115,9 @@ object CompanyDao {
 
     private fun companyRelation(): Company_Relation {
         return orma.relationOfCompany()
+    }
+
+    private fun relationCompanyAndTagRelation(): RelationCompanyAndTag_Relation {
+        return orma.relationOfRelationCompanyAndTag()
     }
 }
