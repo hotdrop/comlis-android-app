@@ -22,7 +22,7 @@
             android:name=".view.activity.CompanyRegisterActivity"
             android:exported="false"
             android:label="@string/title_company_register"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.activity.CompanyDetailActivity"
             android:exported="false"
@@ -31,7 +31,7 @@
             android:name=".view.activity.CompanyAssociateTagActivity"
             android:exported="false"
             android:label="@string/title_tags"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.activity.CompanyEditActivity"
             android:exported="false"
@@ -41,7 +41,7 @@
             android:name=".view.activity.TagViewOrderActivity"
             android:exported="false"
             android:label="@string/title_tags_view_reorder"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

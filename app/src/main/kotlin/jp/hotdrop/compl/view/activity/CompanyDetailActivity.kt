@@ -4,7 +4,6 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.MenuItem
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.ActivityCompanyDetailBinding
 import jp.hotdrop.compl.view.fragment.CompanyDetailFragment
@@ -29,15 +28,4 @@ class CompanyDetailActivity: BaseActivity() {
         replaceFragment(CompanyDetailFragment.create(companyId), R.id.content_view)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if(item?.itemId == android.R.id.home) {
-            onBackPressed()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
-    }
 }

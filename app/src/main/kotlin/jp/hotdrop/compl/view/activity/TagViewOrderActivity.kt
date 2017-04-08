@@ -19,8 +19,14 @@ class TagViewOrderActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DataBindingUtil.setContentView<ActivityTagViewOrderBinding>(this, R.layout.activity_tag_view_order)
+        val binding = DataBindingUtil.setContentView<ActivityTagViewOrderBinding>(this, R.layout.activity_tag_view_order)
         getComponent().inject(this)
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.let {
+            it.title = binding.toolbar.title
+            it.setDisplayHomeAsUpEnabled(true)
+        }
         replaceFragment(TagViewOrderFragment.create(), R.id.content_view)
     }
 }
