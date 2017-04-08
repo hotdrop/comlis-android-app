@@ -53,10 +53,10 @@ class CompanyDaoTest {
         val company1AttachTag = mutableListOf(tagsFromDB[0], tagsFromDB[1])
         val company2FromDB = companiesFromDB[1]
         val company2AttachTag = mutableListOf(tagsFromDB[1], tagsFromDB[2], tagsFromDB[3])
-        CompanyDao.upsertTagRelation(company1FromDB, company1AttachTag)
-        CompanyDao.upsertTagRelation(company2FromDB, company2AttachTag)
+        CompanyDao.associateTagByCompany(company1FromDB.id, company1AttachTag)
+        CompanyDao.associateTagByCompany(company2FromDB.id, company2AttachTag)
 
-        val company1Tags = CompanyDao.findByTag(company1FromDB)
+        val company1Tags = CompanyDao.findByTag(company1FromDB.id)
         company1Tags.zip(company1AttachTag).forEach { assertCompareTag(it.first, it.second) }
     }
 

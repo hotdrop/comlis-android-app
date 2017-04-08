@@ -4,21 +4,22 @@ import android.content.Context
 import android.support.annotation.ColorRes
 import android.support.v4.content.ContextCompat
 import jp.hotdrop.compl.R
+import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 
-class TagAssociateViewModel(var tag: Tag, val context: Context, var isAttach: Boolean): ViewModel() {
+class TagAssociateViewModel(val companyId: Int, var tag: Tag, val context: Context): ViewModel() {
 
-    // 画面表示に使うデータだけmodelとは別にフィールド値を持たせる
     var viewName = tag.name
+    var isAssociate = CompanyDao.hasAssociateTag(companyId, tag.id)
 
-    fun changeAttachState() {
-        isAttach = !isAttach
+    fun changeAssociateState() {
+        isAssociate = !isAssociate
     }
 
     @ColorRes
     fun getColorRes(): Int {
-        return if(isAttach) {
+        return if(isAssociate) {
             ColorUtil.getResLight(tag.colorType, context)
         } else {
             ColorUtil.getResTransparent(tag.colorType, context)
@@ -27,7 +28,7 @@ class TagAssociateViewModel(var tag: Tag, val context: Context, var isAttach: Bo
 
     @ColorRes
     fun getBackGroundColorRes(): Int {
-        return if(isAttach) {
+        return if(isAssociate) {
             ContextCompat.getColor(context, R.color.item_tag_background)
         } else {
             ContextCompat.getColor(context, R.color.item_tag_unselected_background)

@@ -11,6 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
+import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.databinding.FragmentCompanyAssociateTagBinding
 import jp.hotdrop.compl.databinding.ItemTagAssociateBinding
@@ -63,15 +64,17 @@ class CompanyAssociateTagFragment: BaseFragment() {
 
     private fun onLoadSuccess(tags: List<Tag>) {
         adapter = FlexboxItemAdapter(context)
-        adapter.addAll(tags.map{ TagAssociateViewModel(it, context, false) })
-
-        // TODO すでに登録されているものをどうやって識別するか・・
+        adapter.addAll(tags.map{ TagAssociateViewModel(companyId, it, context) })
 
         binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.layoutManager = FlexboxLayoutManager()
         binding.recyclerView.adapter = adapter
 
-        // TODO チェックボタンクリックイベント実装するでDBに反映する
+        binding.fabDone.setOnClickListener {
+            CompanyDao.associateTagByCompany(companyId, adapter.getAssociateModels())
+            // TODO setResultする
+            exit()
+        }
     }
 
     private fun onLoadFailure(e: Throwable) {
@@ -92,13 +95,17 @@ class CompanyAssociateTagFragment: BaseFragment() {
 
             binding.cardView.setOnClickListener {
                 val vm = binding.viewModel
-                vm.changeAttachState()
+                vm.changeAssociateState()
                 binding.let {
                     it.borderLeft.setBackgroundColor(vm.getColorRes())
                     it.borderRight.setBackgroundColor(vm.getColorRes())
                     it.cardView.setCardBackgroundColor(vm.getBackGroundColorRes())
                 }
             }
+        }
+
+        fun getAssociateModels(): MutableList<Tag> {
+            return list.filter { it.isAssociate }.map { it.tag }.toMutableList()
         }
     }
 }

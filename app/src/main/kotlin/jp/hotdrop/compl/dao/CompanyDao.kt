@@ -30,8 +30,10 @@ object CompanyDao {
                 .subscribeOn(Schedulers.io())
     }
 
-    fun findByTag(company: Company): List<Tag> {
-        val tagIds = associateCompanyAndTagRelation().selector().companyIdEq(company.id)
+    fun findByTag(companyId: Int): List<Tag> {
+        val tagIds = associateCompanyAndTagRelation()
+                .selector()
+                .companyIdEq(companyId)
         return TagDao.findInId(tagIds.map { it.tagId })
     }
 
@@ -50,15 +52,17 @@ object CompanyDao {
         }
     }
 
-    fun upsertTagRelation(company: Company, tags: List<Tag>) {
+    fun associateTagByCompany(argCompanyId: Int, tags: List<Tag>) {
         orma.transactionSync {
+            associateCompanyAndTagRelation().deleter()
+                    .companyIdEq(argCompanyId)
+                    .execute()
             tags.forEach {
-                associateCompanyAndTagRelation().upserter()
-                        .execute(AssociateCompanyWithTag()
-                        .apply {
-                            companyId = company.id
-                            tagId = it.id
-                        })
+                associateCompanyAndTagRelation().inserter()
+                        .execute(AssociateCompanyWithTag().apply {
+                                companyId = argCompanyId
+                                tagId = it.id
+                            })
             }
         }
     }
@@ -107,6 +111,13 @@ object CompanyDao {
                     .idEq(company.id)
                     .execute()
         }
+    }
+
+    fun hasAssociateTag(companyId: Int, tagId: Int): Boolean {
+        return !associateCompanyAndTagRelation().selector()
+                .companyIdEq(companyId)
+                .tagIdEq(tagId)
+                .isEmpty
     }
 
     fun maxOrder(): Int {
