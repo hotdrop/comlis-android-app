@@ -40,7 +40,7 @@ class CategoryFragment : BaseFragment() {
     private lateinit var helper: ItemTouchHelper
 
     companion object {
-        @JvmStatic val TAG = CategoryFragment::class.java.simpleName!!
+        @JvmStatic val TAG: String = CategoryFragment::class.java.simpleName
         fun newInstance() = CategoryFragment()
     }
 
@@ -89,7 +89,7 @@ class CategoryFragment : BaseFragment() {
     }
 
     private fun onLoadFailure(e: Throwable) {
-        Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
+        Toast.makeText(activity, "failed load categories." + e.message, Toast.LENGTH_LONG).show()
     }
 
     private fun visibleInitView() {

@@ -51,7 +51,7 @@ class TagFragment: BaseFragment() {
     private lateinit var adapter: FlexItemAdapter
 
     companion object {
-        @JvmStatic val TAG = TagFragment::class.java.simpleName!!
+        @JvmStatic val TAG: String = TagFragment::class.java.simpleName
         fun newInstance() = TagFragment()
     }
 
@@ -114,7 +114,7 @@ class TagFragment: BaseFragment() {
     }
 
     private fun onLoadFailure(e: Throwable) {
-        Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
+        Toast.makeText(activity, "failed load tags." + e.message, Toast.LENGTH_LONG).show()
     }
 
     private fun visibleInitView() {
@@ -123,10 +123,6 @@ class TagFragment: BaseFragment() {
 
     private fun goneInitView() {
         binding.listEmptyView.visibility = View.GONE
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
     }
 
     /**
