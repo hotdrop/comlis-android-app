@@ -27,6 +27,7 @@ class TagViewOrderActivity: BaseActivity() {
             it.title = binding.toolbar.title
             it.setDisplayHomeAsUpEnabled(true)
         }
+
         replaceFragment(TagViewOrderFragment.create(), R.id.content_view)
     }
 }

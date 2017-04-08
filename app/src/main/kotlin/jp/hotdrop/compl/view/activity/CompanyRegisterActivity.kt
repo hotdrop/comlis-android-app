@@ -22,8 +22,15 @@ class CompanyRegisterActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DataBindingUtil.setContentView<ActivityCompanyRegisterBinding>(this, R.layout.activity_company_register)
+        val binding = DataBindingUtil.setContentView<ActivityCompanyRegisterBinding>(this, R.layout.activity_company_register)
         getComponent().inject(this)
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.let {
+            it.title = binding.toolbar.title
+            it.setDisplayHomeAsUpEnabled(true)
+        }
+
         val tabName = intent.getStringExtra(EXTRA_TAB_NAME)
         replaceFragment(CompanyRegisterFragment.create(tabName), R.id.content_view)
     }

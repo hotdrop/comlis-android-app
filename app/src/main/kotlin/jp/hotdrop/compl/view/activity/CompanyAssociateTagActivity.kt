@@ -22,8 +22,15 @@ class CompanyAssociateTagActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DataBindingUtil.setContentView<ActivityCompanyAssociateTagBinding>(this, R.layout.activity_company_associate_tag)
+        val binding = DataBindingUtil.setContentView<ActivityCompanyAssociateTagBinding>(this, R.layout.activity_company_associate_tag)
         getComponent().inject(this)
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.let {
+            it.title = binding.toolbar.title
+            it.setDisplayHomeAsUpEnabled(true)
+        }
+
         val companyId = intent.getIntExtra(EXTRA_COMPANY_ID, 0)
         replaceFragment(CompanyAssociateTagFragment.create(companyId), R.id.content_view)
     }

@@ -22,8 +22,15 @@ class CompanyEditActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DataBindingUtil.setContentView<ActivityCompanyEditBinding>(this, R.layout.activity_company_edit)
+        val binding = DataBindingUtil.setContentView<ActivityCompanyEditBinding>(this, R.layout.activity_company_edit)
         getComponent().inject(this)
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.let {
+            it.title = binding.toolbar.title
+            it.setDisplayHomeAsUpEnabled(true)
+        }
+
         val companyId = intent.getIntExtra(EXTRA_COMPANY_ID, -1)
         replaceFragment(CompanyEditFragment.create(companyId), R.id.content_view)
     }
