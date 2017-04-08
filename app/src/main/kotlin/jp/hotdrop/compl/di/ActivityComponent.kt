@@ -11,6 +11,7 @@ interface ActivityComponent {
     fun inject(activity: MainActivity)
     fun inject(activity: CompanyRegisterActivity)
     fun inject(activity: CompanyDetailActivity)
+    fun inject(activity: CompanyAssociateTagActivity)
     fun inject(activity: CompanyEditActivity)
     fun inject(activity: TagViewOrderActivity)
 

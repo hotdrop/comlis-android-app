@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">CompanyList</string>
 
+    <!-- title label -->
+    <string name="title_company_register">会社情報登録</string>
+    <string name="title_company_edit">会社情報編集</string>
+    <string name="title_tags">タグ一覧</string>
+    <string name="title_tags_view_reorder">タグ並べ替え</string>
+
     <!-- menu -->
     <string name="companies">会社一覧</string>
     <string name="categories">分類</string>

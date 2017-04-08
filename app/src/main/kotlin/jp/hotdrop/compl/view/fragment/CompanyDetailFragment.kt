@@ -142,6 +142,10 @@ class CompanyDetailFragment: BaseFragment() {
             ActivityNavigator.showCompanyEdit(this@CompanyDetailFragment, companyId, REQ_CODE_COMPANY_EDIT)
         }
 
+        binding.fabTag.setOnClickListener {
+            ActivityNavigator.showCompanyAssociateTag(this@CompanyDetailFragment, companyId, REQ_CODE_COMPANY_ASSOCIATE_TAG)
+        }
+
         binding.fabTrash.setOnClickListener {
             val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                     .setMessage(R.string.detail_dialog_trash_button_message)
@@ -161,6 +165,8 @@ class CompanyDetailFragment: BaseFragment() {
         viewModel = CompanyDetailViewModel(companyId, context)
         binding.viewModel = viewModel
         binding.fabEdit.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
+        // TODO タグが1つも登録されていない場合は表示しない
+        binding.fabTag.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
         binding.fabTrash.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
     }
 }
