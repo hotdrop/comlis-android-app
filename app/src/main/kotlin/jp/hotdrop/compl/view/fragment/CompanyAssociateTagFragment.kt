@@ -1,6 +1,8 @@
 package jp.hotdrop.compl.view.fragment
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -72,7 +74,10 @@ class CompanyAssociateTagFragment: BaseFragment() {
 
         binding.fabDone.setOnClickListener {
             CompanyDao.associateTagByCompany(companyId, adapter.getAssociateModels())
-            // TODO setResultする
+            val intent = Intent().apply {
+                putExtra(REFRESH_MODE, REFRESH)
+            }
+            activity.setResult(Activity.RESULT_OK, intent)
             exit()
         }
     }

@@ -92,10 +92,19 @@
                     android:layout_alignTop="@id/animation_view_2"
                     android:layout_toEndOf="@id/animation_view_2" />
 
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/flex_box_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:layout_below="@id/animation_view_3"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap" />
+
                 <TextView
                     android:id="@+id/label_abstract_title"
                     style="@style/SectionTitle"
-                    android:layout_below="@id/animation_view_3"
+                    android:layout_below="@id/flex_box_container"
                     android:textColor="@{viewModel.getColorRes}"
                     android:text="@string/label_overview"/>
 

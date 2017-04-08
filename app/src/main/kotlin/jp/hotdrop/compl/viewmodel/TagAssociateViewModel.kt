@@ -8,10 +8,10 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 
-class TagAssociateViewModel(val companyId: Int, var tag: Tag, val context: Context): ViewModel() {
+class TagAssociateViewModel(val companyId: Int = -1, var tag: Tag, val context: Context): ViewModel() {
 
     var viewName = tag.name
-    var isAssociate = CompanyDao.hasAssociateTag(companyId, tag.id)
+    var isAssociate = if(companyId != -1) CompanyDao.hasAssociateTag(companyId, tag.id) else true
 
     fun changeAssociateState() {
         isAssociate = !isAssociate

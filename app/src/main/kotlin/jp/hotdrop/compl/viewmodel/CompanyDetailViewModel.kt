@@ -8,6 +8,7 @@ import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 
 class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() {
@@ -35,6 +36,7 @@ class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() 
 
     val colorName: String
 
+    val viewTags: List<Tag>
     val canAttachTag = if(TagDao.count() > 0) View.VISIBLE else View.GONE
 
     init {
@@ -62,6 +64,8 @@ class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() 
         viewUpdateDate = company.updateDate?.format() ?: EMPTY_DATE
 
         colorName = CategoryDao.find(company.categoryId).colorType
+
+        viewTags = CompanyDao.findByTag(company.id)
     }
 
     @ColorRes

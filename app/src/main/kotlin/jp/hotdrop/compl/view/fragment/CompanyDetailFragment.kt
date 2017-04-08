@@ -5,18 +5,23 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.airbnb.lottie.LottieAnimationView
+import com.google.android.flexbox.FlexboxLayout
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
+import jp.hotdrop.compl.databinding.ItemTagAssociateBinding
+import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.activity.ActivityNavigator
 import jp.hotdrop.compl.viewmodel.CompanyDetailViewModel
+import jp.hotdrop.compl.viewmodel.TagAssociateViewModel
 
 class CompanyDetailFragment: BaseFragment() {
 
@@ -54,7 +59,9 @@ class CompanyDetailFragment: BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_EDIT || data == null) {
+        if(resultCode != Activity.RESULT_OK ||
+                (requestCode != REQ_CODE_COMPANY_EDIT && requestCode != REQ_CODE_COMPANY_ASSOCIATE_TAG) ||
+                data == null) {
             return
         }
         val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
@@ -167,5 +174,16 @@ class CompanyDetailFragment: BaseFragment() {
         binding.fabEdit.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
         binding.fabTag.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
         binding.fabTrash.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
+
+        val flexbox = binding.flexBoxContainer
+        flexbox.removeAllViews()
+        viewModel.viewTags.forEach { tag -> setCardView(flexbox, tag) }
+    }
+
+    private fun setCardView(flexboxLayout: FlexboxLayout, tag: Tag) {
+        val binding = DataBindingUtil.inflate<ItemTagAssociateBinding>(getLayoutInflater(null),
+                R.layout.item_tag_associate, flexboxLayout, false)
+        binding.viewModel = TagAssociateViewModel(tag = tag, context = context)
+        flexboxLayout.addView(binding.root)
     }
 }

@@ -36,7 +36,7 @@
             android:name=".view.activity.CompanyEditActivity"
             android:exported="false"
             android:label="@string/title_company_edit"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.activity.TagViewOrderActivity"
             android:exported="false"
