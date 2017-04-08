@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import jp.hotdrop.compl.databinding.FragmentCompanyEditBinding
+import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.parts.CategorySpinner
 import jp.hotdrop.compl.viewmodel.CompanyEditViewModel
 
@@ -22,10 +23,18 @@ class CompanyEditFragment: BaseFragment() {
         arguments.getInt(EXTRA_COMPANY_ID)
     }
 
+    private val colorName by lazy {
+        arguments.getString(EXTRA_COLOR_NAME)
+    }
+
     companion object {
-        @JvmStatic val EXTRA_COMPANY_ID = "companyId"
-        fun create(companyId: Int) = CompanyEditFragment().apply {
-            arguments = Bundle().apply { putInt(EXTRA_COMPANY_ID, companyId) }
+        @JvmStatic private val EXTRA_COMPANY_ID = "companyId"
+        @JvmStatic private val EXTRA_COLOR_NAME = "colorName"
+        fun create(companyId: Int, colorName: String) = CompanyEditFragment().apply {
+            arguments = Bundle().apply {
+                putInt(EXTRA_COMPANY_ID, companyId)
+                putString(EXTRA_COLOR_NAME, colorName)
+            }
         }
     }
 
@@ -41,12 +50,16 @@ class CompanyEditFragment: BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyEditBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
+
         viewModel = CompanyEditViewModel(companyId, context)
         binding.viewModel = viewModel
         categorySpinner = CategorySpinner(binding.spinnerCategory, activity).apply {
             setSelection(viewModel.categoryName)
         }
+
+        binding.updateButton.setBackgroundColor(ColorUtil.getResDark(colorName, context))
         binding.updateButton.setOnClickListener{ onClickUpdate() }
+
         return binding.root
     }
 

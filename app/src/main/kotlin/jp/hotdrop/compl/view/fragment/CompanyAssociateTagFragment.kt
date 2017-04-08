@@ -3,6 +3,7 @@ package jp.hotdrop.compl.view.fragment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.databinding.FragmentCompanyAssociateTagBinding
 import jp.hotdrop.compl.databinding.ItemTagAssociateBinding
 import jp.hotdrop.compl.model.Tag
+import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
 import jp.hotdrop.compl.viewmodel.TagAssociateViewModel
@@ -35,10 +37,18 @@ class CompanyAssociateTagFragment: BaseFragment() {
         arguments.getInt(EXTRA_COMPANY_ID)
     }
 
+    private val colorName by lazy {
+        arguments.getString(EXTRA_COLOR_NAME)
+    }
+
     companion object {
-        @JvmStatic val EXTRA_COMPANY_ID = "companyId"
-        fun create(companyId: Int) = CompanyAssociateTagFragment().apply {
-            arguments = Bundle().apply { putInt(EXTRA_COMPANY_ID, companyId) }
+        @JvmStatic private val EXTRA_COMPANY_ID = "companyId"
+        @JvmStatic private val EXTRA_COLOR_NAME = "colorName"
+        fun create(companyId: Int, colorName: String) = CompanyAssociateTagFragment().apply {
+            arguments = Bundle().apply {
+                putInt(EXTRA_COMPANY_ID, companyId)
+                putString(EXTRA_COLOR_NAME, colorName)
+            }
         }
     }
 
@@ -72,6 +82,7 @@ class CompanyAssociateTagFragment: BaseFragment() {
         binding.recyclerView.layoutManager = FlexboxLayoutManager()
         binding.recyclerView.adapter = adapter
 
+        binding.fabDone.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(colorName, context))
         binding.fabDone.setOnClickListener {
             CompanyDao.associateTagByCompany(companyId, adapter.getAssociateModels())
             val intent = Intent().apply {

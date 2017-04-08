@@ -37,8 +37,8 @@
     <color name="attention">@color/red</color>
 
     <color name="ok_button_text">@color/white</color>
-    <color name="ok_button_normal">@color/clear_blue</color>
-    <color name="ok_button_Highlight">@color/dark_blue</color>
+    <color name="ok_button_normal">@color/orange</color>
+    <color name="ok_button_Highlight">@color/dark_orange</color>
 
     <!-- spinner -->
     <color name="spinner_background">@color/light_gray</color>

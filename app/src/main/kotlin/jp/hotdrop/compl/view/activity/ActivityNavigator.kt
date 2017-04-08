@@ -12,12 +12,12 @@ object ActivityNavigator {
         CompanyDetailActivity.startForResult(fragment, companyId, requestCode)
     }
 
-    fun showCompanyAssociateTag(fragment: Fragment, companyId: Int, requestCode: Int) {
-        CompanyAssociateTagActivity.startForResult(fragment, companyId, requestCode)
+    fun showCompanyAssociateTag(fragment: Fragment, companyId: Int, colorName: String, requestCode: Int) {
+        CompanyAssociateTagActivity.startForResult(fragment, companyId, colorName, requestCode)
     }
 
-    fun showCompanyEdit(fragment: Fragment, companyId: Int, requestCode: Int) {
-        CompanyEditActivity.startForResult(fragment, companyId, requestCode)
+    fun showCompanyEdit(fragment: Fragment, companyId: Int, colorName: String, requestCode: Int) {
+        CompanyEditActivity.startForResult(fragment, companyId, colorName, requestCode)
     }
 
     fun showTagViewOrder(fragment: Fragment, requestCode: Int) {

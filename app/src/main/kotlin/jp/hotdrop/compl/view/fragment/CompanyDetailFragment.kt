@@ -146,11 +146,13 @@ class CompanyDetailFragment: BaseFragment() {
         }
 
         binding.fabEdit.setOnClickListener {
-            ActivityNavigator.showCompanyEdit(this@CompanyDetailFragment, companyId, REQ_CODE_COMPANY_EDIT)
+            ActivityNavigator.showCompanyEdit(this@CompanyDetailFragment, companyId,
+                    viewModel.colorName, REQ_CODE_COMPANY_EDIT)
         }
 
         binding.fabTag.setOnClickListener {
-            ActivityNavigator.showCompanyAssociateTag(this@CompanyDetailFragment, companyId, REQ_CODE_COMPANY_ASSOCIATE_TAG)
+            ActivityNavigator.showCompanyAssociateTag(this@CompanyDetailFragment, companyId,
+                    viewModel.colorName, REQ_CODE_COMPANY_ASSOCIATE_TAG)
         }
 
         binding.fabTrash.setOnClickListener {
