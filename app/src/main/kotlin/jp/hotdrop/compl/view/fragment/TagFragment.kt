@@ -103,14 +103,14 @@ class TagFragment: BaseFragment() {
 
         if(adapter.itemCount > 0) {
             goneInitView()
-            binding.fabViewOrderButton.visibility = View.VISIBLE
+            binding.fabViewOrder.visibility = View.VISIBLE
         } else {
             visibleInitView()
-            binding.fabViewOrderButton.visibility = View.GONE
+            binding.fabViewOrder.visibility = View.GONE
         }
 
-        binding.fabViewOrderButton.setOnClickListener { ActivityNavigator.showTagViewOrder(this@TagFragment, REQ_CODE_TAG_VIEW_ORDER) }
-        binding.fabButton.setOnClickListener { showRegisterDialog() }
+        binding.fabViewOrder.setOnClickListener { ActivityNavigator.showTagViewOrder(this@TagFragment, REQ_CODE_TAG_VIEW_ORDER) }
+        binding.fab.setOnClickListener { showRegisterDialog() }
     }
 
     private fun onLoadFailure(e: Throwable) {
