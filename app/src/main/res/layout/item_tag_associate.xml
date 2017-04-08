@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="viewModel" type="jp.hotdrop.compl.viewmodel.TagAssociateViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:clickable="true"
+            android:clipChildren="false"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@{viewModel.getBackGroundColorRes}"
+            app:cardCornerRadius="@dimen/card_view_item_corner_radius"
+            app:cardUseCompatPadding="true">
+
+            <FrameLayout
+                android:id="@+id/border_left"
+                android:background="@{viewModel.colorRes}"
+                android:layout_width="@dimen/card_view_item_border_width"
+                android:layout_height="match_parent"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:padding="@dimen/spacing_small">
+
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_marginEnd="@dimen/spacing_small"
+                    android:textSize="@dimen/text_normal"
+                    android:textColor="@color/item_list_text"
+                    android:text="@{viewModel.viewName}" />
+
+            </RelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/border_right"
+                android:background="@{viewModel.colorRes}"
+                android:layout_width="@dimen/card_view_item_border_width"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"/>
+
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+</layout>

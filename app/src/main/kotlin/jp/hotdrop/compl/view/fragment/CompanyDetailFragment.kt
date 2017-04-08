@@ -165,7 +165,6 @@ class CompanyDetailFragment: BaseFragment() {
         viewModel = CompanyDetailViewModel(companyId, context)
         binding.viewModel = viewModel
         binding.fabEdit.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
-        // TODO タグが1つも登録されていない場合は表示しない
         binding.fabTag.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
         binding.fabTrash.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
     }

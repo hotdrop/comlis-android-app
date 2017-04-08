@@ -29,7 +29,11 @@ object TagDao {
                 .subscribeOn(Schedulers.io())
     }
 
-    fun countByTag(tag: Tag): Int {
+    fun count(): Int {
+        return tagRelation().selector().count()
+    }
+
+    fun countByAttachCompany(tag: Tag): Int {
         return associateCompanyAndTagRelation().selector()
                 .tagIdEq(tag.id)
                 .count()

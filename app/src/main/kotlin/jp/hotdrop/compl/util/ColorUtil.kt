@@ -17,11 +17,11 @@ object ColorUtil {
     private var colorMap = mutableMapOf<String, ColorData>()
 
     init {
-        colorMap.put(BLUE_NAME, ColorData(R.color.dark_blue, R.color.light_blue, R.color.dark_blue))
-        colorMap.put(RED_NAME, ColorData(R.color.red, R.color.light_red, R.color.dark_red))
-        colorMap.put(YELLOW_NAME, ColorData(R.color.yellow, R.color.light_yellow, R.color.dark_yellow))
-        colorMap.put(GREEN_NAME, ColorData(R.color.green, R.color.light_green, R.color.dark_green))
-        colorMap.put(PURPLE_NAME, ColorData(R.color.purple, R.color.light_purple, R.color.dark_purple))
+        colorMap.put(BLUE_NAME, ColorData(R.color.dark_blue, R.color.light_blue, R.color.dark_blue, R.color.transparent_light_blue))
+        colorMap.put(RED_NAME, ColorData(R.color.red, R.color.light_red, R.color.dark_red, R.color.transparent_light_red))
+        colorMap.put(YELLOW_NAME, ColorData(R.color.yellow, R.color.light_yellow, R.color.dark_yellow, R.color.transparent_light_yellow))
+        colorMap.put(GREEN_NAME, ColorData(R.color.green, R.color.light_green, R.color.dark_green, R.color.transparent_light_green))
+        colorMap.put(PURPLE_NAME, ColorData(R.color.purple, R.color.light_purple, R.color.dark_purple, R.color.transparent_light_purple))
     }
 
     fun getNames(): List<String> {
@@ -43,5 +43,10 @@ object ColorUtil {
         return ContextCompat.getColor(context, colorMap[name]!!.light)
     }
 
-    data class ColorData(val normal: Int, val light: Int,val dark: Int)
+    @ColorRes
+    fun getResTransparent(name: String, context: Context): Int {
+        return ContextCompat.getColor(context, colorMap[name]!!.transparent)
+    }
+
+    data class ColorData(val normal: Int, val light: Int, val dark: Int, val transparent: Int)
 }

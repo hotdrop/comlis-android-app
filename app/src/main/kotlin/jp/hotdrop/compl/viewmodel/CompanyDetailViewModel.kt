@@ -6,6 +6,7 @@ import android.view.View
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
+import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.util.ColorUtil
 
@@ -33,6 +34,8 @@ class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() 
     val viewUpdateDate: String
 
     val colorName: String
+
+    val canAttachTag = if(TagDao.count() > 0) View.VISIBLE else View.GONE
 
     init {
         viewName = company.name

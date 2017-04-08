@@ -13,11 +13,11 @@ import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.databinding.FragmentCompanyAssociateTagBinding
-import jp.hotdrop.compl.databinding.ItemTagBinding
+import jp.hotdrop.compl.databinding.ItemTagAssociateBinding
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
-import jp.hotdrop.compl.viewmodel.TagViewModel
+import jp.hotdrop.compl.viewmodel.TagAssociateViewModel
 import javax.inject.Inject
 
 class CompanyAssociateTagFragment: BaseFragment() {
@@ -63,14 +63,15 @@ class CompanyAssociateTagFragment: BaseFragment() {
 
     private fun onLoadSuccess(tags: List<Tag>) {
         adapter = FlexboxItemAdapter(context)
-        adapter.addAll(tags.map{ TagViewModel(it, context) })
+        adapter.addAll(tags.map{ TagAssociateViewModel(it, context, false) })
 
         // TODO すでに登録されているものをどうやって識別するか・・
 
         binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.layoutManager = FlexboxLayoutManager()
         binding.recyclerView.adapter = adapter
-        // TODO 更新ボタンとかつけるか？
+
+        // TODO チェックボタンクリックイベント実装するでDBに反映する
     }
 
     private fun onLoadFailure(e: Throwable) {
@@ -78,17 +79,26 @@ class CompanyAssociateTagFragment: BaseFragment() {
     }
 
     inner class FlexboxItemAdapter(context: Context)
-        : ArrayRecyclerAdapter<TagViewModel, BindingHolder<ItemTagBinding>>(context) {
+        : ArrayRecyclerAdapter<TagAssociateViewModel, BindingHolder<ItemTagAssociateBinding>>(context) {
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemTagBinding> {
-            return BindingHolder(context, parent, R.layout.item_tag)
+        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemTagAssociateBinding> {
+            return BindingHolder(context, parent, R.layout.item_tag_associate)
         }
 
-        override fun onBindViewHolder(holder: BindingHolder<ItemTagBinding>?, position: Int) {
+        override fun onBindViewHolder(holder: BindingHolder<ItemTagAssociateBinding>?, position: Int) {
             holder ?: return
             val binding = holder.binding
             binding.viewModel = getItem(position)
-            // TODO ペラ
+
+            binding.cardView.setOnClickListener {
+                val vm = binding.viewModel
+                vm.changeAttachState()
+                binding.let {
+                    it.borderLeft.setBackgroundColor(vm.getColorRes())
+                    it.borderRight.setBackgroundColor(vm.getColorRes())
+                    it.cardView.setCardBackgroundColor(vm.getBackGroundColorRes())
+                }
+            }
         }
     }
 }

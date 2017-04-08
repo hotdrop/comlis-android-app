@@ -255,6 +255,7 @@
             android:layout_marginBottom="@dimen/fab_second_margin_bottom"
             android:scaleType="center"
             android:clickable="true"
+            android:visibility="@{viewModel.canAttachTag}"
             app:layout_anchor="@+id/fab_edit"
             app:layout_anchorGravity="top"
             app:srcCompat="@drawable/ic_action_tags_white" />
