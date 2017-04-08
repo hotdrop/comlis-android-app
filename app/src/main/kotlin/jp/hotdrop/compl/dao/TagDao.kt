@@ -35,10 +35,10 @@ object TagDao {
                 .count()
     }
 
-    fun insert(tag: Tag) {
+    fun insert(argTag: Tag) {
         val tag = Tag().apply {
-            name = tag.name
-            colorType = tag.colorType
+            name = argTag.name
+            colorType = argTag.colorType
             viewOrder = maxOrder() + 1
             registerDate = Date(System.currentTimeMillis())
         }
