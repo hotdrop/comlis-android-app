@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -58,6 +59,18 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_REGISTER || data == null) {
+            return
+        }
+        val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
+        if(refreshMode == REFRESH) {
+            loadData(isRefresh = true)
+            activity.intent.removeExtra(REFRESH_MODE)
+        }
+    }
+
     private fun loadData(isRefresh: Boolean = false) {
         showProgress()
         val disposable = CategoryDao.findAll()
@@ -72,9 +85,9 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
 
     private fun onLoadSuccess(categories: List<Category>, isRefresh: Boolean = false) {
 
-        // addFragmentの中でadapter使ってるのでここで初期化する
-        // また、FragmentをネスとするのでFragmentManagerではなくchildFragmentManagerを使う
+        // FragmentをネストするのでFragmentManagerではなくchildFragmentManagerを使う
         adapter = Adapter(childFragmentManager)
+        Log.d("DEBUG_TAG", " adapter.count=" + adapter.count)
 
         if(categories.isNotEmpty()) {
             categories.filter { category -> CompanyDao.countByCategory(category.id) > 0 }
@@ -84,7 +97,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
             binding.listEmptyView.visibility = View.VISIBLE
         }
 
-        // tablayoutを再作成するとonTabSelectedが呼ばれてしまうため保持しておく。これでいいのかとは思うが・・
+        // tabLayoutを再作成するとonTabSelectedが呼ばれてしまうため保持しておく。これでいいのかとは思うが・・
         val stockSelectedTabName = tabName
 
         binding.viewPager.adapter = adapter
@@ -115,18 +128,6 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
     private fun addFragment(title: String, categoryId: Int) {
         val fragment = CompanyTabFragment.create(categoryId)
         adapter.add(title, fragment)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_REGISTER || data == null) {
-            return
-        }
-        val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
-        if(refreshMode == REFRESH) {
-            loadData(isRefresh = true)
-            activity.intent.removeExtra(REFRESH_MODE)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

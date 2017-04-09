@@ -32,7 +32,10 @@ class CompanyTabFragment: BaseFragment() {
 
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
-    private var categoryId: Int = 0
+
+    private val categoryId by lazy {
+        arguments.getInt(EXTRA_CATEGORY_ID)
+    }
 
     private lateinit var binding: FragmentCompanyTabBinding
     private lateinit var adapter: Adapter
@@ -41,7 +44,7 @@ class CompanyTabFragment: BaseFragment() {
     private var isMoveItem = false
 
     companion object {
-        @JvmStatic val EXTRA_CATEGORY_ID = "categoryId"
+        @JvmStatic private val EXTRA_CATEGORY_ID = "categoryId"
         fun create(categoryId: Int) = CompanyTabFragment().apply {
             arguments = Bundle().apply { putInt(EXTRA_CATEGORY_ID, categoryId) }
         }
@@ -52,20 +55,10 @@ class CompanyTabFragment: BaseFragment() {
         getComponent().inject(this)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        categoryId = arguments.getInt(EXTRA_CATEGORY_ID)
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyTabBinding.inflate(inflater, container, false)
-        adapter = Adapter(context)
         loadData()
         return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     private fun loadData() {
@@ -80,14 +73,19 @@ class CompanyTabFragment: BaseFragment() {
     }
 
     private fun onLoadSuccess(companies: List<Company>) {
+        adapter = Adapter(context)
+
         if(companies.isNotEmpty()) {
             adapter.addAll(companies.map{ company -> CompanyViewModel(company, context) })
         }
+
         helper = ItemTouchHelper(CompanyItemTouchHelperCallback(adapter))
         binding.recyclerView.addItemDecoration(helper)
         binding.recyclerView.setHasFixedSize(true)
+
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
+
         helper.attachToRecyclerView(binding.recyclerView)
     }
 

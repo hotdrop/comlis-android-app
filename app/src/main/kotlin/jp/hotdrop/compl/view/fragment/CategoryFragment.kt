@@ -38,6 +38,7 @@ class CategoryFragment : BaseFragment() {
     private lateinit var binding: FragmentCategoryBinding
     private lateinit var adapter: Adapter
     private lateinit var helper: ItemTouchHelper
+    private var isReorder = false
 
     companion object {
         @JvmStatic val TAG: String = CategoryFragment::class.java.simpleName
@@ -102,7 +103,9 @@ class CategoryFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        CategoryDao.updateAllOrder(adapter.getModels())
+        if(isReorder) {
+            CategoryDao.updateAllOrder(adapter.getModels())
+        }
     }
 
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
@@ -247,35 +250,24 @@ class CategoryFragment : BaseFragment() {
      */
     inner class CategoryItemTouchHelperCallback(val adapter: Adapter): ItemTouchHelper.Callback() {
 
-        /**
-         * dragとswipeの動作指定。今はdragのみ
-         */
         override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
             val dragFrags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN
             val swipeFlags = 0
             return makeMovementFlags(dragFrags, swipeFlags)
         }
 
-        /**
-         * drag時の動作
-         */
         override fun onMove(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, target: RecyclerView.ViewHolder?): Boolean {
             if(viewHolder == null || target == null) {
                 return false
             }
+            isReorder = true
             return adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
         }
 
-        /**
-         * swipe時は何もしない
-         */
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
             return
         }
 
-        /**
-         * とりあえず長押し時も何もしない
-         */
         override fun isLongPressDragEnabled(): Boolean {
             return false
         }
