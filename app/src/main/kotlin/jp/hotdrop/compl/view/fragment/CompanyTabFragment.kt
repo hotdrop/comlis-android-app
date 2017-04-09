@@ -212,18 +212,12 @@ class CompanyTabFragment: BaseFragment() {
      */
     inner class CompanyItemTouchHelperCallback(val adapter: CompanyTabFragment.Adapter): ItemTouchHelper.Callback() {
 
-        /**
-         * dragとswipeの動作指定。今はdragのみ
-         */
         override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
             val dragFrags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN
             val swipeFlags = 0
             return makeMovementFlags(dragFrags, swipeFlags)
         }
 
-        /**
-         * drag時の動作
-         */
         override fun onMove(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, target: RecyclerView.ViewHolder?): Boolean {
             if(viewHolder == null || target == null) {
                 return false
@@ -232,16 +226,10 @@ class CompanyTabFragment: BaseFragment() {
             return adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
         }
 
-        /**
-         * swipe時はとりあえず何もしない
-         */
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
             return
         }
 
-        /**
-         * 長押し時は何もしない
-         */
         override fun isLongPressDragEnabled(): Boolean {
             return false
         }
