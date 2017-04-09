@@ -3,6 +3,7 @@ package jp.hotdrop.compl.view.fragment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.view.MotionEventCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.airbnb.lottie.LottieAnimationView
+import com.google.android.flexbox.FlexboxLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -21,11 +23,14 @@ import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyTabBinding
 import jp.hotdrop.compl.databinding.ItemCompanyBinding
+import jp.hotdrop.compl.databinding.ItemCompanyListTagBinding
 import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
 import jp.hotdrop.compl.view.activity.ActivityNavigator
 import jp.hotdrop.compl.viewmodel.CompanyViewModel
+import jp.hotdrop.compl.viewmodel.TagAssociateViewModel
 import javax.inject.Inject
 
 class CompanyTabFragment: BaseFragment() {
@@ -81,7 +86,6 @@ class CompanyTabFragment: BaseFragment() {
 
         helper = ItemTouchHelper(CompanyItemTouchHelperCallback(adapter))
         binding.recyclerView.addItemDecoration(helper)
-        binding.recyclerView.setHasFixedSize(true)
 
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -146,6 +150,7 @@ class CompanyTabFragment: BaseFragment() {
                 ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.company.id, REQ_CODE_COMPANY_DETAIL)
             }
 
+            binding.viewModel.viewTags.forEach { tag -> setCardView(binding.flexBoxContainer, tag) }
             initAnimationView(binding)
         }
 
@@ -156,6 +161,13 @@ class CompanyTabFragment: BaseFragment() {
 
         fun getModels(): MutableList<Company> {
             return list.map { vm -> vm.company }.toMutableList()
+        }
+
+        private fun setCardView(view: FlexboxLayout, tag: Tag) {
+            val binding = DataBindingUtil.inflate<ItemCompanyListTagBinding>(getLayoutInflater(null),
+                    R.layout.item_company_list_tag, view, false)
+            binding.viewModel = TagAssociateViewModel(tag = tag, context = context)
+            view.addView(binding.root)
         }
 
         private val RESET = 0.toFloat()

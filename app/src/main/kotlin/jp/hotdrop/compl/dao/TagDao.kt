@@ -18,7 +18,10 @@ object TagDao {
     }
 
     fun findInId(ids: List<Int>): List<Tag> {
-        return tagRelation().selector().idIn(ids).toList()
+        return tagRelation().selector()
+                .idIn(ids)
+                .orderByViewOrderAsc()
+                .toList()
     }
 
     fun findAll(): Single<List<Tag>> {

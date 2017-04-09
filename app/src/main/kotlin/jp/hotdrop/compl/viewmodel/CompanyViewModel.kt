@@ -6,6 +6,7 @@ import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 
 class CompanyViewModel(val company: Company, val context: Context): ViewModel() {
@@ -22,6 +23,7 @@ class CompanyViewModel(val company: Company, val context: Context): ViewModel() 
 
     val colorName: String
     var viewFavorite: Int
+    val viewTags: List<Tag>
 
     init {
         if(company.salaryHigh > 0) {
@@ -29,6 +31,8 @@ class CompanyViewModel(val company: Company, val context: Context): ViewModel() 
         }
         colorName = CategoryDao.find(company.categoryId).colorType
         viewFavorite = company.favorite
+
+        viewTags = CompanyDao.findByTag(company.id).take(5)
     }
 
     @ColorRes
