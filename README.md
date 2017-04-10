@@ -1,4 +1,4 @@
-# colist-android-app
+# company-list-android-app
 It is a company data holding application for yourself.  
 I make it little by little in vacant time.  
 The require API level is 25.

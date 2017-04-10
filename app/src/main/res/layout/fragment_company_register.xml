@@ -50,6 +50,7 @@
                     <TextView
                         android:id="@+id/label_overview"
                         style="@style/ItemLabel"
+                        android:maxLines="5"
                         android:layout_below="@id/spinner_category"
                         android:text="@string/label_overview" />
 
@@ -72,15 +73,26 @@
                         android:text="@={viewModel.viewEmployeesNum}" />
 
                     <TextView
+                        android:id="@+id/label_employees_unit"
+                        style="@style/ItemUnitLabel"
+                        android:layout_below="@id/label_employees_num"
+                        android:layout_toEndOf="@id/txt_employees_num"
+                        android:layout_alignBottom="@id/txt_employees_num"
+                        android:text="@string/label_employees_num_unit" />
+
+                    <TextView
                         android:id="@+id/label_salary"
                         style="@style/ItemLabel"
-                        android:layout_below="@id/txt_employees_num"
+                        android:layout_below="@id/txt_overview"
+                        android:layout_toEndOf="@id/label_employees_unit"
+                        android:elevation="20dp"
                         android:text="@string/label_salary" />
 
                     <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/txt_salary_lower"
                         style="@style/CompactEditText"
                         android:layout_below="@id/label_salary"
+                        android:layout_toEndOf="@id/label_employees_unit"
                         android:text="@={viewModel.viewSalaryLow}" />
 
                     <TextView
@@ -151,6 +163,7 @@
                     <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/txt_note"
                         style="@style/MultiLineEditText"
+                        android:maxLines="10"
                         android:layout_below="@id/label_note"
                         android:text="@={viewModel.viewNote}" />
 
