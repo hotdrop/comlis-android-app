@@ -25,8 +25,12 @@ class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() 
     val viewEmployeesNum: String
     var viewSalary = ""
     val viewWantedJob: String
+    var viewWorkPlace = ""
     var viewUrl: String? = null
     var visibleUrl: Int = View.GONE
+
+    var viewDoingBusiness = ""
+    var viewWantBusiness = ""
     val viewNote: String
 
     var viewFavorite: Int
@@ -51,11 +55,15 @@ class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() 
         }
 
         viewWantedJob = company.wantedJob ?: EMPTY_VALUE
+        viewWorkPlace = company.workPlace ?: EMPTY_VALUE
 
         company.url?.let {
             viewUrl = it
             visibleUrl = View.VISIBLE
         }
+
+        viewDoingBusiness = company.doingBusiness ?: EMPTY_VALUE
+        viewWantBusiness = company.wantBusiness ?: EMPTY_VALUE
 
         viewNote = company.note ?: EMPTY_VALUE
         viewFavorite = company.favorite

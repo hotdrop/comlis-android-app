@@ -165,10 +165,55 @@
                     android:text="@{viewModel.viewWantedJob}"/>
 
                 <TextView
+                    android:id="@+id/label_work_place"
+                    style="@style/OverViewItemLabel"
+                    android:drawableStart="@drawable/ic_place"
+                    android:layout_below="@id/label_wanted_job"
+                    android:text="@string/label_display_work_place" />
+
+                <TextView
+                    android:id="@+id/txt_work_place"
+                    style="@style/OverViewItemText"
+                    android:layout_alignTop="@id/label_work_place"
+                    android:layout_toEndOf="@id/label_work_place"
+                    android:layout_below="@id/txt_wanted_job"
+                    android:text="@{viewModel.viewWorkPlace}"/>
+
+                <TextView
+                    android:id="@+id/label_doing_business"
+                    style="@style/OverViewItemLabel"
+                    android:drawableStart="@drawable/ic_business"
+                    android:layout_below="@id/label_work_place"
+                    android:text="@string/label_display_doing_business" />
+
+                <TextView
+                    android:id="@+id/txt_doing_business"
+                    style="@style/OverViewItemText"
+                    android:layout_alignTop="@id/label_doing_business"
+                    android:layout_toEndOf="@id/label_doing_business"
+                    android:layout_below="@id/txt_work_place"
+                    android:text="@{viewModel.viewDoingBusiness}"/>
+
+                <TextView
+                    android:id="@+id/label_want_business"
+                    style="@style/OverViewItemLabel"
+                    android:drawableStart="@drawable/ic_cloud"
+                    android:layout_below="@id/label_doing_business"
+                    android:text="@string/label_display_want_business" />
+
+                <TextView
+                    android:id="@+id/txt_want_business"
+                    style="@style/OverViewItemText"
+                    android:layout_alignTop="@id/label_want_business"
+                    android:layout_toEndOf="@id/label_want_business"
+                    android:layout_below="@id/txt_doing_business"
+                    android:text="@{viewModel.viewWantBusiness}"/>
+
+                <TextView
                     android:id="@+id/label_url"
                     style="@style/OverViewItemLabel"
                     android:drawableStart="@drawable/ic_open_in_browser"
-                    android:layout_below="@id/label_wanted_job"
+                    android:layout_below="@id/label_want_business"
                     android:visibility="@{viewModel.visibleUrl}"
                     android:text="@string/label_display_url" />
 
@@ -177,7 +222,7 @@
                     style="@style/OverViewItemText"
                     android:layout_alignTop="@id/label_url"
                     android:layout_toEndOf="@id/label_url"
-                    android:layout_below="@id/txt_wanted_job"
+                    android:layout_below="@id/txt_want_business"
                     android:autoLink="web"
                     android:visibility="@{viewModel.visibleUrl}"
                     android:text="@{viewModel.viewUrl}" />
@@ -186,7 +231,7 @@
                     android:id="@+id/label_detail_title"
                     style="@style/SectionTitle"
                     android:textColor="@{viewModel.getColorRes}"
-                    android:layout_below="@id/label_url"
+                    android:layout_below="@id/txt_link_url"
                     android:text="@string/label_description"/>
 
                 <View

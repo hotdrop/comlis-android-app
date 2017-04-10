@@ -20,22 +20,15 @@
     <string name="label_display_employees_num">従業員数:</string>
     <string name="label_display_salary">年収:</string>
     <string name="label_display_wanted_job">募集職種:</string>
+    <string name="label_display_work_place">勤務地候補:</string>
     <string name="label_display_url">URL:</string>
-    <string name="label_register_date">登録日:</string>
-    <string name="label_update_date">更新日:</string>
 
     <!-- company detail -->
+    <string name="label_display_doing_business">事業内容:</string>
+    <string name="label_display_want_business">ビジョン:</string>
+    <string name="label_register_date">登録日:</string>
+    <string name="label_update_date">更新日:</string>
     <string name="description_company_detail_cover">分類毎のテーマカラーに対応した背景イメージを表示します。</string>
-
-    <!-- category list -->
-    <string name="empty_category_list">まだ何も登録されていません。好きな分類名を登録してください。この分類名が会社一覧のタブになります。</string>
-    <string name="label_register_count">登録数:</string>
-    <string name="description_category_reorder">分類の並び順を変更するためのイメージアイコンです。</string>
-
-    <!-- tag list -->
-    <string name="empty_tag_list">まだ何も登録されていません。好きなタグを登録してください。</string>
-    <string name="label_tag_attach_count">添付数:</string>
-    <string name="description_tag_reorder">タグの並び順を変更するためのイメージアイコンです。</string>
 
     <!-- company register and edit -->
     <string name="label_company">会社名</string>
@@ -64,12 +57,22 @@
     <string name="hint_doing_business">現在やっている事業内容</string>
     <string name="hint_want_business">これからやろうとしている事業内容</string>
 
+    <string name="add_button">登録</string>
+    <string name="update_button">更新</string>
+
     <string name="error_message_empty_company_name">会社名を入力してください。</string>
     <string name="error_message_employees_num_not_number">従業員数には数字を入力してください。</string>
     <string name="error_message_salary_not_number">年収には数値を入力してください。</string>
 
-    <string name="add_button">登録</string>
-    <string name="update_button">更新</string>
+    <!-- category list -->
+    <string name="empty_category_list">まだ何も登録されていません。好きな分類名を登録してください。この分類名が会社一覧のタブになります。</string>
+    <string name="label_register_count">登録数:</string>
+    <string name="description_category_reorder">分類の並び順を変更するためのイメージアイコンです。</string>
+
+    <!-- tag list -->
+    <string name="empty_tag_list">まだ何も登録されていません。好きなタグを登録してください。</string>
+    <string name="label_tag_attach_count">添付数:</string>
+    <string name="description_tag_reorder">タグの並び順を変更するためのイメージアイコンです。</string>
 
     <!-- category dialog -->
     <string name="category_dialog_label_name">分類名</string>

@@ -33,6 +33,9 @@ class CompanyEditViewModel(val companyId: Int, val context: Context): ViewModel(
         viewSalaryLow = if(company.salaryLow > 0) company.salaryLow.toString() else ""
         viewSalaryHigh = if(company.salaryHigh > 0) company.salaryHigh.toString() else ""
         viewWantedJob = company.wantedJob ?: ""
+        viewWorkPlace = company.workPlace ?: ""
+        viewDoingBusiness = company.doingBusiness ?: ""
+        viewWantBusiness = company.wantBusiness ?: ""
         viewUrl = company.url ?: ""
         viewNote = company.note ?: ""
 
