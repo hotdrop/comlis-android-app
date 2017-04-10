@@ -21,7 +21,10 @@
     <dimen name="bottom_nav_height">56dp</dimen>
 
     <!-- company detail fragment -->
-    <dimen name="app_bar_height">240dp</dimen>
+    <dimen name="collapsing_toolbar_height">240dp</dimen>
+
+    <!-- a fragment transitioned from company detail fragment -->
+    <dimen name="toolbar_height">60dp</dimen>
 
     <!-- fab -->
     <dimen name="fab_margin">16dp</dimen>

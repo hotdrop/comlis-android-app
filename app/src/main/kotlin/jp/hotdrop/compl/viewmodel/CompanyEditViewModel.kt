@@ -16,7 +16,11 @@ class CompanyEditViewModel(val companyId: Int, val context: Context): ViewModel(
     var viewSalaryLow: String
     var viewSalaryHigh: String
     var viewWantedJob: String
-    var viewUrl: String
+    var viewWorkPlace = ""
+    var viewUrl = ""
+    var viewDoingBusiness = ""
+    var viewWantBusiness = ""
+
     var viewNote: String
 
     var categoryName: String
@@ -71,8 +75,12 @@ class CompanyEditViewModel(val companyId: Int, val context: Context): ViewModel(
         salaryLow = if(viewSalaryLow != "") viewSalaryLow.toInt() else 0
         salaryHigh = if(viewSalaryHigh != "") viewSalaryHigh.toInt() else 0
         wantedJob = if(viewWantedJob != "") viewWantedJob else null
+        workPlace = if(viewWorkPlace != "") viewWorkPlace else null
         url = if(viewUrl != "") viewUrl else null
         note = if(viewNote != "") viewNote else null
+
+        doingBusiness = if(viewDoingBusiness != "") viewDoingBusiness else null
+        wantBusiness = if(viewWantBusiness != "") viewWantBusiness else null
 
         viewOrder = if(categoryId != company.categoryId) CompanyDao.maxOrder() + 1 else company.viewOrder
         favorite = company.favorite

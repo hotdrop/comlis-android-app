@@ -142,7 +142,7 @@
                     <TextView
                         android:id="@+id/label_wanted_job"
                         style="@style/ItemLabel"
-                        android:layout_below="@id/txt_salary_lower"
+                        android:layout_below="@id/txt_employees_num"
                         android:text="@string/label_wanted_job" />
 
                     <android.support.v7.widget.AppCompatEditText
@@ -153,9 +153,21 @@
                         android:text="@={viewModel.viewWantedJob}" />
 
                     <TextView
-                        android:id="@+id/label_url"
+                        android:id="@+id/label_work_place"
                         style="@style/ItemLabel"
                         android:layout_below="@id/txt_wanted_job"
+                        android:text="@string/label_work_place" />
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/txt_work_place"
+                        style="@style/EditText"
+                        android:layout_below="@id/label_work_place"
+                        android:text="@={viewModel.viewWorkPlace}" />
+
+                    <TextView
+                        android:id="@+id/label_url"
+                        style="@style/ItemLabel"
+                        android:layout_below="@id/txt_work_place"
                         android:text="@string/label_url" />
 
                     <android.support.v7.widget.AppCompatEditText
@@ -166,10 +178,35 @@
                         android:text="@={viewModel.viewUrl}" />
 
                     <TextView
+                        android:id="@+id/label_doing_business"
+                        style="@style/ItemLabel"
+                        android:layout_below="@id/txt_url"
+                        android:text="@string/label_doing_business" />
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/txt_doing_business"
+                        style="@style/EditText"
+                        android:layout_below="@id/label_doing_business"
+                        android:hint="@string/hint_doing_business"
+                        android:text="@={viewModel.viewDoingBusiness}" />
+
+                    <TextView
+                        android:id="@+id/label_want_business"
+                        style="@style/ItemLabel"
+                        android:layout_below="@id/txt_doing_business"
+                        android:text="@string/label_want_business" />
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/txt_want_business"
+                        style="@style/EditText"
+                        android:layout_below="@id/label_want_business"
+                        android:hint="@string/hint_want_business"
+                        android:text="@={viewModel.viewWantBusiness}" />
+
+                    <TextView
                         android:id="@+id/label_note"
                         style="@style/ItemLabel"
-                        android:maxLines="10"
-                        android:layout_below="@id/txt_url"
+                        android:layout_below="@id/txt_want_business"
                         android:text="@string/label_description" />
 
                     <android.support.design.widget.TextInputLayout

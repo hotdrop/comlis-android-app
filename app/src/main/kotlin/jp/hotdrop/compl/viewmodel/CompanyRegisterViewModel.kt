@@ -13,7 +13,10 @@ class CompanyRegisterViewModel(val context: Context): ViewModel() {
     var viewSalaryLow = ""
     var viewSalaryHigh = ""
     var viewWantedJob = ""
+    var viewWorkPlace = ""
     var viewUrl = ""
+    var viewDoingBusiness = ""
+    var viewWantBusiness = ""
     var viewNote = ""
     // viewOrder is not declared. Because autoSet max+1 value when insert in CompanyDao
 
@@ -47,12 +50,19 @@ class CompanyRegisterViewModel(val context: Context): ViewModel() {
     private fun makeData(selectedCategorySpinnerId: Int) = Company().apply {
         name = viewName
         categoryId = selectedCategorySpinnerId
+
         overview = if(viewOverview != "") viewOverview else null
+
         employeesNum = if(viewEmployeesNum != "") viewEmployeesNum.toInt() else 0
         salaryLow = if(viewSalaryLow != "") viewSalaryLow.toInt() else 0
         salaryHigh = if(viewSalaryHigh != "") viewSalaryHigh.toInt() else 0
         wantedJob = if(viewWantedJob != "") viewWantedJob else null
+        workPlace = if(viewWorkPlace != "") viewWorkPlace else null
         url = if(viewUrl != "") viewUrl else null
+
+        doingBusiness = if(viewDoingBusiness != "") viewDoingBusiness else null
+        wantBusiness = if(viewWantBusiness != "") viewWantBusiness else null
+
         note = if(viewNote != "") viewNote else null
     }
 

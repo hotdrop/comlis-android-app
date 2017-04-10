@@ -21,6 +21,15 @@ class Company {
     var overview: String? = null
 
     @Column
+    var workPlace: String? = null
+
+    @Column
+    var doingBusiness: String? = null
+
+    @Column
+    var wantBusiness: String? = null
+
+    @Column
     var employeesNum: Int = 0
 
     @Column

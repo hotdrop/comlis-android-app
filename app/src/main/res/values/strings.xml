@@ -47,6 +47,10 @@
     <string name="label_salary_unit">万円</string>
     <string name="label_salary_range_mark">〜</string>
     <string name="label_url">URL</string>
+    <string name="label_work_place">勤務地候補</string>
+    <string name="label_doing_business">事業内容</string>
+    <string name="label_want_business">ビジョン</string>
+
     <string name="label_description">詳細</string>
     <string name="label_etc">その他</string>
     <string name="label_employees_num_unit">名</string>
@@ -57,6 +61,8 @@
     <string name="hint_salary">任意</string>
     <string name="hint_wanted_job">PM, インフラエンジニア, プログラマー等</string>
     <string name="hint_url">https://www.sample.co.jp</string>
+    <string name="hint_doing_business">現在やっている事業内容</string>
+    <string name="hint_want_business">これからやろうとしている事業内容</string>
 
     <string name="error_message_empty_company_name">会社名を入力してください。</string>
     <string name="error_message_employees_num_not_number">従業員数には数字を入力してください。</string>

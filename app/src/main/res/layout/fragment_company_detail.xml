@@ -34,7 +34,7 @@
                 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/app_bar_height"
+                    android:layout_height="@dimen/collapsing_toolbar_height"
                     android:fitsSystemWindows="true"
                     app:layout_collapseMode="parallax" >
 

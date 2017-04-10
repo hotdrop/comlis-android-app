@@ -6,6 +6,7 @@
 
     <!-- title -->
     <color name="title">@color/white</color>
+    <color name="title_in_image_cover">@color/black</color>
 
     <!-- bottom navigation -->
     <color name="bottom_nav_menu_background">@color/white</color>

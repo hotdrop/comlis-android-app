@@ -34,9 +34,10 @@ class CompanyAssociateTagActivity: BaseActivity() {
             it.setDisplayHomeAsUpEnabled(true)
         }
 
-        val companyId = intent.getIntExtra(EXTRA_COMPANY_ID, -1)
         val colorName = intent.getStringExtra(EXTRA_COLOR_NAME)
-        binding.toolbar.setBackgroundColor(ColorUtil.getResDark(colorName, this))
+        binding.toolbar.background = ColorUtil.getImageCover(colorName, this)
+
+        val companyId = intent.getIntExtra(EXTRA_COMPANY_ID, -1)
         replaceFragment(CompanyAssociateTagFragment.create(companyId, colorName), R.id.content_view)
     }
 }

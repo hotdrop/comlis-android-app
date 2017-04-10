@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import jp.hotdrop.compl.databinding.FragmentCompanyEditBinding
-import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.parts.CategorySpinner
 import jp.hotdrop.compl.viewmodel.CompanyEditViewModel
 
@@ -57,7 +56,6 @@ class CompanyEditFragment: BaseFragment() {
             setSelection(viewModel.categoryName)
         }
 
-        binding.updateButton.setBackgroundColor(ColorUtil.getResDark(colorName, context))
         binding.updateButton.setOnClickListener{ onClickUpdate() }
 
         return binding.root

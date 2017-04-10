@@ -1,6 +1,7 @@
 package jp.hotdrop.compl.util
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.support.annotation.ColorRes
 import android.support.v4.content.ContextCompat
 import jp.hotdrop.compl.R
@@ -46,6 +47,17 @@ object ColorUtil {
     @ColorRes
     fun getResTransparent(name: String, context: Context): Int {
         return ContextCompat.getColor(context, colorMap[name]!!.transparent)
+    }
+
+    fun getImageCover(name: String, context: Context): Drawable {
+        when(name) {
+            ColorUtil.BLUE_NAME ->  return ContextCompat.getDrawable(context, R.drawable.blue_cover)
+            ColorUtil.GREEN_NAME -> return ContextCompat.getDrawable(context, R.drawable.green_cover)
+            ColorUtil.RED_NAME -> return ContextCompat.getDrawable(context, R.drawable.red_cover)
+            ColorUtil.YELLOW_NAME -> return ContextCompat.getDrawable(context, R.drawable.yellow_cover)
+            ColorUtil.PURPLE_NAME -> return ContextCompat.getDrawable(context, R.drawable.purple_cover)
+        }
+        throw IllegalStateException("Unsupported Color name $name ")
     }
 
     data class ColorData(val normal: Int, val light: Int, val dark: Int, val transparent: Int)
