@@ -1,5 +1,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.fragment.CompanyEditFragment">
 
     <data>
@@ -50,20 +51,31 @@
                     <TextView
                         android:id="@+id/label_overview"
                         style="@style/ItemLabel"
-                        android:maxLines="5"
                         android:layout_below="@id/spinner_category"
                         android:text="@string/label_overview" />
 
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/txt_overview"
-                        style="@style/MultiLineEditText"
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_overview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_below="@id/label_overview"
-                        android:text="@={viewModel.viewOverview}" />
+                        android:layout_marginEnd="@dimen/spacing"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="@integer/company_overview_counter_max_length" >
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/txt_overview"
+                            style="@style/MultiLineEditText"
+                            android:layout_below="@id/label_overview"
+                            android:maxLines="@integer/company_overview_max_lines"
+                            android:text="@={viewModel.viewOverview}" />
+
+                    </android.support.design.widget.TextInputLayout>
 
                     <TextView
                         android:id="@+id/label_employees_num"
                         style="@style/ItemLabel"
-                        android:layout_below="@id/txt_overview"
+                        android:layout_below="@id/input_layout_overview"
                         android:text="@string/label_employees_num" />
 
                     <android.support.v7.widget.AppCompatEditText
@@ -83,9 +95,8 @@
                     <TextView
                         android:id="@+id/label_salary"
                         style="@style/ItemLabel"
-                        android:layout_below="@id/txt_overview"
+                        android:layout_below="@id/input_layout_overview"
                         android:layout_toEndOf="@id/label_employees_unit"
-                        android:elevation="20dp"
                         android:text="@string/label_salary" />
 
                     <android.support.v7.widget.AppCompatEditText
@@ -161,11 +172,22 @@
                         android:layout_below="@id/txt_url"
                         android:text="@string/label_description" />
 
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/txt_note"
-                        style="@style/MultiLineEditText"
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_note"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_below="@id/label_note"
-                        android:text="@={viewModel.viewNote}" />
+                        android:layout_marginEnd="@dimen/spacing"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="@integer/company_note_counter_max_length" >
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/txt_note"
+                            style="@style/MultiLineEditText"
+                            android:maxLines="@integer/company_note_max_lines"
+                            android:text="@={viewModel.viewNote}" />
+
+                    </android.support.design.widget.TextInputLayout>
 
                 </RelativeLayout>
 
