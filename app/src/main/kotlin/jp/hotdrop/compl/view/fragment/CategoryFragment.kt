@@ -240,7 +240,7 @@ class CategoryFragment : BaseFragment() {
             notifyItemInserted(itemCount)
         }
 
-        fun getModels(): MutableList<Category> {
+        fun getModels(): List<Category> {
             return list.map {vm -> vm.category}.toMutableList()
         }
     }

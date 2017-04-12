@@ -64,7 +64,7 @@ class CompanyAssociateTagFragment: BaseFragment() {
     }
 
     private fun loadData() {
-        var disposable = TagDao.findAll()
+        val disposable = TagDao.findAll()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
@@ -120,7 +120,7 @@ class CompanyAssociateTagFragment: BaseFragment() {
             }
         }
 
-        fun getAssociateModels(): MutableList<Tag> {
+        fun getAssociateModels(): List<Tag> {
             return list.filter { it.isAssociate }.map { it.tag }.toMutableList()
         }
     }

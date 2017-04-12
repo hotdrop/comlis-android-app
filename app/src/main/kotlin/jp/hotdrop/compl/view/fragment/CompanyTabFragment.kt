@@ -159,7 +159,7 @@ class CompanyTabFragment: BaseFragment() {
             adapter.notifyItemInserted(adapter.itemCount)
         }
 
-        fun getModels(): MutableList<Company> {
+        fun getModels(): List<Company> {
             return list.map { vm -> vm.company }.toMutableList()
         }
 
