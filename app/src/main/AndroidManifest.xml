@@ -37,11 +37,6 @@
             android:exported="false"
             android:label="@string/title_company_edit"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".view.activity.TagViewOrderActivity"
-            android:exported="false"
-            android:label="@string/title_tags_view_reorder"
-            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

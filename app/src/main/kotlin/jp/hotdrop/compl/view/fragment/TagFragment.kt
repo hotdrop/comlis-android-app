@@ -4,11 +4,16 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.view.MotionEventCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.AppCompatEditText
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Spinner
@@ -24,7 +29,6 @@ import jp.hotdrop.compl.databinding.ItemTagBinding
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
-import jp.hotdrop.compl.view.activity.ActivityNavigator
 import jp.hotdrop.compl.view.parts.ColorSpinner
 import jp.hotdrop.compl.viewmodel.TagViewModel
 import javax.inject.Inject
@@ -36,11 +40,10 @@ import javax.inject.Inject
  * しかし、notifyMovedのところでRecyclerViewの中のitem表示が重複したり消えたりおかしな動きをしてどうしても解消できなかった。
  * そもそもItemTouchHelperはLayoutManagerの特定条件下に特化して作られているっぽいのでそれなりに動くが挙動が結構おかしいという
  * 状態になるのは仕方ないのかもしれない。
- * カスタムTouchHelperを作成すればできるかもしれないが、そのルートは沼がたくさんありそうなので今回はやめた。
- * 従って、並び順変更は専用の画面を作る。ならCategoryFragmentみたいに最初からRecyclerViewでいいのでは？となるかもしれないが
- * Flexbox-Layoutが思ったより簡単に導入できて良い感じに使えたのでぜひ使いたくてそのままにした。
- * 後、Categoryと同じUIにするとCategoryだかTagだか分からなくなりそうなので、初期画面ではなるべくTagであることをイメージさせる画面が
- * いいなとも思ってこのような作りにした。
+ * →これは完全に嘘。そもそもFlexbox-LayoutはLinearLayoutでできることはほぼできるのでそのLayoutManagerでならItemTouchHelperもできるはず。
+ *  結論としてFlexbox-Layoutでやりたかったことを実現できた。上記で引っかかった理由は単にbuild.gradleに指定したFlexbox-Layoutのverが古かったため。
+ *  元々alpha2ではscrollToした時にItemPositionの位置がずれるバグがあったようで、alpha3で修正されたとのこと。
+ *  私が完全にやらかして古いverで検証してしまった。。
  */
 class TagFragment: BaseFragment() {
 
@@ -49,6 +52,7 @@ class TagFragment: BaseFragment() {
 
     private lateinit var binding: FragmentTagBinding
     private lateinit var adapter: FlexItemAdapter
+    private lateinit var helper: ItemTouchHelper
 
     companion object {
         @JvmStatic val TAG: String = TagFragment::class.java.simpleName
@@ -78,6 +82,11 @@ class TagFragment: BaseFragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        TagDao.updateAllOrder(adapter.getModels())
+    }
+
     private fun loadData() {
         val disposable = TagDao.findAll()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -101,16 +110,17 @@ class TagFragment: BaseFragment() {
         binding.recyclerView.layoutManager = FlexboxLayoutManager()
         binding.recyclerView.adapter = adapter
 
+        helper = ItemTouchHelper(TagItemTouchHelperCallback(adapter))
+        binding.recyclerView.addItemDecoration(helper)
+        helper.attachToRecyclerView(binding.recyclerView)
+
         if(adapter.itemCount > 0) {
             goneInitView()
-            binding.fabViewOrder.visibility = View.VISIBLE
         } else {
             visibleInitView()
-            binding.fabViewOrder.visibility = View.GONE
         }
 
-        binding.fabViewOrder.setOnClickListener { ActivityNavigator.showTagViewOrder(this@TagFragment, REQ_CODE_TAG_VIEW_ORDER) }
-        binding.fab.setOnClickListener { showRegisterDialog() }
+        binding.fabButton.setOnClickListener { showRegisterDialog() }
     }
 
     private fun onLoadFailure(e: Throwable) {
@@ -216,6 +226,10 @@ class TagFragment: BaseFragment() {
         editText.changeTextListener(view, dialog, editText, vm.tag.id, vm.viewName)
     }
 
+    private fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
+        helper.startDrag(viewHolder)
+    }
+
     inner class FlexItemAdapter(context: Context)
         : ArrayRecyclerAdapter<TagViewModel, BindingHolder<ItemTagBinding>>(context) {
 
@@ -223,6 +237,12 @@ class TagFragment: BaseFragment() {
             holder ?: return
             val binding = holder.binding
             binding.viewModel = getItem(position)
+            binding.cardView.setOnTouchListener { _, motionEvent ->
+                if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
+                    onStartDrag(holder)
+                }
+                false
+            }
             binding.cardView.setOnClickListener { showUpdateDialog(binding.viewModel) }
         }
 
@@ -247,6 +267,37 @@ class TagFragment: BaseFragment() {
         fun add(vm: TagViewModel) {
             addItem(vm)
             notifyItemInserted(itemCount)
+        }
+
+        fun getModels(): List<Tag> {
+            return list.map{ it.tag }.toList()
+        }
+    }
+
+    /**
+     * アイテム選択時のコールバッククラス
+     */
+    inner class TagItemTouchHelperCallback(val adapter: FlexItemAdapter): ItemTouchHelper.Callback() {
+
+        override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
+            val dragFrags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            val swipeFlags = 0
+            return makeMovementFlags(dragFrags, swipeFlags)
+        }
+
+        override fun onMove(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, target: RecyclerView.ViewHolder?): Boolean {
+            if(viewHolder == null || target == null) {
+                return false
+            }
+            return true
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
+            return
+        }
+
+        override fun isLongPressDragEnabled(): Boolean {
+            return false
         }
     }
 }

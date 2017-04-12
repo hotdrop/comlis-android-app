@@ -19,8 +19,4 @@ object ActivityNavigator {
     fun showCompanyEdit(fragment: Fragment, companyId: Int, colorName: String, requestCode: Int) {
         CompanyEditActivity.startForResult(fragment, companyId, colorName, requestCode)
     }
-
-    fun showTagViewOrder(fragment: Fragment, requestCode: Int) {
-        TagViewOrderActivity.startForResult(fragment, requestCode)
-    }
 }
