@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -289,7 +288,7 @@ class TagFragment: BaseFragment() {
             if(viewHolder == null || target == null) {
                 return false
             }
-            return true
+            return adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
