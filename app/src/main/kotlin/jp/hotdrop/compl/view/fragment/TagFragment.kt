@@ -278,25 +278,50 @@ class TagFragment: BaseFragment() {
      */
     inner class TagItemTouchHelperCallback(val adapter: FlexItemAdapter): ItemTouchHelper.Callback() {
 
+        val NONE_POSITION = -1
+        var fromPosition = NONE_POSITION
+        var toPosition = NONE_POSITION
+
         override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
             val dragFrags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
             val swipeFlags = 0
             return makeMovementFlags(dragFrags, swipeFlags)
         }
 
+        /**
+         * flexbox-layoutを使用したアイテムのドラッグについて
+         * 上下の場合は常に互いのアイテムをswapさせれば問題なかったがflexboxは上下でアイテムを飛び越えられるので
+         * 隣接するアイテムのswapでは対応できない。
+         * 従って、アイテムの位置情報dragFromとdragTをフィールドで保持し、ドラッグ完了後のclearViewで実際のリストを更新する
+         */
         override fun onMove(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, target: RecyclerView.ViewHolder?): Boolean {
             if(viewHolder == null || target == null) {
                 return false
             }
-            return adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+            if(fromPosition == NONE_POSITION) {
+                fromPosition = viewHolder.adapterPosition
+            }
+            toPosition = target.adapterPosition
+            adapter.onItemMovedForFlexBox(viewHolder.adapterPosition, target.adapterPosition)
+            return true
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
             return
         }
 
+        override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?) {
+            super.clearView(recyclerView, viewHolder)
+            if(fromPosition != NONE_POSITION && toPosition != NONE_POSITION && fromPosition != toPosition) {
+                adapter.onListUpdateForFlexBox(fromPosition, toPosition)
+            }
+            fromPosition = NONE_POSITION
+            toPosition = NONE_POSITION
+        }
+
         override fun isLongPressDragEnabled(): Boolean {
             return false
         }
+
     }
 }
