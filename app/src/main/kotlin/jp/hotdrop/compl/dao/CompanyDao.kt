@@ -110,9 +110,13 @@ object CompanyDao {
 
     fun delete(company: Company) {
         orma.transactionSync {
+            associateCompanyAndTagRelation().deleter()
+                    .companyIdEq(company.id)
+                    .execute()
             companyRelation().deleter()
                     .idEq(company.id)
                     .execute()
+
         }
     }
 
