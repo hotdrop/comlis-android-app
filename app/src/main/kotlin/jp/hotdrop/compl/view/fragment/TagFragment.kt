@@ -103,6 +103,9 @@ class TagFragment: BaseFragment() {
 
         if(tags.isNotEmpty()) {
             adapter.addAll(tags.map { t -> TagViewModel(t, context) })
+            goneEmptyMessage()
+        } else {
+            visibleEmptyMessage()
         }
 
         binding.recyclerView.setHasFixedSize(true)
@@ -113,12 +116,6 @@ class TagFragment: BaseFragment() {
         binding.recyclerView.addItemDecoration(helper)
         helper.attachToRecyclerView(binding.recyclerView)
 
-        if(adapter.itemCount > 0) {
-            goneInitView()
-        } else {
-            visibleInitView()
-        }
-
         binding.fabButton.setOnClickListener { showRegisterDialog() }
     }
 
@@ -126,11 +123,11 @@ class TagFragment: BaseFragment() {
         Toast.makeText(activity, "failed load tags." + e.message, Toast.LENGTH_LONG).show()
     }
 
-    private fun visibleInitView() {
+    private fun visibleEmptyMessage() {
         binding.listEmptyView.visibility = View.VISIBLE
     }
 
-    private fun goneInitView() {
+    private fun goneEmptyMessage() {
         binding.listEmptyView.visibility = View.GONE
     }
 
@@ -191,7 +188,7 @@ class TagFragment: BaseFragment() {
                     val tag = TagDao.find(editText.text.toString())
                     adapter.add(TagViewModel(tag, context))
                     dialogInterface.dismiss()
-                    goneInitView()
+                    goneEmptyMessage()
                 })
                 .create()
         dialog.show()
@@ -216,7 +213,10 @@ class TagFragment: BaseFragment() {
                 })
                 .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
                     TagDao.delete(vm.tag)
-                    loadData()
+                    adapter.remove(vm)
+                    if(adapter.itemCount == 0) {
+                        visibleEmptyMessage()
+                    }
                     dialogInterface.dismiss()
                 })
                 .create()
@@ -249,23 +249,25 @@ class TagFragment: BaseFragment() {
             return BindingHolder(context, parent, R.layout.item_tag)
         }
 
-        /**
-         * Categoryと全く同じことやってるので
-         * これらはViewModelにメソッド実装してArrayRecyclerAdapterの中で実装したほうがいいのでは・・
-         */
         fun refresh(vm: TagViewModel) {
-            (0..itemCount - 1).forEach { i ->
-                val c = getItem(i)
-                if(vm == c) {
-                    c.change(vm)
-                    notifyItemChanged(i)
-                }
+            val position = adapter.getItemPosition(vm)
+            if(position != -1) {
+                adapter.getItem(position).change(vm)
+                notifyItemChanged(position)
             }
         }
 
         fun add(vm: TagViewModel) {
             addItem(vm)
             notifyItemInserted(itemCount)
+        }
+
+        fun remove(vm: TagViewModel) {
+            val position = adapter.getItemPosition(vm)
+            if(position != -1) {
+                adapter.removeItem(position)
+                notifyItemRemoved(position)
+            }
         }
 
         fun getModels(): List<Tag> {

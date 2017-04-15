@@ -72,9 +72,9 @@ class CategoryFragment : BaseFragment() {
 
         if(categories.isNotEmpty()) {
             adapter.addAll(categories.map{ c -> CategoryViewModel(c, context) })
-            viewHasCategories()
+            goneEmptyMessage()
         } else {
-            viewEmptyCategoryList()
+            visibleEmptyMessage()
         }
         
         helper = ItemTouchHelper(CategoryItemTouchHelperCallback(adapter))
@@ -91,11 +91,11 @@ class CategoryFragment : BaseFragment() {
         Toast.makeText(activity, "failed load categories." + e.message, Toast.LENGTH_LONG).show()
     }
 
-    private fun viewEmptyCategoryList() {
+    private fun visibleEmptyMessage() {
         binding.listEmptyView.visibility = View.VISIBLE
     }
 
-    private fun viewHasCategories() {
+    private fun goneEmptyMessage() {
         binding.listEmptyView.visibility = View.GONE
     }
 
@@ -164,7 +164,7 @@ class CategoryFragment : BaseFragment() {
                     val category = CategoryDao.find(editText.text.toString())
                     adapter.add(CategoryViewModel(category, context))
                     dialogInterface.dismiss()
-                    viewHasCategories()
+                    goneEmptyMessage()
                 })
                 .create()
         dialog.show()
@@ -189,8 +189,10 @@ class CategoryFragment : BaseFragment() {
                 })
                 .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
                     CategoryDao.delete(vm.category)
-                    // TODO これ無駄なのでremoveしたほうがいい
-                    loadData()
+                    adapter.remove(vm)
+                    if(adapter.itemCount == 0) {
+                        visibleEmptyMessage()
+                    }
                     dialogInterface.dismiss()
                 })
                 .create()
@@ -225,18 +227,24 @@ class CategoryFragment : BaseFragment() {
         }
 
         fun refresh(vm: CategoryViewModel) {
-            (0..itemCount - 1).forEach { i ->
-                val c = getItem(i)
-                if (vm == c) {
-                    c.change(vm)
-                    notifyItemChanged(i)
-                }
+            val position = adapter.getItemPosition(vm)
+            if(position != -1) {
+                adapter.getItem(position).change(vm)
+                notifyItemChanged(position)
             }
         }
 
         fun add(vm: CategoryViewModel) {
             addItem(vm)
             notifyItemInserted(itemCount)
+        }
+
+        fun remove(vm: CategoryViewModel) {
+            val position = adapter.getItemPosition(vm)
+            if(position != -1) {
+                adapter.removeItem(position)
+                notifyItemRemoved(position)
+            }
         }
 
         fun getModels(): List<Category> {

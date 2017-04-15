@@ -18,12 +18,25 @@ abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val 
         return list[index]
     }
 
+    fun getItemPosition(item: T): Int {
+        list.withIndex().forEach {
+            if(it.value == item) {
+                return it.index
+            }
+        }
+        return -1
+    }
+
     fun addItem(item: T) {
         list.add(item)
     }
 
     fun addAll(items: List<T>) {
         list.addAll(items)
+    }
+
+    fun removeItem(index: Int) {
+        list.removeAt(index)
     }
 
     fun clear() {

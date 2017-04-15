@@ -82,9 +82,9 @@ class CompanyTabFragment: BaseFragment() {
 
         if(companies.isNotEmpty()) {
             adapter.addAll(companies.map{ company -> CompanyViewModel(company, context) })
-            viewHasCompanies()
+            goneEmptyMessage()
         } else {
-            viewEmptyCompanyList()
+            visibleEmptyMessage()
         }
 
         helper = ItemTouchHelper(CompanyItemTouchHelperCallback(adapter))
@@ -100,11 +100,11 @@ class CompanyTabFragment: BaseFragment() {
         Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
     }
 
-    private fun viewEmptyCompanyList() {
+    private fun visibleEmptyMessage() {
         binding.listEmptyView.visibility = View.VISIBLE
     }
 
-    private fun viewHasCompanies() {
+    private fun goneEmptyMessage() {
         binding.listEmptyView.visibility = View.GONE
     }
 
