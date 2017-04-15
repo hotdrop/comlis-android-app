@@ -27,7 +27,7 @@ class CategorySpinner(private val spinner: Spinner, private val activity: Activi
                 .id
     }
 
-    fun setSelection(name: String) {
+    fun setSelection(name: String?) {
         val position = adapter.getPosition(name)
         spinner.setSelection(position)
     }

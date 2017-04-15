@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment
 
 object ActivityNavigator {
 
-    fun showCompanyRegister(fragment: Fragment, tabName: String, requestCode: Int) {
+    fun showCompanyRegister(fragment: Fragment, tabName: String?, requestCode: Int) {
         CompanyRegisterActivity.startForResult(fragment, tabName, requestCode)
     }
 

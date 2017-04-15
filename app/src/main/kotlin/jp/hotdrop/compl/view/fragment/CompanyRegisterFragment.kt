@@ -17,12 +17,11 @@ class CompanyRegisterFragment : BaseFragment() {
     private lateinit var categorySpinner: CategorySpinner
     private lateinit var binding: FragmentCompanyRegisterBinding
     private lateinit var viewModel: CompanyRegisterViewModel
-    private lateinit var selectedTabName: String
+    private var selectedCategoryName: String? = null
 
     companion object {
-        @JvmStatic val EXTRA_TAB_NAME = "tabName"
-        fun create(tabName: String) = CompanyRegisterFragment().apply {
-            arguments = Bundle().apply { putString(EXTRA_TAB_NAME, tabName) }
+        fun create(tabName: String?) = CompanyRegisterFragment().apply {
+            arguments = Bundle().apply { putString(EXTRA_CATEGORY_NAME, tabName) }
         }
     }
 
@@ -33,14 +32,14 @@ class CompanyRegisterFragment : BaseFragment() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        selectedTabName = arguments.getString(EXTRA_TAB_NAME)
+        selectedCategoryName = arguments.getString(EXTRA_CATEGORY_NAME)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyRegisterBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
         categorySpinner = CategorySpinner(binding.spinnerCategory, activity).apply {
-            setSelection(selectedTabName)
+            setSelection(selectedCategoryName)
         }
         binding.registerButton.setOnClickListener { onClickRegister() }
         viewModel = CompanyRegisterViewModel(context)
@@ -59,7 +58,8 @@ class CompanyRegisterFragment : BaseFragment() {
 
     private fun onSuccess() {
         val intent = Intent().apply {
-            putExtra(REFRESH_MODE, REFRESH)
+            val categoryName = viewModel.getCategoryName(categorySpinner.getSelection())
+            putExtra(EXTRA_CATEGORY_NAME, categoryName)
         }
         activity.setResult(Activity.RESULT_OK, intent)
         exit()

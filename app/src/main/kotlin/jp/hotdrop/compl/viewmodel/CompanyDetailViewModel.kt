@@ -102,4 +102,9 @@ class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() 
         viewFavorite = 0
         CompanyDao.updateFavorite(company.id, 0)
     }
+
+    fun getCategoryName(): String {
+        val category = CategoryDao.find(company.categoryId)
+        return category.name
+    }
 }

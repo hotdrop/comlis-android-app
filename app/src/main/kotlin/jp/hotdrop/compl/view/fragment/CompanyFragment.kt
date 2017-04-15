@@ -9,14 +9,12 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.dao.CategoryDao
-import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyBinding
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.view.StackedPageListener
@@ -31,7 +29,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
 
     private lateinit var binding: FragmentCompanyBinding
     private lateinit var adapter: Adapter
-    private var tabName = ""
+    private var tabName: String? = null
 
     companion object {
         @JvmStatic val TAG: String = CompanyFragment::class.java.simpleName
@@ -46,6 +44,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
+        tabName = null
         loadData()
         return binding.root
     }
@@ -53,9 +52,12 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
     override fun onResume() {
         super.onResume()
         val refreshMode = activity.intent.getIntExtra(REFRESH_MODE, NONE)
-        if(refreshMode == REFRESH) {
-            loadData(isRefresh = true)
+        if(refreshMode == CHANGE_CATEGORY) {
+            // CompanyDetailFragmentを経由して分類変更がされた場合はこのルートを通る
+            tabName = activity.intent.getStringExtra(EXTRA_CATEGORY_NAME)
+            loadData()
             activity.intent.removeExtra(REFRESH_MODE)
+            activity.intent.removeExtra(EXTRA_CATEGORY_NAME)
         }
     }
 
@@ -64,30 +66,25 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_REGISTER || data == null) {
             return
         }
-        val refreshMode = data.getIntExtra(REFRESH_MODE, NONE)
-        if(refreshMode == REFRESH) {
-            loadData(isRefresh = true)
-            activity.intent.removeExtra(REFRESH_MODE)
-        }
+        tabName = data.getStringExtra(EXTRA_CATEGORY_NAME)
+        loadData()
     }
 
-    private fun loadData(isRefresh: Boolean = false) {
+    private fun loadData() {
         showProgress()
         val disposable = CategoryDao.findAll()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                        { list -> onLoadSuccess(list, isRefresh) },
+                        { list -> onLoadSuccess(list) },
                         { throwable -> onLoadFailure(throwable) }
                 )
         compositeDisposable.add(disposable)
     }
 
-    private fun onLoadSuccess(categories: List<Category>, isRefresh: Boolean = false) {
-
+    private fun onLoadSuccess(categories: List<Category>) {
         // FragmentをネストするのでFragmentManagerではなくchildFragmentManagerを使う
         adapter = Adapter(childFragmentManager)
-        Log.d("DEBUG_TAG", " adapter.count=" + adapter.count)
 
         if(categories.isNotEmpty()) {
             categories.forEach { category -> addFragment(category.name, category.id) }
@@ -96,7 +93,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
             binding.listEmptyView.visibility = View.VISIBLE
         }
 
-        // tabLayoutを再作成するとonTabSelectedが呼ばれてしまうため保持しておく。これでいいのかとは思うが・・
+        // tabLayoutを再作成するとonTabSelectedが呼ばれてしまうため保持しておく。
         val stockSelectedTabName = tabName
 
         binding.viewPager.adapter = adapter
@@ -104,8 +101,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         binding.tabLayout.addOnTabSelectedListener(SelectedTabListener(binding.viewPager))
         binding.fab.setOnClickListener { ActivityNavigator.showCompanyRegister(this, tabName, REQ_CODE_COMPANY_REGISTER) }
 
-        if(isRefresh) {
-            // もともと選択していたタブを選択状態にする
+        if(stockSelectedTabName != null) {
             binding.viewPager.currentItem = adapter.getPagePosition(stockSelectedTabName)
         }
 

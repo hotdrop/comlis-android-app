@@ -2,6 +2,7 @@ package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
 import jp.hotdrop.compl.R
+import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
 
@@ -19,6 +20,11 @@ class CompanyRegisterViewModel(val context: Context): ViewModel() {
     var viewWantBusiness = ""
     var viewNote = ""
     // viewOrder is not declared. Because autoSet max+1 value when insert in CompanyDao
+
+    fun getCategoryName(selectedCategorySpinnerId: Int): String {
+        val category = CategoryDao.find(selectedCategorySpinnerId)
+        return category.name
+    }
 
     fun register(selectedCategorySpinnerId: Int): ErrorMessage? {
         val errorMessage = canRegister()
@@ -65,5 +71,4 @@ class CompanyRegisterViewModel(val context: Context): ViewModel() {
 
         note = if(viewNote != "") viewNote else null
     }
-
 }

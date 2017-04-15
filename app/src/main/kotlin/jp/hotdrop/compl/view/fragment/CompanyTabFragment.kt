@@ -122,14 +122,9 @@ class CompanyTabFragment: BaseFragment() {
                 val vm = CompanyViewModel(CompanyDao.find(companyId), context)
                 adapter.refresh(vm)
             }
-            DELETE -> {
-                // notifyRemoveで実装した場合、並び替えしてから削除するとConcurrentModificationExceptionになるため一旦リスト再生成する。
-                loadData()
-            }
-            CHANGE_CATEGORY -> {
-                // TODO
-                activity.intent = data
-            }
+            // notifyRemoveで実装した場合、並び替えしてから削除するとConcurrentModificationExceptionになるためリスト再生成する。
+            DELETE -> loadData()
+            CHANGE_CATEGORY -> activity.intent = data
         }
     }
 

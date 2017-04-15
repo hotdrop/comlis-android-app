@@ -101,6 +101,7 @@ class CompanyDetailFragment: BaseFragment() {
         val intent = Intent().apply {
             putExtra(REFRESH_MODE, CHANGE_CATEGORY)
             putExtra(EXTRA_COMPANY_ID, viewModel.company.id)
+            putExtra(EXTRA_CATEGORY_NAME, viewModel.getCategoryName())
         }
         activity.setResult(Activity.RESULT_OK, intent)
         isRefresh = true

@@ -12,7 +12,7 @@ class CompanyRegisterActivity : BaseActivity() {
 
     companion object {
         @JvmStatic val EXTRA_TAB_NAME = "tabName"
-        fun startForResult(fragment: Fragment, tabName: String, requestCode: Int) {
+        fun startForResult(fragment: Fragment, tabName: String?, requestCode: Int) {
             val intent = Intent(fragment.context, CompanyRegisterActivity::class.java).apply{
                 putExtra(EXTRA_TAB_NAME, tabName)
             }
