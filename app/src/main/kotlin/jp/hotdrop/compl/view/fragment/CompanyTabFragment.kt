@@ -82,6 +82,9 @@ class CompanyTabFragment: BaseFragment() {
 
         if(companies.isNotEmpty()) {
             adapter.addAll(companies.map{ company -> CompanyViewModel(company, context) })
+            viewHasCompanies()
+        } else {
+            viewEmptyCompanyList()
         }
 
         helper = ItemTouchHelper(CompanyItemTouchHelperCallback(adapter))
@@ -95,6 +98,14 @@ class CompanyTabFragment: BaseFragment() {
 
     private fun onLoadFailure(e: Throwable) {
         Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun viewEmptyCompanyList() {
+        binding.listEmptyView.visibility = View.VISIBLE
+    }
+
+    private fun viewHasCompanies() {
+        binding.listEmptyView.visibility = View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

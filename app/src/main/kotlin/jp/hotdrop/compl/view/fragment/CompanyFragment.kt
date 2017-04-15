@@ -90,8 +90,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         Log.d("DEBUG_TAG", " adapter.count=" + adapter.count)
 
         if(categories.isNotEmpty()) {
-            categories.filter { category -> CompanyDao.countByCategory(category.id) > 0 }
-                    .forEach { category -> addFragment(category.name, category.id) }
+            categories.forEach { category -> addFragment(category.name, category.id) }
             binding.listEmptyView.visibility = View.GONE
         } else {
             binding.listEmptyView.visibility = View.VISIBLE

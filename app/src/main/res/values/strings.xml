@@ -14,6 +14,7 @@
 
     <!-- company list -->
     <string name="empty_company_list">何も登録されていません。分類を登録してから登録してください。</string>
+    <string name="empty_tab_company_list">この分類には何も登録されていません。</string>
     <string name="description_company_reorder">会社情報の並び順を変更するためのイメージアイコンです。</string>
 
     <!-- company list and detail -->

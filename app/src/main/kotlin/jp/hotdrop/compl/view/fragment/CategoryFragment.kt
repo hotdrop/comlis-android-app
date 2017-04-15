@@ -72,6 +72,9 @@ class CategoryFragment : BaseFragment() {
 
         if(categories.isNotEmpty()) {
             adapter.addAll(categories.map{ c -> CategoryViewModel(c, context) })
+            viewHasCategories()
+        } else {
+            viewEmptyCategoryList()
         }
         
         helper = ItemTouchHelper(CategoryItemTouchHelperCallback(adapter))
@@ -81,11 +84,6 @@ class CategoryFragment : BaseFragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         helper.attachToRecyclerView(binding.recyclerView)
 
-        if(adapter.itemCount > 0) {
-            goneInitView()
-        } else {
-            visibleInitView()
-        }
         binding.fabButton.setOnClickListener { showRegisterDialog() }
     }
 
@@ -93,11 +91,11 @@ class CategoryFragment : BaseFragment() {
         Toast.makeText(activity, "failed load categories." + e.message, Toast.LENGTH_LONG).show()
     }
 
-    private fun visibleInitView() {
+    private fun viewEmptyCategoryList() {
         binding.listEmptyView.visibility = View.VISIBLE
     }
 
-    private fun goneInitView() {
+    private fun viewHasCategories() {
         binding.listEmptyView.visibility = View.GONE
     }
 
@@ -166,7 +164,7 @@ class CategoryFragment : BaseFragment() {
                     val category = CategoryDao.find(editText.text.toString())
                     adapter.add(CategoryViewModel(category, context))
                     dialogInterface.dismiss()
-                    goneInitView()
+                    viewHasCategories()
                 })
                 .create()
         dialog.show()
@@ -191,6 +189,7 @@ class CategoryFragment : BaseFragment() {
                 })
                 .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
                     CategoryDao.delete(vm.category)
+                    // TODO これ無駄なのでremoveしたほうがいい
                     loadData()
                     dialogInterface.dismiss()
                 })
