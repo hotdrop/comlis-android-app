@@ -18,7 +18,7 @@ class CategoryViewModel(var category: Category, val context: Context): ViewModel
     }
 
     fun change(vm: CategoryViewModel) {
-        this.category = vm.category
+        category = vm.category
         viewName = vm.viewName
         itemCount = vm.itemCount
     }

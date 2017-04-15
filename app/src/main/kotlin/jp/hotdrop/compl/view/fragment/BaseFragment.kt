@@ -9,15 +9,18 @@ abstract class BaseFragment: Fragment() {
 
     companion object {
         @JvmStatic val REFRESH_MODE = "refreshMode"
+        @JvmStatic val EXTRA_COMPANY_ID = "companyId"
 
         @JvmStatic val REQ_CODE_COMPANY_REGISTER = 1
         @JvmStatic val REQ_CODE_COMPANY_DETAIL = 2
         @JvmStatic val REQ_CODE_COMPANY_EDIT = 3
         @JvmStatic val REQ_CODE_COMPANY_ASSOCIATE_TAG = 4
-        @JvmStatic val REQ_CODE_TAG_VIEW_ORDER = 5
 
-        @JvmStatic val REFRESH_NONE = 0
-        @JvmStatic val REFRESH = 1
+        @JvmStatic val NONE = 0
+        @JvmStatic val UPDATE = 1
+        @JvmStatic val DELETE = 2
+        @JvmStatic val REFRESH = 3
+        @JvmStatic val CHANGE_CATEGORY = 4
     }
 
     private val fragmentComponent by lazy {

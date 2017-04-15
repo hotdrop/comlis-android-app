@@ -42,7 +42,6 @@ class CompanyAssociateTagFragment: BaseFragment() {
     }
 
     companion object {
-        @JvmStatic private val EXTRA_COMPANY_ID = "companyId"
         @JvmStatic private val EXTRA_COLOR_NAME = "colorName"
         fun create(companyId: Int, colorName: String) = CompanyAssociateTagFragment().apply {
             arguments = Bundle().apply {

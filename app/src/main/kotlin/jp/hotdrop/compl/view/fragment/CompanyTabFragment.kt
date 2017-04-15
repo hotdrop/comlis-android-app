@@ -113,7 +113,24 @@ class CompanyTabFragment: BaseFragment() {
         if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_DETAIL || data == null) {
             return
         }
-        activity.intent = data
+        val refreshMode = data.getIntExtra(REFRESH_MODE, NONE)
+        val companyId = data.getIntExtra(EXTRA_COMPANY_ID, -1)
+        assert(companyId == -1)
+
+        when(refreshMode) {
+            UPDATE -> {
+                val vm = CompanyViewModel(CompanyDao.find(companyId), context)
+                adapter.refresh(vm)
+            }
+            DELETE -> {
+                // notifyRemoveで実装した場合、並び替えしてから削除するとConcurrentModificationExceptionになるため一旦リスト再生成する。
+                loadData()
+            }
+            CHANGE_CATEGORY -> {
+                // TODO
+                activity.intent = data
+            }
+        }
     }
 
     override fun onStop() {
@@ -163,6 +180,14 @@ class CompanyTabFragment: BaseFragment() {
 
             binding.viewModel.viewTags.forEach { tag -> setCardView(binding.flexBoxContainer, tag) }
             initAnimationView(binding)
+        }
+
+        fun refresh(vm: CompanyViewModel) {
+            val position = adapter.getItemPosition(vm)
+            if(position != -1) {
+                adapter.getItem(position).change(vm)
+                notifyItemChanged(position)
+            }
         }
 
         fun add(vm: CompanyViewModel) {

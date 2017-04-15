@@ -38,6 +38,6 @@ class CompanyEditActivity: BaseActivity() {
         binding.toolbar.background = ColorUtil.getImageCover(colorName, this)
 
         val companyId = intent.getIntExtra(EXTRA_COMPANY_ID, -1)
-        replaceFragment(CompanyEditFragment.create(companyId, colorName), R.id.content_view)
+        replaceFragment(CompanyEditFragment.create(companyId), R.id.content_view)
     }
 }

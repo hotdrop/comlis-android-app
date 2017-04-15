@@ -9,21 +9,21 @@ import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 
-class CompanyViewModel(val company: Company, val context: Context): ViewModel() {
+class CompanyViewModel(var company: Company, val context: Context): ViewModel() {
 
     private val SALARY_UNIT = context.getString(R.string.label_salary_unit)
     private val SALARY_RANGE_MARK = context.getString(R.string.label_salary_range_mark)
     private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
 
     // 画面表示に使うデータだけmodelとは別にフィールド値を持たせる
-    val viewName = company.name
-    val viewEmployeesNum = company.employeesNum.toString() + EMPLOYEES_NUM_UNIT
+    var viewName = company.name
+    var viewEmployeesNum = company.employeesNum.toString() + EMPLOYEES_NUM_UNIT
     var viewSalary = company.salaryLow.toString() + SALARY_UNIT
-    val viewWantedJob = company.wantedJob ?: ""
+    var viewWantedJob = company.wantedJob ?: ""
 
-    val colorName: String
+    var colorName: String
     var viewFavorite: Int
-    val viewTags: List<Tag>
+    var viewTags: List<Tag>
 
     init {
         if(company.salaryHigh > 0) {
@@ -33,6 +33,17 @@ class CompanyViewModel(val company: Company, val context: Context): ViewModel() 
         viewFavorite = company.favorite
 
         viewTags = CompanyDao.findByTag(company.id).take(5)
+    }
+
+    fun change(vm: CompanyViewModel) {
+        company = vm.company
+        viewName = vm.viewName
+        viewEmployeesNum = vm.viewEmployeesNum
+        viewSalary = vm.viewSalary
+        viewWantedJob = vm.viewWantedJob
+        colorName = vm.colorName
+        viewFavorite = vm.viewFavorite
+        viewTags = vm.viewTags
     }
 
     @ColorRes

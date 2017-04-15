@@ -1,8 +1,6 @@
 package jp.hotdrop.compl.view.fragment
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.MotionEventCompat
 import android.support.v7.app.AlertDialog
@@ -32,18 +30,6 @@ import jp.hotdrop.compl.view.parts.ColorSpinner
 import jp.hotdrop.compl.viewmodel.TagViewModel
 import javax.inject.Inject
 
-/**
- * Company情報に付与するタグを登録/更新するFragment
- * タグっぽくしたかったのでalphaだがFlexbox-layoutのRecyclerView版を使用して実装した。
- * 本当はItemTouchHelperで上下左右好きな所にタグをdragして並び順変更したかった。
- * しかし、notifyMovedのところでRecyclerViewの中のitem表示が重複したり消えたりおかしな動きをしてどうしても解消できなかった。
- * そもそもItemTouchHelperはLayoutManagerの特定条件下に特化して作られているっぽいのでそれなりに動くが挙動が結構おかしいという
- * 状態になるのは仕方ないのかもしれない。
- * →これは完全に嘘。そもそもFlexbox-LayoutはLinearLayoutでできることはほぼできるのでそのLayoutManagerでならItemTouchHelperもできるはず。
- *  結論としてFlexbox-Layoutでやりたかったことを実現できた。上記で引っかかった理由は単にbuild.gradleに指定したFlexbox-Layoutのverが古かったため。
- *  元々alpha2ではscrollToした時にItemPositionの位置がずれるバグがあったようで、alpha3で修正されたとのこと。
- *  私が完全にやらかして古いverで検証してしまった。。
- */
 class TagFragment: BaseFragment() {
 
     @Inject
@@ -67,18 +53,6 @@ class TagFragment: BaseFragment() {
         binding = FragmentTagBinding.inflate(inflater, container, false)
         loadData()
         return binding.root
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_TAG_VIEW_ORDER || data == null) {
-            return
-        }
-        val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
-        if(refreshMode == REFRESH) {
-            loadData()
-            activity.intent.removeExtra(REFRESH_MODE)
-        }
     }
 
     override fun onDestroyView() {

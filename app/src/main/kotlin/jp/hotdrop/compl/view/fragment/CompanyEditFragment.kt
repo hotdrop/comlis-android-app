@@ -22,17 +22,10 @@ class CompanyEditFragment: BaseFragment() {
         arguments.getInt(EXTRA_COMPANY_ID)
     }
 
-    private val colorName by lazy {
-        arguments.getString(EXTRA_COLOR_NAME)
-    }
-
     companion object {
-        @JvmStatic private val EXTRA_COMPANY_ID = "companyId"
-        @JvmStatic private val EXTRA_COLOR_NAME = "colorName"
-        fun create(companyId: Int, colorName: String) = CompanyEditFragment().apply {
+        fun create(companyId: Int) = CompanyEditFragment().apply {
             arguments = Bundle().apply {
                 putInt(EXTRA_COMPANY_ID, companyId)
-                putString(EXTRA_COLOR_NAME, colorName)
             }
         }
     }
@@ -40,10 +33,6 @@ class CompanyEditFragment: BaseFragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         getComponent().inject(this)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -72,7 +61,7 @@ class CompanyEditFragment: BaseFragment() {
 
     private fun onSuccess() {
         val intent = Intent().apply {
-            putExtra(REFRESH_MODE, REFRESH)
+            putExtra(REFRESH_MODE, UPDATE)
         }
         activity.setResult(Activity.RESULT_OK, intent)
         exit()

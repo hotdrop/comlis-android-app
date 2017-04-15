@@ -34,7 +34,6 @@ class CompanyDetailFragment: BaseFragment() {
     }
 
     companion object {
-        @JvmStatic val EXTRA_COMPANY_ID = "companyId"
         fun create(companyId: Int) = CompanyDetailFragment().apply {
             arguments = Bundle().apply { putInt(EXTRA_COMPANY_ID, companyId) }
         }
@@ -64,16 +63,44 @@ class CompanyDetailFragment: BaseFragment() {
                 data == null) {
             return
         }
-        val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
-        if(refreshMode == REFRESH) {
-            refreshLayout()
-            setResult()
+        val refreshMode = data.getIntExtra(REFRESH_MODE, NONE)
+        if(refreshMode != UPDATE) {
+            return
+        }
+
+        val beforeCategoryId = viewModel.company.categoryId
+        refreshLayout()
+        val afterCategoryId = viewModel.company.categoryId
+
+        if(beforeCategoryId == afterCategoryId) {
+            setResultForUpdate()
+        } else {
+            setResultForChangeCategory()
         }
     }
 
-    private fun setResult() {
+    private fun setResultForUpdate() {
         val intent = Intent().apply {
-            putExtra(REFRESH_MODE, REFRESH)
+            putExtra(REFRESH_MODE, UPDATE)
+            putExtra(EXTRA_COMPANY_ID, viewModel.company.id)
+        }
+        activity.setResult(Activity.RESULT_OK, intent)
+        isRefresh = true
+    }
+
+    private fun setResultForTrash() {
+        val intent = Intent().apply {
+            putExtra(REFRESH_MODE, DELETE)
+            putExtra(EXTRA_COMPANY_ID, viewModel.company.id)
+        }
+        activity.setResult(Activity.RESULT_OK, intent)
+        isRefresh = true
+    }
+
+    private fun setResultForChangeCategory() {
+        val intent = Intent().apply {
+            putExtra(REFRESH_MODE, CHANGE_CATEGORY)
+            putExtra(EXTRA_COMPANY_ID, viewModel.company.id)
         }
         activity.setResult(Activity.RESULT_OK, intent)
         isRefresh = true
@@ -105,7 +132,7 @@ class CompanyDetailFragment: BaseFragment() {
         // 画面更新される。
         fun changedFavorite() {
             if(viewModel.company.favorite != viewModel.viewFavorite && !isRefresh) {
-                setResult()
+                setResultForUpdate()
             }
         }
 
@@ -161,7 +188,7 @@ class CompanyDetailFragment: BaseFragment() {
                     .setPositiveButton(R.string.dialog_ok, {dialogInterface, _ ->
                         CompanyDao.delete(viewModel.company)
                         dialogInterface.dismiss()
-                        setResult()
+                        setResultForTrash()
                         exit()
                     })
                     .setNegativeButton(R.string.dialog_cancel, null)

@@ -52,7 +52,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
 
     override fun onResume() {
         super.onResume()
-        val refreshMode = activity.intent.getIntExtra(REFRESH_MODE, REFRESH_NONE)
+        val refreshMode = activity.intent.getIntExtra(REFRESH_MODE, NONE)
         if(refreshMode == REFRESH) {
             loadData(isRefresh = true)
             activity.intent.removeExtra(REFRESH_MODE)
@@ -64,7 +64,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
         if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_REGISTER || data == null) {
             return
         }
-        val refreshMode = data.getIntExtra(REFRESH_MODE, REFRESH_NONE)
+        val refreshMode = data.getIntExtra(REFRESH_MODE, NONE)
         if(refreshMode == REFRESH) {
             loadData(isRefresh = true)
             activity.intent.removeExtra(REFRESH_MODE)
