@@ -42,6 +42,8 @@
     <string name="label_salary_range_mark">〜</string>
     <string name="label_url">URL</string>
     <string name="label_work_place">勤務地候補</string>
+
+    <string name="label_business">事業内容とビジョン</string>
     <string name="label_doing_business">事業内容</string>
     <string name="label_want_business">ビジョン</string>
 
