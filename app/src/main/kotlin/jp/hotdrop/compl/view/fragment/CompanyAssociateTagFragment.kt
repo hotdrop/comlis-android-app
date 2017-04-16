@@ -85,7 +85,7 @@ class CompanyAssociateTagFragment: BaseFragment() {
         binding.fabDone.setOnClickListener {
             CompanyDao.associateTagByCompany(companyId, adapter.getAssociateModels())
             val intent = Intent().apply {
-                putExtra(REFRESH_MODE, REFRESH)
+                putExtra(REFRESH_MODE, UPDATE)
             }
             activity.setResult(Activity.RESULT_OK, intent)
             exit()

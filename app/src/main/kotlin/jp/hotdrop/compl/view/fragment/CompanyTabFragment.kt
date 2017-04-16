@@ -194,11 +194,12 @@ class CompanyTabFragment: BaseFragment() {
             return list.map { vm -> vm.company }.toMutableList()
         }
 
-        private fun setCardView(view: FlexboxLayout, tag: Tag) {
+        private fun setCardView(flexboxlayout: FlexboxLayout, tag: Tag) {
             val binding = DataBindingUtil.inflate<ItemCompanyListTagBinding>(getLayoutInflater(null),
-                    R.layout.item_company_list_tag, view, false)
+                    R.layout.item_company_list_tag, flexboxlayout, false)
             binding.viewModel = TagAssociateViewModel(tag = tag, context = context)
-            view.addView(binding.root)
+            //flexboxlayout.removeAllViews()
+            flexboxlayout.addView(binding.root)
         }
 
         private val RESET = 0.toFloat()

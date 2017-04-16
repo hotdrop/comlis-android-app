@@ -20,7 +20,6 @@ abstract class BaseFragment: Fragment() {
         @JvmStatic val NONE = 0
         @JvmStatic val UPDATE = 1
         @JvmStatic val DELETE = 2
-        @JvmStatic val REFRESH = 3
         @JvmStatic val CHANGE_CATEGORY = 4
     }
 
