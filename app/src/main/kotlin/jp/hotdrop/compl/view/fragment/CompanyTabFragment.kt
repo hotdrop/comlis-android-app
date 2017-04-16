@@ -173,6 +173,8 @@ class CompanyTabFragment: BaseFragment() {
                 ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.company.id, REQ_CODE_COMPANY_DETAIL)
             }
 
+            // Recycleされて復帰した場合、追加したViewを削除しておかないと積まれて行くためこれを入れる。
+            binding.flexBoxContainer.removeAllViews()
             binding.viewModel.viewTags.forEach { tag -> setCardView(binding.flexBoxContainer, tag) }
             initAnimationView(binding)
         }
@@ -198,7 +200,6 @@ class CompanyTabFragment: BaseFragment() {
             val binding = DataBindingUtil.inflate<ItemCompanyListTagBinding>(getLayoutInflater(null),
                     R.layout.item_company_list_tag, flexboxlayout, false)
             binding.viewModel = TagAssociateViewModel(tag = tag, context = context)
-            //flexboxlayout.removeAllViews()
             flexboxlayout.addView(binding.root)
         }
 
