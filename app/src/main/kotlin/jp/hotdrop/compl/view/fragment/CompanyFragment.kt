@@ -22,10 +22,12 @@ import jp.hotdrop.compl.view.activity.ActivityNavigator
 import javax.inject.Inject
 
 
-class CompanyFragment : BaseFragment(), StackedPageListener {
+class CompanyFragment: BaseFragment(), StackedPageListener {
 
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
+    @Inject
+    lateinit var categoryDao: CategoryDao
 
     private lateinit var binding: FragmentCompanyBinding
     private lateinit var adapter: Adapter
@@ -72,7 +74,7 @@ class CompanyFragment : BaseFragment(), StackedPageListener {
 
     private fun loadData() {
         showProgress()
-        val disposable = CategoryDao.findAll()
+        val disposable = categoryDao.findAll()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(

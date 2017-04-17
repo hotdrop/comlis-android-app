@@ -8,12 +8,18 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
+import javax.inject.Inject
 
 class CompanyViewModel(var company: Company, val context: Context): ViewModel() {
 
     private val SALARY_UNIT = context.getString(R.string.label_salary_unit)
     private val SALARY_RANGE_MARK = context.getString(R.string.label_salary_range_mark)
     private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
+
+    @Inject
+    lateinit var companyDao: CompanyDao
+    @Inject
+    lateinit var categoryDao: CategoryDao
 
     // 画面表示に使うデータだけmodelとは別にフィールド値を持たせる
     var viewName = company.name
@@ -29,10 +35,10 @@ class CompanyViewModel(var company: Company, val context: Context): ViewModel() 
         if(company.salaryHigh > 0) {
             viewSalary += SALARY_RANGE_MARK + company.salaryHigh.toString() + SALARY_UNIT
         }
-        colorName = CategoryDao.find(company.categoryId).colorType
+        colorName = categoryDao.find(company.categoryId).colorType
         viewFavorite = company.favorite
 
-        viewTags = CompanyDao.findByTag(company.id).take(5)
+        viewTags = companyDao.findByTag(company.id).take(5)
     }
 
     fun change(vm: CompanyViewModel) {
@@ -71,12 +77,12 @@ class CompanyViewModel(var company: Company, val context: Context): ViewModel() 
     }
 
     fun tapFavorite(tapCnt: Int) {
-        CompanyDao.updateFavorite(company.id, tapCnt)
+        companyDao.updateFavorite(company.id, tapCnt)
         viewFavorite = tapCnt
     }
 
     fun resetFavorite() {
         viewFavorite = 0
-        CompanyDao.updateFavorite(company.id, 0)
+        companyDao.updateFavorite(company.id, 0)
     }
 }

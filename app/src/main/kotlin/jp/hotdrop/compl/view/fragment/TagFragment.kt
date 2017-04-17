@@ -34,6 +34,8 @@ class TagFragment: BaseFragment() {
 
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
+    @Inject
+    lateinit var tagDao: TagDao
 
     private lateinit var binding: FragmentTagBinding
     private lateinit var adapter: FlexItemAdapter
@@ -57,11 +59,11 @@ class TagFragment: BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        TagDao.updateAllOrder(adapter.getModels())
+        tagDao.updateAllOrder(adapter.getModels())
     }
 
     private fun loadData() {
-        val disposable = TagDao.findAll()
+        val disposable = tagDao.findAll()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
@@ -119,14 +121,14 @@ class TagFragment: BaseFragment() {
                     when {
                         editTxt == "" -> disableButton()
                         tagId == REGISTER_MODE -> {
-                            if(TagDao.exist(editTxt)) {
+                            if(tagDao.exist(editTxt)) {
                                 disableButtonWithAttention()
                             } else {
                                 enableButton()
                             }
                         }
                         else -> {
-                            if(editTxt != originName && TagDao.exist(editTxt, tagId)) {
+                            if(editTxt != originName && tagDao.exist(editTxt, tagId)) {
                                 disableButtonWithAttention()
                             } else {
                                 enableButton()
@@ -155,11 +157,11 @@ class TagFragment: BaseFragment() {
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
-                    TagDao.insert(Tag().apply {
+                    tagDao.insert(Tag().apply {
                         name = editText.text.toString()
                         colorType = spinner.getSelection()
                     })
-                    val tag = TagDao.find(editText.text.toString())
+                    val tag = tagDao.find(editText.text.toString())
                     adapter.add(TagViewModel(tag, context))
                     dialogInterface.dismiss()
                     goneEmptyMessage()
@@ -181,12 +183,12 @@ class TagFragment: BaseFragment() {
                 .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
                     vm.viewName = editText.text.toString()
                     vm.tag.colorType = spinner.getSelection()
-                    TagDao.update(vm.makeTag())
+                    tagDao.update(vm.makeTag())
                     adapter.refresh(vm)
                     dialogInterface.dismiss()
                 })
                 .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
-                    TagDao.delete(vm.tag)
+                    tagDao.delete(vm.tag)
                     adapter.remove(vm)
                     if(adapter.itemCount == 0) {
                         visibleEmptyMessage()

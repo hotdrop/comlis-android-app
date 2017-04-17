@@ -6,10 +6,13 @@ import jp.hotdrop.compl.model.AssociateCompanyWithTag_Relation
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.model.Tag_Relation
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object TagDao {
+@Singleton
+class TagDao @Inject constructor(ormaHolder: OrmaHolder) {
 
-    var orma = OrmaHolder.buildDB
+    private val orma = ormaHolder.orma
 
     fun find(name: String): Tag {
         return tagRelation().selector()

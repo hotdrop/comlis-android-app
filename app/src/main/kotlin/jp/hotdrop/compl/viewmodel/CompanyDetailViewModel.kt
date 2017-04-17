@@ -10,6 +10,7 @@ import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
+import javax.inject.Inject
 
 class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() {
 
@@ -19,7 +20,14 @@ class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() 
     private val EMPTY_VALUE = context.getString(R.string.label_empty_value)
     private val EMPTY_DATE = context.getString(R.string.label_empty_date)
 
-    val company: Company = CompanyDao.find(companyId)
+    @Inject
+    lateinit var companyDao: CompanyDao
+    @Inject
+    lateinit var categoryDao: CategoryDao
+    @Inject
+    lateinit var tagDao: TagDao
+
+    val company: Company = companyDao.find(companyId)
     val viewName: String
     val viewOverview: String
     val viewEmployeesNum: String
@@ -41,7 +49,7 @@ class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() 
     val colorName: String
 
     val viewTags: List<Tag>
-    val canAttachTag = if(TagDao.count() > 0) View.VISIBLE else View.GONE
+    val canAttachTag = if(tagDao.count() > 0) View.VISIBLE else View.GONE
 
     init {
         viewName = company.name
@@ -71,9 +79,9 @@ class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() 
         viewRegisterDate = company.registerDate?.format() ?: EMPTY_DATE
         viewUpdateDate = company.updateDate?.format() ?: EMPTY_DATE
 
-        colorName = CategoryDao.find(company.categoryId).colorType
+        colorName = categoryDao.find(company.categoryId).colorType
 
-        viewTags = CompanyDao.findByTag(company.id)
+        viewTags = companyDao.findByTag(company.id)
     }
 
     @ColorRes
@@ -94,17 +102,17 @@ class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() 
     }
 
     fun tapFavorite(tapCnt: Int) {
-        CompanyDao.updateFavorite(company.id, tapCnt)
+        companyDao.updateFavorite(company.id, tapCnt)
         viewFavorite = tapCnt
     }
 
     fun resetFavorite() {
         viewFavorite = 0
-        CompanyDao.updateFavorite(company.id, 0)
+        companyDao.updateFavorite(company.id, 0)
     }
 
     fun getCategoryName(): String {
-        val category = CategoryDao.find(company.categoryId)
+        val category = categoryDao.find(company.categoryId)
         return category.name
     }
 }

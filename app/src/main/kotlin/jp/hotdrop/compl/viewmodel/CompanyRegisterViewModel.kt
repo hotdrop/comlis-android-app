@@ -5,8 +5,14 @@ import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
+import javax.inject.Inject
 
 class CompanyRegisterViewModel(val context: Context): ViewModel() {
+
+    @Inject
+    lateinit var companyDao: CompanyDao
+    @Inject
+    lateinit var categoryDao: CategoryDao
 
     var viewName = ""
     var viewOverview = ""
@@ -22,7 +28,7 @@ class CompanyRegisterViewModel(val context: Context): ViewModel() {
     // viewOrder is not declared. Because autoSet max+1 value when insert in CompanyDao
 
     fun getCategoryName(selectedCategorySpinnerId: Int): String {
-        val category = CategoryDao.find(selectedCategorySpinnerId)
+        val category = categoryDao.find(selectedCategorySpinnerId)
         return category.name
     }
 
@@ -32,7 +38,7 @@ class CompanyRegisterViewModel(val context: Context): ViewModel() {
             return errorMessage
         }
         val company =  makeData(selectedCategorySpinnerId)
-        CompanyDao.insert(company)
+        companyDao.insert(company)
 
         return null
     }

@@ -35,6 +35,9 @@ class CategoryFragment : BaseFragment() {
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
 
+    @Inject
+    lateinit var categoryDao: CategoryDao
+
     private lateinit var binding: FragmentCategoryBinding
     private lateinit var adapter: Adapter
     private lateinit var helper: ItemTouchHelper
@@ -57,7 +60,7 @@ class CategoryFragment : BaseFragment() {
     }
 
     private fun loadData() {
-        val disposable = CategoryDao.findAll()
+        val disposable = categoryDao.findAll()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
@@ -102,7 +105,7 @@ class CategoryFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         if(isReorder) {
-            CategoryDao.updateAllOrder(adapter.getModels())
+            categoryDao.updateAllOrder(adapter.getModels())
         }
     }
 
@@ -124,14 +127,14 @@ class CategoryFragment : BaseFragment() {
                     when {
                         editTxt == "" -> disableButton()
                         categoryId == REGISTER_MODE -> {
-                            if(CategoryDao.exist(editTxt)) {
+                            if(categoryDao.exist(editTxt)) {
                                 disableButtonWithAttention()
                             } else {
                                 enableButton()
                             }
                         }
                         else -> {
-                            if(editTxt != originName && CategoryDao.exist(editTxt, categoryId)) {
+                            if(editTxt != originName && categoryDao.exist(editTxt, categoryId)) {
                                 disableButtonWithAttention()
                             } else {
                                 enableButton()
@@ -160,8 +163,8 @@ class CategoryFragment : BaseFragment() {
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
-                    CategoryDao.insert(editText.text.toString(), spinner.getSelection())
-                    val category = CategoryDao.find(editText.text.toString())
+                    categoryDao.insert(editText.text.toString(), spinner.getSelection())
+                    val category = categoryDao.find(editText.text.toString())
                     adapter.add(CategoryViewModel(category, context))
                     dialogInterface.dismiss()
                     goneEmptyMessage()
@@ -183,12 +186,12 @@ class CategoryFragment : BaseFragment() {
                 .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
                     vm.viewName = editText.text.toString()
                     vm.category.colorType = spinner.getSelection()
-                    CategoryDao.update(vm.makeCategory())
+                    categoryDao.update(vm.makeCategory())
                     adapter.refresh(vm)
                     dialogInterface.dismiss()
                 })
                 .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
-                    CategoryDao.delete(vm.category)
+                    categoryDao.delete(vm.category)
                     adapter.remove(vm)
                     if(adapter.itemCount == 0) {
                         visibleEmptyMessage()

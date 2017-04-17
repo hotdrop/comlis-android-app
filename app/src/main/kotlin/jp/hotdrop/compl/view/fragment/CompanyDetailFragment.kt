@@ -22,8 +22,12 @@ import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.activity.ActivityNavigator
 import jp.hotdrop.compl.viewmodel.CompanyDetailViewModel
 import jp.hotdrop.compl.viewmodel.TagAssociateViewModel
+import javax.inject.Inject
 
 class CompanyDetailFragment: BaseFragment() {
+
+    @Inject
+    lateinit var companyDao: CompanyDao
 
     private lateinit var binding: FragmentCompanyDetailBinding
     private lateinit var viewModel: CompanyDetailViewModel
@@ -187,7 +191,7 @@ class CompanyDetailFragment: BaseFragment() {
             val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                     .setMessage(R.string.detail_dialog_trash_button_message)
                     .setPositiveButton(R.string.dialog_ok, {dialogInterface, _ ->
-                        CompanyDao.delete(viewModel.company)
+                        companyDao.delete(viewModel.company)
                         dialogInterface.dismiss()
                         setResultForTrash()
                         exit()

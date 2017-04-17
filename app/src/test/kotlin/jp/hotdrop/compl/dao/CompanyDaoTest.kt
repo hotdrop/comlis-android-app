@@ -13,7 +13,8 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class CompanyDaoTest {
 
-    private lateinit var orma: OrmaDatabase
+    private lateinit var companyDao: CompanyDao
+    private lateinit var tagDao: TagDao
 
     private fun getContext(): Context {
         return InstrumentationRegistry.getTargetContext()
@@ -21,17 +22,19 @@ class CompanyDaoTest {
 
     @Before
     fun setup() {
-        OrmaHolder.initialize(getContext(), false)
-        orma = OrmaHolder.buildDB
+        val orma = OrmaDatabase.builder(getContext()).name(null).build()
+        val ormaHolder = OrmaHolder(orma)
+        tagDao = TagDao(ormaHolder)
+        companyDao = CompanyDao(ormaHolder, tagDao)
     }
 
     @Test
     fun findTest() {
         val company = createCompany("TestFind")
-        CompanyDao.insert(company)
+        companyDao.insert(company)
 
-        val companyGetDb = CompanyDao.findAll().blockingGet()[0]
-        val companyGetDbById = CompanyDao.find(companyGetDb.id)
+        val companyGetDb = companyDao.findAll().blockingGet()[0]
+        val companyGetDbById = companyDao.find(companyGetDb.id)
         assertCompareCompany(company, companyGetDb)
         assertCompareCompany(companyGetDb, companyGetDbById)
         assertCompareCompany(companyGetDbById, company)
@@ -41,22 +44,22 @@ class CompanyDaoTest {
     fun findByTagTest() {
         val c1 = createCompany("Tag1And2")
         val c2 = createCompany("Tag2And3")
-        CompanyDao.insert(c1)
-        CompanyDao.insert(c2)
+        companyDao.insert(c1)
+        companyDao.insert(c2)
         mutableListOf(createTag("Tag1"), createTag("Tag2"), createTag("Tag3"), createTag("Tag4"))
-                .forEach { TagDao.insert(it) }
+                .forEach { tagDao.insert(it) }
 
-        val companiesFromDB = CompanyDao.findAll().blockingGet().toList()
-        val tagsFromDB = TagDao.findAll().blockingGet().toList()
+        val companiesFromDB = companyDao.findAll().blockingGet().toList()
+        val tagsFromDB = tagDao.findAll().blockingGet().toList()
 
         val company1FromDB = companiesFromDB[0]
         val company1AttachTag = mutableListOf(tagsFromDB[0], tagsFromDB[1])
         val company2FromDB = companiesFromDB[1]
         val company2AttachTag = mutableListOf(tagsFromDB[1], tagsFromDB[2], tagsFromDB[3])
-        CompanyDao.associateTagByCompany(company1FromDB.id, company1AttachTag)
-        CompanyDao.associateTagByCompany(company2FromDB.id, company2AttachTag)
+        companyDao.associateTagByCompany(company1FromDB.id, company1AttachTag)
+        companyDao.associateTagByCompany(company2FromDB.id, company2AttachTag)
 
-        val company1Tags = CompanyDao.findByTag(company1FromDB.id)
+        val company1Tags = companyDao.findByTag(company1FromDB.id)
         company1Tags.zip(company1AttachTag).forEach { assertCompareTag(it.first, it.second) }
     }
 
@@ -64,9 +67,9 @@ class CompanyDaoTest {
     fun insertTest() {
         val testName = "Test900"
         val company = createCompany(testName)
-        CompanyDao.insert(company)
+        companyDao.insert(company)
 
-        val companyFromDB = CompanyDao.findAll().blockingGet().toList()
+        val companyFromDB = companyDao.findAll().blockingGet().toList()
                 .filter { c -> c.name == testName }
                 .first()
 
@@ -75,16 +78,16 @@ class CompanyDaoTest {
         assert(companyFromDB.registerDate != null)
         println("register date = ${companyFromDB.registerDate}")
         assert(companyFromDB.updateDate == null)
-        CompanyDao.delete(companyFromDB)
+        companyDao.delete(companyFromDB)
     }
 
     @Test
     fun updateTest() {
         val testName = "Update Test"
         val company = createCompany(testName)
-        CompanyDao.insert(company)
+        companyDao.insert(company)
 
-        val companyChangeData = CompanyDao.findAll().blockingGet().toList()
+        val companyChangeData = companyDao.findAll().blockingGet().toList()
                 .filter { c -> c.name == testName }
                 .first().apply {
                     categoryId = 2
@@ -96,9 +99,9 @@ class CompanyDaoTest {
                     url = "https://www.update.up.date"
                     note = "update description"
                 }
-        CompanyDao.update(companyChangeData)
+        companyDao.update(companyChangeData)
 
-        val companyFromDB = CompanyDao.find(companyChangeData.id)
+        val companyFromDB = companyDao.find(companyChangeData.id)
 
         assertCompareCompany(companyChangeData, companyFromDB)
         assert(companyChangeData.viewOrder == companyFromDB.viewOrder)
@@ -106,7 +109,7 @@ class CompanyDaoTest {
         assert(companyFromDB.updateDate != null)
         println("update date = ${companyFromDB.updateDate}")
 
-        CompanyDao.delete(companyFromDB)
+        companyDao.delete(companyFromDB)
     }
 
     private fun createCompany(argName: String) = Company().apply {

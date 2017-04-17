@@ -37,6 +37,8 @@ class CompanyTabFragment: BaseFragment() {
 
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
+    @Inject
+    lateinit var companyDao: CompanyDao
 
     private val categoryId by lazy {
         arguments.getInt(EXTRA_CATEGORY_ID)
@@ -67,7 +69,7 @@ class CompanyTabFragment: BaseFragment() {
     }
 
     private fun loadData() {
-        val disposable = CompanyDao.findByCategory(categoryId)
+        val disposable = companyDao.findByCategory(categoryId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
@@ -119,7 +121,7 @@ class CompanyTabFragment: BaseFragment() {
 
         when(refreshMode) {
             UPDATE -> {
-                val vm = CompanyViewModel(CompanyDao.find(companyId), context)
+                val vm = CompanyViewModel(companyDao.find(companyId), context)
                 adapter.refresh(vm)
             }
             // notifyRemoveで実装した場合、並び替えしてから削除するとConcurrentModificationExceptionになるためリスト再生成する。
@@ -132,7 +134,7 @@ class CompanyTabFragment: BaseFragment() {
         super.onStop()
         compositeDisposable.clear()
         if(isMoveItem) {
-            CompanyDao.updateAllOrder(adapter.getModels())
+            companyDao.updateAllOrder(adapter.getModels())
             isMoveItem = false
         }
     }

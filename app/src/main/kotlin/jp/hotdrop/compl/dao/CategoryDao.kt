@@ -5,10 +5,13 @@ import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.model.Category_Relation
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object CategoryDao {
+@Singleton
+class CategoryDao @Inject constructor(ormaHolder: OrmaHolder) {
 
-    var orma = OrmaHolder.buildDB
+    private val orma = ormaHolder.orma
 
     fun find(id: Int): Category {
         return categoryRelation().selector()

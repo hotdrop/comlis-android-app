@@ -4,10 +4,13 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.model.*
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object CompanyDao {
+@Singleton
+open class CompanyDao @Inject constructor(ormaHolder: OrmaHolder, val tagDao: TagDao) {
 
-    var orma = OrmaHolder.buildDB
+    private val orma = ormaHolder.orma
 
     fun find(id: Int): Company {
         return companyRelation().selector()
@@ -34,7 +37,7 @@ object CompanyDao {
         val tagIds = associateCompanyAndTagRelation()
                 .selector()
                 .companyIdEq(companyId)
-        return TagDao.findInId(tagIds.map { it.tagId })
+        return tagDao.findInId(tagIds.map { it.tagId })
     }
 
     fun countByCategory(categoryId: Int): Int {

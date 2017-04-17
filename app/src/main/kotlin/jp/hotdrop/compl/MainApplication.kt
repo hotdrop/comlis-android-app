@@ -18,9 +18,6 @@ class MainApplication: Application() {
                 .builder()
                 .appModule(AppModule(this))
                 .build()
-
-        // Ormaを初期化して各クラスで使えるようにする
-        OrmaHolder.initialize(this)
     }
 
     fun getComponent(): AppComponent = appComponent

@@ -29,6 +29,10 @@ class CompanyAssociateTagFragment: BaseFragment() {
 
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
+    @Inject
+    lateinit var tagDao: TagDao
+    @Inject
+    lateinit var companyDao: CompanyDao
 
     private lateinit var binding: FragmentCompanyAssociateTagBinding
     private lateinit var adapter: FlexboxItemAdapter
@@ -63,7 +67,7 @@ class CompanyAssociateTagFragment: BaseFragment() {
     }
 
     private fun loadData() {
-        val disposable = TagDao.findAll()
+        val disposable = tagDao.findAll()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
@@ -83,7 +87,7 @@ class CompanyAssociateTagFragment: BaseFragment() {
 
         binding.fabDone.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(colorName, context))
         binding.fabDone.setOnClickListener {
-            CompanyDao.associateTagByCompany(companyId, adapter.getAssociateModels())
+            companyDao.associateTagByCompany(companyId, adapter.getAssociateModels())
             val intent = Intent().apply {
                 putExtra(REFRESH_MODE, UPDATE)
             }

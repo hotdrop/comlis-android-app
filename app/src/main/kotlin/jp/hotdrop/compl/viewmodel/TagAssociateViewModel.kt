@@ -7,11 +7,15 @@ import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
+import javax.inject.Inject
 
 class TagAssociateViewModel(val companyId: Int = -1, var tag: Tag, val context: Context): ViewModel() {
 
+    @Inject
+    lateinit var companyDao: CompanyDao
+
     var viewName = tag.name
-    var isAssociate = if(companyId != -1) CompanyDao.hasAssociateTag(companyId, tag.id) else true
+    var isAssociate = if(companyId != -1) companyDao.hasAssociateTag(companyId, tag.id) else true
 
     fun changeAssociateState() {
         isAssociate = !isAssociate

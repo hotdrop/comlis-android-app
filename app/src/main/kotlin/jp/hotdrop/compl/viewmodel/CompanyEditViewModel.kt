@@ -5,10 +5,16 @@ import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
+import javax.inject.Inject
 
 class CompanyEditViewModel(val companyId: Int, val context: Context): ViewModel() {
 
-    val company: Company = CompanyDao.find(companyId)
+    @Inject
+    lateinit var companyDao: CompanyDao
+    @Inject
+    lateinit var categoryDao: CategoryDao
+
+    val company: Company = companyDao.find(companyId)
 
     var viewName: String
     var viewOverview: String
@@ -39,7 +45,7 @@ class CompanyEditViewModel(val companyId: Int, val context: Context): ViewModel(
         viewUrl = company.url ?: ""
         viewNote = company.note ?: ""
 
-        categoryName = CategoryDao.find(company.categoryId).name
+        categoryName = categoryDao.find(company.categoryId).name
     }
 
     fun update(selectedCategorySpinnerId: Int): ErrorMessage? {
@@ -48,7 +54,7 @@ class CompanyEditViewModel(val companyId: Int, val context: Context): ViewModel(
             return errorMessage
         }
         val company =  makeData(selectedCategorySpinnerId)
-        CompanyDao.update(company)
+        companyDao.update(company)
 
         return null
     }
@@ -85,7 +91,7 @@ class CompanyEditViewModel(val companyId: Int, val context: Context): ViewModel(
         doingBusiness = if(viewDoingBusiness != "") viewDoingBusiness else null
         wantBusiness = if(viewWantBusiness != "") viewWantBusiness else null
 
-        viewOrder = if(categoryId != company.categoryId) CompanyDao.maxOrder() + 1 else company.viewOrder
+        viewOrder = if(categoryId != company.categoryId) companyDao.maxOrder() + 1 else company.viewOrder
         favorite = company.favorite
 
         registerDate = company.registerDate

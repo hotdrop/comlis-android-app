@@ -7,7 +7,7 @@ import org.junit.Before
 
 class TagDaoTest {
 
-    private lateinit var orma: OrmaDatabase
+    private lateinit var tagDao: TagDao
 
     private fun getContext(): Context {
         return InstrumentationRegistry.getTargetContext()
@@ -15,9 +15,8 @@ class TagDaoTest {
 
     @Before
     fun setup() {
-        OrmaHolder.initialize(getContext(), false)
-        orma = OrmaHolder.buildDB
+        val orma = OrmaDatabase.builder(getContext()).name(null).build()
+        val ormaHolder = OrmaHolder(orma)
+        tagDao = TagDao(ormaHolder)
     }
-
-
 }
