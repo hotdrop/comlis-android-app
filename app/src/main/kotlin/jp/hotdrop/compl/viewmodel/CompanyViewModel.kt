@@ -8,18 +8,13 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
-import javax.inject.Inject
 
-class CompanyViewModel(var company: Company, val context: Context): ViewModel() {
+class CompanyViewModel(var company: Company, val context: Context,
+                       val companyDao: CompanyDao,val categoryDao: CategoryDao): ViewModel() {
 
     private val SALARY_UNIT = context.getString(R.string.label_salary_unit)
     private val SALARY_RANGE_MARK = context.getString(R.string.label_salary_range_mark)
     private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
-
-    @Inject
-    lateinit var companyDao: CompanyDao
-    @Inject
-    lateinit var categoryDao: CategoryDao
 
     // 画面表示に使うデータだけmodelとは別にフィールド値を持たせる
     var viewName = company.name

@@ -5,14 +5,9 @@ import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
-import javax.inject.Inject
 
-class CompanyEditViewModel(val companyId: Int, val context: Context): ViewModel() {
-
-    @Inject
-    lateinit var companyDao: CompanyDao
-    @Inject
-    lateinit var categoryDao: CategoryDao
+class CompanyEditViewModel(val companyId: Int, val context: Context,
+                           val companyDao: CompanyDao, val categoryDao: CategoryDao): ViewModel() {
 
     val company: Company = companyDao.find(companyId)
 

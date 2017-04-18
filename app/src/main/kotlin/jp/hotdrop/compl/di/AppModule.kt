@@ -20,7 +20,10 @@ class AppModule(app: Application) {
     @Provides
     fun provideOrmaHolder(context: Context): OrmaHolder {
         // can't access NonExistentClassを防ぐためOrmaHolderを間に挟む。
-        val orma = OrmaDatabase.builder(context).writeOnMainThread(AccessThreadConstraint.NONE).build()
+        val orma = OrmaDatabase.builder(context)
+                .writeOnMainThread(AccessThreadConstraint.NONE)
+                .name("compl.orma.db")
+                .build()
         return OrmaHolder(orma)
     }
 

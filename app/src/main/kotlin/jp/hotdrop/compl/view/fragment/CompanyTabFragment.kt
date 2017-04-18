@@ -20,6 +20,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
+import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyTabBinding
 import jp.hotdrop.compl.databinding.ItemCompanyBinding
@@ -39,6 +40,8 @@ class CompanyTabFragment: BaseFragment() {
     lateinit var compositeDisposable: CompositeDisposable
     @Inject
     lateinit var companyDao: CompanyDao
+    @Inject
+    lateinit var categoryDao: CategoryDao
 
     private val categoryId by lazy {
         arguments.getInt(EXTRA_CATEGORY_ID)
@@ -83,7 +86,7 @@ class CompanyTabFragment: BaseFragment() {
         adapter = Adapter(context)
 
         if(companies.isNotEmpty()) {
-            adapter.addAll(companies.map{ company -> CompanyViewModel(company, context) })
+            adapter.addAll(companies.map{ company -> CompanyViewModel(company, context, companyDao, categoryDao) })
             goneEmptyMessage()
         } else {
             visibleEmptyMessage()
@@ -121,7 +124,7 @@ class CompanyTabFragment: BaseFragment() {
 
         when(refreshMode) {
             UPDATE -> {
-                val vm = CompanyViewModel(companyDao.find(companyId), context)
+                val vm = CompanyViewModel(companyDao.find(companyId), context, companyDao, categoryDao)
                 adapter.refresh(vm)
             }
             // notifyRemoveで実装した場合、並び替えしてから削除するとConcurrentModificationExceptionになるためリスト再生成する。
@@ -201,7 +204,7 @@ class CompanyTabFragment: BaseFragment() {
         private fun setCardView(flexboxlayout: FlexboxLayout, tag: Tag) {
             val binding = DataBindingUtil.inflate<ItemCompanyListTagBinding>(getLayoutInflater(null),
                     R.layout.item_company_list_tag, flexboxlayout, false)
-            binding.viewModel = TagAssociateViewModel(tag = tag, context = context)
+            binding.viewModel = TagAssociateViewModel(tag = tag, context = context, companyDao = companyDao)
             flexboxlayout.addView(binding.root)
         }
 

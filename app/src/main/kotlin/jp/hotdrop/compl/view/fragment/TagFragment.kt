@@ -78,7 +78,7 @@ class TagFragment: BaseFragment() {
         adapter = FlexItemAdapter(context)
 
         if(tags.isNotEmpty()) {
-            adapter.addAll(tags.map { t -> TagViewModel(t, context) })
+            adapter.addAll(tags.map { t -> TagViewModel(t, context, tagDao) })
             goneEmptyMessage()
         } else {
             visibleEmptyMessage()
@@ -162,7 +162,7 @@ class TagFragment: BaseFragment() {
                         colorType = spinner.getSelection()
                     })
                     val tag = tagDao.find(editText.text.toString())
-                    adapter.add(TagViewModel(tag, context))
+                    adapter.add(TagViewModel(tag, context, tagDao))
                     dialogInterface.dismiss()
                     goneEmptyMessage()
                 })

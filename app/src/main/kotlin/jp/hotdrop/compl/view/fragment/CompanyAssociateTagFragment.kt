@@ -79,7 +79,7 @@ class CompanyAssociateTagFragment: BaseFragment() {
 
     private fun onLoadSuccess(tags: List<Tag>) {
         adapter = FlexboxItemAdapter(context)
-        adapter.addAll(tags.map{ TagAssociateViewModel(companyId, it, context) })
+        adapter.addAll(tags.map{ TagAssociateViewModel(companyId, it, context, companyDao) })
 
         binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.layoutManager = FlexboxLayoutManager()

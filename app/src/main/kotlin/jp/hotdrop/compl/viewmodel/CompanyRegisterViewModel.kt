@@ -7,12 +7,8 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
 import javax.inject.Inject
 
-class CompanyRegisterViewModel(val context: Context): ViewModel() {
-
-    @Inject
-    lateinit var companyDao: CompanyDao
-    @Inject
-    lateinit var categoryDao: CategoryDao
+class CompanyRegisterViewModel @Inject constructor(val context: Context,
+                                                   val companyDao: CompanyDao, val categoryDao: CategoryDao): ViewModel() {
 
     var viewName = ""
     var viewOverview = ""

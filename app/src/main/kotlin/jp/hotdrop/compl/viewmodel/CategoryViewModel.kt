@@ -6,7 +6,8 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.util.ColorUtil
 
-class CategoryViewModel(var category: Category, val context: Context, companyDao: CompanyDao): ViewModel() {
+class CategoryViewModel(var category: Category, val context: Context,
+                        val companyDao: CompanyDao): ViewModel() {
 
     // 画面表示に使うデータだけmodelとは別にフィールド値を持たせる
     var viewName = category.name

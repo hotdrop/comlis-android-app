@@ -18,10 +18,11 @@ class CompanyRegisterFragment : BaseFragment() {
 
     @Inject
     lateinit var categoryDao: CategoryDao
+    @Inject
+    lateinit var viewModel: CompanyRegisterViewModel
 
     private lateinit var categorySpinner: CategorySpinner
     private lateinit var binding: FragmentCompanyRegisterBinding
-    private lateinit var viewModel: CompanyRegisterViewModel
     private var selectedCategoryName: String? = null
 
     companion object {
@@ -47,7 +48,6 @@ class CompanyRegisterFragment : BaseFragment() {
             setSelection(selectedCategoryName)
         }
         binding.registerButton.setOnClickListener { onClickRegister() }
-        viewModel = CompanyRegisterViewModel(context)
         binding.viewModel = viewModel
         return binding.root
     }

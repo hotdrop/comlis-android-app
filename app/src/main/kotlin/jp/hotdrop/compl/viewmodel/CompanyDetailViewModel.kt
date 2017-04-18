@@ -10,22 +10,15 @@ import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
-import javax.inject.Inject
 
-class CompanyDetailViewModel(companyId: Int, val context: Context): ViewModel() {
+class CompanyDetailViewModel (companyId: Int, val context: Context,
+                             val companyDao: CompanyDao, val categoryDao: CategoryDao, val tagDao: TagDao): ViewModel() {
 
     private val SALARY_UNIT = context.getString(R.string.label_salary_unit)
     private val SALARY_RANGE_MARK = context.getString(R.string.label_salary_range_mark)
     private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
     private val EMPTY_VALUE = context.getString(R.string.label_empty_value)
     private val EMPTY_DATE = context.getString(R.string.label_empty_date)
-
-    @Inject
-    lateinit var companyDao: CompanyDao
-    @Inject
-    lateinit var categoryDao: CategoryDao
-    @Inject
-    lateinit var tagDao: TagDao
 
     val company: Company = companyDao.find(companyId)
     val viewName: String

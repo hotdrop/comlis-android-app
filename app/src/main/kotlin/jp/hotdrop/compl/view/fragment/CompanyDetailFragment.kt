@@ -14,7 +14,9 @@ import android.view.ViewGroup
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.flexbox.FlexboxLayout
 import jp.hotdrop.compl.R
+import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
+import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
 import jp.hotdrop.compl.databinding.ItemTagAssociateBinding
 import jp.hotdrop.compl.model.Tag
@@ -28,6 +30,10 @@ class CompanyDetailFragment: BaseFragment() {
 
     @Inject
     lateinit var companyDao: CompanyDao
+    @Inject
+    lateinit var categoryDao: CategoryDao
+    @Inject
+    lateinit var tagDao: TagDao
 
     private lateinit var binding: FragmentCompanyDetailBinding
     private lateinit var viewModel: CompanyDetailViewModel
@@ -203,7 +209,7 @@ class CompanyDetailFragment: BaseFragment() {
     }
 
     private fun refreshLayout() {
-        viewModel = CompanyDetailViewModel(companyId, context)
+        viewModel = CompanyDetailViewModel(companyId, context, companyDao, categoryDao, tagDao)
         binding.viewModel = viewModel
         binding.fabEdit.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
         binding.fabTag.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
@@ -217,7 +223,7 @@ class CompanyDetailFragment: BaseFragment() {
     private fun setCardView(flexboxLayout: FlexboxLayout, tag: Tag) {
         val binding = DataBindingUtil.inflate<ItemTagAssociateBinding>(getLayoutInflater(null),
                 R.layout.item_tag_associate, flexboxLayout, false)
-        binding.viewModel = TagAssociateViewModel(tag = tag, context = context)
+        binding.viewModel = TagAssociateViewModel(tag = tag, context = context, companyDao = companyDao)
         flexboxLayout.addView(binding.root)
     }
 }

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import jp.hotdrop.compl.dao.CategoryDao
+import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyEditBinding
 import jp.hotdrop.compl.view.parts.CategorySpinner
 import jp.hotdrop.compl.viewmodel.CompanyEditViewModel
@@ -16,6 +17,8 @@ import javax.inject.Inject
 
 class CompanyEditFragment: BaseFragment() {
 
+    @Inject
+    lateinit var companyDao: CompanyDao
     @Inject
     lateinit var categoryDao: CategoryDao
 
@@ -44,7 +47,7 @@ class CompanyEditFragment: BaseFragment() {
         binding = FragmentCompanyEditBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
 
-        viewModel = CompanyEditViewModel(companyId, context)
+        viewModel = CompanyEditViewModel(companyId, context, companyDao, categoryDao)
         binding.viewModel = viewModel
         categorySpinner = CategorySpinner(binding.spinnerCategory, activity, categoryDao).apply {
             setSelection(viewModel.categoryName)

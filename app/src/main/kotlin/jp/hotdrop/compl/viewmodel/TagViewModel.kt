@@ -5,12 +5,9 @@ import android.support.annotation.ColorRes
 import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
-import javax.inject.Inject
 
-class TagViewModel(var tag: Tag, val context: Context): ViewModel() {
-
-    @Inject
-    lateinit var tagDao: TagDao
+class TagViewModel(var tag: Tag, val context: Context,
+                   val tagDao: TagDao): ViewModel() {
 
     // 画面表示に使うデータだけmodelとは別にフィールド値を持たせる
     var viewName = tag.name
