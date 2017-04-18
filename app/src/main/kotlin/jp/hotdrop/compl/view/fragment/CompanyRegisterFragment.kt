@@ -8,11 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.databinding.FragmentCompanyRegisterBinding
 import jp.hotdrop.compl.view.parts.CategorySpinner
 import jp.hotdrop.compl.viewmodel.CompanyRegisterViewModel
+import javax.inject.Inject
 
 class CompanyRegisterFragment : BaseFragment() {
+
+    @Inject
+    lateinit var categoryDao: CategoryDao
 
     private lateinit var categorySpinner: CategorySpinner
     private lateinit var binding: FragmentCompanyRegisterBinding
@@ -38,7 +43,7 @@ class CompanyRegisterFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyRegisterBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
-        categorySpinner = CategorySpinner(binding.spinnerCategory, activity).apply {
+        categorySpinner = CategorySpinner(binding.spinnerCategory, activity, categoryDao).apply {
             setSelection(selectedCategoryName)
         }
         binding.registerButton.setOnClickListener { onClickRegister() }

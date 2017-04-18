@@ -6,12 +6,8 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.model.Category
-import javax.inject.Inject
 
-class CategorySpinner(private val spinner: Spinner, private val activity: Activity) {
-
-    @Inject
-    lateinit var categoryDao: CategoryDao
+class CategorySpinner(private val spinner: Spinner, private val activity: Activity, categoryDao: CategoryDao) {
 
     private val categoryList = categoryDao.findAll().blockingGet()
     private val adapter by lazy {

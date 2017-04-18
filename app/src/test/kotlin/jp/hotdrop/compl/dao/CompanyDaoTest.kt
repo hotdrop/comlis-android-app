@@ -25,7 +25,7 @@ class CompanyDaoTest {
         val orma = OrmaDatabase.builder(getContext()).name(null).build()
         val ormaHolder = OrmaHolder(orma)
         tagDao = TagDao(ormaHolder)
-        companyDao = CompanyDao(ormaHolder, tagDao)
+        companyDao = CompanyDao(ormaHolder)
     }
 
     @Test

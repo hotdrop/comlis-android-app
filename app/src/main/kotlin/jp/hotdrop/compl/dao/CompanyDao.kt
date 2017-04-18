@@ -8,9 +8,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-open class CompanyDao @Inject constructor(ormaHolder: OrmaHolder, val tagDao: TagDao) {
+class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
 
     private val orma = ormaHolder.orma
+    @Inject
+    lateinit var tagDao: TagDao
 
     fun find(id: Int): Company {
         return companyRelation().selector()

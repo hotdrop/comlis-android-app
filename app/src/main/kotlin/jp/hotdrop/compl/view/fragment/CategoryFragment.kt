@@ -21,6 +21,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
+import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCategoryBinding
 import jp.hotdrop.compl.databinding.ItemCategoryBinding
 import jp.hotdrop.compl.model.Category
@@ -35,6 +36,8 @@ class CategoryFragment : BaseFragment() {
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
 
+    @Inject
+    lateinit var companyDao: CompanyDao
     @Inject
     lateinit var categoryDao: CategoryDao
 
@@ -74,7 +77,7 @@ class CategoryFragment : BaseFragment() {
         adapter = Adapter(context)
 
         if(categories.isNotEmpty()) {
-            adapter.addAll(categories.map{ c -> CategoryViewModel(c, context) })
+            adapter.addAll(categories.map{ c -> CategoryViewModel(c, context, companyDao) })
             goneEmptyMessage()
         } else {
             visibleEmptyMessage()
@@ -165,7 +168,7 @@ class CategoryFragment : BaseFragment() {
                 .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
                     categoryDao.insert(editText.text.toString(), spinner.getSelection())
                     val category = categoryDao.find(editText.text.toString())
-                    adapter.add(CategoryViewModel(category, context))
+                    adapter.add(CategoryViewModel(category, context, companyDao))
                     dialogInterface.dismiss()
                     goneEmptyMessage()
                 })
