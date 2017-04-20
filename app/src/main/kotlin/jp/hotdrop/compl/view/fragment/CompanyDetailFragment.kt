@@ -39,9 +39,7 @@ class CompanyDetailFragment: BaseFragment() {
     private lateinit var viewModel: CompanyDetailViewModel
     private var isRefresh = false
 
-    private val companyId by lazy {
-        arguments.getInt(EXTRA_COMPANY_ID)
-    }
+    private val companyId by lazy { arguments.getInt(EXTRA_COMPANY_ID) }
 
     companion object {
         fun create(companyId: Int) = CompanyDetailFragment().apply {

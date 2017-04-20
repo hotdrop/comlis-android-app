@@ -43,9 +43,7 @@ class CompanyTabFragment: BaseFragment() {
     @Inject
     lateinit var categoryDao: CategoryDao
 
-    private val categoryId by lazy {
-        arguments.getInt(EXTRA_CATEGORY_ID)
-    }
+    private val categoryId by lazy { arguments.getInt(EXTRA_CATEGORY_ID) }
 
     private lateinit var binding: FragmentCompanyTabBinding
     private lateinit var adapter: Adapter

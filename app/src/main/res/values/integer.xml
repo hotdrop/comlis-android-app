@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="company_overview_counter_max_length">200</integer>
-    <integer name="company_overview_max_lines">5</integer>
-    <integer name="company_note_counter_max_length">1000</integer>
-    <integer name="company_note_max_lines">10</integer>
+    <integer name="company_overview_max_lines">10</integer>
+    <integer name="company_description_counter_max_length">1000</integer>
+    <integer name="company_description_max_lines">30</integer>
     <integer name="company_doing_business_max_lines">3</integer>
     <integer name="company_want_business_max_lines">3</integer>
 </resources>

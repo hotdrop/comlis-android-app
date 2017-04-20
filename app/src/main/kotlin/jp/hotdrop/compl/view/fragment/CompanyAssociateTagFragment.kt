@@ -37,13 +37,8 @@ class CompanyAssociateTagFragment: BaseFragment() {
     private lateinit var binding: FragmentCompanyAssociateTagBinding
     private lateinit var adapter: FlexboxItemAdapter
 
-    private val companyId by lazy {
-        arguments.getInt(EXTRA_COMPANY_ID)
-    }
-
-    private val colorName by lazy {
-        arguments.getString(EXTRA_COLOR_NAME)
-    }
+    private val companyId by lazy { arguments.getInt(EXTRA_COMPANY_ID) }
+    private val colorName by lazy { arguments.getString(EXTRA_COLOR_NAME) }
 
     companion object {
         @JvmStatic private val EXTRA_COLOR_NAME = "colorName"
@@ -78,6 +73,7 @@ class CompanyAssociateTagFragment: BaseFragment() {
     }
 
     private fun onLoadSuccess(tags: List<Tag>) {
+
         adapter = FlexboxItemAdapter(context)
         adapter.addAll(tags.map{ TagAssociateViewModel(companyId, it, context, companyDao) })
 

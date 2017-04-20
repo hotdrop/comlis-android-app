@@ -26,9 +26,7 @@ class CompanyEditFragment: BaseFragment() {
     private lateinit var viewModel: CompanyEditViewModel
     private lateinit var categorySpinner: CategorySpinner
 
-    private val companyId by lazy {
-        arguments.getInt(EXTRA_COMPANY_ID)
-    }
+    private val companyId by lazy { arguments.getInt(EXTRA_COMPANY_ID) }
 
     companion object {
         fun create(companyId: Int) = CompanyEditFragment().apply {

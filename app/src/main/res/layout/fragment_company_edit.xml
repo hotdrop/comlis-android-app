@@ -201,24 +201,24 @@
                     android:text="@={viewModel.viewWantBusiness}" />
 
                 <TextView
-                    android:id="@+id/label_note"
+                    android:id="@+id/label_description"
                     style="@style/ItemLabel"
-                    android:layout_below="@id/txt_want_business"
-                    android:text="@string/label_description" />
+                    android:text="@string/label_description"
+                    android:layout_below="@id/txt_want_business"/>
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_note"
+                    android:id="@+id/input_layout_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/label_note"
                     android:layout_marginEnd="@dimen/spacing"
+                    android:layout_below="@id/label_description"
                     app:counterEnabled="true"
-                    app:counterMaxLength="@integer/company_note_counter_max_length" >
+                    app:counterMaxLength="@integer/company_description_counter_max_length" >
 
                     <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/txt_note"
+                        android:id="@+id/txt_description"
                         style="@style/MultiLineEditText"
-                        android:maxLines="@integer/company_note_max_lines"
+                        android:maxLines="@integer/company_description_max_lines"
                         android:text="@={viewModel.viewNote}" />
 
                 </android.support.design.widget.TextInputLayout>
