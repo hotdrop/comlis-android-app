@@ -51,7 +51,6 @@ class CompanyDetailViewModel (companyId: Int,
     val colorName: String
 
     val viewTags: List<Tag>
-    val canAttachTag = if(tagDao.count() > 0) View.VISIBLE else View.GONE
 
     init {
         viewName = company.name
@@ -169,6 +168,10 @@ class CompanyDetailViewModel (companyId: Int,
         binding.fabTag.isClickable = false
         binding.fabEdit.isClickable = false
         isFabMenuOpen = false
+    }
+
+    fun closeFabMenu() {
+        collapseFabMenu()
     }
 
     fun onTrashFabClick() {

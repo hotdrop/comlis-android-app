@@ -67,7 +67,7 @@ class CompanyEditFragment: BaseFragment() {
 
     private fun onSuccess() {
         val intent = Intent().apply {
-            putExtra(REFRESH_MODE, UPDATE)
+            if(viewModel.isChangeCategory) putExtra(REFRESH_MODE, CHANGE_CATEGORY) else putExtra(REFRESH_MODE, UPDATE)
         }
         activity.setResult(Activity.RESULT_OK, intent)
         exit()

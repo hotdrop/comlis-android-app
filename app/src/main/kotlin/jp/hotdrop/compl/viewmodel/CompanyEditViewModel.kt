@@ -25,6 +25,8 @@ class CompanyEditViewModel(val companyId: Int, val context: Context,
     var viewNote: String
 
     var categoryName: String
+    var nowCategoryId: Int
+    var isChangeCategory: Boolean = false
 
     init {
         viewName = company.name
@@ -40,6 +42,7 @@ class CompanyEditViewModel(val companyId: Int, val context: Context,
         viewUrl = company.url ?: ""
         viewNote = company.note ?: ""
 
+        nowCategoryId = company.categoryId
         categoryName = categoryDao.find(company.categoryId).name
     }
 
@@ -48,6 +51,7 @@ class CompanyEditViewModel(val companyId: Int, val context: Context,
         if(errorMessage != null) {
             return errorMessage
         }
+        isChangeCategory = (nowCategoryId != selectedCategorySpinnerId)
         val company =  makeData(selectedCategorySpinnerId)
         companyDao.update(company)
 

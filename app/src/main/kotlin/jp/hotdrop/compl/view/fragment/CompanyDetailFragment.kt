@@ -64,6 +64,10 @@ class CompanyDetailFragment: BaseFragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode != Activity.RESULT_OK ||
@@ -72,19 +76,18 @@ class CompanyDetailFragment: BaseFragment() {
             return
         }
         val refreshMode = data.getIntExtra(REFRESH_MODE, NONE)
-        if(refreshMode != UPDATE) {
+        if(refreshMode != UPDATE && refreshMode != CHANGE_CATEGORY) {
             return
         }
 
-        val beforeCategoryId = viewModel.company.categoryId
         refreshLayout()
-        val afterCategoryId = viewModel.company.categoryId
 
-        if(beforeCategoryId == afterCategoryId) {
-            setResultForUpdate()
-        } else {
+        if(refreshMode == CHANGE_CATEGORY) {
             setResultForChangeCategory()
+        } else {
+            setResultForUpdate()
         }
+        viewModel.closeFabMenu()
     }
 
     private fun setResultForUpdate() {
@@ -126,9 +129,59 @@ class CompanyDetailFragment: BaseFragment() {
         }
     }
 
-    private val RESET = 0.toFloat()
     private fun initLayout() {
+
         refreshLayout()
+        initFavoriteLayout()
+
+        binding.fabEdit.setOnClickListener {
+            ActivityNavigator.showCompanyEdit(this@CompanyDetailFragment, companyId,
+                    viewModel.colorName, REQ_CODE_COMPANY_EDIT)
+        }
+
+        binding.fabTag.setOnClickListener {
+            ActivityNavigator.showCompanyAssociateTag(this@CompanyDetailFragment, companyId,
+                    viewModel.colorName, REQ_CODE_COMPANY_ASSOCIATE_TAG)
+        }
+
+        binding.fabTrash.setOnClickListener {
+            val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
+                    .setMessage(R.string.detail_dialog_trash_button_message)
+                    .setPositiveButton(R.string.dialog_ok, {dialogInterface, _ ->
+                        companyDao.delete(viewModel.company)
+                        dialogInterface.dismiss()
+                        setResultForTrash()
+                        exit()
+                    })
+                    .setNegativeButton(R.string.dialog_cancel, null)
+                    .create()
+            dialog.show()
+        }
+    }
+
+    private fun refreshLayout() {
+        viewModel = CompanyDetailViewModel(companyId, context, binding, companyDao, categoryDao, tagDao)
+        binding.viewModel = viewModel
+
+        binding.fabDetailMenu.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
+        binding.fabEdit.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
+        binding.fabTag.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
+        binding.fabTrash.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
+
+        val flexbox = binding.flexBoxContainer
+        flexbox.removeAllViews()
+        viewModel.viewTags.forEach { tag -> setCardView(flexbox, tag) }
+    }
+
+    private fun setCardView(flexboxLayout: FlexboxLayout, tag: Tag) {
+        val binding = DataBindingUtil.inflate<ItemTagAssociateBinding>(getLayoutInflater(null),
+                R.layout.item_tag_associate, flexboxLayout, false)
+        binding.viewModel = TagAssociateViewModel(tag = tag, context = context, companyDao = companyDao)
+        flexboxLayout.addView(binding.root)
+    }
+
+    private val RESET = 0.toFloat()
+    private fun initFavoriteLayout() {
         val animView1 = binding.animationView1.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
         val animView2 = binding.animationView2.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
         val animView3 = binding.animationView3.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
@@ -180,48 +233,5 @@ class CompanyDetailFragment: BaseFragment() {
             }
             changedFavorite()
         }
-
-        binding.fabEdit.setOnClickListener {
-            ActivityNavigator.showCompanyEdit(this@CompanyDetailFragment, companyId,
-                    viewModel.colorName, REQ_CODE_COMPANY_EDIT)
-        }
-
-        binding.fabTag.setOnClickListener {
-            ActivityNavigator.showCompanyAssociateTag(this@CompanyDetailFragment, companyId,
-                    viewModel.colorName, REQ_CODE_COMPANY_ASSOCIATE_TAG)
-        }
-
-        binding.fabTrash.setOnClickListener {
-            val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
-                    .setMessage(R.string.detail_dialog_trash_button_message)
-                    .setPositiveButton(R.string.dialog_ok, {dialogInterface, _ ->
-                        companyDao.delete(viewModel.company)
-                        dialogInterface.dismiss()
-                        setResultForTrash()
-                        exit()
-                    })
-                    .setNegativeButton(R.string.dialog_cancel, null)
-                    .create()
-            dialog.show()
-        }
-    }
-
-    private fun refreshLayout() {
-        viewModel = CompanyDetailViewModel(companyId, context, binding, companyDao, categoryDao, tagDao)
-        binding.viewModel = viewModel
-        binding.fabEdit.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
-        binding.fabTag.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
-        binding.fabTrash.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
-
-        val flexbox = binding.flexBoxContainer
-        flexbox.removeAllViews()
-        viewModel.viewTags.forEach { tag -> setCardView(flexbox, tag) }
-    }
-
-    private fun setCardView(flexboxLayout: FlexboxLayout, tag: Tag) {
-        val binding = DataBindingUtil.inflate<ItemTagAssociateBinding>(getLayoutInflater(null),
-                R.layout.item_tag_associate, flexboxLayout, false)
-        binding.viewModel = TagAssociateViewModel(tag = tag, context = context, companyDao = companyDao)
-        flexboxLayout.addView(binding.root)
     }
 }
