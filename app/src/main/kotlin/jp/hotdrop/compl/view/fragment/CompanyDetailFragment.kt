@@ -35,7 +35,7 @@ class CompanyDetailFragment: BaseFragment() {
     @Inject
     lateinit var tagDao: TagDao
 
-    private lateinit var binding: FragmentCompanyDetailBinding
+    lateinit var binding: FragmentCompanyDetailBinding
     private lateinit var viewModel: CompanyDetailViewModel
     private var isRefresh = false
 
@@ -207,7 +207,7 @@ class CompanyDetailFragment: BaseFragment() {
     }
 
     private fun refreshLayout() {
-        viewModel = CompanyDetailViewModel(companyId, context, companyDao, categoryDao, tagDao)
+        viewModel = CompanyDetailViewModel(companyId, context, binding, companyDao, categoryDao, tagDao)
         binding.viewModel = viewModel
         binding.fabEdit.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
         binding.fabTag.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))

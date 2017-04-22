@@ -48,5 +48,6 @@
 
     <!-- Elevation -->
     <dimen name="elevation">4dp</dimen>
+    <dimen name="elevation_fab_menu_text">2dp</dimen>
 
 </resources>

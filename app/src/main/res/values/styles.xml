@@ -125,6 +125,7 @@
         <item name="android:textSize">@dimen/text_large</item>
     </style>
 
+    <!-- button -->
     <style name="OkButton" parent="Theme.AppCompat">
         <item name="colorButtonNormal">@color/ok_button_normal</item>
         <item name="colorControlHighlight">@color/ok_button_Highlight</item>
@@ -132,6 +133,7 @@
         <item name="android:textSize">@dimen/text_large</item>
     </style>
 
+    <!-- Spinner -->
     <style name="Spinner">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/spinner_height</item>
@@ -209,6 +211,13 @@
         <item name="android:lines">1</item>
         <item name="android:textColor">@color/label</item>
         <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <!-- fab menu -->
+    <style name="FabMenuText">
+        <item name="android:layout_marginEnd">@dimen/spacing_small</item>
+        <item name="android:elevation">@dimen/elevation_fab_menu_text</item>
+        <item name="android:padding">5dip</item>
     </style>
 
 </resources>

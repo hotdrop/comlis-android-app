@@ -31,6 +31,11 @@
     <string name="label_update_date">更新日:</string>
     <string name="description_company_detail_cover">分類毎のテーマカラーに対応した背景イメージを表示します。</string>
 
+    <!-- fab menu -->
+    <string name="label_fab_menu_trash">削除する</string>
+    <string name="label_fab_menu_edit">編集する</string>
+    <string name="label_fab_menu_tag">タグ付与</string>
+
     <!-- company register and edit -->
     <string name="label_company">会社名</string>
     <string name="label_category">分類</string>

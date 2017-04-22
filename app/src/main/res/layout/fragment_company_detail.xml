@@ -5,9 +5,7 @@
     tools:context=".view.fragment.CompanyDetailFragment">
 
     <data>
-        <variable
-            name="viewModel"
-            type="jp.hotdrop.compl.viewmodel.CompanyDetailViewModel" />
+        <variable name="viewModel" type="jp.hotdrop.compl.viewmodel.CompanyDetailViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -303,36 +301,97 @@
         </android.support.v4.widget.NestedScrollView>
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_trash"
+            android:id="@+id/fab_detail_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            android:scaleType="center"
+            android:onClick="@{viewModel.onMenuFabClick}"
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|end"
-            app:srcCompat="@drawable/ic_delete_forever" />
+            app:srcCompat="@drawable/ic_add_white" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_tag"
+        <LinearLayout
+            android:id="@+id/fabMenuTrashLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_marginBottom="@dimen/fab_second_margin_bottom"
-            android:scaleType="center"
-            android:clickable="true"
-            android:visibility="@{viewModel.canAttachTag}"
-            app:layout_anchor="@+id/fab_edit"
-            app:layout_anchorGravity="top"
-            app:srcCompat="@drawable/ic_action_tags_white" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="invisible"
+            app:layout_anchor="@id/fab_detail_menu"
+            app:layout_anchorGravity="bottom|end" >
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_edit"
+            <TextView
+                android:id="@+id/label_fab_menu_trash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/FabMenuText"
+                android:background="@{viewModel.getLightColorRes}"
+                android:text="@string/label_fab_menu_trash" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_trash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                app:srcCompat="@drawable/ic_delete_forever" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fabMenuTagLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:clickable="true"
-            app:srcCompat="@drawable/ic_mode_edit" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="invisible"
+            app:layout_anchor="@id/fab_trash"
+            app:layout_anchorGravity="bottom|end" >
 
+            <TextView
+                android:id="@+id/label_fab_menu_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/FabMenuText"
+                android:background="@{viewModel.getLightColorRes}"
+                android:text="@string/label_fab_menu_tag" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                app:srcCompat="@drawable/ic_action_tags_white" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fabMenuEditLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="invisible"
+            app:layout_anchor="@id/fab_tag"
+            app:layout_anchorGravity="bottom|end" >
+
+            <TextView
+                android:id="@+id/label_fab_menu_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/FabMenuText"
+                android:background="@{viewModel.getLightColorRes}"
+                android:text="@string/label_fab_menu_edit" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                app:srcCompat="@drawable/ic_mode_edit" />
+
+        </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

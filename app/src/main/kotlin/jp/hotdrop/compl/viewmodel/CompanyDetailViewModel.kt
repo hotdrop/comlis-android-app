@@ -2,17 +2,26 @@ package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
 import android.support.annotation.ColorRes
+import android.support.v4.view.ViewCompat
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.OvershootInterpolator
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.dao.TagDao
+import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 
-class CompanyDetailViewModel (companyId: Int, val context: Context,
-                             val companyDao: CompanyDao, val categoryDao: CategoryDao, val tagDao: TagDao): ViewModel() {
+class CompanyDetailViewModel (companyId: Int,
+                              val context: Context,
+                              val binding: FragmentCompanyDetailBinding,
+                              val companyDao: CompanyDao,
+                              val categoryDao: CategoryDao,
+                              val tagDao: TagDao): ViewModel() {
 
     private val SALARY_UNIT = context.getString(R.string.label_salary_unit)
     private val SALARY_RANGE_MARK = context.getString(R.string.label_salary_range_mark)
@@ -82,6 +91,11 @@ class CompanyDetailViewModel (companyId: Int, val context: Context,
         return ColorUtil.getResDark(colorName, context)
     }
 
+    @ColorRes
+    fun getLightColorRes(): Int {
+        return ColorUtil.getResLight(colorName, context)
+    }
+
     fun isOneFavorite(): Boolean {
         return viewFavorite == 1
     }
@@ -108,4 +122,65 @@ class CompanyDetailViewModel (companyId: Int, val context: Context,
         val category = categoryDao.find(company.categoryId)
         return category.name
     }
+
+
+    private val fabOpenAnimation: Animation by lazy {
+        AnimationUtils.loadAnimation(context, R.anim.fab_open)
+    }
+    private val fabCloseAnimation: Animation by lazy {
+        AnimationUtils.loadAnimation(context, R.anim.fab_close)
+    }
+    private var isFabMenuOpen = false
+
+    fun onMenuFabClick(v: View) {
+        if(isFabMenuOpen) {
+            collapseFabMenu()
+        } else {
+            expandFabMenu()
+        }
+    }
+
+    private fun expandFabMenu() {
+        ViewCompat.animate(binding.fabDetailMenu)
+                .rotation(45.toFloat())
+                .withLayer()
+                .setDuration(300)
+                .setInterpolator(OvershootInterpolator(10.toFloat()))
+                .start()
+        binding.fabMenuTrashLayout.startAnimation(fabOpenAnimation)
+        binding.fabMenuTagLayout.startAnimation(fabOpenAnimation)
+        binding.fabMenuEditLayout.startAnimation(fabOpenAnimation)
+        binding.fabTrash.isClickable = true
+        binding.fabTag.isClickable = true
+        binding.fabEdit.isClickable = true
+        isFabMenuOpen = true
+    }
+
+    private fun collapseFabMenu() {
+        ViewCompat.animate(binding.fabDetailMenu).rotation(0.toFloat())
+                .withLayer()
+                .setDuration(300)
+                .setInterpolator(OvershootInterpolator(10.toFloat()))
+                .start()
+        binding.fabMenuTrashLayout.startAnimation(fabCloseAnimation)
+        binding.fabMenuTagLayout.startAnimation(fabCloseAnimation)
+        binding.fabMenuEditLayout.startAnimation(fabCloseAnimation)
+        binding.fabTrash.isClickable = false
+        binding.fabTag.isClickable = false
+        binding.fabEdit.isClickable = false
+        isFabMenuOpen = false
+    }
+
+    fun onTrashFabClick() {
+        // TODO
+    }
+
+    fun onTagFabClick() {
+
+    }
+
+    fun onEditFabClick() {
+
+    }
+
 }
