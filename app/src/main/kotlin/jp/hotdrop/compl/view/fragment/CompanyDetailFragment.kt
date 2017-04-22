@@ -134,6 +134,12 @@ class CompanyDetailFragment: BaseFragment() {
         refreshLayout()
         initFavoriteLayout()
 
+        binding.nestedScrollView.setOnScrollChangeListener { _, _, _, _, _ ->
+            if(!binding.fabDetailMenu.isShown && viewModel.isOpenFabMenu()) {
+                viewModel.closeFabMenu()
+            }
+        }
+
         binding.fabEdit.setOnClickListener {
             ActivityNavigator.showCompanyEdit(this@CompanyDetailFragment, companyId,
                     viewModel.colorName, REQ_CODE_COMPANY_EDIT)

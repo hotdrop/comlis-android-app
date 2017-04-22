@@ -170,20 +170,18 @@ class CompanyDetailViewModel (companyId: Int,
         isFabMenuOpen = false
     }
 
+    fun isOpenFabMenu(): Boolean {
+        return isFabMenuOpen
+    }
+
     fun closeFabMenu() {
-        collapseFabMenu()
+        binding.fabMenuTrashLayout.startAnimation(fabCloseAnimation)
+        binding.fabMenuTagLayout.startAnimation(fabCloseAnimation)
+        binding.fabMenuEditLayout.startAnimation(fabCloseAnimation)
+        binding.fabTrash.isClickable = false
+        binding.fabTag.isClickable = false
+        binding.fabEdit.isClickable = false
+        isFabMenuOpen = false
+        binding.fabDetailMenu.rotation = 0.toFloat()
     }
-
-    fun onTrashFabClick() {
-        // TODO
-    }
-
-    fun onTagFabClick() {
-
-    }
-
-    fun onEditFabClick() {
-
-    }
-
 }

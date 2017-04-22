@@ -296,7 +296,6 @@
                     android:layout_toEndOf="@id/label_update_date"
                     android:layout_below="@id/label_update_date"
                     android:text="@{viewModel.viewUpdateDate}"/>
-
             </RelativeLayout>
         </android.support.v4.widget.NestedScrollView>
 
