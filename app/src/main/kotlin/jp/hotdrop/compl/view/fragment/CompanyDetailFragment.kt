@@ -197,19 +197,29 @@ class CompanyDetailFragment: BaseFragment() {
             dialog.show()
         }
 
+        binding.toolbarLayout.setOnClickListener {
+            // TODO タイトルと分類の編集画面作る。これいらないか・・
+            Toast.makeText(context, "click title", Toast.LENGTH_SHORT).show()
+        }
+        binding.toolbarLayout.isClickable = false
+
         binding.imageEditAbstract.setOnClickListener {
+            // TODO タイトルと分類と概要の編集画面作る
             Toast.makeText(context, "click abstract", Toast.LENGTH_SHORT).show()
         }
 
         binding.imageEditInformation.setOnClickListener {
+            // TODO 従業員数とか給与とかの編集画面作る
             Toast.makeText(context, "click information", Toast.LENGTH_SHORT).show()
         }
 
         binding.imageEditBusiness.setOnClickListener {
+            // TODO 事業内容とビジョンの編集画面作る
             Toast.makeText(context, "click business", Toast.LENGTH_SHORT).show()
         }
 
         binding.imageEditDescription.setOnClickListener {
+            // TODO 詳細の編集画面作る
             Toast.makeText(context, "click description", Toast.LENGTH_SHORT).show()
         }
 

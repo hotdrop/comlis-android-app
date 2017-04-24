@@ -87,56 +87,6 @@ class CompanyDetailViewModel (companyId: Int,
         return category.name
     }
 
-    private val RESET = 0.toFloat()
-    fun onClickFirstFavorite() {
-        if(viewFavorite == 1) {
-            resetFavorite()
-        } else {
-            binding.animationView1.playAnimation()
-            binding.animationView2.progress = RESET
-            binding.animationView3.progress = RESET
-            viewFavorite = 1
-            companyDao.updateFavorite(company.id, viewFavorite)
-        }
-    }
-
-    fun onClickSecondFavorite() {
-        if(viewFavorite == 2) {
-            resetFavorite()
-        } else {
-            binding.animationView1.playAnimation()
-            binding.animationView2.playAnimation()
-            binding.animationView3.progress = RESET
-            viewFavorite = 2
-            companyDao.updateFavorite(company.id, viewFavorite)
-        }
-    }
-
-    fun onClickThirdFavorite() {
-        if(viewFavorite == 3) {
-            resetFavorite()
-        } else {
-            binding.animationView1.playAnimation()
-            binding.animationView2.playAnimation()
-            binding.animationView3.playAnimation()
-            viewFavorite = 3
-            companyDao.updateFavorite(company.id, viewFavorite)
-        }
-    }
-
-    fun isEditFavorite(): Boolean {
-        return (company.favorite != viewFavorite)
-    }
-
-    private fun resetFavorite() {
-        binding.animationView1.progress = RESET
-        binding.animationView2.progress = RESET
-        binding.animationView3.progress = RESET
-        viewFavorite = 0
-        companyDao.updateFavorite(company.id, 0)
-    }
-
-
     private val fabOpenAnimation: Animation by lazy {
         AnimationUtils.loadAnimation(context, R.anim.fab_open)
     }
@@ -206,6 +156,7 @@ class CompanyDetailViewModel (companyId: Int,
     }
 
     private fun visibleEditIcons() {
+        binding.toolbarLayout.isClickable = true
         binding.imageEditAbstract.visibleIcon()
         binding.imageEditInformation.visibleIcon()
         binding.imageEditBusiness.visibleIcon()
@@ -214,6 +165,7 @@ class CompanyDetailViewModel (companyId: Int,
     }
 
     private fun goneEditIcons() {
+        binding.toolbarLayout.isClickable = false
         binding.imageEditAbstract.goneIcon()
         binding.imageEditInformation.goneIcon()
         binding.imageEditBusiness.goneIcon()
@@ -234,5 +186,54 @@ class CompanyDetailViewModel (companyId: Int,
         binding.fabEdit.isClickable = false
         isFabMenuOpen = false
         binding.fabDetailMenu.rotation = 0.toFloat()
+    }
+
+    private val RESET = 0.toFloat()
+    fun onClickFirstFavorite() {
+        if(viewFavorite == 1) {
+            resetFavorite()
+        } else {
+            binding.animationView1.playAnimation()
+            binding.animationView2.progress = RESET
+            binding.animationView3.progress = RESET
+            viewFavorite = 1
+            companyDao.updateFavorite(company.id, viewFavorite)
+        }
+    }
+
+    fun onClickSecondFavorite() {
+        if(viewFavorite == 2) {
+            resetFavorite()
+        } else {
+            binding.animationView1.playAnimation()
+            binding.animationView2.playAnimation()
+            binding.animationView3.progress = RESET
+            viewFavorite = 2
+            companyDao.updateFavorite(company.id, viewFavorite)
+        }
+    }
+
+    fun onClickThirdFavorite() {
+        if(viewFavorite == 3) {
+            resetFavorite()
+        } else {
+            binding.animationView1.playAnimation()
+            binding.animationView2.playAnimation()
+            binding.animationView3.playAnimation()
+            viewFavorite = 3
+            companyDao.updateFavorite(company.id, viewFavorite)
+        }
+    }
+
+    fun isEditFavorite(): Boolean {
+        return (company.favorite != viewFavorite)
+    }
+
+    private fun resetFavorite() {
+        binding.animationView1.progress = RESET
+        binding.animationView2.progress = RESET
+        binding.animationView3.progress = RESET
+        viewFavorite = 0
+        companyDao.updateFavorite(company.id, 0)
     }
 }

@@ -29,7 +29,7 @@
                 app:expandedTitleTextAppearance="@style/CompanyDetailTitle"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:title="@{viewModel.viewName}" >
-                
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/collapsing_toolbar_height"
@@ -375,7 +375,11 @@
                 android:id="@+id/fab_trash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
+                android:layout_marginTop="@dimen/fab_margin"
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:layout_marginStart="@dimen/fab_margin"
+                android:layout_marginEnd="@dimen/fab_menu_margin_end"
+                app:fabSize="mini"
                 app:srcCompat="@drawable/ic_delete_forever" />
 
         </LinearLayout>
@@ -403,7 +407,11 @@
                 android:id="@+id/fab_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
+                android:layout_marginTop="@dimen/fab_margin"
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:layout_marginStart="@dimen/fab_margin"
+                android:layout_marginEnd="@dimen/fab_menu_margin_end"
+                app:fabSize="mini"
                 app:srcCompat="@drawable/ic_action_tags_white" />
 
         </LinearLayout>
@@ -431,7 +439,11 @@
                 android:id="@+id/fab_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
+                android:layout_marginTop="@dimen/fab_margin"
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:layout_marginStart="@dimen/fab_margin"
+                android:layout_marginEnd="@dimen/fab_menu_margin_end"
+                app:fabSize="mini"
                 app:srcCompat="@drawable/ic_mode_edit" />
 
         </LinearLayout>
