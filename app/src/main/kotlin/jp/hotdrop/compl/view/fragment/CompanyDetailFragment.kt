@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.flexbox.FlexboxLayout
 import jp.hotdrop.compl.R
@@ -61,11 +62,9 @@ class CompanyDetailFragment: BaseFragment() {
         setHasOptionsMenu(false)
         initToolbar()
         initLayout()
+        initOnClickEvent()
+        initFavoriteEvent()
         return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -80,7 +79,7 @@ class CompanyDetailFragment: BaseFragment() {
             return
         }
 
-        refreshLayout()
+        initLayout()
 
         if(refreshMode == CHANGE_CATEGORY) {
             setResultForChangeCategory()
@@ -131,8 +130,34 @@ class CompanyDetailFragment: BaseFragment() {
 
     private fun initLayout() {
 
-        refreshLayout()
-        initFavoriteLayout()
+        fun setCardView(layout: FlexboxLayout, tag: Tag) {
+            val binding = DataBindingUtil.inflate<ItemTagAssociateBinding>(getLayoutInflater(null),
+                    R.layout.item_tag_associate, layout, false)
+            binding.viewModel = TagAssociateViewModel(tag = tag, context = context, companyDao = companyDao)
+            layout.addView(binding.root)
+        }
+
+        viewModel = CompanyDetailViewModel(companyId, context, binding, companyDao, categoryDao, tagDao)
+        binding.viewModel = viewModel
+
+        val darkColor = ColorUtil.getResDark(viewModel.colorName, context)
+
+        binding.imageEditAbstract.setColorFilter(darkColor)
+        binding.imageEditInformation.setColorFilter(darkColor)
+        binding.imageEditBusiness.setColorFilter(darkColor)
+        binding.imageEditDescription.setColorFilter(darkColor)
+
+        binding.fabDetailMenu.backgroundTintList = ColorStateList.valueOf(darkColor)
+        binding.fabEdit.backgroundTintList = ColorStateList.valueOf(darkColor)
+        binding.fabTag.backgroundTintList = ColorStateList.valueOf(darkColor)
+        binding.fabTrash.backgroundTintList = ColorStateList.valueOf(darkColor)
+
+        val flexBox = binding.flexBoxContainer
+        flexBox.removeAllViews()
+        viewModel.viewTags.forEach { tag -> setCardView(flexBox, tag) }
+    }
+
+    private fun initOnClickEvent() {
 
         binding.nestedScrollView.setOnScrollChangeListener { _, _, _, _, _ ->
             if(!binding.fabDetailMenu.isShown && viewModel.isOpenFabMenu()) {
@@ -140,10 +165,18 @@ class CompanyDetailFragment: BaseFragment() {
             }
         }
 
+        binding.fabDetailMenu.setOnClickListener {
+            viewModel.onClickMenuFab()
+        }
+
+        binding.fabEdit.setOnClickListener {
+            viewModel.onClickModeEditFab()
+        }
+        /*
         binding.fabEdit.setOnClickListener {
             ActivityNavigator.showCompanyEdit(this@CompanyDetailFragment, companyId,
                     viewModel.colorName, REQ_CODE_COMPANY_EDIT)
-        }
+        }*/
 
         binding.fabTag.setOnClickListener {
             ActivityNavigator.showCompanyAssociateTag(this@CompanyDetailFragment, companyId,
@@ -163,81 +196,57 @@ class CompanyDetailFragment: BaseFragment() {
                     .create()
             dialog.show()
         }
+
+        binding.imageEditAbstract.setOnClickListener {
+            Toast.makeText(context, "click abstract", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.imageEditInformation.setOnClickListener {
+            Toast.makeText(context, "click information", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.imageEditBusiness.setOnClickListener {
+            Toast.makeText(context, "click business", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.imageEditDescription.setOnClickListener {
+            Toast.makeText(context, "click description", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
-    private fun refreshLayout() {
-        viewModel = CompanyDetailViewModel(companyId, context, binding, companyDao, categoryDao, tagDao)
-        binding.viewModel = viewModel
-
-        binding.fabDetailMenu.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
-        binding.fabEdit.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
-        binding.fabTag.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
-        binding.fabTrash.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(viewModel.colorName, context))
-
-        val flexbox = binding.flexBoxContainer
-        flexbox.removeAllViews()
-        viewModel.viewTags.forEach { tag -> setCardView(flexbox, tag) }
-    }
-
-    private fun setCardView(flexboxLayout: FlexboxLayout, tag: Tag) {
-        val binding = DataBindingUtil.inflate<ItemTagAssociateBinding>(getLayoutInflater(null),
-                R.layout.item_tag_associate, flexboxLayout, false)
-        binding.viewModel = TagAssociateViewModel(tag = tag, context = context, companyDao = companyDao)
-        flexboxLayout.addView(binding.root)
-    }
-
-    private val RESET = 0.toFloat()
-    private fun initFavoriteLayout() {
-        val animView1 = binding.animationView1.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
-        val animView2 = binding.animationView2.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
-        val animView3 = binding.animationView3.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
-        val animViews = mutableListOf(animView1, animView2, animView3)
-
-        animViews.take(viewModel.viewFavorite).forEach { it.playAnimation() }
+    private fun initFavoriteEvent() {
 
         // スターつけて一覧画面に戻った時にスターの状態を一覧に反映したいが、その通知契機がないのでここで対応する。
         // スター2つ→3つつける→やっぱ2つに戻す、としても変更した時点でsetIntentが走っているので元のスター数に戻しても
         // 画面更新される。
         fun changedFavorite() {
-            if(viewModel.company.favorite != viewModel.viewFavorite && !isRefresh) {
+            if(viewModel.isEditFavorite() && !isRefresh) {
                 setResultForUpdate()
             }
         }
 
-        animView1.setOnClickListener {
-            if(viewModel.isOneFavorite()) {
-                animView1.progress = RESET
-                viewModel.resetFavorite()
-            } else {
-                animView1.playAnimation()
-                animView2.progress = RESET
-                animView3.progress = RESET
-                viewModel.tapFavorite(1)
+        val animView1 = binding.animationView1.apply {
+            setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak)
+            setOnClickListener {
+                viewModel.onClickFirstFavorite()
+                changedFavorite()
             }
-            changedFavorite()
         }
-        animView2.setOnClickListener {
-            if(viewModel.isTwoFavorite()) {
-                animView1.progress = RESET
-                animView2.progress = RESET
-                viewModel.resetFavorite()
-            } else {
-                animView1.playAnimation()
-                animView2.playAnimation()
-                animView3.progress = RESET
-                viewModel.tapFavorite(2)
+        val animView2 = binding.animationView2.apply {
+            setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak)
+            setOnClickListener {
+                viewModel.onClickSecondFavorite()
+                changedFavorite()
             }
-            changedFavorite()
         }
-        animView3.setOnClickListener {
-            if(viewModel.isThreeFavorite()) {
-                animViews.forEach { it.progress = RESET }
-                viewModel.resetFavorite()
-            } else {
-                animViews.forEach { it.playAnimation() }
-                viewModel.tapFavorite(3)
+        val animView3 = binding.animationView3.apply {
+            setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak)
+            setOnClickListener {
+                viewModel.onClickThirdFavorite()
+                changedFavorite()
             }
-            changedFavorite()
         }
+        mutableListOf(animView1, animView2, animView3).take(viewModel.viewFavorite).forEach { it.playAnimation() }
     }
 }

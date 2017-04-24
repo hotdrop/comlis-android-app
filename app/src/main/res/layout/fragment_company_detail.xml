@@ -106,6 +106,14 @@
                     android:textColor="@{viewModel.getColorRes}"
                     android:text="@string/label_overview"/>
 
+                <ImageView
+                    android:id="@+id/image_edit_abstract"
+                    style="@style/EditIconImage"
+                    android:layout_below="@id/flex_box_container"
+                    android:layout_toEndOf="@id/label_abstract_title"
+                    android:layout_alignBottom="@id/label_abstract_title"
+                    android:src="@drawable/ic_mode_edit"/>
+
                 <View
                     android:id="@+id/line_abstract_title"
                     style="@style/TitleBorder"
@@ -123,6 +131,14 @@
                     android:textColor="@{viewModel.getColorRes}"
                     android:layout_below="@id/txt_overview"
                     android:text="@string/label_information"/>
+
+                <ImageView
+                    android:id="@+id/image_edit_information"
+                    style="@style/EditIconImage"
+                    android:layout_below="@id/txt_overview"
+                    android:layout_toEndOf="@id/label_information_title"
+                    android:layout_alignBottom="@id/label_information_title"
+                    android:src="@drawable/ic_mode_edit"/>
 
                 <View
                     android:id="@+id/line_information_title"
@@ -214,6 +230,14 @@
                     android:layout_below="@id/txt_link_url"
                     android:text="@string/label_business" />
 
+                <ImageView
+                    android:id="@+id/image_edit_business"
+                    style="@style/EditIconImage"
+                    android:layout_below="@id/txt_link_url"
+                    android:layout_toEndOf="@id/label_business_title"
+                    android:layout_alignBottom="@id/label_business_title"
+                    android:src="@drawable/ic_mode_edit"/>
+
                 <View
                     android:id="@+id/line_business_title"
                     style="@style/TitleBorder"
@@ -249,16 +273,24 @@
                     android:text="@{viewModel.viewWantBusiness}"/>
 
                 <TextView
-                    android:id="@+id/label_detail_title"
+                    android:id="@+id/label_description_title"
                     style="@style/SectionTitle"
                     android:textColor="@{viewModel.getColorRes}"
                     android:layout_below="@id/txt_want_business"
                     android:text="@string/label_description"/>
 
+                <ImageView
+                    android:id="@+id/image_edit_description"
+                    style="@style/EditIconImage"
+                    android:layout_below="@id/txt_want_business"
+                    android:layout_toEndOf="@id/label_description_title"
+                    android:layout_alignBottom="@id/label_description_title"
+                    android:src="@drawable/ic_mode_edit"/>
+
                 <View
                     android:id="@+id/line_detail_title"
                     style="@style/TitleBorder"
-                    android:layout_below="@id/label_detail_title" />
+                    android:layout_below="@id/label_description_title" />
 
                 <TextView
                     android:id="@+id/text_detail"
@@ -316,7 +348,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            android:onClick="@{viewModel.onMenuFabClick}"
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|end"
             app:srcCompat="@drawable/ic_menu" />

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
+import android.widget.ImageView
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
@@ -38,50 +39,36 @@ class CompanyDetailViewModel (companyId: Int,
     var viewWorkPlace = ""
     var viewUrl: String? = null
     var visibleUrl: Int = View.GONE
-
     var viewDoingBusiness = ""
     var viewWantBusiness = ""
     val viewNote: String
-
     var viewFavorite: Int
-
     val viewRegisterDate: String
     val viewUpdateDate: String
-
     val colorName: String
-
     val viewTags: List<Tag>
 
     init {
         viewName = company.name
         viewOverview = company.overview ?: EMPTY_VALUE
-
         viewEmployeesNum = if(company.employeesNum > 0) company.employeesNum.toString() + EMPLOYEES_NUM_UNIT else EMPTY_VALUE
-
         viewSalary = if(company.salaryLow > 0) company.salaryLow.toString() + SALARY_UNIT else EMPTY_VALUE
         if(company.salaryHigh > 0) {
             viewSalary += SALARY_RANGE_MARK + company.salaryHigh.toString() + SALARY_UNIT
         }
-
         viewWantedJob = company.wantedJob ?: EMPTY_VALUE
         viewWorkPlace = company.workPlace ?: EMPTY_VALUE
-
         company.url?.let {
             viewUrl = it
             visibleUrl = View.VISIBLE
         }
-
         viewDoingBusiness = company.doingBusiness ?: EMPTY_VALUE
         viewWantBusiness = company.wantBusiness ?: EMPTY_VALUE
-
         viewNote = company.note ?: EMPTY_VALUE
         viewFavorite = company.favorite
-
         viewRegisterDate = company.registerDate?.format() ?: EMPTY_DATE
         viewUpdateDate = company.updateDate?.format() ?: EMPTY_DATE
-
         colorName = categoryDao.find(company.categoryId).colorType
-
         viewTags = companyDao.findByTag(company.id)
     }
 
@@ -95,31 +82,58 @@ class CompanyDetailViewModel (companyId: Int,
         return ColorUtil.getResLight(colorName, context)
     }
 
-    fun isOneFavorite(): Boolean {
-        return viewFavorite == 1
-    }
-
-    fun isTwoFavorite(): Boolean {
-        return viewFavorite == 2
-    }
-
-    fun isThreeFavorite(): Boolean {
-        return viewFavorite == 3
-    }
-
-    fun tapFavorite(tapCnt: Int) {
-        companyDao.updateFavorite(company.id, tapCnt)
-        viewFavorite = tapCnt
-    }
-
-    fun resetFavorite() {
-        viewFavorite = 0
-        companyDao.updateFavorite(company.id, 0)
-    }
-
     fun getCategoryName(): String {
         val category = categoryDao.find(company.categoryId)
         return category.name
+    }
+
+    private val RESET = 0.toFloat()
+    fun onClickFirstFavorite() {
+        if(viewFavorite == 1) {
+            resetFavorite()
+        } else {
+            binding.animationView1.playAnimation()
+            binding.animationView2.progress = RESET
+            binding.animationView3.progress = RESET
+            viewFavorite = 1
+            companyDao.updateFavorite(company.id, viewFavorite)
+        }
+    }
+
+    fun onClickSecondFavorite() {
+        if(viewFavorite == 2) {
+            resetFavorite()
+        } else {
+            binding.animationView1.playAnimation()
+            binding.animationView2.playAnimation()
+            binding.animationView3.progress = RESET
+            viewFavorite = 2
+            companyDao.updateFavorite(company.id, viewFavorite)
+        }
+    }
+
+    fun onClickThirdFavorite() {
+        if(viewFavorite == 3) {
+            resetFavorite()
+        } else {
+            binding.animationView1.playAnimation()
+            binding.animationView2.playAnimation()
+            binding.animationView3.playAnimation()
+            viewFavorite = 3
+            companyDao.updateFavorite(company.id, viewFavorite)
+        }
+    }
+
+    fun isEditFavorite(): Boolean {
+        return (company.favorite != viewFavorite)
+    }
+
+    private fun resetFavorite() {
+        binding.animationView1.progress = RESET
+        binding.animationView2.progress = RESET
+        binding.animationView3.progress = RESET
+        viewFavorite = 0
+        companyDao.updateFavorite(company.id, 0)
     }
 
 
@@ -131,12 +145,21 @@ class CompanyDetailViewModel (companyId: Int,
     }
     private var isFabMenuOpen = false
 
-    fun onMenuFabClick(v: View) {
-        if(isFabMenuOpen) {
-            collapseFabMenu()
-        } else {
-            expandFabMenu()
-        }
+    private val editIconOpenAnimation: Animation by lazy {
+        AnimationUtils.loadAnimation(context, R.anim.edit_icon_open)
+    }
+    private val editIconCloseAnimation: Animation by lazy {
+        AnimationUtils.loadAnimation(context, R.anim.edit_icon_close)
+    }
+    private var isModeEdit = false
+
+    fun onClickMenuFab() {
+        if(isFabMenuOpen) collapseFabMenu() else expandFabMenu()
+    }
+
+    fun onClickModeEditFab() {
+        if(isModeEdit) goneEditIcons() else visibleEditIcons()
+        closeFabMenu()
     }
 
     private fun expandFabMenu() {
@@ -168,6 +191,34 @@ class CompanyDetailViewModel (companyId: Int,
         binding.fabTag.isClickable = false
         binding.fabEdit.isClickable = false
         isFabMenuOpen = false
+    }
+
+    private fun ImageView.visibleIcon(): Unit {
+        visibility = View.VISIBLE
+        startAnimation(editIconOpenAnimation)
+        isClickable = true
+    }
+
+    private fun ImageView.goneIcon(): Unit {
+        visibility = View.GONE
+        startAnimation(editIconCloseAnimation)
+        isClickable = false
+    }
+
+    private fun visibleEditIcons() {
+        binding.imageEditAbstract.visibleIcon()
+        binding.imageEditInformation.visibleIcon()
+        binding.imageEditBusiness.visibleIcon()
+        binding.imageEditDescription.visibleIcon()
+        isModeEdit = true
+    }
+
+    private fun goneEditIcons() {
+        binding.imageEditAbstract.goneIcon()
+        binding.imageEditInformation.goneIcon()
+        binding.imageEditBusiness.goneIcon()
+        binding.imageEditDescription.goneIcon()
+        isModeEdit = false
     }
 
     fun isOpenFabMenu(): Boolean {
