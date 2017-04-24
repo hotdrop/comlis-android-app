@@ -141,7 +141,7 @@ class CompanyDetailViewModel (companyId: Int,
 
     private fun expandFabMenu() {
         ViewCompat.animate(binding.fabDetailMenu)
-                .rotation(45.toFloat())
+                .rotation(90.toFloat())
                 .withLayer()
                 .setDuration(300)
                 .setInterpolator(OvershootInterpolator(10.toFloat()))
