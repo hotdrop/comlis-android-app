@@ -40,6 +40,8 @@
     <string name="label_company">会社名</string>
     <string name="label_category">分類</string>
     <string name="label_overview">概要</string>
+
+    <string name="label_information">会社情報</string>
     <string name="label_employees_num">従業員数</string>
     <string name="label_salary">年収</string>
     <string name="label_wanted_job">募集職種</string>

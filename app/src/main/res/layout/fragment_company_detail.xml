@@ -118,10 +118,22 @@
                     android:text="@{viewModel.viewOverview}"/>
 
                 <TextView
+                    android:id="@+id/label_information_title"
+                    style="@style/SectionTitle"
+                    android:textColor="@{viewModel.getColorRes}"
+                    android:layout_below="@id/txt_overview"
+                    android:text="@string/label_information"/>
+
+                <View
+                    android:id="@+id/line_information_title"
+                    style="@style/TitleBorder"
+                    android:layout_below="@id/label_information_title" />
+
+                <TextView
                     android:id="@+id/label_employees_num"
                     style="@style/OverViewItemLabel"
                     android:drawableStart="@drawable/ic_people"
-                    android:layout_below="@id/txt_overview"
+                    android:layout_below="@id/line_information_title"
                     android:text="@string/label_display_employees_num" />
 
                 <TextView
