@@ -70,7 +70,7 @@ class CompanyDetailFragment: BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode != Activity.RESULT_OK ||
-                (requestCode != REQ_CODE_COMPANY_EDIT && requestCode != REQ_CODE_COMPANY_ASSOCIATE_TAG) ||
+                (requestCode != REQ_CODE_COMPANY_EDIT_OVERVIEW && requestCode != REQ_CODE_COMPANY_ASSOCIATE_TAG) ||
                 data == null) {
             return
         }
@@ -172,11 +172,6 @@ class CompanyDetailFragment: BaseFragment() {
         binding.fabEdit.setOnClickListener {
             viewModel.onClickModeEditFab()
         }
-        /*
-        binding.fabEdit.setOnClickListener {
-            ActivityNavigator.showCompanyEdit(this@CompanyDetailFragment, companyId,
-                    viewModel.colorName, REQ_CODE_COMPANY_EDIT)
-        }*/
 
         binding.fabTag.setOnClickListener {
             ActivityNavigator.showCompanyAssociateTag(this@CompanyDetailFragment, companyId,
@@ -198,14 +193,15 @@ class CompanyDetailFragment: BaseFragment() {
         }
 
         binding.toolbarLayout.setOnClickListener {
-            // TODO タイトルと分類の編集画面作る。これいらないか・・
-            Toast.makeText(context, "click title", Toast.LENGTH_SHORT).show()
+            // タイトルをタップ時に編集モードであれば概要と同じ画面に遷移する
+            ActivityNavigator.showCompanyEditOverview(this@CompanyDetailFragment, companyId,
+                    viewModel.colorName, REQ_CODE_COMPANY_EDIT_OVERVIEW)
         }
         binding.toolbarLayout.isClickable = false
 
         binding.imageEditAbstract.setOnClickListener {
-            // TODO タイトルと分類と概要の編集画面作る
-            Toast.makeText(context, "click abstract", Toast.LENGTH_SHORT).show()
+            ActivityNavigator.showCompanyEditOverview(this@CompanyDetailFragment, companyId,
+                    viewModel.colorName, REQ_CODE_COMPANY_EDIT_OVERVIEW)
         }
 
         binding.imageEditInformation.setOnClickListener {

@@ -33,7 +33,7 @@
             android:label="@string/title_tags"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.activity.CompanyEditActivity"
+            android:name=".view.activity.CompanyEditOverviewActivity"
             android:exported="false"
             android:label="@string/title_company_edit"
             android:theme="@style/AppTheme.NoActionBar" />

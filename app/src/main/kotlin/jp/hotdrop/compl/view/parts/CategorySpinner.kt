@@ -31,4 +31,9 @@ class CategorySpinner(private val spinner: Spinner, private val activity: Activi
         val position = adapter.getPosition(name)
         spinner.setSelection(position)
     }
+
+    fun setSelection(id: Int) {
+        val name = categoryList.filter { category -> category.id == id }.first().name
+        setSelection(name)
+    }
 }

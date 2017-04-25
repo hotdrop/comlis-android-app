@@ -1,5 +1,6 @@
 package jp.hotdrop.compl.dao
 
+import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.model.*
@@ -18,6 +19,14 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
         return companyRelation().selector()
                 .idEq(id)
                 .first()
+    }
+
+    fun findObserve(id: Int): Maybe<Company> {
+        return companyRelation().selector()
+                .idEq(id)
+                .executeAsObservable()
+                .firstElement()
+                .subscribeOn(Schedulers.io())
     }
 
     fun findAll(): Single<List<Company>> {
@@ -87,6 +96,18 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
                     .wantBusiness(company.wantBusiness)
                     .url(company.url)
                     .note(company.note)
+                    .updateDate(Date(System.currentTimeMillis()))
+                    .idEq(company.id)
+                    .execute()
+        }
+    }
+
+    fun updateOverview(company: Company) {
+        orma.transactionSync {
+            companyRelation().updater()
+                    .name(company.name)
+                    .categoryId(company.categoryId)
+                    .overview(company.overview)
                     .updateDate(Date(System.currentTimeMillis()))
                     .idEq(company.id)
                     .execute()

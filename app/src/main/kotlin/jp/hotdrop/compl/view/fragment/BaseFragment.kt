@@ -14,8 +14,11 @@ abstract class BaseFragment: Fragment() {
 
         @JvmStatic val REQ_CODE_COMPANY_REGISTER = 1
         @JvmStatic val REQ_CODE_COMPANY_DETAIL = 2
-        @JvmStatic val REQ_CODE_COMPANY_EDIT = 3
-        @JvmStatic val REQ_CODE_COMPANY_ASSOCIATE_TAG = 4
+        @JvmStatic val REQ_CODE_COMPANY_ASSOCIATE_TAG = 3
+        @JvmStatic val REQ_CODE_COMPANY_EDIT_OVERVIEW = 4
+        @JvmStatic val REQ_CODE_COMPANY_EDIT_INFORMATION = 5
+        @JvmStatic val REQ_CODE_COMPANY_EDIT_BUSINESS = 6
+        @JvmStatic val REQ_CODE_COMPANY_EDIT_DESCRIPTION = 7
 
         @JvmStatic val NONE = 0
         @JvmStatic val UPDATE = 1
