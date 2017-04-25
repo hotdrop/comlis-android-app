@@ -173,6 +173,11 @@ class CompanyDetailViewModel (companyId: Int,
         isModeEdit = false
     }
 
+    fun closeFabAndEditIcons() {
+        closeFabMenu()
+        goneEditIcons()
+    }
+
     fun isOpenFabMenu(): Boolean {
         return isFabMenuOpen
     }

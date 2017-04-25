@@ -14,6 +14,7 @@ interface ActivityComponent {
     fun inject(activity: CompanyAssociateTagActivity)
     fun inject(activity: CompanyEditActivity)
     fun inject(activity: CompanyEditOverviewActivity)
+    fun inject(activity: CompanyEditInfoActivity)
 
     fun plus(module: FragmentModule): FragmentComponent
 }

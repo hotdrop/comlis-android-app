@@ -14,6 +14,7 @@ interface FragmentComponent {
     fun inject(fragment: CompanyAssociateTagFragment)
     fun inject(fragment: CompanyEditFragment)
     fun inject(fragment: CompanyEditOverviewFragment)
+    fun inject(fragment: CompanyEditInfoFragment)
     fun inject(fragment: CategoryFragment)
     fun inject(fragment: TagFragment)
 }

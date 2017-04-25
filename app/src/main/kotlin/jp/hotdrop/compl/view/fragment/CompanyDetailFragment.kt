@@ -69,9 +69,7 @@ class CompanyDetailFragment: BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode != Activity.RESULT_OK ||
-                (requestCode != REQ_CODE_COMPANY_EDIT_OVERVIEW && requestCode != REQ_CODE_COMPANY_ASSOCIATE_TAG) ||
-                data == null) {
+        if(canPassResult(requestCode, resultCode) || data == null) {
             return
         }
         val refreshMode = data.getIntExtra(REFRESH_MODE, NONE)
@@ -86,7 +84,14 @@ class CompanyDetailFragment: BaseFragment() {
         } else {
             setResultForUpdate()
         }
-        viewModel.closeFabMenu()
+        viewModel.closeFabAndEditIcons()
+    }
+
+    private fun canPassResult(requestCode: Int, resultCode: Int): Boolean {
+        return (resultCode != Activity.RESULT_OK ||
+                (requestCode != REQ_CODE_COMPANY_EDIT_OVERVIEW &&
+                 requestCode != REQ_CODE_COMPANY_EDIT_INFORMATION &&
+                 requestCode != REQ_CODE_COMPANY_ASSOCIATE_TAG))
     }
 
     private fun setResultForUpdate() {
@@ -205,8 +210,8 @@ class CompanyDetailFragment: BaseFragment() {
         }
 
         binding.imageEditInformation.setOnClickListener {
-            // TODO 従業員数とか給与とかの編集画面作る
-            Toast.makeText(context, "click information", Toast.LENGTH_SHORT).show()
+            ActivityNavigator.showCompanyEditInfo(this@CompanyDetailFragment, companyId,
+                    viewModel.colorName, REQ_CODE_COMPANY_EDIT_INFORMATION)
         }
 
         binding.imageEditBusiness.setOnClickListener {

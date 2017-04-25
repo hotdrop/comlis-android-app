@@ -16,11 +16,11 @@ object ActivityNavigator {
         CompanyAssociateTagActivity.startForResult(fragment, companyId, colorName, requestCode)
     }
 
-    fun showCompanyEdit(fragment: Fragment, companyId: Int, colorName: String, requestCode: Int) {
-        CompanyEditActivity.startForResult(fragment, companyId, colorName, requestCode)
-    }
-
     fun showCompanyEditOverview(fragment: Fragment, companyId: Int, colorName: String, requestCode: Int) {
         CompanyEditOverviewActivity.startForResult(fragment, companyId, colorName, requestCode)
+    }
+
+    fun showCompanyEditInfo(fragment: Fragment, companyId: Int, colorName: String, requestCode: Int) {
+        CompanyEditInfoActivity.startForResult(fragment, companyId, colorName, requestCode)
     }
 }

@@ -11,27 +11,22 @@ import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import jp.hotdrop.compl.dao.CategoryDao
-import jp.hotdrop.compl.databinding.FragmentCompanyEditOverviewBinding
-import jp.hotdrop.compl.view.parts.CategorySpinner
-import jp.hotdrop.compl.viewmodel.CompanyEditOverviewViewModel
+import jp.hotdrop.compl.databinding.FragmentCompanyEditInfoBinding
+import jp.hotdrop.compl.viewmodel.CompanyEditInfoViewModel
 import javax.inject.Inject
 
-class CompanyEditOverviewFragment: BaseFragment() {
+class CompanyEditInfoFragment: BaseFragment() {
 
-    @Inject
-    lateinit var viewModel: CompanyEditOverviewViewModel
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
     @Inject
-    lateinit var categoryDao: CategoryDao
+    lateinit var viewModel: CompanyEditInfoViewModel
 
-    private lateinit var binding: FragmentCompanyEditOverviewBinding
-    private lateinit var categorySpinner: CategorySpinner
+    private lateinit var binding: FragmentCompanyEditInfoBinding
     private val companyId by lazy { arguments.getInt(EXTRA_COMPANY_ID) }
 
     companion object {
-        fun create(companyId: Int) = CompanyEditOverviewFragment().apply {
+        fun create(companyId: Int) = CompanyEditInfoFragment().apply {
             arguments = Bundle().apply {
                 putInt(EXTRA_COMPANY_ID, companyId)
             }
@@ -44,15 +39,15 @@ class CompanyEditOverviewFragment: BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentCompanyEditOverviewBinding.inflate(inflater, container, false)
+        binding = FragmentCompanyEditInfoBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
         binding.viewModel = viewModel
         val disposable = viewModel.loadData(companyId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe (
-                    { onLoadSuccess() },
-                    { throwable -> onLoadFailure(throwable) }
+                .subscribe(
+                        { binding.viewModel = viewModel },
+                        { e -> Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()}
                 )
         compositeDisposable.add(disposable)
 
@@ -60,19 +55,8 @@ class CompanyEditOverviewFragment: BaseFragment() {
         return binding.root
     }
 
-    private fun onLoadFailure(e: Throwable) {
-        Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
-    }
-
-    private fun onLoadSuccess() {
-        binding.viewModel = viewModel
-        categorySpinner = CategorySpinner(binding.spinnerCategory, activity, categoryDao).apply {
-            setSelection(viewModel.categoryId)
-        }
-    }
-
     private fun onClickUpdate() {
-        val errorMessage = viewModel.update(categorySpinner.getSelection())
+        val errorMessage = viewModel.update()
         if(errorMessage == null) {
             onSuccess()
         } else {
@@ -81,9 +65,7 @@ class CompanyEditOverviewFragment: BaseFragment() {
     }
 
     private fun onSuccess() {
-        val intent = Intent().apply {
-            if(viewModel.isChangeCategory) putExtra(REFRESH_MODE, CHANGE_CATEGORY) else putExtra(REFRESH_MODE, UPDATE)
-        }
+        val intent = Intent().apply { putExtra(REFRESH_MODE, UPDATE) }
         activity.setResult(Activity.RESULT_OK, intent)
         exit()
     }

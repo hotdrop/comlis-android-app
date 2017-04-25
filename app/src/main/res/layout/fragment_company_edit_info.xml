@@ -1,0 +1,147 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.fragment.CompanyEditInfoFragment">
+
+    <data>
+        <variable name="viewModel" type="jp.hotdrop.compl.viewmodel.CompanyEditInfoViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/label_employees_num"
+                    style="@style/ItemLabel"
+                    android:text="@string/label_employees_num" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_employees_num"
+                    style="@style/CompactEditText"
+                    android:layout_below="@id/label_employees_num"
+                    android:text="@={viewModel.viewEmployeesNum}" />
+
+                <TextView
+                    android:id="@+id/label_employees_unit"
+                    style="@style/ItemUnitLabel"
+                    android:layout_below="@id/label_employees_num"
+                    android:layout_toEndOf="@id/txt_employees_num"
+                    android:layout_alignBottom="@id/txt_employees_num"
+                    android:text="@string/label_employees_num_unit" />
+
+                <TextView
+                    android:id="@+id/label_salary"
+                    style="@style/ItemLabel"
+                    android:layout_toEndOf="@id/label_employees_unit"
+                    android:text="@string/label_salary" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_salary_lower"
+                    style="@style/CompactEditText"
+                    android:layout_below="@id/label_salary"
+                    android:layout_toEndOf="@id/label_employees_unit"
+                    android:text="@={viewModel.viewSalaryLow}" />
+
+                <TextView
+                    android:id="@+id/label_salary_lower_unit"
+                    style="@style/ItemUnitLabel"
+                    android:layout_toEndOf="@id/txt_salary_lower"
+                    android:layout_below="@id/label_salary"
+                    android:layout_alignBottom="@id/txt_salary_lower"
+                    android:text="@string/label_salary_unit" />
+
+                <TextView
+                    android:id="@+id/label_salary_range_mark"
+                    style="@style/ItemUnitLabel"
+                    android:layout_marginStart="@dimen/spacing"
+                    android:layout_toEndOf="@id/label_salary_lower_unit"
+                    android:layout_alignBottom="@id/txt_salary_lower"
+                    android:layout_below="@id/label_salary"
+                    android:text="@string/label_salary_range_mark" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_salary_high"
+                    style="@style/CompactEditText"
+                    android:layout_below="@id/label_salary"
+                    android:layout_toEndOf="@id/label_salary_range_mark"
+                    android:hint="@string/hint_salary"
+                    android:text="@={viewModel.viewSalaryHigh}" />
+
+                <TextView
+                    android:id="@+id/label_salary_high_unit"
+                    style="@style/ItemUnitLabel"
+                    android:layout_toEndOf="@id/txt_salary_high"
+                    android:layout_below="@id/label_salary"
+                    android:layout_alignBottom="@id/txt_salary_lower"
+                    android:text="@string/label_salary_unit" />
+
+                <TextView
+                    android:id="@+id/label_wanted_job"
+                    style="@style/ItemLabel"
+                    android:layout_below="@id/txt_employees_num"
+                    android:text="@string/label_wanted_job" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_wanted_job"
+                    style="@style/EditText"
+                    android:layout_below="@id/label_wanted_job"
+                    android:hint="@string/hint_wanted_job"
+                    android:text="@={viewModel.viewWantedJob}" />
+
+                <TextView
+                    android:id="@+id/label_work_place"
+                    style="@style/ItemLabel"
+                    android:layout_below="@id/txt_wanted_job"
+                    android:text="@string/label_work_place" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_work_place"
+                    style="@style/EditText"
+                    android:layout_below="@id/label_work_place"
+                    android:text="@={viewModel.viewWorkPlace}" />
+
+                <TextView
+                    android:id="@+id/label_url"
+                    style="@style/ItemLabel"
+                    android:layout_below="@id/txt_work_place"
+                    android:text="@string/label_url" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_url"
+                    style="@style/EditText"
+                    android:layout_below="@id/label_url"
+                    android:hint="@string/hint_url"
+                    android:text="@={viewModel.viewUrl}" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" >
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/update_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:theme="@style/OkButton"
+                    android:text="@string/update_button" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</layout>
