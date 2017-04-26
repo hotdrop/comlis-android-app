@@ -129,6 +129,27 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
         }
     }
 
+    fun updateBusiness(company: Company) {
+        orma.transactionSync {
+            companyRelation().updater()
+                    .doingBusiness(company.doingBusiness)
+                    .wantBusiness(company.wantBusiness)
+                    .updateDate(Date(System.currentTimeMillis()))
+                    .idEq(company.id)
+                    .execute()
+        }
+    }
+
+    fun updateDescription(company: Company) {
+        orma.transactionSync {
+            companyRelation().updater()
+                    .note(company.note)
+                    .updateDate(Date(System.currentTimeMillis()))
+                    .idEq(company.id)
+                    .execute()
+        }
+    }
+
     fun updateFavorite(id: Int, favorite: Int) {
         orma.transactionSync {
             companyRelation().updater()

@@ -1,0 +1,72 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.fragment.CompanyEditBusinessFragment">
+
+    <data>
+        <variable name="viewModel" type="jp.hotdrop.compl.viewmodel.CompanyEditBusinessViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/label_doing_business"
+                    style="@style/ItemLabel"
+                    android:layout_below="@id/txt_url"
+                    android:text="@string/label_doing_business" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_doing_business"
+                    style="@style/MultiLineEditText"
+                    android:layout_below="@id/label_doing_business"
+                    android:maxLines="@integer/company_doing_business_max_lines"
+                    android:hint="@string/hint_doing_business"
+                    android:text="@={viewModel.viewDoingBusiness}" />
+
+                <TextView
+                    android:id="@+id/label_want_business"
+                    style="@style/ItemLabel"
+                    android:layout_below="@id/txt_doing_business"
+                    android:text="@string/label_want_business" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_want_business"
+                    style="@style/MultiLineEditText"
+                    android:layout_below="@id/label_want_business"
+                    android:maxLines="@integer/company_want_business_max_lines"
+                    android:hint="@string/hint_want_business"
+                    android:text="@={viewModel.viewWantBusiness}" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" >
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/update_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:theme="@style/OkButton"
+                    android:text="@string/update_button" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</layout>

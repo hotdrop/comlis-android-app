@@ -215,8 +215,8 @@ class CompanyDetailFragment: BaseFragment() {
         }
 
         binding.imageEditBusiness.setOnClickListener {
-            // TODO 事業内容とビジョンの編集画面作る
-            Toast.makeText(context, "click business", Toast.LENGTH_SHORT).show()
+            ActivityNavigator.showCOmpanyEditBusiness(this@CompanyDetailFragment, companyId,
+                    viewModel.colorName, REQ_CODE_COMPANY_EDIT_INFORMATION)
         }
 
         binding.imageEditDescription.setOnClickListener {
