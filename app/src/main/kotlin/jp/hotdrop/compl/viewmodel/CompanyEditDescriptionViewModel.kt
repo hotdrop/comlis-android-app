@@ -6,13 +6,12 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
 import javax.inject.Inject
 
-class CompanyEditBusinessViewModel @Inject constructor(val context: Context): ViewModel() {
+class CompanyEditDescriptionViewModel @Inject constructor(val context: Context): ViewModel() {
 
     @Inject
     lateinit var companyDao: CompanyDao
 
-    lateinit var viewDoingBusiness: String
-    lateinit var viewWantBusiness: String
+    lateinit var viewNote: String
     private var companyId: Int = -1
 
     fun loadData(companyId: Int): Completable {
@@ -24,8 +23,7 @@ class CompanyEditBusinessViewModel @Inject constructor(val context: Context): Vi
     }
 
     private fun setData(company: Company) {
-        viewDoingBusiness = company.doingBusiness ?: ""
-        viewWantBusiness = company.wantBusiness ?: ""
+        viewNote = company.note ?: ""
         companyId = company.id
     }
 
@@ -36,7 +34,6 @@ class CompanyEditBusinessViewModel @Inject constructor(val context: Context): Vi
 
     private fun makeCompany() = Company().apply {
         id = companyId
-        doingBusiness = if(viewDoingBusiness != "") viewDoingBusiness else null
-        wantBusiness = if(viewWantBusiness != "") viewWantBusiness else null
+        note = if(viewNote != "") viewNote else null
     }
 }

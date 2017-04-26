@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.activity.CompanyEditActivity">
+    tools:context=".view.activity.CompanyEditDescriptionActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,7 +21,6 @@
                 style="@style/title"
                 android:textColor="@color/title_in_image_cover"
                 android:text="@string/title_company_edit" />
-
         </android.support.v7.widget.Toolbar>
 
         <FrameLayout

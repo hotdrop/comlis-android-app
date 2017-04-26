@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.flexbox.FlexboxLayout
 import jp.hotdrop.compl.R
@@ -215,13 +214,13 @@ class CompanyDetailFragment: BaseFragment() {
         }
 
         binding.imageEditBusiness.setOnClickListener {
-            ActivityNavigator.showCOmpanyEditBusiness(this@CompanyDetailFragment, companyId,
+            ActivityNavigator.showCompanyEditBusiness(this@CompanyDetailFragment, companyId,
                     viewModel.colorName, REQ_CODE_COMPANY_EDIT_INFORMATION)
         }
 
         binding.imageEditDescription.setOnClickListener {
-            // TODO 詳細の編集画面作る
-            Toast.makeText(context, "click description", Toast.LENGTH_SHORT).show()
+            ActivityNavigator.showCompanyEditDescription(this@CompanyDetailFragment, companyId,
+                    viewModel.colorName, REQ_CODE_COMPANY_EDIT_INFORMATION)
         }
 
     }

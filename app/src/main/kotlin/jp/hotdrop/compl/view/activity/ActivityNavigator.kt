@@ -24,7 +24,11 @@ object ActivityNavigator {
         CompanyEditInfoActivity.startForResult(fragment, companyId, colorName, requestCode)
     }
 
-    fun showCOmpanyEditBusiness(fragment: Fragment, companyId: Int, colorName: String, requestCode: Int) {
+    fun showCompanyEditBusiness(fragment: Fragment, companyId: Int, colorName: String, requestCode: Int) {
         CompanyEditBusinessActivity.startForResult(fragment, companyId, colorName, requestCode)
+    }
+
+    fun showCompanyEditDescription(fragment: Fragment, companyId: Int, colorName: String, requestCode: Int) {
+        CompanyEditDescriptionActivity.startForResult(fragment, companyId, colorName, requestCode)
     }
 }

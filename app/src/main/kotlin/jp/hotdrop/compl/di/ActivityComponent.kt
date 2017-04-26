@@ -12,10 +12,10 @@ interface ActivityComponent {
     fun inject(activity: CompanyRegisterActivity)
     fun inject(activity: CompanyDetailActivity)
     fun inject(activity: CompanyAssociateTagActivity)
-    fun inject(activity: CompanyEditActivity)
     fun inject(activity: CompanyEditOverviewActivity)
     fun inject(activity: CompanyEditInfoActivity)
     fun inject(activity: CompanyEditBusinessActivity)
+    fun inject(activity: CompanyEditDescriptionActivity)
 
     fun plus(module: FragmentModule): FragmentComponent
 }

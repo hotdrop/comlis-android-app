@@ -5,17 +5,17 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.databinding.ActivityCompanyEditBinding
+import jp.hotdrop.compl.databinding.ActivityCompanyEditDescriptionBinding
 import jp.hotdrop.compl.util.ColorUtil
-import jp.hotdrop.compl.view.fragment.CompanyEditFragment
+import jp.hotdrop.compl.view.fragment.CompanyEditDescriptionFragment
 
-class CompanyEditActivity: BaseActivity() {
+class CompanyEditDescriptionActivity: BaseActivity() {
 
     companion object {
         @JvmStatic private val EXTRA_COMPANY_ID = "companyId"
         @JvmStatic private val EXTRA_COLOR_NAME = "colorName"
         fun startForResult(fragment: Fragment, companyId: Int, colorName: String, requestCode: Int) {
-            val intent = Intent(fragment.context, CompanyEditActivity::class.java).apply {
+            val intent = Intent(fragment.context, CompanyEditDescriptionActivity::class.java).apply {
                 putExtra(EXTRA_COMPANY_ID, companyId)
                 putExtra(EXTRA_COLOR_NAME, colorName)
             }
@@ -25,7 +25,8 @@ class CompanyEditActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = DataBindingUtil.setContentView<ActivityCompanyEditBinding>(this, R.layout.activity_company_edit)
+        val binding = DataBindingUtil.setContentView<ActivityCompanyEditDescriptionBinding>(this, R.layout.activity_company_edit_description)
+
         getComponent().inject(this)
 
         setSupportActionBar(binding.toolbar)
@@ -38,6 +39,6 @@ class CompanyEditActivity: BaseActivity() {
         binding.toolbar.background = ColorUtil.getImageCover(colorName, this)
 
         val companyId = intent.getIntExtra(EXTRA_COMPANY_ID, -1)
-        replaceFragment(CompanyEditFragment.create(companyId), R.id.content_view)
+        replaceFragment(CompanyEditDescriptionFragment.create(companyId), R.id.content_view)
     }
 }
