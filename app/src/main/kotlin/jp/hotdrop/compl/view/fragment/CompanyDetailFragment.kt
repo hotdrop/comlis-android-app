@@ -215,12 +215,12 @@ class CompanyDetailFragment: BaseFragment() {
 
         binding.imageEditBusiness.setOnClickListener {
             ActivityNavigator.showCompanyEditBusiness(this@CompanyDetailFragment, companyId,
-                    viewModel.colorName, REQ_CODE_COMPANY_EDIT_INFORMATION)
+                    viewModel.colorName, REQ_CODE_COMPANY_EDIT_BUSINESS)
         }
 
         binding.imageEditDescription.setOnClickListener {
             ActivityNavigator.showCompanyEditDescription(this@CompanyDetailFragment, companyId,
-                    viewModel.colorName, REQ_CODE_COMPANY_EDIT_INFORMATION)
+                    viewModel.colorName, REQ_CODE_COMPANY_EDIT_DESCRIPTION)
         }
 
     }
