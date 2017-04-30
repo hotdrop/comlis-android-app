@@ -47,7 +47,7 @@ class CategoryFragment : BaseFragment() {
     private var isReorder = false
 
     companion object {
-        @JvmStatic val TAG: String = CategoryFragment::class.java.simpleName
+        val TAG: String = CategoryFragment::class.java.simpleName
         fun newInstance() = CategoryFragment()
     }
 

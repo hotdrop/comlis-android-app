@@ -11,7 +11,7 @@ import jp.hotdrop.compl.view.fragment.CompanyDetailFragment
 class CompanyDetailActivity: BaseActivity() {
 
     companion object {
-        @JvmStatic val EXTRA_COMPANY_ID = "companyId"
+        val EXTRA_COMPANY_ID = "companyId"
         fun startForResult(fragment: Fragment, companyId: Int, requestCode: Int) {
             val intent = Intent(fragment.context, CompanyDetailActivity::class.java).apply {
                 putExtra(EXTRA_COMPANY_ID, companyId)

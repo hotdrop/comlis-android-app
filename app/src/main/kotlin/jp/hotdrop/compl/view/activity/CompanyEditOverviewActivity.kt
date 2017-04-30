@@ -12,8 +12,8 @@ import jp.hotdrop.compl.view.fragment.CompanyEditOverviewFragment
 class CompanyEditOverviewActivity : BaseActivity() {
 
     companion object {
-        @JvmStatic private val EXTRA_COMPANY_ID = "companyId"
-        @JvmStatic private val EXTRA_COLOR_NAME = "colorName"
+        private val EXTRA_COMPANY_ID = "companyId"
+        private val EXTRA_COLOR_NAME = "colorName"
         fun startForResult(fragment: Fragment, companyId: Int, colorName: String, requestCode: Int) {
             val intent = Intent(fragment.context, CompanyEditOverviewActivity::class.java).apply {
                 putExtra(EXTRA_COMPANY_ID, companyId)

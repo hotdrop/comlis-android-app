@@ -11,7 +11,7 @@ import jp.hotdrop.compl.view.fragment.CompanyRegisterFragment
 class CompanyRegisterActivity : BaseActivity() {
 
     companion object {
-        @JvmStatic val EXTRA_TAB_NAME = "tabName"
+        val EXTRA_TAB_NAME = "tabName"
         fun startForResult(fragment: Fragment, tabName: String?, requestCode: Int) {
             val intent = Intent(fragment.context, CompanyRegisterActivity::class.java).apply{
                 putExtra(EXTRA_TAB_NAME, tabName)

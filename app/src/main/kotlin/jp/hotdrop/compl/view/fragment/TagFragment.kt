@@ -42,7 +42,7 @@ class TagFragment: BaseFragment() {
     private lateinit var helper: ItemTouchHelper
 
     companion object {
-        @JvmStatic val TAG: String = TagFragment::class.java.simpleName
+        val TAG: String = TagFragment::class.java.simpleName
         fun newInstance() = TagFragment()
     }
 

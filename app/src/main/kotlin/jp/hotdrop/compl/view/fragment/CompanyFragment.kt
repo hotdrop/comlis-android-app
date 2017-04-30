@@ -34,7 +34,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     private var tabName: String? = null
 
     companion object {
-        @JvmStatic val TAG: String = CompanyFragment::class.java.simpleName
+        val TAG: String = CompanyFragment::class.java.simpleName
         fun newInstance() = CompanyFragment()
     }
 

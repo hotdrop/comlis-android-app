@@ -52,7 +52,7 @@ class CompanyTabFragment: BaseFragment() {
     private var isMoveItem = false
 
     companion object {
-        @JvmStatic private val EXTRA_CATEGORY_ID = "categoryId"
+        private val EXTRA_CATEGORY_ID = "categoryId"
         fun create(categoryId: Int) = CompanyTabFragment().apply {
             arguments = Bundle().apply { putInt(EXTRA_CATEGORY_ID, categoryId) }
         }

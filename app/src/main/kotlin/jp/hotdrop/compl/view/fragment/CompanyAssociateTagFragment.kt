@@ -41,7 +41,7 @@ class CompanyAssociateTagFragment: BaseFragment() {
     private val colorName by lazy { arguments.getString(EXTRA_COLOR_NAME) }
 
     companion object {
-        @JvmStatic private val EXTRA_COLOR_NAME = "colorName"
+        private val EXTRA_COLOR_NAME = "colorName"
         fun create(companyId: Int, colorName: String) = CompanyAssociateTagFragment().apply {
             arguments = Bundle().apply {
                 putInt(EXTRA_COMPANY_ID, companyId)

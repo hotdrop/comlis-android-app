@@ -8,22 +8,22 @@ import jp.hotdrop.compl.view.activity.BaseActivity
 abstract class BaseFragment: Fragment() {
 
     companion object {
-        @JvmStatic val REFRESH_MODE = "refreshMode"
-        @JvmStatic val EXTRA_COMPANY_ID = "companyId"
-        @JvmStatic val EXTRA_CATEGORY_NAME = "categoryName"
+        val REFRESH_MODE = "refreshMode"
+        val EXTRA_COMPANY_ID = "companyId"
+        val EXTRA_CATEGORY_NAME = "categoryName"
 
-        @JvmStatic val REQ_CODE_COMPANY_REGISTER = 1
-        @JvmStatic val REQ_CODE_COMPANY_DETAIL = 2
-        @JvmStatic val REQ_CODE_COMPANY_ASSOCIATE_TAG = 3
-        @JvmStatic val REQ_CODE_COMPANY_EDIT_OVERVIEW = 4
-        @JvmStatic val REQ_CODE_COMPANY_EDIT_INFORMATION = 5
-        @JvmStatic val REQ_CODE_COMPANY_EDIT_BUSINESS = 6
-        @JvmStatic val REQ_CODE_COMPANY_EDIT_DESCRIPTION = 7
+        val REQ_CODE_COMPANY_REGISTER = 1
+        val REQ_CODE_COMPANY_DETAIL = 2
+        val REQ_CODE_COMPANY_ASSOCIATE_TAG = 3
+        val REQ_CODE_COMPANY_EDIT_OVERVIEW = 4
+        val REQ_CODE_COMPANY_EDIT_INFORMATION = 5
+        val REQ_CODE_COMPANY_EDIT_BUSINESS = 6
+        val REQ_CODE_COMPANY_EDIT_DESCRIPTION = 7
 
-        @JvmStatic val NONE = 0
-        @JvmStatic val UPDATE = 1
-        @JvmStatic val DELETE = 2
-        @JvmStatic val CHANGE_CATEGORY = 4
+        val NONE = 0
+        val UPDATE = 1
+        val DELETE = 2
+        val CHANGE_CATEGORY = 4
     }
 
     private val fragmentComponent by lazy {
