@@ -69,6 +69,40 @@ class CompanyTabFragment: BaseFragment() {
         return binding.root
     }
 
+    override fun onStop() {
+        super.onStop()
+        compositeDisposable.clear()
+        if(isMoveItem) {
+            companyDao.updateAllOrder(adapter.getModels())
+            isMoveItem = false
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_DETAIL || data == null) {
+            return
+        }
+        val refreshMode = data.getIntExtra(REFRESH_MODE, NONE)
+        val companyId = data.getIntExtra(EXTRA_COMPANY_ID, -1)
+        assert(companyId == -1)
+
+        when(refreshMode) {
+            UPDATE -> {
+                val vm = CompanyViewModel(companyDao.find(companyId), context, companyDao, categoryDao)
+                adapter.refresh(vm)
+            }
+            // notifyRemoveで実装した場合、並び替えしてから削除するとConcurrentModificationExceptionになるためリスト再生成する。
+            DELETE -> loadData()
+            CHANGE_CATEGORY -> activity.intent = data
+        }
+    }
+
     private fun loadData() {
         val disposable = companyDao.findByCategory(categoryId)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -109,40 +143,6 @@ class CompanyTabFragment: BaseFragment() {
 
     private fun goneEmptyMessage() {
         binding.listEmptyView.visibility = View.GONE
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_DETAIL || data == null) {
-            return
-        }
-        val refreshMode = data.getIntExtra(REFRESH_MODE, NONE)
-        val companyId = data.getIntExtra(EXTRA_COMPANY_ID, -1)
-        assert(companyId == -1)
-
-        when(refreshMode) {
-            UPDATE -> {
-                val vm = CompanyViewModel(companyDao.find(companyId), context, companyDao, categoryDao)
-                adapter.refresh(vm)
-            }
-            // notifyRemoveで実装した場合、並び替えしてから削除するとConcurrentModificationExceptionになるためリスト再生成する。
-            DELETE -> loadData()
-            CHANGE_CATEGORY -> activity.intent = data
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        compositeDisposable.clear()
-        if(isMoveItem) {
-            companyDao.updateAllOrder(adapter.getModels())
-            isMoveItem = false
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.dispose()
     }
 
     fun scrollUpToTop() {

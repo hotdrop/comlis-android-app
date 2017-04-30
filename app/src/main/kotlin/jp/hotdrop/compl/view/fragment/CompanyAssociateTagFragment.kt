@@ -96,6 +96,11 @@ class CompanyAssociateTagFragment: BaseFragment() {
         Toast.makeText(activity, "failed load tags." + e.message, Toast.LENGTH_LONG).show()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        compositeDisposable.dispose()
+    }
+
     inner class FlexboxItemAdapter(context: Context)
         : ArrayRecyclerAdapter<TagAssociateViewModel, BindingHolder<ItemTagAssociateBinding>>(context) {
 

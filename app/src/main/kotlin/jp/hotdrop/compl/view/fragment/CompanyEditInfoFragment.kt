@@ -70,8 +70,8 @@ class CompanyEditInfoFragment: BaseFragment() {
         exit()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroyView() {
+        super.onDestroyView()
         compositeDisposable.dispose()
     }
 }

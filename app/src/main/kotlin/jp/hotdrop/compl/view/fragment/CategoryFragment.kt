@@ -107,6 +107,7 @@ class CategoryFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        compositeDisposable.dispose()
         if(isReorder) {
             categoryDao.updateAllOrder(adapter.getModels())
         }

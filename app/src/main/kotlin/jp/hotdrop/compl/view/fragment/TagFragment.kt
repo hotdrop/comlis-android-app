@@ -59,6 +59,7 @@ class TagFragment: BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        compositeDisposable.dispose()
         tagDao.updateAllOrder(adapter.getModels())
     }
 

@@ -139,8 +139,8 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
         loadData()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         compositeDisposable.clear()
     }
 
