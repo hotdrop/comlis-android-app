@@ -108,8 +108,13 @@ class CompanyDetailViewModel (companyId: Int,
     }
 
     fun onClickModeEditFab() {
-        if(isModeEdit) goneEditIcons() else visibleEditIcons()
-        closeFabMenu()
+        if(binding.imageEditAbstract.visibility == View.VISIBLE) {
+            goneEditIcons()
+            closeFabMenu()
+        } else {
+            visibleEditIcons()
+            collapseFabMenu()
+        }
     }
 
     private fun expandFabMenu() {
@@ -171,11 +176,6 @@ class CompanyDetailViewModel (companyId: Int,
         binding.imageEditBusiness.goneIcon()
         binding.imageEditDescription.goneIcon()
         isModeEdit = false
-    }
-
-    fun closeFabAndEditIcons() {
-        closeFabMenu()
-        goneEditIcons()
     }
 
     fun isOpenFabMenu(): Boolean {

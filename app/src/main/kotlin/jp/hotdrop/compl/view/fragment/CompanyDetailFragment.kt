@@ -79,7 +79,7 @@ class CompanyDetailFragment: BaseFragment() {
         } else {
             setResultForUpdate()
         }
-        viewModel.closeFabAndEditIcons()
+        viewModel.closeFabMenu()
     }
 
     private fun canPassResult(requestCode: Int, resultCode: Int): Boolean {
