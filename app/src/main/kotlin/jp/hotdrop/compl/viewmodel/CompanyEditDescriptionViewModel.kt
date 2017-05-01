@@ -29,7 +29,7 @@ class CompanyEditDescriptionViewModel @Inject constructor(val context: Context):
 
     fun update() {
         val company =  makeCompany()
-        companyDao.updateBusiness(company)
+        companyDao.updateDescription(company)
     }
 
     private fun makeCompany() = Company().apply {

@@ -1,7 +1,6 @@
 package jp.hotdrop.compl
 
 import android.app.Application
-import jp.hotdrop.compl.dao.OrmaHolder
 import jp.hotdrop.compl.di.AppComponent
 import jp.hotdrop.compl.di.AppModule
 import jp.hotdrop.compl.di.DaggerAppComponent

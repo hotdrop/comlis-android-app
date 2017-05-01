@@ -86,6 +86,8 @@ class CompanyDetailFragment: BaseFragment() {
         return (resultCode != Activity.RESULT_OK ||
                 (requestCode != REQ_CODE_COMPANY_EDIT_OVERVIEW &&
                  requestCode != REQ_CODE_COMPANY_EDIT_INFORMATION &&
+                 requestCode != REQ_CODE_COMPANY_EDIT_BUSINESS &&
+                 requestCode != REQ_CODE_COMPANY_EDIT_DESCRIPTION &&
                  requestCode != REQ_CODE_COMPANY_ASSOCIATE_TAG))
     }
 
