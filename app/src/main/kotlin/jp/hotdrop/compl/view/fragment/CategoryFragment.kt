@@ -107,10 +107,14 @@ class CategoryFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        compositeDisposable.dispose()
         if(isReorder) {
             categoryDao.updateAllOrder(adapter.getModels())
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
     }
 
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
