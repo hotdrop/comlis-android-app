@@ -35,6 +35,18 @@
             android:layout_marginTop="@dimen/spacing"
             android:layout_below="@id/label_tag_attention" />
 
+        <TextView
+            android:id="@+id/label_tag_delete_attention"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            android:layout_marginStart="@dimen/spacing"
+            android:layout_below="@id/spinner_color_type"
+            android:textColor="@color/attention"
+            android:textSize="@dimen/text_small"
+            android:text="@string/tag_dialog_delete_attention"
+            android:visibility="gone" />
+
     </RelativeLayout>
 
 </LinearLayout>

@@ -84,6 +84,7 @@
     <string name="empty_tag_list">まだ何も登録されていません。好きなタグを登録してください。</string>
     <string name="label_tag_attach_count">添付数:</string>
     <string name="description_tag_reorder">タグの並び順を変更するためのイメージアイコンです。</string>
+    <string name="tag_dialog_delete_attention">このタグは1つ以上添付されています。削除する場合はよくご確認ください。</string>
 
     <!-- category dialog -->
     <string name="category_dialog_label_name">分類名</string>

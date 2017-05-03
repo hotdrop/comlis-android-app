@@ -203,6 +203,9 @@ class TagFragment: BaseFragment() {
                 .create()
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
+        if(vm.attachCount.toInt() > 0) {
+            view.findViewById(R.id.label_tag_delete_attention).visibility = View.VISIBLE
+        }
         editText.changeTextListener(view, dialog, editText, vm.tag.id, vm.viewName)
     }
 
