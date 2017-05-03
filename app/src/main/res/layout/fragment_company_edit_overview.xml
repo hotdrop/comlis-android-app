@@ -81,7 +81,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_small"
                     android:layout_marginBottom="@dimen/spacing_small"
-                    android:theme="@style/OkButton"
+                    android:theme="@style/AccentButton"
+                    style="@style/Widget.AppCompat.Button.Colored"
                     android:text="@string/update_button" />
 
             </LinearLayout>

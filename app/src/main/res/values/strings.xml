@@ -70,6 +70,7 @@
     <string name="add_button">登録</string>
     <string name="update_button">更新</string>
 
+    <string name="company_name_attention">この会社名は既に登録されているため登録できません。</string>
     <string name="error_message_empty_company_name">会社名を入力してください。</string>
     <string name="error_message_employees_num_not_number">従業員数には数字を入力してください。</string>
     <string name="error_message_salary_not_number">年収には数値を入力してください。</string>

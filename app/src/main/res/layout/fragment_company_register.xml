@@ -33,9 +33,16 @@
                     android:text="@={viewModel.viewName}" />
 
                 <TextView
+                    android:id="@+id/label_name_attention"
+                    style="@style/AttentionLabel"
+                    android:layout_below="@id/txt_name"
+                    android:text="@string/company_name_attention"
+                    android:visibility="gone" />
+
+                <TextView
                     android:id="@+id/label_category"
                     style="@style/ItemLabel"
-                    android:layout_below="@id/txt_name"
+                    android:layout_below="@id/label_name_attention"
                     android:text="@string/label_category" />
 
                 <Spinner
@@ -236,7 +243,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_small"
                     android:layout_marginBottom="@dimen/spacing_small"
-                    android:theme="@style/OkButton"
+                    android:theme="@style/AccentButton"
+                    style="@style/Widget.AppCompat.Button.Colored"
                     android:text="@string/add_button" />
 
             </LinearLayout>

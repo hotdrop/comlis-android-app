@@ -193,6 +193,10 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
         return companyRelation().selector().maxByViewOrder() ?: 0
     }
 
+    fun exist(name: String): Boolean {
+        return !companyRelation().selector().nameEq(name).isEmpty
+    }
+
     private fun companyRelation(): Company_Relation {
         return orma.relationOfCompany()
     }

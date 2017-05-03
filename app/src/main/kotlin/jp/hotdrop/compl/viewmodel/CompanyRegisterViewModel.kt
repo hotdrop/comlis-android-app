@@ -8,7 +8,8 @@ import jp.hotdrop.compl.model.Company
 import javax.inject.Inject
 
 class CompanyRegisterViewModel @Inject constructor(val context: Context,
-                                                   val companyDao: CompanyDao, val categoryDao: CategoryDao): ViewModel() {
+                                                   val companyDao: CompanyDao,
+                                                   val categoryDao: CategoryDao): ViewModel() {
 
     var viewName = ""
     var viewOverview = ""
@@ -22,6 +23,11 @@ class CompanyRegisterViewModel @Inject constructor(val context: Context,
     var viewWantBusiness = ""
     var viewNote = ""
     // viewOrder is not declared. Because autoSet max+1 value when insert in CompanyDao
+
+    fun existName(name: String): Boolean {
+        if(name.trim() == "") return false
+        return companyDao.exist(name)
+    }
 
     fun getCategoryName(selectedCategorySpinnerId: Int): String {
         val category = categoryDao.find(selectedCategorySpinnerId)
