@@ -1,7 +1,6 @@
 package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
-import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
@@ -29,36 +28,19 @@ class CompanyRegisterViewModel @Inject constructor(val context: Context,
         return companyDao.exist(name)
     }
 
+    fun checkNumber(value: String): Boolean {
+        if(value.trim() == "") return true
+        return value.isNumber()
+    }
+
     fun getCategoryName(selectedCategorySpinnerId: Int): String {
         val category = categoryDao.find(selectedCategorySpinnerId)
         return category.name
     }
 
-    fun register(selectedCategorySpinnerId: Int): ErrorMessage? {
-        val errorMessage = canRegister()
-        if(errorMessage != null) {
-            return errorMessage
-        }
+    fun register(selectedCategorySpinnerId: Int) {
         val company =  makeData(selectedCategorySpinnerId)
         companyDao.insert(company)
-
-        return null
-    }
-
-    private fun canRegister(): ErrorMessage? {
-        if(viewName.trim() == "") {
-            return ErrorMessage(context.getString(R.string.error_message_empty_company_name))
-        }
-        if(!viewEmployeesNum.isNumber()) {
-            return ErrorMessage(context.getString(R.string.error_message_employees_num_not_number))
-        }
-        if(!viewSalaryLow.isNumber()) {
-            return ErrorMessage(context.getString(R.string.error_message_salary_not_number))
-        }
-        if(viewSalaryHigh != "" && !viewSalaryHigh.isNumber()) {
-            return ErrorMessage(context.getString(R.string.error_message_salary_not_number))
-        }
-        return null
     }
 
     private fun makeData(selectedCategorySpinnerId: Int) = Company().apply {

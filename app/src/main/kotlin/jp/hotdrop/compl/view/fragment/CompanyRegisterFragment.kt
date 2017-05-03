@@ -7,11 +7,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
+import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.databinding.FragmentCompanyRegisterBinding
 import jp.hotdrop.compl.view.parts.CategorySpinner
@@ -49,21 +51,57 @@ class CompanyRegisterFragment : BaseFragment() {
             setSelection(selectedCategoryName)
         }
 
-        val observable = RxTextView.afterTextChangeEvents(binding.txtName)
-                .map { viewModel.existName(it.editable().toString()) }
-                .distinctUntilChanged()
-        val disposable = observable.subscribeOn(Schedulers.io())
+        val nameObservable = RxTextView.afterTextChangeEvents(binding.txtName).map { it.editable().toString() }.distinctUntilChanged()
+        val employeeNumObservable = RxTextView.afterTextChangeEvents(binding.txtEmployeesNum).map { viewModel.checkNumber(it.editable().toString()) }.distinctUntilChanged()
+        val salaryLowObservable = RxTextView.afterTextChangeEvents(binding.txtSalaryLower).map { viewModel.checkNumber(it.editable().toString()) }.distinctUntilChanged()
+        val salaryHighObservable = RxTextView.afterTextChangeEvents(binding.txtSalaryHigh).map { viewModel.checkNumber(it.editable().toString()) }.distinctUntilChanged()
+
+        val disposable1 = nameObservable
+                .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{ duplicate ->
-                    if(duplicate) {
+                .subscribe{ name ->
+                    if(name.isNullOrEmpty()) {
+                        binding.labelNameAttention.text = context.getString(R.string.company_name_empty_attention)
                         binding.labelNameAttention.visibility = View.VISIBLE
-                        binding.registerButton.isEnabled = false
                     } else {
-                        binding.labelNameAttention.visibility = View.GONE
-                        binding.registerButton.isEnabled = true
+                        binding.labelNameAttention.visibility = if(viewModel.existName(name)) View.VISIBLE else View.GONE
                     }
                 }
-        compositeDisposable.add(disposable)
+        compositeDisposable.add(disposable1)
+
+        val disposable2 = employeeNumObservable
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe{ isNumber ->
+                    binding.labelEmployeesNumAttention.visibility = if (isNumber) View.GONE else View.VISIBLE
+                }
+        compositeDisposable.add(disposable2)
+
+        val salaryCombined: Observable<Boolean> = Observable.combineLatest(
+                salaryLowObservable,
+                salaryHighObservable,
+                BiFunction { low: Boolean, high: Boolean -> low && high })
+
+        val disposable3 = salaryCombined
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { result ->
+                    binding.labelSalaryAttention.visibility = if (result) View.GONE else View.VISIBLE
+                }
+        compositeDisposable.add(disposable3)
+
+        val buttonObservable: Observable<Boolean> = Observable.combineLatest(
+                nameObservable,
+                employeeNumObservable,
+                salaryCombined,
+                Function3 { name: String, isNumEmployee: Boolean, isNumSalary: Boolean ->
+                    ( !name.isNullOrEmpty() && binding.labelNameAttention.visibility == View.GONE && isNumEmployee && isNumSalary )
+                })
+        val disposable4 = buttonObservable
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe{ binding.registerButton.isEnabled = it }
+        compositeDisposable.add(disposable4)
 
         binding.registerButton.setOnClickListener { onClickRegister() }
         binding.viewModel = viewModel
@@ -76,15 +114,7 @@ class CompanyRegisterFragment : BaseFragment() {
     }
 
     private fun onClickRegister() {
-        val errorMessage = viewModel.register(categorySpinner.getSelection())
-        if(errorMessage == null) {
-            onSuccess()
-        } else {
-            Toast.makeText(context, errorMessage.message, Toast.LENGTH_LONG).show()
-        }
-    }
-
-    private fun onSuccess() {
+        viewModel.register(categorySpinner.getSelection())
         val intent = Intent().apply {
             val categoryName = viewModel.getCategoryName(categorySpinner.getSelection())
             putExtra(EXTRA_CATEGORY_NAME, categoryName)

@@ -8,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.databinding.FragmentCompanyEditOverviewBinding
 import jp.hotdrop.compl.view.parts.CategorySpinner
@@ -47,6 +49,7 @@ class CompanyEditOverviewFragment: BaseFragment() {
         binding = FragmentCompanyEditOverviewBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
         binding.viewModel = viewModel
+
         val disposable = viewModel.loadData(companyId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -55,6 +58,27 @@ class CompanyEditOverviewFragment: BaseFragment() {
                     { throwable -> onLoadFailure(throwable) }
                 )
         compositeDisposable.add(disposable)
+
+        val nameDisposable = RxTextView.afterTextChangeEvents(binding.txtName)
+                .map { it.editable().toString() }
+                .distinctUntilChanged()
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe{ name ->
+                    if(name.isNullOrEmpty()) {
+                        binding.labelNameAttention.text = context.getString(R.string.company_name_empty_attention)
+                        binding.labelNameAttention.visibility = View.VISIBLE
+                        binding.updateButton.isEnabled = false
+                    } else if(viewModel.existName(name)) {
+                        binding.labelNameAttention.text = context.getString(R.string.company_name_attention)
+                        binding.labelNameAttention.visibility = View.VISIBLE
+                        binding.updateButton.isEnabled = false
+                    } else {
+                        binding.labelNameAttention.visibility = View.GONE
+                        binding.updateButton.isEnabled = true
+                    }
+                }
+        compositeDisposable.add(nameDisposable)
 
         binding.updateButton.setOnClickListener{ onClickUpdate() }
         return binding.root
@@ -72,12 +96,8 @@ class CompanyEditOverviewFragment: BaseFragment() {
     }
 
     private fun onClickUpdate() {
-        val errorMessage = viewModel.update(categorySpinner.getSelection())
-        if(errorMessage == null) {
-            onSuccess()
-        } else {
-            Toast.makeText(context, errorMessage.message, Toast.LENGTH_LONG).show()
-        }
+        viewModel.update(categorySpinner.getSelection())
+        onSuccess()
     }
 
     private fun onSuccess() {

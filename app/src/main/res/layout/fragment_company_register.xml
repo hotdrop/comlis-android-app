@@ -142,9 +142,23 @@
                     android:text="@string/label_salary_unit" />
 
                 <TextView
+                    android:id="@+id/label_employees_num_attention"
+                    style="@style/AttentionLabel"
+                    android:layout_below="@id/txt_employees_num"
+                    android:text="@string/employees_num_attention"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/label_salary_attention"
+                    style="@style/AttentionLabel"
+                    android:layout_below="@id/label_employees_num_attention"
+                    android:text="@string/salary_attention"
+                    android:visibility="gone" />
+
+                <TextView
                     android:id="@+id/label_wanted_job"
                     style="@style/ItemLabel"
-                    android:layout_below="@id/txt_employees_num"
+                    android:layout_below="@id/label_salary_attention"
                     android:text="@string/label_wanted_job" />
 
                 <android.support.v7.widget.AppCompatEditText

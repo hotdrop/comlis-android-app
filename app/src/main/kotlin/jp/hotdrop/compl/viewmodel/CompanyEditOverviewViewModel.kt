@@ -2,7 +2,6 @@ package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
 import io.reactivex.Completable
-import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
 import javax.inject.Inject
@@ -34,23 +33,15 @@ class CompanyEditOverviewViewModel @Inject constructor(val context: Context): Vi
         categoryId = company.categoryId
     }
 
-    fun update(selectedCategorySpinnerId: Int): ErrorMessage? {
-        val errorMessage = canUpdate()
-        if(errorMessage != null) {
-            return errorMessage
-        }
+    fun existName(name: String): Boolean {
+        if(name.trim() == "") return false
+        return companyDao.exist(name, companyId)
+    }
+
+    fun update(selectedCategorySpinnerId: Int) {
         isChangeCategory = (categoryId != selectedCategorySpinnerId)
         val company =  makeCompany(selectedCategorySpinnerId)
         companyDao.updateOverview(company)
-
-        return null
-    }
-
-    private fun canUpdate(): ErrorMessage? {
-        if(viewName.trim() == "") {
-            return ErrorMessage(context.getString(R.string.error_message_empty_company_name))
-        }
-        return null
     }
 
     private fun makeCompany(selectedCategorySpinnerId: Int) = Company().apply {

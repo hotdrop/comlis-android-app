@@ -34,9 +34,16 @@
                     android:text="@={viewModel.viewName}" />
 
                 <TextView
+                    android:id="@+id/label_name_attention"
+                    style="@style/AttentionLabel"
+                    android:layout_below="@id/txt_name"
+                    android:text="@string/company_name_attention"
+                    android:visibility="gone" />
+
+                <TextView
                     android:id="@+id/label_category"
                     style="@style/ItemLabel"
-                    android:layout_below="@id/txt_name"
+                    android:layout_below="@id/label_name_attention"
                     android:text="@string/label_category" />
 
                 <Spinner

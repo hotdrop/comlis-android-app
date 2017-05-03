@@ -71,9 +71,13 @@
     <string name="update_button">更新</string>
 
     <string name="company_name_attention">この会社名は既に登録されているため登録できません。</string>
+    <string name="company_name_empty_attention">会社名を入力してください。</string>
+    <string name="employees_num_attention">従業員数は数字を入力してください。</string>
+    <string name="salary_attention">年収は数字を入力してください。</string>
+
     <string name="error_message_empty_company_name">会社名を入力してください。</string>
-    <string name="error_message_employees_num_not_number">従業員数には数字を入力してください。</string>
-    <string name="error_message_salary_not_number">年収には数値を入力してください。</string>
+    <string name="error_message_employees_num_not_number">従業員数は数字を入力してください。</string>
+    <string name="error_message_salary_not_number">年収は数字を入力してください。</string>
 
     <!-- category list -->
     <string name="empty_category_list">まだ何も登録されていません。好きな分類名を登録してください。この分類名が会社一覧のタブになります。</string>
