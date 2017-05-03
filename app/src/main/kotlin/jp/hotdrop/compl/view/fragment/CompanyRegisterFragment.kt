@@ -63,8 +63,11 @@ class CompanyRegisterFragment : BaseFragment() {
                     if(name.isNullOrEmpty()) {
                         binding.labelNameAttention.text = context.getString(R.string.company_name_empty_attention)
                         binding.labelNameAttention.visibility = View.VISIBLE
+                    } else if(viewModel.existName(name)) {
+                        binding.labelNameAttention.text = context.getString(R.string.company_name_attention)
+                        binding.labelNameAttention.visibility = View.VISIBLE
                     } else {
-                        binding.labelNameAttention.visibility = if(viewModel.existName(name)) View.VISIBLE else View.GONE
+                        binding.labelNameAttention.visibility = View.GONE
                     }
                 }
         compositeDisposable.add(disposable1)
