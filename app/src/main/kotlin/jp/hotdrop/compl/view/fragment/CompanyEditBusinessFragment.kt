@@ -56,12 +56,7 @@ class CompanyEditBusinessFragment: BaseFragment() {
     }
 
     private fun onClickUpdate() {
-        // わざわざメソッドに切り出すまでもないが、他のEditFragmentと合わせるためこうした
         viewModel.update()
-        onSuccess()
-    }
-
-    private fun onSuccess() {
         val intent = Intent().apply { putExtra(REFRESH_MODE, UPDATE) }
         activity.setResult(Activity.RESULT_OK, intent)
         exit()

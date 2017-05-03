@@ -2,7 +2,6 @@ package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
 import io.reactivex.Completable
-import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
 import javax.inject.Inject
@@ -40,27 +39,14 @@ class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewMo
         companyId = company.id
     }
 
-    fun update(): ErrorMessage? {
-        val errorMessage = canUpdate()
-        if(errorMessage != null) {
-            return errorMessage
-        }
-        val company =  makeCompany()
-        companyDao.updateInformation(company)
-        return null
+    fun checkNumber(value: String): Boolean {
+        if(value.trim() == "") return true
+        return value.isNumber()
     }
 
-    private fun canUpdate(): ErrorMessage? {
-        if(!viewEmployeesNum.isNumber()) {
-            return ErrorMessage(context.getString(R.string.error_message_employees_num_not_number))
-        }
-        if(!viewSalaryLow.isNumber()) {
-            return ErrorMessage(context.getString(R.string.error_message_salary_not_number))
-        }
-        if(viewSalaryHigh != "" && !viewSalaryHigh.isNumber()) {
-            return ErrorMessage(context.getString(R.string.error_message_salary_not_number))
-        }
-        return null
+    fun update() {
+        val company =  makeCompany()
+        companyDao.updateInformation(company)
     }
 
     private fun makeCompany() = Company().apply {

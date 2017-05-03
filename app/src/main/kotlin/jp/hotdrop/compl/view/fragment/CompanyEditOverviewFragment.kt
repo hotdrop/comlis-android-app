@@ -97,10 +97,6 @@ class CompanyEditOverviewFragment: BaseFragment() {
 
     private fun onClickUpdate() {
         viewModel.update(categorySpinner.getSelection())
-        onSuccess()
-    }
-
-    private fun onSuccess() {
         val intent = Intent().apply {
             if(viewModel.isChangeCategory) putExtra(REFRESH_MODE, CHANGE_CATEGORY) else putExtra(REFRESH_MODE, UPDATE)
         }
