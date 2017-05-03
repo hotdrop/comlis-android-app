@@ -17,9 +17,9 @@ import javax.inject.Inject
 class CompanyRegisterFragment : BaseFragment() {
 
     @Inject
-    lateinit var categoryDao: CategoryDao
-    @Inject
     lateinit var viewModel: CompanyRegisterViewModel
+    @Inject
+    lateinit var categoryDao: CategoryDao
 
     private lateinit var categorySpinner: CategorySpinner
     private lateinit var binding: FragmentCompanyRegisterBinding

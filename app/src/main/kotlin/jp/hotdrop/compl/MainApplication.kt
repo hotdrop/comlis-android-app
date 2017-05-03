@@ -1,6 +1,7 @@
 package jp.hotdrop.compl
 
 import android.app.Application
+import com.deploygate.sdk.DeployGate
 import jp.hotdrop.compl.di.AppComponent
 import jp.hotdrop.compl.di.AppModule
 import jp.hotdrop.compl.di.DaggerAppComponent
@@ -17,6 +18,10 @@ class MainApplication: Application() {
                 .builder()
                 .appModule(AppModule(this))
                 .build()
+
+        if (!DeployGate.isInitialized()) {
+            DeployGate.install(this, null, true);
+        }
     }
 
     fun getComponent(): AppComponent = appComponent

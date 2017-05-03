@@ -18,9 +18,9 @@ import javax.inject.Inject
 class CompanyEditInfoFragment: BaseFragment() {
 
     @Inject
-    lateinit var compositeDisposable: CompositeDisposable
-    @Inject
     lateinit var viewModel: CompanyEditInfoViewModel
+    @Inject
+    lateinit var compositeDisposable: CompositeDisposable
 
     private lateinit var binding: FragmentCompanyEditInfoBinding
     private val companyId by lazy { arguments.getInt(EXTRA_COMPANY_ID) }
