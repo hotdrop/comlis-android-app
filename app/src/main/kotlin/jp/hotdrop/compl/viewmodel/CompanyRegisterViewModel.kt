@@ -24,12 +24,14 @@ class CompanyRegisterViewModel @Inject constructor(val context: Context,
     // viewOrder is not declared. Because autoSet max+1 value when insert in CompanyDao
 
     fun existName(name: String): Boolean {
-        if(name.trim() == "") return false
+        // 未入力ならチェックをスキップ
+        if(name.isEmpty()) return false
         return companyDao.exist(name)
     }
 
     fun isAllNumbers(value: String): Boolean {
-        if(value.trim() == "") return true
+        // 未入力（空）ならOK。ブランクが入っていたらダメなのでisBlankではなくisEmptyにしている。
+        if(value.isEmpty()) return true
         return value.isNumber()
     }
 
