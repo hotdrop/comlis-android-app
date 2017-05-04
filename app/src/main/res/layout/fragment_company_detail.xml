@@ -42,8 +42,7 @@
                         android:layout_height="match_parent"
                         android:fitsSystemWindows="true"
                         android:scaleType="centerCrop"
-                        android:contentDescription="@string/description_company_detail_cover"
-                        app:imageCover="@{viewModel.colorName}" />
+                        android:contentDescription="@string/description_company_detail_cover" />
 
                 </RelativeLayout>
 

@@ -11,12 +11,15 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.Toast
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.flexbox.FlexboxLayout
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
-import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
 import jp.hotdrop.compl.databinding.ItemTagAssociateBinding
 import jp.hotdrop.compl.model.Tag
@@ -29,14 +32,14 @@ import javax.inject.Inject
 class CompanyDetailFragment: BaseFragment() {
 
     @Inject
+    lateinit var viewModel: CompanyDetailViewModel
+    @Inject
+    lateinit var compositeDisposable: CompositeDisposable
+    @Inject
     lateinit var companyDao: CompanyDao
-    @Inject
-    lateinit var categoryDao: CategoryDao
-    @Inject
-    lateinit var tagDao: TagDao
 
     lateinit var binding: FragmentCompanyDetailBinding
-    private lateinit var viewModel: CompanyDetailViewModel
+
     private var isRefresh = false
 
     private val companyId by lazy { arguments.getInt(EXTRA_COMPANY_ID) }
@@ -56,10 +59,19 @@ class CompanyDetailFragment: BaseFragment() {
         binding = FragmentCompanyDetailBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
         initToolbar()
-        initLayout()
-        initOnClickEvent()
-        initFavoriteEvent()
+        loadData()
         return binding.root
+    }
+
+    private fun initToolbar() {
+        val activity = (activity as AppCompatActivity)
+        activity.setSupportActionBar(binding.toolbar)
+        activity.supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+            setDisplayShowTitleEnabled(false)
+            setHomeButtonEnabled(true)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -72,7 +84,7 @@ class CompanyDetailFragment: BaseFragment() {
             return
         }
 
-        initLayout()
+        loadData()
 
         if(refreshMode == CHANGE_CATEGORY) {
             setResultForChangeCategory()
@@ -94,7 +106,7 @@ class CompanyDetailFragment: BaseFragment() {
     private fun setResultForUpdate() {
         val intent = Intent().apply {
             putExtra(REFRESH_MODE, UPDATE)
-            putExtra(EXTRA_COMPANY_ID, viewModel.company.id)
+            putExtra(EXTRA_COMPANY_ID, viewModel.id)
         }
         activity.setResult(Activity.RESULT_OK, intent)
         isRefresh = true
@@ -103,7 +115,7 @@ class CompanyDetailFragment: BaseFragment() {
     private fun setResultForTrash() {
         val intent = Intent().apply {
             putExtra(REFRESH_MODE, DELETE)
-            putExtra(EXTRA_COMPANY_ID, viewModel.company.id)
+            putExtra(EXTRA_COMPANY_ID, viewModel.id)
         }
         activity.setResult(Activity.RESULT_OK, intent)
         isRefresh = true
@@ -112,25 +124,25 @@ class CompanyDetailFragment: BaseFragment() {
     private fun setResultForChangeCategory() {
         val intent = Intent().apply {
             putExtra(REFRESH_MODE, CHANGE_CATEGORY)
-            putExtra(EXTRA_COMPANY_ID, viewModel.company.id)
+            putExtra(EXTRA_COMPANY_ID, viewModel.id)
             putExtra(EXTRA_CATEGORY_NAME, viewModel.getCategoryName())
         }
         activity.setResult(Activity.RESULT_OK, intent)
         isRefresh = true
     }
 
-    private fun initToolbar() {
-        val activity = (activity as AppCompatActivity)
-        activity.setSupportActionBar(binding.toolbar)
-        activity.supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            setDisplayShowHomeEnabled(true)
-            setDisplayShowTitleEnabled(false)
-            setHomeButtonEnabled(true)
-        }
+    private fun loadData() {
+        val disposable = viewModel.loadData(companyId, binding)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { onSuccess() },
+                        { e -> Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show() }
+                )
+        compositeDisposable.add(disposable)
     }
 
-    private fun initLayout() {
+    private fun onSuccess() {
 
         fun setCardView(layout: FlexboxLayout, tag: Tag) {
             val binding = DataBindingUtil.inflate<ItemTagAssociateBinding>(getLayoutInflater(null),
@@ -139,8 +151,9 @@ class CompanyDetailFragment: BaseFragment() {
             layout.addView(binding.root)
         }
 
-        viewModel = CompanyDetailViewModel(companyId, context, binding, companyDao, categoryDao, tagDao)
         binding.viewModel = viewModel
+
+        setImageCover(binding.imgCover, viewModel.colorName)
 
         val darkColor = ColorUtil.getResDark(viewModel.colorName, context)
 
@@ -157,6 +170,19 @@ class CompanyDetailFragment: BaseFragment() {
         val flexBox = binding.flexBoxContainer
         flexBox.removeAllViews()
         viewModel.viewTags.forEach { tag -> setCardView(flexBox, tag) }
+
+        initOnClickEvent()
+        initFavoriteEvent()
+    }
+
+    private fun setImageCover(imageView: ImageView, colorName: String) {
+        when(colorName) {
+            ColorUtil.BLUE_NAME -> imageView.setImageResource(R.drawable.blue_cover)
+            ColorUtil.GREEN_NAME -> imageView.setImageResource(R.drawable.green_cover)
+            ColorUtil.RED_NAME -> imageView.setImageResource(R.drawable.red_cover)
+            ColorUtil.YELLOW_NAME -> imageView.setImageResource(R.drawable.yellow_cover)
+            ColorUtil.PURPLE_NAME -> imageView.setImageResource(R.drawable.purple_cover)
+        }
     }
 
     private fun initOnClickEvent() {
@@ -184,7 +210,7 @@ class CompanyDetailFragment: BaseFragment() {
             val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                     .setMessage(R.string.detail_dialog_trash_button_message)
                     .setPositiveButton(R.string.dialog_ok, {dialogInterface, _ ->
-                        companyDao.delete(viewModel.company)
+                        viewModel.delete()
                         dialogInterface.dismiss()
                         setResultForTrash()
                         exit()

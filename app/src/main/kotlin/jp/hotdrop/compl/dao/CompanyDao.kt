@@ -170,13 +170,13 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
         }
     }
 
-    fun delete(company: Company) {
+    fun delete(companyId: Int) {
         orma.transactionSync {
             associateCompanyAndTagRelation().deleter()
-                    .companyIdEq(company.id)
+                    .companyIdEq(companyId)
                     .execute()
             companyRelation().deleter()
-                    .idEq(company.id)
+                    .idEq(companyId)
                     .execute()
 
         }

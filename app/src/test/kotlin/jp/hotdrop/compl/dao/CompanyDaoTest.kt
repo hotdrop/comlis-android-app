@@ -78,7 +78,7 @@ class CompanyDaoTest {
         assert(companyFromDB.registerDate != null)
         println("register date = ${companyFromDB.registerDate}")
         assert(companyFromDB.updateDate == null)
-        companyDao.delete(companyFromDB)
+        companyDao.delete(companyFromDB.id)
     }
 
     @Test
@@ -109,7 +109,7 @@ class CompanyDaoTest {
         assert(companyFromDB.updateDate != null)
         println("update date = ${companyFromDB.updateDate}")
 
-        companyDao.delete(companyFromDB)
+        companyDao.delete(companyFromDB.id)
     }
 
     private fun createCompany(argName: String) = Company().apply {

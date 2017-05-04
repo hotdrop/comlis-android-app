@@ -8,21 +8,17 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
+import io.reactivex.Completable
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
-import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
+import javax.inject.Inject
 
-class CompanyDetailViewModel (companyId: Int,
-                              val context: Context,
-                              val binding: FragmentCompanyDetailBinding,
-                              val companyDao: CompanyDao,
-                              val categoryDao: CategoryDao,
-                              val tagDao: TagDao): ViewModel() {
+class CompanyDetailViewModel @Inject constructor(val context: Context): ViewModel() {
 
     private val SALARY_UNIT = context.getString(R.string.label_salary_unit)
     private val SALARY_RANGE_MARK = context.getString(R.string.label_salary_range_mark)
@@ -30,25 +26,49 @@ class CompanyDetailViewModel (companyId: Int,
     private val EMPTY_VALUE = context.getString(R.string.label_empty_value)
     private val EMPTY_DATE = context.getString(R.string.label_empty_date)
 
-    val company: Company = companyDao.find(companyId)
-    val viewName: String
-    val viewOverview: String
-    val viewEmployeesNum: String
+    @Inject
+    lateinit var companyDao: CompanyDao
+    @Inject
+    lateinit var categoryDao: CategoryDao
+
+    lateinit var binding: FragmentCompanyDetailBinding
+
+    var id = -1
+    var categoryId = -1
+
+    var viewName = ""
+    var viewOverview = ""
+    var viewEmployeesNum = ""
     var viewSalary = ""
-    val viewWantedJob: String
+    var viewWantedJob = ""
     var viewWorkPlace = ""
     var viewUrl: String? = null
-    var visibleUrl: Int = View.GONE
+    var visibleUrl = View.GONE
     var viewDoingBusiness = ""
     var viewWantBusiness = ""
-    val viewNote: String
-    var viewFavorite: Int
-    val viewRegisterDate: String
-    val viewUpdateDate: String
-    val colorName: String
-    val viewTags: List<Tag>
+    var viewNote = ""
+    var viewFavorite = 0
+    var originalFavorite = 0
+    var viewRegisterDate = ""
+    var viewUpdateDate = ""
 
-    init {
+    lateinit var colorName: String
+    lateinit var viewTags: List<Tag>
+
+    fun loadData(companyId: Int, newBinding: FragmentCompanyDetailBinding): Completable {
+        return companyDao.findObserve(companyId)
+                .flatMapCompletable { company ->
+                    setData(company, newBinding)
+                    Completable.complete()
+                }
+    }
+
+    private fun setData(company: Company, newBinding: FragmentCompanyDetailBinding) {
+
+        id = company.id
+        categoryId = company.categoryId
+        binding = newBinding
+
         viewName = company.name
         viewOverview = company.overview ?: EMPTY_VALUE
         viewEmployeesNum = if(company.employeesNum > 0) company.employeesNum.toString() + EMPLOYEES_NUM_UNIT else EMPTY_VALUE
@@ -68,8 +88,9 @@ class CompanyDetailViewModel (companyId: Int,
         viewFavorite = company.favorite
         viewRegisterDate = company.registerDate?.format() ?: EMPTY_DATE
         viewUpdateDate = company.updateDate?.format() ?: EMPTY_DATE
-        colorName = categoryDao.find(company.categoryId).colorType
-        viewTags = companyDao.findByTag(company.id)
+
+        colorName = categoryDao.find(categoryId).colorType
+        viewTags = companyDao.findByTag(id)
     }
 
     @ColorRes
@@ -83,8 +104,11 @@ class CompanyDetailViewModel (companyId: Int,
     }
 
     fun getCategoryName(): String {
-        val category = categoryDao.find(company.categoryId)
-        return category.name
+        return categoryDao.find(categoryId).name
+    }
+
+    fun delete() {
+        companyDao.delete(id)
     }
 
     private val fabOpenAnimation: Animation by lazy {
@@ -202,7 +226,7 @@ class CompanyDetailViewModel (companyId: Int,
             binding.animationView2.progress = RESET
             binding.animationView3.progress = RESET
             viewFavorite = 1
-            companyDao.updateFavorite(company.id, viewFavorite)
+            companyDao.updateFavorite(id, viewFavorite)
         }
     }
 
@@ -214,7 +238,7 @@ class CompanyDetailViewModel (companyId: Int,
             binding.animationView2.playAnimation()
             binding.animationView3.progress = RESET
             viewFavorite = 2
-            companyDao.updateFavorite(company.id, viewFavorite)
+            companyDao.updateFavorite(id, viewFavorite)
         }
     }
 
@@ -226,12 +250,12 @@ class CompanyDetailViewModel (companyId: Int,
             binding.animationView2.playAnimation()
             binding.animationView3.playAnimation()
             viewFavorite = 3
-            companyDao.updateFavorite(company.id, viewFavorite)
+            companyDao.updateFavorite(id, viewFavorite)
         }
     }
 
     fun isEditFavorite(): Boolean {
-        return (company.favorite != viewFavorite)
+        return (originalFavorite != viewFavorite)
     }
 
     private fun resetFavorite() {
@@ -239,6 +263,6 @@ class CompanyDetailViewModel (companyId: Int,
         binding.animationView2.progress = RESET
         binding.animationView3.progress = RESET
         viewFavorite = 0
-        companyDao.updateFavorite(company.id, 0)
+        companyDao.updateFavorite(id, 0)
     }
 }
