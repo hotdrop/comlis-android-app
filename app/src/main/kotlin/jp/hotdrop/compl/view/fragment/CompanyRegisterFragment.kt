@@ -51,27 +51,33 @@ class CompanyRegisterFragment : BaseFragment() {
             setSelection(selectedCategoryName)
         }
 
-        val nameObservable = RxTextView.afterTextChangeEvents(binding.txtName).map { it.editable().toString() }.distinctUntilChanged()
-        val employeeNumObservable = RxTextView.afterTextChangeEvents(binding.txtEmployeesNum).map { viewModel.checkNumber(it.editable().toString()) }.distinctUntilChanged()
-        val salaryLowObservable = RxTextView.afterTextChangeEvents(binding.txtSalaryLower).map { viewModel.checkNumber(it.editable().toString()) }.distinctUntilChanged()
-        val salaryHighObservable = RxTextView.afterTextChangeEvents(binding.txtSalaryHigh).map { viewModel.checkNumber(it.editable().toString()) }.distinctUntilChanged()
-
-        val disposable1 = nameObservable
+        val nameEmptyObservable = RxTextView.textChangeEvents(binding.txtName)
+                .map { it.text().isBlank() }
+                .distinctUntilChanged()
+        val nameDuplicateObservable = RxTextView.textChangeEvents(binding.txtName)
+                .map { viewModel.existName(it.text().toString()) }
+                .distinctUntilChanged()
+        val nameObservableCombined: Observable<Boolean> = Observable.combineLatest(
+                nameEmptyObservable,
+                nameDuplicateObservable,
+                BiFunction { isEmpty: Boolean, isDuplicate: Boolean ->
+                    when {
+                        isEmpty -> binding.labelNameAttention.text = context.getString(R.string.company_name_empty_attention)
+                        isDuplicate -> binding.labelNameAttention.text = context.getString(R.string.company_name_attention)
+                    }
+                    (!isEmpty && !isDuplicate)
+                })
+        val disposable1 = nameObservableCombined
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{ name ->
-                    if(name.isNullOrEmpty()) {
-                        binding.labelNameAttention.text = context.getString(R.string.company_name_empty_attention)
-                        binding.labelNameAttention.visibility = View.VISIBLE
-                    } else if(viewModel.existName(name)) {
-                        binding.labelNameAttention.text = context.getString(R.string.company_name_attention)
-                        binding.labelNameAttention.visibility = View.VISIBLE
-                    } else {
-                        binding.labelNameAttention.visibility = View.GONE
-                    }
+                .subscribe { result ->
+                    binding.labelNameAttention.visibility = if (result) View.GONE else View.VISIBLE
                 }
         compositeDisposable.add(disposable1)
 
+        val employeeNumObservable = RxTextView.textChangeEvents(binding.txtEmployeesNum)
+                .map { viewModel.isAllNumbers(it.text().toString()) }
+                .distinctUntilChanged()
         val disposable2 = employeeNumObservable
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -80,12 +86,17 @@ class CompanyRegisterFragment : BaseFragment() {
                 }
         compositeDisposable.add(disposable2)
 
-        val salaryCombined: Observable<Boolean> = Observable.combineLatest(
+        val salaryLowObservable = RxTextView.textChangeEvents(binding.txtSalaryLower)
+                .map { viewModel.isAllNumbers(it.text().toString()) }
+                .distinctUntilChanged()
+        val salaryHighObservable = RxTextView.textChangeEvents(binding.txtSalaryHigh)
+                .map { viewModel.isAllNumbers(it.text().toString()) }
+                .distinctUntilChanged()
+        val salaryObservableCombined: Observable<Boolean> = Observable.combineLatest(
                 salaryLowObservable,
                 salaryHighObservable,
                 BiFunction { low: Boolean, high: Boolean -> low && high })
-
-        val disposable3 = salaryCombined
+        val disposable3 = salaryObservableCombined
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { result ->
@@ -94,11 +105,11 @@ class CompanyRegisterFragment : BaseFragment() {
         compositeDisposable.add(disposable3)
 
         val buttonObservable: Observable<Boolean> = Observable.combineLatest(
-                nameObservable,
+                nameObservableCombined,
                 employeeNumObservable,
-                salaryCombined,
-                Function3 { name: String, isNumEmployee: Boolean, isNumSalary: Boolean ->
-                    ( !name.isNullOrEmpty() && binding.labelNameAttention.visibility == View.GONE && isNumEmployee && isNumSalary )
+                salaryObservableCombined,
+                Function3 { isNameValidate, isEmployeeValidate: Boolean, isSalaryValidate: Boolean ->
+                    ( isNameValidate && isEmployeeValidate && isSalaryValidate )
                 })
         val disposable4 = buttonObservable
                 .subscribeOn(AndroidSchedulers.mainThread())

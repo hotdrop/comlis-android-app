@@ -28,7 +28,7 @@ class CompanyRegisterViewModel @Inject constructor(val context: Context,
         return companyDao.exist(name)
     }
 
-    fun checkNumber(value: String): Boolean {
+    fun isAllNumbers(value: String): Boolean {
         if(value.trim() == "") return true
         return value.isNumber()
     }
@@ -46,19 +46,15 @@ class CompanyRegisterViewModel @Inject constructor(val context: Context,
     private fun makeData(selectedCategorySpinnerId: Int) = Company().apply {
         name = viewName
         categoryId = selectedCategorySpinnerId
-
-        overview = if(viewOverview != "") viewOverview else null
-
-        employeesNum = if(viewEmployeesNum != "") viewEmployeesNum.toInt() else 0
-        salaryLow = if(viewSalaryLow != "") viewSalaryLow.toInt() else 0
-        salaryHigh = if(viewSalaryHigh != "") viewSalaryHigh.toInt() else 0
-        wantedJob = if(viewWantedJob != "") viewWantedJob else null
-        workPlace = if(viewWorkPlace != "") viewWorkPlace else null
-        url = if(viewUrl != "") viewUrl else null
-
-        doingBusiness = if(viewDoingBusiness != "") viewDoingBusiness else null
-        wantBusiness = if(viewWantBusiness != "") viewWantBusiness else null
-
-        note = if(viewNote != "") viewNote else null
+        overview = viewOverview.toStringOrNull()
+        employeesNum = viewEmployeesNum.toIntOrZero()
+        salaryLow = viewSalaryLow.toIntOrZero()
+        salaryHigh = viewSalaryHigh.toIntOrZero()
+        wantedJob = viewWantedJob.toStringOrNull()
+        workPlace = viewWorkPlace.toStringOrNull()
+        url = viewUrl.toStringOrNull()
+        doingBusiness = viewDoingBusiness.toStringOrNull()
+        wantBusiness = viewWantBusiness.toStringOrNull()
+        note = viewNote.toStringOrNull()
     }
 }
