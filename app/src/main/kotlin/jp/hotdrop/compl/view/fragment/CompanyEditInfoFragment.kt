@@ -55,14 +55,14 @@ class CompanyEditInfoFragment: BaseFragment() {
                 )
         compositeDisposable.add(disposable)
 
-        val employeeNumObservable = RxTextView.afterTextChangeEvents(binding.txtEmployeesNum)
-                .map { viewModel.checkNumber(it.editable().toString()) }
+        val employeeNumObservable = RxTextView.textChangeEvents(binding.txtEmployeesNum)
+                .map { viewModel.isAllNumbers(it.text().toString()) }
                 .distinctUntilChanged()
-        val salaryLowObservable = RxTextView.afterTextChangeEvents(binding.txtSalaryLower)
-                .map { viewModel.checkNumber(it.editable().toString()) }
+        val salaryLowObservable = RxTextView.textChangeEvents(binding.txtSalaryLower)
+                .map { viewModel.isAllNumbers(it.text().toString()) }
                 .distinctUntilChanged()
-        val salaryHighObservable = RxTextView.afterTextChangeEvents(binding.txtSalaryHigh)
-                .map { viewModel.checkNumber(it.editable().toString()) }
+        val salaryHighObservable = RxTextView.textChangeEvents(binding.txtSalaryHigh)
+                .map { viewModel.isAllNumbers(it.text().toString()) }
                 .distinctUntilChanged()
 
         val disposable1 = employeeNumObservable
@@ -88,7 +88,7 @@ class CompanyEditInfoFragment: BaseFragment() {
         val buttonObservable: Observable<Boolean> = Observable.combineLatest(
                 employeeNumObservable,
                 salaryCombined,
-                BiFunction { isNumEmployee: Boolean, isNumSalary: Boolean -> ( isNumEmployee && isNumSalary ) })
+                BiFunction { isEmployeeValidate: Boolean, isSalaryValidate: Boolean -> ( isEmployeeValidate && isSalaryValidate ) })
         val disposable3 = buttonObservable
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())

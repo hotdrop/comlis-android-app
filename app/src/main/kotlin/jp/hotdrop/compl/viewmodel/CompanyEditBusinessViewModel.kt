@@ -36,7 +36,7 @@ class CompanyEditBusinessViewModel @Inject constructor(val context: Context): Vi
 
     private fun makeCompany() = Company().apply {
         id = companyId
-        doingBusiness = if(viewDoingBusiness != "") viewDoingBusiness else null
-        wantBusiness = if(viewWantBusiness != "") viewWantBusiness else null
+        doingBusiness = viewDoingBusiness.toStringOrNull()
+        wantBusiness = viewWantBusiness.toStringOrNull()
     }
 }

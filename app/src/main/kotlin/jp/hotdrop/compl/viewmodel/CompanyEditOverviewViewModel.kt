@@ -34,7 +34,7 @@ class CompanyEditOverviewViewModel @Inject constructor(val context: Context): Vi
     }
 
     fun existName(name: String): Boolean {
-        if(name.trim() == "") return false
+        if(name.isBlank()) return false
         return companyDao.exist(name, companyId)
     }
 
@@ -48,6 +48,6 @@ class CompanyEditOverviewViewModel @Inject constructor(val context: Context): Vi
         id = companyId
         name = viewName
         categoryId = selectedCategorySpinnerId
-        overview = if(viewOverview != "") viewOverview else null
+        overview = viewOverview.toStringOrNull()
     }
 }

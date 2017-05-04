@@ -35,12 +35,12 @@ class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewMo
         viewWantedJob = company.wantedJob ?: ""
         viewWorkPlace = company.workPlace ?: ""
         viewUrl = company.url ?: ""
-
         companyId = company.id
     }
 
-    fun checkNumber(value: String): Boolean {
-        if(value.trim() == "") return true
+    fun isAllNumbers(value: String): Boolean {
+        // 未入力（空）ならOK。ブランクが入っていたらダメなのでisBlankではなくisEmptyにしている。
+        if(value.isEmpty()) return true
         return value.isNumber()
     }
 
@@ -51,11 +51,11 @@ class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewMo
 
     private fun makeCompany() = Company().apply {
         id = companyId
-        employeesNum = if(viewEmployeesNum != "") viewEmployeesNum.toInt() else 0
-        salaryLow = if(viewSalaryLow != "") viewSalaryLow.toInt() else 0
-        salaryHigh = if(viewSalaryHigh != "") viewSalaryHigh.toInt() else 0
-        wantedJob = if(viewWantedJob != "") viewWantedJob else null
-        workPlace = if(viewWorkPlace != "") viewWorkPlace else null
-        url = if(viewUrl != "") viewUrl else null
+        employeesNum = viewEmployeesNum.toIntOrZero()
+        salaryLow = viewSalaryLow.toIntOrZero()
+        salaryHigh = viewSalaryHigh.toIntOrZero()
+        wantedJob = viewWantedJob.toStringOrNull()
+        workPlace = viewWorkPlace .toStringOrNull()
+        url = viewUrl.toStringOrNull()
     }
 }

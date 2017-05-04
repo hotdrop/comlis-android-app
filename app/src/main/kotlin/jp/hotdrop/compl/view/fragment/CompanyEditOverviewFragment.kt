@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
@@ -50,35 +52,44 @@ class CompanyEditOverviewFragment: BaseFragment() {
         setHasOptionsMenu(false)
         binding.viewModel = viewModel
 
-        val disposable = viewModel.loadData(companyId)
+        val disposable1 = viewModel.loadData(companyId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe (
                     { onLoadSuccess() },
                     { throwable -> onLoadFailure(throwable) }
                 )
-        compositeDisposable.add(disposable)
+        compositeDisposable.add(disposable1)
 
-        val nameDisposable = RxTextView.afterTextChangeEvents(binding.txtName)
-                .map { it.editable().toString() }
+        val nameEmptyObservable = RxTextView.textChangeEvents(binding.txtName)
+                .map { it.text().isBlank() }
                 .distinctUntilChanged()
+        val nameDuplicateObservable = RxTextView.textChangeEvents(binding.txtName)
+                .map { viewModel.existName(it.text().toString()) }
+                .distinctUntilChanged()
+        val nameObservableCombined: Observable<Boolean> = Observable.combineLatest(
+                nameEmptyObservable,
+                nameDuplicateObservable,
+                BiFunction { isEmpty: Boolean, isDuplicate: Boolean ->
+                    when {
+                        isEmpty -> binding.labelNameAttention.text = context.getString(R.string.company_name_empty_attention)
+                        isDuplicate -> binding.labelNameAttention.text = context.getString(R.string.company_name_attention)
+                    }
+                    (!isEmpty && !isDuplicate)
+                })
+        val disposable2 = nameObservableCombined
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{ name ->
-                    if(name.isNullOrEmpty()) {
-                        binding.labelNameAttention.text = context.getString(R.string.company_name_empty_attention)
-                        binding.labelNameAttention.visibility = View.VISIBLE
-                        binding.updateButton.isEnabled = false
-                    } else if(viewModel.existName(name)) {
-                        binding.labelNameAttention.text = context.getString(R.string.company_name_attention)
-                        binding.labelNameAttention.visibility = View.VISIBLE
-                        binding.updateButton.isEnabled = false
-                    } else {
+                .subscribe { result ->
+                    if (result) {
                         binding.labelNameAttention.visibility = View.GONE
                         binding.updateButton.isEnabled = true
+                    } else {
+                        binding.labelNameAttention.visibility = View.VISIBLE
+                        binding.updateButton.isEnabled = false
                     }
                 }
-        compositeDisposable.add(nameDisposable)
+        compositeDisposable.add(disposable2)
 
         binding.updateButton.setOnClickListener{ onClickUpdate() }
         return binding.root

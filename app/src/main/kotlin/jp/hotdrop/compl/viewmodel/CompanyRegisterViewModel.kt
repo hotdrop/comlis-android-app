@@ -24,8 +24,7 @@ class CompanyRegisterViewModel @Inject constructor(val context: Context,
     // viewOrder is not declared. Because autoSet max+1 value when insert in CompanyDao
 
     fun existName(name: String): Boolean {
-        // 未入力ならチェックをスキップ
-        if(name.isEmpty()) return false
+        if(name.isBlank()) return false
         return companyDao.exist(name)
     }
 

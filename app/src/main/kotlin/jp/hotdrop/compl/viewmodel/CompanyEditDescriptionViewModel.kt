@@ -34,6 +34,6 @@ class CompanyEditDescriptionViewModel @Inject constructor(val context: Context):
 
     private fun makeCompany() = Company().apply {
         id = companyId
-        note = if(viewNote != "") viewNote else null
+        note = viewNote.toStringOrNull()
     }
 }
