@@ -14,6 +14,7 @@ import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.databinding.FragmentCompanyBinding
 import jp.hotdrop.compl.model.Category
@@ -128,10 +129,13 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.search_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId) {
+            R.id.item_search -> Toast.makeText(context, "検索ボタンはまだ未実装です。", Toast.LENGTH_SHORT).show()
+        }
         return super.onOptionsItemSelected(item)
     }
 

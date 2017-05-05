@@ -6,6 +6,7 @@
     <string name="title_company_edit">会社情報編集</string>
     <string name="title_tags">タグ一覧</string>
     <string name="title_tags_view_reorder">タグ並べ替え</string>
+    <string name="title_search">検索</string>
 
     <!-- menu -->
     <string name="companies">会社一覧</string>

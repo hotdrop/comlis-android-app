@@ -8,8 +8,10 @@ The require API level is 25.
 * target_sdk_version: 25
 
 ## Environment
-* Kotlin 1.1.1
-* orma 4.1.0
+* Kotlin 1.1.2
+* Flexbox-layout
+* databinding
+* orma
 * RxJava2
-* dagger 2.0.2
-* databinding 2.2.3
+* dagger2
+* ExBinding
