@@ -60,7 +60,7 @@
                     android:layout_below="@id/txt_name"
                     android:layout_alignTop="@id/label_wanted_job"
                     android:layout_toEndOf="@id/label_wanted_job"
-                    android:text="@{viewModel.viewWantedJob}"/>
+                    android:text="@{viewModel.viewWantedJob}" />
 
                 <TextView
                     android:id="@+id/label_salary"
