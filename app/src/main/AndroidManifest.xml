@@ -52,6 +52,10 @@
             android:exported="false"
             android:label="@string/title_company_edit"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.SearchActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

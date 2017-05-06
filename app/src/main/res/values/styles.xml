@@ -25,6 +25,11 @@
         <item name="colorAccent">@color/black</item>
     </style>
 
+    <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/toolbar_text_primary</item>
+        <item name="android:textColorSecondary">@color/toolbar_text_secondary</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
@@ -58,6 +63,16 @@
     </style>
 
     <!-- list -->
+    <style name="ListItemText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/spacing_small</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/item_list_text</item>
+        <item name="android:textSize">@dimen/text_large</item>
+    </style>
+
     <style name="ListSubItemLabel">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

@@ -31,4 +31,8 @@ object ActivityNavigator {
     fun showCompanyEditDescription(fragment: Fragment, companyId: Int, colorName: String, requestCode: Int) {
         CompanyEditDescriptionActivity.startForResult(fragment, companyId, colorName, requestCode)
     }
+
+    fun showSearch(fragment: Fragment) {
+        SearchActivity.start(fragment)
+    }
 }

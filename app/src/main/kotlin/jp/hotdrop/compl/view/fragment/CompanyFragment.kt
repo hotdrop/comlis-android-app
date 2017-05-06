@@ -129,12 +129,12 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.search_menu, menu)
+        inflater?.inflate(R.menu.menu_company, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
-            R.id.item_search -> Toast.makeText(context, "検索ボタンはまだ未実装です。", Toast.LENGTH_SHORT).show()
+            R.id.item_search -> ActivityNavigator.showSearch(this@CompanyFragment)
         }
         return super.onOptionsItemSelected(item)
     }

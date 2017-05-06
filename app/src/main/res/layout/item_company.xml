@@ -39,12 +39,8 @@
 
                 <TextView
                     android:id="@+id/txt_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_small"
+                    style="@style/ListItemText"
                     android:layout_toEndOf="@id/icon_reorder"
-                    android:textSize="@dimen/text_large"
-                    android:textColor="@color/item_list_text"
                     android:text="@{viewModel.viewName}" />
 
                 <TextView

@@ -10,6 +10,10 @@
 
     <!-- bottom navigation -->
     <color name="bottom_nav_menu_background">@color/white</color>
+    
+    <!-- toolbar -->
+    <color name="toolbar_text_primary">@color/white</color>
+    <color name="toolbar_text_secondary">@color/white</color>
 
     <!-- Tab -->
     <color name="tab_background">@color/white</color>
