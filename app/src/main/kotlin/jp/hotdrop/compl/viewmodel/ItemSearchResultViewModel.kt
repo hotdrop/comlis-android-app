@@ -8,23 +8,22 @@ import jp.hotdrop.compl.util.ColorUtil
 
 class ItemSearchResultViewModel(company: Company, val context: Context, val categoryDao: CategoryDao): ViewModel() {
 
-    var id = company.id
-    var categoryId = company.categoryId
-    var viewCompanyName = company.name
-    var favorite = company.favorite
+    val id = company.id
+    val categoryId = company.categoryId
+    val viewCompanyName = company.name
+    val favorite = company.favorite
 
-    lateinit var viewCategoryName: String
-    lateinit var colorName: String
+    val viewCategoryName: String
+    val colorName: String
 
-    @ColorRes
-    fun getColorRes(): Int {
-        return ColorUtil.getResDark(colorName, context)
-    }
-
-    fun loadData() {
+    init {
         val category = categoryDao.find(categoryId)
         viewCategoryName = category.name
         colorName = category.colorType
     }
 
+    @ColorRes
+    fun getColorRes(): Int {
+        return ColorUtil.getResDark(colorName, context)
+    }
 }

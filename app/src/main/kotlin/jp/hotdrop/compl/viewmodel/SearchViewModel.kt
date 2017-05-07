@@ -16,12 +16,8 @@ class SearchViewModel @Inject constructor(val context: Context): ViewModel() {
 
     fun getSearchResults(searchText: String): Single<List<ItemSearchResultViewModel>> {
         return companyDao.findAll().map { companies ->
-            companies.filter { company -> isMatch(company, searchText) }
-                    .map {
-                        val vm = ItemSearchResultViewModel(it, context, categoryDao)
-                        vm.loadData()
-                        vm
-                    }
+                companies.filter { company -> isMatch(company, searchText) }
+                        .map { ItemSearchResultViewModel(it, context, categoryDao) }
         }
     }
 
