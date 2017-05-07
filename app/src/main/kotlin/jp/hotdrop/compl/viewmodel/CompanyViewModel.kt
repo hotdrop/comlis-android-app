@@ -5,18 +5,23 @@ import android.support.annotation.ColorRes
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
+import jp.hotdrop.compl.databinding.ItemCompanyBinding
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 
-class CompanyViewModel(var company: Company, val context: Context,
-                       val companyDao: CompanyDao,val categoryDao: CategoryDao): ViewModel() {
+class CompanyViewModel(company: Company,
+                       val context: Context,
+                       val companyDao: CompanyDao,
+                       val categoryDao: CategoryDao): ViewModel() {
 
     private val SALARY_UNIT = context.getString(R.string.label_salary_unit)
     private val SALARY_RANGE_MARK = context.getString(R.string.label_salary_range_mark)
     private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
 
-    // 画面表示に使うデータだけmodelとは別にフィールド値を持たせる
+    var id = company.id
+
+    // 画面表示する項目はmodelとは別にフィールド値を持たせる
     var viewName = company.name
     var viewEmployeesNum = company.employeesNum.toString() + EMPLOYEES_NUM_UNIT
     var viewSalary = company.salaryLow.toString() + SALARY_UNIT
@@ -37,7 +42,6 @@ class CompanyViewModel(var company: Company, val context: Context,
     }
 
     fun change(vm: CompanyViewModel) {
-        company = vm.company
         viewName = vm.viewName
         viewEmployeesNum = vm.viewEmployeesNum
         viewSalary = vm.viewSalary
@@ -53,31 +57,50 @@ class CompanyViewModel(var company: Company, val context: Context,
     }
 
     override fun equals(other: Any?): Boolean {
-        return (other as CompanyViewModel).company.id == company.id || super.equals(other)
+        return (other as CompanyViewModel).id == id || super.equals(other)
     }
 
-    /**
-     * 単調だ・・なんとかいい方法はないものか
-     */
-    fun isOneFavorite(): Boolean {
-        return viewFavorite == 1
+    fun onClickFirstFavorite(binding: ItemCompanyBinding) {
+        if(viewFavorite == 1) {
+            resetFavorite(binding)
+        } else {
+            binding.animationView1.playAnimation()
+            binding.animationView2.reset()
+            binding.animationView3.reset()
+            viewFavorite = 1
+            companyDao.updateFavorite(id, viewFavorite)
+        }
     }
 
-    fun isTwoFavorite(): Boolean {
-        return viewFavorite == 2
+    fun onClickSecondFavorite(binding: ItemCompanyBinding) {
+        if(viewFavorite == 2) {
+            resetFavorite(binding)
+        } else {
+            binding.animationView1.playAnimation()
+            binding.animationView2.playAnimation()
+            binding.animationView3.reset()
+            viewFavorite = 2
+            companyDao.updateFavorite(id, viewFavorite)
+        }
     }
 
-    fun isThreeFavorite(): Boolean {
-        return viewFavorite == 3
+    fun onClickThirdFavorite(binding: ItemCompanyBinding) {
+        if(viewFavorite == 3) {
+            resetFavorite(binding)
+        } else {
+            binding.animationView1.playAnimation()
+            binding.animationView2.playAnimation()
+            binding.animationView3.playAnimation()
+            viewFavorite = 3
+            companyDao.updateFavorite(id, viewFavorite)
+        }
     }
 
-    fun tapFavorite(tapCnt: Int) {
-        companyDao.updateFavorite(company.id, tapCnt)
-        viewFavorite = tapCnt
-    }
-
-    fun resetFavorite() {
+    fun resetFavorite(binding: ItemCompanyBinding) {
+        binding.animationView1.reset()
+        binding.animationView2.reset()
+        binding.animationView3.reset()
         viewFavorite = 0
-        companyDao.updateFavorite(company.id, 0)
+        companyDao.updateFavorite(id, 0)
     }
 }

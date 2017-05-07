@@ -34,7 +34,7 @@ abstract class BaseFragment: Fragment() {
 
     fun getComponent(): FragmentComponent = fragmentComponent
 
-    fun LottieAnimationView.favorite(): LottieAnimationView = this.apply {
+    fun LottieAnimationView.setFavoriteStar(): LottieAnimationView = this.apply {
         setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak)
     }
 

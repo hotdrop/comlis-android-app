@@ -72,7 +72,7 @@ class CompanyTabFragment: BaseFragment() {
         super.onStop()
         compositeDisposable.clear()
         if(isMoveItem) {
-            companyDao.updateAllOrder(adapter.getModels())
+            companyDao.updateAllOrder(adapter.getCompanyIdsAsCurrentOrder())
             isMoveItem = false
         }
     }
@@ -172,13 +172,13 @@ class CompanyTabFragment: BaseFragment() {
             }
 
             binding.cardView.setOnClickListener {
-                ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.company.id, REQ_CODE_COMPANY_DETAIL)
+                ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.id, REQ_CODE_COMPANY_DETAIL)
             }
 
-            // Recycleされて復帰した場合、追加したViewを削除しておかないと積まれて行くためこれを入れる。
+            // Recycle後に復帰した際、追加したタグを削除しておかないとタグが積まれていくためremoveAllする。
             binding.flexBoxContainer.removeAllViews()
             binding.viewModel.viewTags.forEach { tag -> setCardView(binding.flexBoxContainer, tag) }
-            initAnimationView(binding)
+            initFavoriteEvent(binding)
         }
 
         fun refresh(vm: CompanyViewModel) {
@@ -194,61 +194,33 @@ class CompanyTabFragment: BaseFragment() {
             adapter.notifyItemInserted(adapter.itemCount)
         }
 
-        fun getModels(): List<Company> {
-            return list.map { vm -> vm.company }.toMutableList()
+        fun getCompanyIdsAsCurrentOrder(): List<Int> {
+            return list.map { vm -> vm.id }.toMutableList()
         }
 
-        private fun setCardView(flexboxlayout: FlexboxLayout, tag: Tag) {
+        private fun setCardView(flexboxLayout: FlexboxLayout, tag: Tag) {
             val binding = DataBindingUtil.inflate<ItemCompanyListTagBinding>(getLayoutInflater(null),
-                    R.layout.item_company_list_tag, flexboxlayout, false)
+                    R.layout.item_company_list_tag, flexboxLayout, false)
             binding.viewModel = TagAssociateViewModel(tag = tag, context = context, companyDao = companyDao)
-            flexboxlayout.addView(binding.root)
+            flexboxLayout.addView(binding.root)
         }
 
-        private val RESET = 0.toFloat()
-        private fun initAnimationView(binding: ItemCompanyBinding) {
-            // 弱い参照でいいと思うのでこれにする
-            val animView1 = binding.animationView1.favorite()
-            val animView2 = binding.animationView2.favorite()
-            val animView3 = binding.animationView3.favorite()
-            val animViews = mutableListOf(animView1, animView2, animView3)
+        private fun initFavoriteEvent(binding: ItemCompanyBinding) {
 
             val vm = binding.viewModel
-            animViews.take(vm.viewFavorite).forEach { it.playAnimation() }
-
-            // ここの書き方が単調すぎるのでなんとかならないものか・・
-            animView1.setOnClickListener {
-                if(vm.isOneFavorite()) {
-                    animView1.progress = RESET
-                    vm.resetFavorite()
-                } else {
-                    animView1.playAnimation()
-                    animView2.progress = RESET
-                    animView3.progress = RESET
-                    vm.tapFavorite(1)
-                }
+            val animView1 = binding.animationView1.apply {
+                setFavoriteStar()
+                setOnClickListener { vm.onClickFirstFavorite(binding) }
             }
-            animView2.setOnClickListener {
-                if(vm.isTwoFavorite()) {
-                    animView1.progress = RESET
-                    animView2.progress = RESET
-                    vm.resetFavorite()
-                } else {
-                    animView1.playAnimation()
-                    animView2.playAnimation()
-                    animView3.progress = RESET
-                    vm.tapFavorite(2)
-                }
+            val animView2 = binding.animationView2.apply {
+                setFavoriteStar()
+                setOnClickListener { vm.onClickSecondFavorite(binding) }
             }
-            animView3.setOnClickListener {
-                if(vm.isThreeFavorite()) {
-                    animViews.forEach { it.progress = RESET }
-                    vm.resetFavorite()
-                } else {
-                    animViews.forEach { it.playAnimation() }
-                    vm.tapFavorite(3)
-                }
+            val animView3 = binding.animationView3.apply {
+                setFavoriteStar()
+                setOnClickListener { vm.onClickThirdFavorite(binding) }
             }
+            mutableListOf(animView1, animView2, animView3).take(vm.viewFavorite).forEach { it.playAnimation() }
         }
     }
 

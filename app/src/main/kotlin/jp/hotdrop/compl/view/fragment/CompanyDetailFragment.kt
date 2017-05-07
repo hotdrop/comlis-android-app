@@ -260,21 +260,21 @@ class CompanyDetailFragment: BaseFragment() {
         }
 
         val animView1 = binding.animationView1.apply {
-            favorite()
+            setFavoriteStar()
             setOnClickListener {
                 viewModel.onClickFirstFavorite()
                 changedFavorite()
             }
         }
         val animView2 = binding.animationView2.apply {
-            favorite()
+            setFavoriteStar()
             setOnClickListener {
                 viewModel.onClickSecondFavorite()
                 changedFavorite()
             }
         }
         val animView3 = binding.animationView3.apply {
-            favorite()
+            setFavoriteStar()
             setOnClickListener {
                 viewModel.onClickThirdFavorite()
                 changedFavorite()

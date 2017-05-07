@@ -217,14 +217,13 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         binding.fabDetailMenu.rotation = 0.toFloat()
     }
 
-    private val RESET = 0.toFloat()
     fun onClickFirstFavorite() {
         if(viewFavorite == 1) {
             resetFavorite()
         } else {
             binding.animationView1.playAnimation()
-            binding.animationView2.progress = RESET
-            binding.animationView3.progress = RESET
+            binding.animationView2.reset()
+            binding.animationView3.reset()
             viewFavorite = 1
             companyDao.updateFavorite(id, viewFavorite)
         }
@@ -236,7 +235,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         } else {
             binding.animationView1.playAnimation()
             binding.animationView2.playAnimation()
-            binding.animationView3.progress = RESET
+            binding.animationView3.reset()
             viewFavorite = 2
             companyDao.updateFavorite(id, viewFavorite)
         }
@@ -259,9 +258,9 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     }
 
     private fun resetFavorite() {
-        binding.animationView1.progress = RESET
-        binding.animationView2.progress = RESET
-        binding.animationView3.progress = RESET
+        binding.animationView1.reset()
+        binding.animationView2.reset()
+        binding.animationView3.reset()
         viewFavorite = 0
         companyDao.updateFavorite(id, 0)
     }

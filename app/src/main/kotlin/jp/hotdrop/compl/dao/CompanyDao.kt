@@ -159,12 +159,12 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
         }
     }
 
-    fun updateAllOrder(companies: List<Company>) {
+    fun updateAllOrder(companyIds: List<Int>) {
         orma.transactionSync {
-            for((index, company) in companies.withIndex()) {
+            for((index, companyId) in companyIds.withIndex()) {
                 companyRelation().updater()
                         .viewOrder(index)
-                        .idEq(company.id)
+                        .idEq(companyId)
                         .execute()
             }
         }

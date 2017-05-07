@@ -151,9 +151,9 @@ class SearchFragment: BaseFragment() {
             binding.cardView.setOnClickListener {
                 ActivityNavigator.showCompanyDetail(this@SearchFragment, binding.viewModel.id, REQ_CODE_COMPANY_DETAIL)
             }
-            val animView1 = binding.animationView1.favorite()
-            val animView2 = binding.animationView2.favorite()
-            val animView3 = binding.animationView3.favorite()
+            val animView1 = binding.animationView1.setFavoriteStar()
+            val animView2 = binding.animationView2.setFavoriteStar()
+            val animView3 = binding.animationView3.setFavoriteStar()
             mutableListOf(animView1, animView2, animView3)
                     .take(binding.viewModel.favorite)
                     .forEach { it.progress = 1.toFloat() }
