@@ -1,7 +1,12 @@
 package jp.hotdrop.compl.view.fragment
 
+import android.content.res.ColorStateList
+import android.support.annotation.ColorRes
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
+import android.support.v7.widget.AppCompatButton
 import com.airbnb.lottie.LottieAnimationView
+import jp.hotdrop.compl.R
 import jp.hotdrop.compl.di.FragmentComponent
 import jp.hotdrop.compl.di.FragmentModule
 import jp.hotdrop.compl.view.activity.BaseActivity
@@ -36,6 +41,16 @@ abstract class BaseFragment: Fragment() {
 
     fun LottieAnimationView.setFavoriteStar(): LottieAnimationView = this.apply {
         setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak)
+    }
+
+    fun AppCompatButton.enabledWithColor(@ColorRes res: Int) {
+        this.isEnabled = true
+        this.backgroundTintList = ColorStateList.valueOf(res)
+    }
+
+    fun AppCompatButton.disabledWithColor() {
+        this.isEnabled = false
+        this.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.button_disabled))
     }
 
     fun exit() {

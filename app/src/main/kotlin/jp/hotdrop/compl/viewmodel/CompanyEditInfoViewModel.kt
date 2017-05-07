@@ -1,15 +1,20 @@
 package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
+import android.support.annotation.ColorRes
 import io.reactivex.Completable
+import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.util.ColorUtil
 import javax.inject.Inject
 
 class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewModel() {
 
     @Inject
     lateinit var companyDao: CompanyDao
+    @Inject
+    lateinit var categoryDao: CategoryDao
 
     lateinit var viewEmployeesNum: String
     lateinit var viewSalaryLow: String
@@ -17,6 +22,7 @@ class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewMo
     lateinit var viewWantedJob: String
     lateinit var viewWorkPlace: String
     lateinit var viewUrl: String
+    lateinit var colorName: String
 
     private var companyId: Int = -1
 
@@ -35,6 +41,7 @@ class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewMo
         viewWantedJob = company.wantedJob ?: ""
         viewWorkPlace = company.workPlace ?: ""
         viewUrl = company.url ?: ""
+        colorName = categoryDao.find(company.categoryId).colorType
         companyId = company.id
     }
 
@@ -42,6 +49,11 @@ class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewMo
         // 未入力（空）ならOK。ブランクが入っていたらダメなのでisBlankではなくisEmptyにしている。
         if(value.isEmpty()) return true
         return value.isNumber()
+    }
+
+    @ColorRes
+    fun getColorRes(): Int {
+        return ColorUtil.getResDark(colorName, context)
     }
 
     fun update() {

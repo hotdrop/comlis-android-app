@@ -1,18 +1,25 @@
 package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
+import android.support.annotation.ColorRes
 import io.reactivex.Completable
+import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.util.ColorUtil
 import javax.inject.Inject
 
 class CompanyEditOverviewViewModel @Inject constructor(val context: Context): ViewModel() {
 
     @Inject
     lateinit var companyDao: CompanyDao
+    @Inject
+    lateinit var categoryDao: CategoryDao
 
     lateinit var viewName: String
     lateinit var viewOverview: String
+    lateinit var colorName: String
+
     private var companyId: Int = -1
     var categoryId: Int = -1
 
@@ -29,8 +36,14 @@ class CompanyEditOverviewViewModel @Inject constructor(val context: Context): Vi
     private fun setData(company: Company) {
         viewName = company.name
         viewOverview = company.overview ?: ""
+        colorName = categoryDao.find(company.categoryId).colorType
         companyId = company.id
         categoryId = company.categoryId
+    }
+
+    @ColorRes
+    fun getColorRes(): Int {
+        return ColorUtil.getResDark(colorName, context)
     }
 
     fun existName(name: String): Boolean {

@@ -92,7 +92,13 @@ class CompanyEditInfoFragment: BaseFragment() {
         val disposable3 = buttonObservable
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{ binding.updateButton.isEnabled = it }
+                .subscribe{ enabled ->
+                    if(enabled) {
+                        binding.updateButton.enabledWithColor(viewModel.getColorRes())
+                    } else {
+                        binding.updateButton.disabledWithColor()
+                    }
+                }
         compositeDisposable.add(disposable3)
 
         binding.updateButton.setOnClickListener{ onClickUpdate() }

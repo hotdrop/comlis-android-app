@@ -83,10 +83,10 @@ class CompanyEditOverviewFragment: BaseFragment() {
                 .subscribe { result ->
                     if (result) {
                         binding.labelNameAttention.visibility = View.GONE
-                        binding.updateButton.isEnabled = true
+                        binding.updateButton.enabledWithColor(viewModel.getColorRes())
                     } else {
                         binding.labelNameAttention.visibility = View.VISIBLE
-                        binding.updateButton.isEnabled = false
+                        binding.updateButton.disabledWithColor()
                     }
                 }
         compositeDisposable.add(disposable2)
