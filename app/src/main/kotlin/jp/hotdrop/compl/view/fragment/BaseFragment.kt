@@ -1,6 +1,7 @@
 package jp.hotdrop.compl.view.fragment
 
 import android.support.v4.app.Fragment
+import com.airbnb.lottie.LottieAnimationView
 import jp.hotdrop.compl.di.FragmentComponent
 import jp.hotdrop.compl.di.FragmentModule
 import jp.hotdrop.compl.view.activity.BaseActivity
@@ -32,6 +33,10 @@ abstract class BaseFragment: Fragment() {
     }
 
     fun getComponent(): FragmentComponent = fragmentComponent
+
+    fun LottieAnimationView.favorite(): LottieAnimationView = this.apply {
+        setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak)
+    }
 
     fun exit() {
         if(isResumed) {

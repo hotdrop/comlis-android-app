@@ -37,6 +37,9 @@
     <string name="label_fab_menu_edit">編集モード</string>
     <string name="label_fab_menu_tag">タグを付与</string>
 
+    <!-- search -->
+    <string name="hint_search_text_field">検索</string>
+
     <!-- company register and edit -->
     <string name="label_company">会社名</string>
     <string name="label_category">分類</string>

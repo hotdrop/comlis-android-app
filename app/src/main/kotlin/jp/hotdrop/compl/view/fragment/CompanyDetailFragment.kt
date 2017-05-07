@@ -13,7 +13,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import com.airbnb.lottie.LottieAnimationView
 import com.google.android.flexbox.FlexboxLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -261,21 +260,21 @@ class CompanyDetailFragment: BaseFragment() {
         }
 
         val animView1 = binding.animationView1.apply {
-            setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak)
+            favorite()
             setOnClickListener {
                 viewModel.onClickFirstFavorite()
                 changedFavorite()
             }
         }
         val animView2 = binding.animationView2.apply {
-            setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak)
+            favorite()
             setOnClickListener {
                 viewModel.onClickSecondFavorite()
                 changedFavorite()
             }
         }
         val animView3 = binding.animationView3.apply {
-            setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak)
+            favorite()
             setOnClickListener {
                 viewModel.onClickThirdFavorite()
                 changedFavorite()

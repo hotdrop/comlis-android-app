@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.*
 import android.widget.Toast
-import com.airbnb.lottie.LottieAnimationView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -85,7 +84,7 @@ class SearchFragment: BaseFragment() {
             // searchViewの位置が中央すぎるので、xmlでのgravity調整やtoolbarをいじったり、contentInsetStartWithNavigationしたりした。
             // しかし、どれもこれも色々試してもうんともすんとも言わないのでとりあえずPaddingで対応・・
             setPadding(-52,0,0,0)
-            queryHint = "検索"
+            queryHint = context.getString(R.string.hint_search_text_field)
             clearFocus()
         }
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
@@ -135,7 +134,7 @@ class SearchFragment: BaseFragment() {
     }
 
     private fun onLoadFailure(e: Throwable) {
-        Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
+        Toast.makeText(activity, "failed search." + e.message, Toast.LENGTH_LONG).show()
     }
 
     inner class Adapter(context: Context)
@@ -152,11 +151,12 @@ class SearchFragment: BaseFragment() {
             binding.cardView.setOnClickListener {
                 ActivityNavigator.showCompanyDetail(this@SearchFragment, binding.viewModel.id, REQ_CODE_COMPANY_DETAIL)
             }
-            val animView1 = binding.animationView1.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
-            val animView2 = binding.animationView2.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
-            val animView3 = binding.animationView3.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
-            val animViews = mutableListOf(animView1, animView2, animView3)
-            animViews.take(binding.viewModel.favorite).forEach { it.progress = 1.toFloat() }
+            val animView1 = binding.animationView1.favorite()
+            val animView2 = binding.animationView2.favorite()
+            val animView3 = binding.animationView3.favorite()
+            mutableListOf(animView1, animView2, animView3)
+                    .take(binding.viewModel.favorite)
+                    .forEach { it.progress = 1.toFloat() }
         }
 
         fun clearAll() {

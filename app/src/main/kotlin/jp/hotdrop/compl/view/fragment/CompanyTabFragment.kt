@@ -14,7 +14,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.airbnb.lottie.LottieAnimationView
 import com.google.android.flexbox.FlexboxLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -209,9 +208,9 @@ class CompanyTabFragment: BaseFragment() {
         private val RESET = 0.toFloat()
         private fun initAnimationView(binding: ItemCompanyBinding) {
             // 弱い参照でいいと思うのでこれにする
-            val animView1 = binding.animationView1.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
-            val animView2 = binding.animationView2.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
-            val animView3 = binding.animationView3.apply { setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak) }
+            val animView1 = binding.animationView1.favorite()
+            val animView2 = binding.animationView2.favorite()
+            val animView3 = binding.animationView3.favorite()
             val animViews = mutableListOf(animView1, animView2, animView3)
 
             val vm = binding.viewModel
