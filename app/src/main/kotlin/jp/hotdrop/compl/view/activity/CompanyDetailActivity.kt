@@ -24,6 +24,7 @@ class CompanyDetailActivity: BaseActivity() {
         super.onCreate(savedInstanceState)
         DataBindingUtil.setContentView<ActivityCompanyDetailBinding>(this, R.layout.activity_company_detail)
         getComponent().inject(this)
+
         val companyId = intent.getIntExtra(EXTRA_COMPANY_ID, 0)
         replaceFragment(CompanyDetailFragment.create(companyId), R.id.content_view)
     }

@@ -64,8 +64,8 @@ class CategoryFragment : BaseFragment() {
 
     private fun loadData() {
         val disposable = categoryDao.findAll()
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { categories -> onLoadSuccess(categories) },
                         { throwable -> onLoadFailure(throwable) }
@@ -84,12 +84,15 @@ class CategoryFragment : BaseFragment() {
         }
         
         helper = ItemTouchHelper(CategoryItemTouchHelperCallback(adapter))
-        binding.recyclerView.addItemDecoration(helper)
-        binding.recyclerView.setHasFixedSize(true)
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(activity)
-        helper.attachToRecyclerView(binding.recyclerView)
 
+        binding.recyclerView.let {
+            it.addItemDecoration(helper)
+            it.setHasFixedSize(true)
+            it.adapter = adapter
+            it.layoutManager = LinearLayoutManager(activity)
+        }
+
+        helper.attachToRecyclerView(binding.recyclerView)
         binding.fabButton.setOnClickListener { showRegisterDialog() }
     }
 
@@ -134,20 +137,8 @@ class CategoryFragment : BaseFragment() {
                     val editTxt = editText.text.toString()
                     when {
                         editTxt == "" -> disableButton()
-                        categoryId == REGISTER_MODE -> {
-                            if(categoryDao.exist(editTxt)) {
-                                disableButtonWithAttention()
-                            } else {
-                                enableButton()
-                            }
-                        }
-                        else -> {
-                            if(editTxt != originName && categoryDao.exist(editTxt, categoryId)) {
-                                disableButtonWithAttention()
-                            } else {
-                                enableButton()
-                            }
-                        }
+                        categoryId == REGISTER_MODE -> if(categoryDao.exist(editTxt)) disableButtonWithAttention() else enableButton()
+                        else -> if(editTxt != originName && categoryDao.exist(editTxt, categoryId)) disableButtonWithAttention() else enableButton()
                     }
                 }
                 private fun disableButton() {

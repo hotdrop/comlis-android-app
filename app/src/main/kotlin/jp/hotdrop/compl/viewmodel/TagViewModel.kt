@@ -6,8 +6,7 @@ import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 
-class TagViewModel(var tag: Tag, val context: Context,
-                   val tagDao: TagDao): ViewModel() {
+class TagViewModel(var tag: Tag, val context: Context, tagDao: TagDao): ViewModel() {
 
     // 画面表示に使うデータだけmodelとは別にフィールド値を持たせる
     var viewName = tag.name

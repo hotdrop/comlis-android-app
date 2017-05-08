@@ -63,8 +63,8 @@ class CompanyAssociateTagFragment: BaseFragment() {
 
     private fun loadData() {
         val disposable = tagDao.findAll()
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { tags -> onLoadSuccess(tags) },
                         { throwable -> onLoadFailure(throwable) }
@@ -73,22 +73,24 @@ class CompanyAssociateTagFragment: BaseFragment() {
     }
 
     private fun onLoadSuccess(tags: List<Tag>) {
-
         adapter = FlexboxItemAdapter(context)
+
         adapter.addAll(tags.map{ TagAssociateViewModel(companyId, it, context, companyDao) })
 
-        binding.recyclerView.setHasFixedSize(true)
-        binding.recyclerView.layoutManager = FlexboxLayoutManager()
-        binding.recyclerView.adapter = adapter
+        binding.recyclerView.let {
+            it.setHasFixedSize(true)
+            it.layoutManager = FlexboxLayoutManager()
+            it.adapter = adapter
+        }
 
-        binding.fabDone.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(colorName, context))
-        binding.fabDone.setOnClickListener {
-            companyDao.associateTagByCompany(companyId, adapter.getAssociateModels())
-            val intent = Intent().apply {
-                putExtra(REFRESH_MODE, UPDATE)
+        binding.fabDone.let {
+            it.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(colorName, context))
+            it.setOnClickListener {
+                companyDao.associateTagByCompany(companyId, adapter.getAssociateModels())
+                val intent = Intent().apply { putExtra(REFRESH_MODE, UPDATE) }
+                activity.setResult(Activity.RESULT_OK, intent)
+                exit()
             }
-            activity.setResult(Activity.RESULT_OK, intent)
-            exit()
         }
     }
 

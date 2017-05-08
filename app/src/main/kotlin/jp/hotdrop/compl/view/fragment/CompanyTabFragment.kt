@@ -104,8 +104,8 @@ class CompanyTabFragment: BaseFragment() {
 
     private fun loadData() {
         val disposable = companyDao.findByCategory(categoryId)
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { companies -> onLoadSuccess(companies) },
                         { throwable -> onLoadFailure(throwable) }
@@ -124,10 +124,12 @@ class CompanyTabFragment: BaseFragment() {
         }
 
         helper = ItemTouchHelper(CompanyItemTouchHelperCallback(adapter))
-        binding.recyclerView.addItemDecoration(helper)
 
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(activity)
+        binding.recyclerView.let {
+            it.addItemDecoration(helper)
+            it.adapter = adapter
+            it.layoutManager = LinearLayoutManager(activity)
+        }
 
         helper.attachToRecyclerView(binding.recyclerView)
     }

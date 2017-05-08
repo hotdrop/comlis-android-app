@@ -69,8 +69,8 @@ class TagFragment: BaseFragment() {
 
     private fun loadData() {
         val disposable = tagDao.findAll()
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { tags -> onLoadSuccess(tags) },
                         { throwable -> onLoadFailure(throwable) }
@@ -79,7 +79,6 @@ class TagFragment: BaseFragment() {
     }
 
     private fun onLoadSuccess(tags: List<Tag>) {
-
         adapter = FlexItemAdapter(context)
 
         if(tags.isNotEmpty()) {
@@ -89,12 +88,13 @@ class TagFragment: BaseFragment() {
             visibleEmptyMessage()
         }
 
-        binding.recyclerView.setHasFixedSize(true)
-        binding.recyclerView.layoutManager = FlexboxLayoutManager()
-        binding.recyclerView.adapter = adapter
-
         helper = ItemTouchHelper(TagItemTouchHelperCallback(adapter))
-        binding.recyclerView.addItemDecoration(helper)
+        binding.recyclerView.let {
+            it.setHasFixedSize(true)
+            it.layoutManager = FlexboxLayoutManager()
+            it.adapter = adapter
+            it.addItemDecoration(helper)
+        }
         helper.attachToRecyclerView(binding.recyclerView)
 
         binding.fabButton.setOnClickListener { showRegisterDialog() }
@@ -125,20 +125,8 @@ class TagFragment: BaseFragment() {
                     val editTxt = editText.text.toString()
                     when {
                         editTxt == "" -> disableButton()
-                        tagId == REGISTER_MODE -> {
-                            if(tagDao.exist(editTxt)) {
-                                disableButtonWithAttention()
-                            } else {
-                                enableButton()
-                            }
-                        }
-                        else -> {
-                            if(editTxt != originName && tagDao.exist(editTxt, tagId)) {
-                                disableButtonWithAttention()
-                            } else {
-                                enableButton()
-                            }
-                        }
+                        tagId == REGISTER_MODE -> if(tagDao.exist(editTxt)) disableButtonWithAttention() else enableButton()
+                        else -> if(editTxt != originName && tagDao.exist(editTxt, tagId)) disableButtonWithAttention() else enableButton()
                     }
                 }
                 private fun disableButton() {

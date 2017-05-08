@@ -47,8 +47,10 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
+
         tabName = null
         loadData()
+
         return binding.root
     }
 
@@ -59,8 +61,10 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
             // CompanyDetailFragmentを経由して分類変更がされた場合はこのルートを通る
             tabName = activity.intent.getStringExtra(EXTRA_CATEGORY_NAME)
             loadData()
-            activity.intent.removeExtra(REFRESH_MODE)
-            activity.intent.removeExtra(EXTRA_CATEGORY_NAME)
+            activity.intent.let {
+                it.removeExtra(REFRESH_MODE)
+                it.removeExtra(EXTRA_CATEGORY_NAME)
+            }
         }
     }
 
@@ -76,8 +80,8 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     private fun loadData() {
         showProgress()
         val disposable = categoryDao.findAll()
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { list -> onLoadSuccess(list) },
                         { throwable -> onLoadFailure(throwable) }
@@ -96,7 +100,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
             binding.listEmptyView.visibility = View.VISIBLE
         }
 
-        // tabLayoutを再作成するとonTabSelectedが呼ばれてしまうため保持しておく。
+        // tabLayoutを再作成するとonTabSelectedが呼ばれてしまうためこのタイミングで保持しておく。
         val stockSelectedTabName = tabName
 
         binding.viewPager.adapter = adapter
@@ -124,8 +128,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     }
 
     private fun addFragment(title: String, categoryId: Int) {
-        val fragment = CompanyTabFragment.create(categoryId)
-        adapter.add(title, fragment)
+        adapter.add(title, CompanyTabFragment.create(categoryId))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -133,6 +136,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        // YAGNIに反するが、OptionItemが増えた場合に備えてwhenで実装しておく
         when(item?.itemId) {
             R.id.item_search -> ActivityNavigator.showSearch(this@CompanyFragment)
         }
@@ -145,6 +149,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
 
     override fun onPause() {
         super.onPause()
+        // Pauseした場合、一旦disposableにaddしたObserverをclearする。追加でaddする処理はなく基本はloadData呼んでるので不要な気もする
         compositeDisposable.clear()
     }
 
