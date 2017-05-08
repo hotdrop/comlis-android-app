@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -51,7 +50,7 @@ class CompanyEditInfoFragment: BaseFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { binding.viewModel = viewModel },
-                        { e -> Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()}
+                        { throwable -> showErrorAsToast(ErrorType.LoadFailureCompany, throwable) }
                 )
         compositeDisposable.add(disposable)
 

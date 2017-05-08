@@ -15,7 +15,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Spinner
-import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -68,7 +67,7 @@ class CategoryFragment : BaseFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { categories -> onLoadSuccess(categories) },
-                        { throwable -> onLoadFailure(throwable) }
+                        { throwable -> showErrorAsToast(ErrorType.LoadFailureCategory, throwable) }
                 )
         compositeDisposable.add(disposable)
     }
@@ -94,10 +93,6 @@ class CategoryFragment : BaseFragment() {
 
         helper.attachToRecyclerView(binding.recyclerView)
         binding.fabButton.setOnClickListener { showRegisterDialog() }
-    }
-
-    private fun onLoadFailure(e: Throwable) {
-        Toast.makeText(activity, "failed load categories." + e.message, Toast.LENGTH_LONG).show()
     }
 
     private fun visibleEmptyMessage() {

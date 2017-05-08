@@ -13,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.google.android.flexbox.FlexboxLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -108,7 +107,7 @@ class CompanyTabFragment: BaseFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { companies -> onLoadSuccess(companies) },
-                        { throwable -> onLoadFailure(throwable) }
+                        { throwable -> showErrorAsToast(ErrorType.LoadFailureCompanies, throwable) }
                 )
         compositeDisposable.add(disposable)
     }
@@ -132,10 +131,6 @@ class CompanyTabFragment: BaseFragment() {
         }
 
         helper.attachToRecyclerView(binding.recyclerView)
-    }
-
-    private fun onLoadFailure(e: Throwable) {
-        Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
     }
 
     private fun visibleEmptyMessage() {

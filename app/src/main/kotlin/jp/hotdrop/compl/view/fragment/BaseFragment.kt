@@ -5,7 +5,9 @@ import android.support.annotation.ColorRes
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatButton
+import android.widget.Toast
 import com.airbnb.lottie.LottieAnimationView
+import com.deploygate.sdk.DeployGate
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.di.FragmentComponent
 import jp.hotdrop.compl.di.FragmentModule
@@ -51,6 +53,27 @@ abstract class BaseFragment: Fragment() {
     fun AppCompatButton.disabledWithColor() {
         this.isEnabled = false
         this.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.button_disabled))
+    }
+
+    sealed class ErrorType {
+        object LoadFailureCompanies: ErrorType()
+        object LoadFailureCompany: ErrorType()
+        object LoadFailureCategory: ErrorType()
+        object LoadFailureTags: ErrorType()
+        object LoadFailureSearch: ErrorType()
+    }
+
+    fun showErrorAsToast(type: ErrorType, e: Throwable) {
+        val msg = when(type) {
+            ErrorType.LoadFailureCompanies -> context.getString(R.string.load_failure_companies)
+            ErrorType.LoadFailureCompany -> context.getString(R.string.load_failure_company)
+            ErrorType.LoadFailureCategory -> context.getString(R.string.load_failure_categories)
+            ErrorType.LoadFailureTags -> context.getString(R.string.load_failure_tags)
+            ErrorType.LoadFailureSearch -> context.getString(R.string.load_failure_search)
+        }
+        // DeployGateに流す処理、本当はビルドタイプを分けてデバッグに記述すべき。そもそもbuild.gradleに・・
+        DeployGate.logError(msg + " throwable message =" + e.message)
+        Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()
     }
 
     fun exit() {

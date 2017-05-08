@@ -14,7 +14,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Spinner
-import android.widget.Toast
 import com.google.android.flexbox.FlexboxLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -73,7 +72,7 @@ class TagFragment: BaseFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { tags -> onLoadSuccess(tags) },
-                        { throwable -> onLoadFailure(throwable) }
+                        { throwable -> showErrorAsToast(ErrorType.LoadFailureTags, throwable) }
                 )
         compositeDisposable.add(disposable)
     }
@@ -98,10 +97,6 @@ class TagFragment: BaseFragment() {
         helper.attachToRecyclerView(binding.recyclerView)
 
         binding.fabButton.setOnClickListener { showRegisterDialog() }
-    }
-
-    private fun onLoadFailure(e: Throwable) {
-        Toast.makeText(activity, "failed load tags." + e.message, Toast.LENGTH_LONG).show()
     }
 
     private fun visibleEmptyMessage() {

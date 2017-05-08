@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.*
-import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -116,7 +115,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     }
 
     private fun onLoadFailure(e: Throwable) {
-        Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
+        showErrorAsToast(ErrorType.LoadFailureCompany, e)
         hideProgress()
     }
 

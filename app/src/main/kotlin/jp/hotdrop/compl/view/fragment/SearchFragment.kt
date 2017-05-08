@@ -6,7 +6,6 @@ import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.*
-import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -118,7 +117,7 @@ class SearchFragment: BaseFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { onLoadSuccess(it) },
-                        { throwable -> onLoadFailure(throwable) }
+                        { throwable -> showErrorAsToast(ErrorType.LoadFailureSearch, throwable) }
                 )
         compositeDisposable.add(disposable)
     }
@@ -130,10 +129,6 @@ class SearchFragment: BaseFragment() {
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
-    }
-
-    private fun onLoadFailure(e: Throwable) {
-        Toast.makeText(activity, "failed search." + e.message, Toast.LENGTH_LONG).show()
     }
 
     inner class Adapter(context: Context)

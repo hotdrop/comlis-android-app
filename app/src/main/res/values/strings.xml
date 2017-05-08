@@ -110,6 +110,13 @@
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
 
+    <!-- error message -->
+    <string name="load_failure_companies">会社一覧の読み込みに失敗しました。</string>
+    <string name="load_failure_company">会社情報の読み込みに失敗しました。</string>
+    <string name="load_failure_categories">分類の読み込みに失敗しました。</string>
+    <string name="load_failure_tags">タグの読み込みに失敗しました。</string>
+    <string name="load_failure_search">検索の実行に失敗しました。</string>
+
     <string name="open">open</string>
     <string name="close">close</string>
 
