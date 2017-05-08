@@ -1,7 +1,6 @@
 package jp.hotdrop.compl.dao
 
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.model.Category_Relation
 import java.util.*
@@ -30,7 +29,6 @@ class CategoryDao @Inject constructor(ormaHolder: OrmaHolder) {
                 .orderByViewOrderAsc()
                 .executeAsObservable()
                 .toList()
-                .subscribeOn(Schedulers.io())
     }
 
     fun insert(argName: String, argColorType: String) {

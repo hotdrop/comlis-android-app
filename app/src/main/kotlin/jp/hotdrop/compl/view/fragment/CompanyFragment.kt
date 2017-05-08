@@ -147,12 +147,6 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
         loadData()
     }
 
-    override fun onPause() {
-        super.onPause()
-        // Pauseした場合、一旦disposableにaddしたObserverをclearする。追加でaddする処理はなく基本はloadData呼んでるので不要な気もする
-        compositeDisposable.clear()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         compositeDisposable.dispose()

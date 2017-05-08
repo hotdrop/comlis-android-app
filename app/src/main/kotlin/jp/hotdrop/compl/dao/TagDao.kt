@@ -1,7 +1,6 @@
 package jp.hotdrop.compl.dao
 
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.model.AssociateCompanyWithTag_Relation
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.model.Tag_Relation
@@ -32,11 +31,6 @@ class TagDao @Inject constructor(ormaHolder: OrmaHolder) {
                 .orderByViewOrderAsc()
                 .executeAsObservable()
                 .toList()
-                .subscribeOn(Schedulers.io())
-    }
-
-    fun count(): Int {
-        return tagRelation().selector().count()
     }
 
     fun countByAttachCompany(tag: Tag): Int {

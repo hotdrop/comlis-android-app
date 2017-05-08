@@ -26,7 +26,6 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
                 .idEq(id)
                 .executeAsObservable()
                 .firstElement()
-                .subscribeOn(Schedulers.io())
     }
 
     fun findAll(): Single<List<Company>> {
@@ -41,7 +40,6 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
                 .orderByViewOrderAsc()
                 .executeAsObservable()
                 .toList()
-                .subscribeOn(Schedulers.io())
     }
 
     fun findByTag(companyId: Int): List<Tag> {
