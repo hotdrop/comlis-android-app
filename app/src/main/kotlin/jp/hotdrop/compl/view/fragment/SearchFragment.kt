@@ -112,7 +112,6 @@ class SearchFragment: BaseFragment() {
     }
 
     private fun search(newText: String) {
-        // TODO プログレス表示する
         searchText = newText
         val disposable = viewModel.getSearchResults(newText)
                 .subscribeOn(Schedulers.io())

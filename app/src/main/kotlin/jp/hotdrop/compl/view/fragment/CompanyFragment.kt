@@ -117,6 +117,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
 
     private fun onLoadFailure(e: Throwable) {
         Toast.makeText(activity, "failed load companies." + e.message, Toast.LENGTH_LONG).show()
+        hideProgress()
     }
 
     private fun showProgress() {
