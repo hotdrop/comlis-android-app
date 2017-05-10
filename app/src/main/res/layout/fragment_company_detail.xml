@@ -325,20 +325,6 @@
                     android:layout_below="@id/txt_link_url"
                     android:text="@{viewModel.viewRegisterDate}"/>
 
-                <TextView
-                    android:id="@+id/label_update_date"
-                    style="@style/OverViewItemLabel"
-                    android:drawableStart="@drawable/ic_query_builder"
-                    android:layout_below="@id/label_register_date"
-                    android:text="@string/label_update_date" />
-
-                <TextView
-                    android:id="@+id/txt_update_date"
-                    style="@style/OverViewItemText"
-                    android:layout_alignTop="@id/label_update_date"
-                    android:layout_toEndOf="@id/label_update_date"
-                    android:layout_below="@id/label_update_date"
-                    android:text="@{viewModel.viewUpdateDate}"/>
             </RelativeLayout>
         </android.support.v4.widget.NestedScrollView>
 
