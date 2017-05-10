@@ -92,7 +92,7 @@
         <item name="android:textSize">@dimen/text_more_small</item>
     </style>
 
-    <!-- edit -->
+    <!-- detail fragment -->
     <style name="ItemLabel">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -240,6 +240,35 @@
         <item name="android:lines">1</item>
         <item name="android:textColor">@color/label</item>
         <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <!-- evaluation fragment -->
+    <style name="EvaluationTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/spacing_small</item>
+        <item name="android:layout_marginEnd">@dimen/spacing</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:textSize">@dimen/text_normal</item>
+    </style>
+
+    <style name="EvaluationNote">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/spacing_small</item>
+        <item name="android:layout_marginEnd">@dimen/spacing</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:textColor">@color/item_list_subtext</item>
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="EvaluationListBorder">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/border_height</item>
+        <item name="android:layout_marginTop">@dimen/spacing</item>
+        <item name="android:background">@color/border_line</item>
     </style>
 
     <!-- fab menu -->

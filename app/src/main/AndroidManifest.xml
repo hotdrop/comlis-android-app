@@ -38,6 +38,11 @@
             android:label="@string/title_company_edit"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".view.activity.CompanyJobEvaluationActivity"
+            android:exported="false"
+            android:label="@string/title_company_job_evaluation"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".view.activity.CompanyEditInfoActivity"
             android:exported="false"
             android:label="@string/title_company_edit"

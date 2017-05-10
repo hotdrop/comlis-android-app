@@ -18,23 +18,9 @@ class JobEvaluationDao @Inject constructor(ormaHolder: OrmaHolder) {
                 .firstElement()
     }
 
-    fun insert(obj: JobEvaluation) {
+    fun upsert(obj: JobEvaluation) {
         orma.transactionSync {
-            relation().inserter().execute(obj)
-        }
-    }
-
-    fun update(obj: JobEvaluation) {
-        orma.transactionSync {
-            relation().updater()
-                    .correctSentence(obj.correctSentence)
-                    .developmentEnv(obj.developmentEnv)
-                    .wantSkill(obj.wantSkill)
-                    .personImage(obj.personImage)
-                    .appeal(obj.appeal)
-                    .jobOfferReason(obj.jobOfferReason)
-                    .companyIdEq(obj.companyId)
-                    .execute()
+            relation().upsert(obj)
         }
     }
 

@@ -4,6 +4,7 @@
     <!-- title label -->
     <string name="title_company_register">会社情報登録</string>
     <string name="title_company_edit">会社情報編集</string>
+    <string name="title_company_job_evaluation">募集要項の評価</string>
     <string name="title_tags">タグ一覧</string>
     <string name="title_tags_view_reorder">タグ並べ替え</string>
     <string name="title_search">検索</string>
@@ -40,7 +41,7 @@
     <!-- search -->
     <string name="hint_search_text_field">検索</string>
 
-    <!-- company register and edit -->
+    <!-- company register and detail -->
     <string name="label_company">会社名</string>
     <string name="label_category">分類</string>
     <string name="label_overview">概要</string>
@@ -65,15 +66,33 @@
     <string name="label_empty_value">未登録</string>
     <string name="label_empty_date">ー</string>
 
+    <!-- evaluation fragment -->
+    <string name="title_correct_sentence">文章として正しいか。</string>
+    <string name="note_correct_sentence">そもそも記載内容が文章として成立しているか。</string>
+    <string name="title_development_env">開発環境が書いてあるか。</string>
+    <string name="note_development_env">（言語、開発手法、人数など）適当に列挙されているのは怪しい。</string>
+    <string name="title_want_skill">欲しいスキルに対して具体的な説明がされているか。</string>
+    <string name="note_want_skill">例えば単に「Web開発者」ではなく「ReactとRedux等のFluxアーキテクチャを用いた云々」などエンジニアでないと分からない程度の詳しさになっているか。</string>
+    <string name="title_person_image">欲しい人物像と期待内容が明記されているか。</string>
+    <string name="note_person_image">募集したい人物像と期待していることが記載されているか？書いてあることがある意味すごすぎたり期待が高すぎるのは色々と怪しい可能性がある。</string>
+    <string name="title_appeal">会社の魅力が十分に記載されているか。</string>
+    <string name="note_appeal">弊社のサービス開発を担当していただきます、では魅力がわからない。</string>
+    <string name="title_job_offer_reason">求人を出した理由が記載されているか。</string>
+    <string name="note_job_offer_reason">サービスを大きくしたり事業拡大などが良い。離職率が高いイメージがなければ良い。</string>
+
+
+    <!-- hint -->
     <string name="hint_salary">任意</string>
     <string name="hint_wanted_job">PM, インフラエンジニア, プログラマー等</string>
     <string name="hint_url">https://www.sample.co.jp</string>
     <string name="hint_doing_business">現在やっている事業内容</string>
     <string name="hint_want_business">これからやろうとしている事業内容</string>
 
+    <!-- button -->
     <string name="add_button">登録</string>
     <string name="update_button">更新</string>
 
+    <!-- error or warning message -->
     <string name="company_name_attention">この会社名は既に登録されているため登録できません。</string>
     <string name="company_name_empty_attention">会社名を入力してください。</string>
     <string name="employees_num_attention">従業員数は数字を入力してください。</string>
