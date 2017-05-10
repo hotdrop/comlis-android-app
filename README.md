@@ -1,7 +1,11 @@
-# company-list-android-app
-It is a company data holding application for yourself.  
-I make it little by little in vacant time.  
-The require API level is 25.
+# コムリス
+会社情報を保持するアプリです。主に転職時の用途で作成しました。
+完全に自分用なのでAPIレベルはAndroid M以上でかつコロコロ仕様が変わる可能性があります。
+
+# 作成した経緯
+転職を思い立った際、転職サイトやスライド、ブログなどで興味をひいた会社の情報をいつでも見られるようにしたかったので、スマホで閲覧できたらいいなと思っていたのですが、無料の良いアプリがなかなか見つかりませんでした。
+そもそも私はアウトプットが皆無であったこともあり、せっかくなので転職までに何か一つ作品を完成させようと思い、Androidでアプリを作り始めました。
+また、何か新しい言語も覚えたかったのですが、どれもHello Worldに毛が生えた程度で終わってしまうため、これを機にKotlinで作成しようと思い立ちました。
 
 ## SDK version
 * min_sdk_version: 23
