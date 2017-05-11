@@ -4,14 +4,12 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import com.google.android.flexbox.FlexboxLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -21,7 +19,6 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
 import jp.hotdrop.compl.databinding.ItemTagAssociateBinding
 import jp.hotdrop.compl.model.Tag
-import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.activity.ActivityNavigator
 import jp.hotdrop.compl.viewmodel.CompanyDetailViewModel
 import jp.hotdrop.compl.viewmodel.TagAssociateViewModel
@@ -74,7 +71,7 @@ class CompanyDetailFragment: BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(canPassResult(requestCode, resultCode) || data == null) {
+        if(!canPassResult(requestCode, resultCode) || data == null) {
             return
         }
         val refreshMode = data.getIntExtra(REFRESH_MODE, NONE)
@@ -93,12 +90,7 @@ class CompanyDetailFragment: BaseFragment() {
     }
 
     private fun canPassResult(requestCode: Int, resultCode: Int): Boolean {
-        return (resultCode != Activity.RESULT_OK ||
-                (requestCode != REQ_CODE_COMPANY_EDIT_OVERVIEW &&
-                 requestCode != REQ_CODE_COMPANY_EDIT_INFORMATION &&
-                 requestCode != REQ_CODE_COMPANY_EDIT_BUSINESS &&
-                 requestCode != REQ_CODE_COMPANY_EDIT_DESCRIPTION &&
-                 requestCode != REQ_CODE_COMPANY_ASSOCIATE_TAG))
+        return (resultCode == Activity.RESULT_OK && (Request.values().filter { req -> req.code == requestCode }.isNotEmpty()))
     }
 
     private fun setResultForUpdate() {
@@ -149,21 +141,8 @@ class CompanyDetailFragment: BaseFragment() {
             layout.addView(binding.root)
         }
 
+        viewModel.initImages()
         binding.viewModel = viewModel
-
-        setImageCover(binding.imgCover, viewModel.colorName)
-
-        val darkColor = ColorUtil.getResDark(viewModel.colorName, context)
-
-        binding.imageEditAbstract.setColorFilter(darkColor)
-        binding.imageEditInformation.setColorFilter(darkColor)
-        binding.imageEditBusiness.setColorFilter(darkColor)
-        binding.imageEditDescription.setColorFilter(darkColor)
-
-        binding.fabDetailMenu.backgroundTintList = ColorStateList.valueOf(darkColor)
-        binding.fabEdit.backgroundTintList = ColorStateList.valueOf(darkColor)
-        binding.fabTag.backgroundTintList = ColorStateList.valueOf(darkColor)
-        binding.fabTrash.backgroundTintList = ColorStateList.valueOf(darkColor)
 
         val flexBox = binding.flexBoxContainer
         flexBox.removeAllViews()
@@ -171,16 +150,6 @@ class CompanyDetailFragment: BaseFragment() {
 
         initOnClickEvent()
         initFavoriteEvent()
-    }
-
-    private fun setImageCover(imageView: ImageView, colorName: String) {
-        when(colorName) {
-            ColorUtil.BLUE_NAME -> imageView.setImageResource(R.drawable.blue_cover)
-            ColorUtil.GREEN_NAME -> imageView.setImageResource(R.drawable.green_cover)
-            ColorUtil.RED_NAME -> imageView.setImageResource(R.drawable.red_cover)
-            ColorUtil.YELLOW_NAME -> imageView.setImageResource(R.drawable.yellow_cover)
-            ColorUtil.PURPLE_NAME -> imageView.setImageResource(R.drawable.purple_cover)
-        }
     }
 
     private fun initOnClickEvent() {
@@ -201,7 +170,7 @@ class CompanyDetailFragment: BaseFragment() {
 
         binding.fabTag.setOnClickListener {
             ActivityNavigator.showCompanyAssociateTag(this@CompanyDetailFragment, companyId,
-                    viewModel.colorName, REQ_CODE_COMPANY_ASSOCIATE_TAG)
+                    viewModel.colorName, Request.AssociateTag.code)
         }
 
         binding.fabTrash.setOnClickListener {
@@ -221,28 +190,33 @@ class CompanyDetailFragment: BaseFragment() {
         binding.toolbarLayout.setOnClickListener {
             // タイトルをタップ時に編集モードであれば概要と同じ画面に遷移する
             ActivityNavigator.showCompanyEditOverview(this@CompanyDetailFragment, companyId,
-                    viewModel.colorName, REQ_CODE_COMPANY_EDIT_OVERVIEW)
+                    viewModel.colorName, Request.EditOverview.code)
         }
         binding.toolbarLayout.isClickable = false
 
         binding.imageEditAbstract.setOnClickListener {
             ActivityNavigator.showCompanyEditOverview(this@CompanyDetailFragment, companyId,
-                    viewModel.colorName, REQ_CODE_COMPANY_EDIT_OVERVIEW)
+                    viewModel.colorName, Request.EditOverview.code)
         }
 
         binding.imageEditInformation.setOnClickListener {
             ActivityNavigator.showCompanyEditInfo(this@CompanyDetailFragment, companyId,
-                    viewModel.colorName, REQ_CODE_COMPANY_EDIT_INFORMATION)
+                    viewModel.colorName, Request.EditInformation.code)
         }
 
         binding.imageEditBusiness.setOnClickListener {
             ActivityNavigator.showCompanyEditBusiness(this@CompanyDetailFragment, companyId,
-                    viewModel.colorName, REQ_CODE_COMPANY_EDIT_BUSINESS)
+                    viewModel.colorName, Request.EditBusiness.code)
+        }
+
+        binding.imageEditJobEvaluation.setOnClickListener {
+            ActivityNavigator.showCompanyJobEvaluation(this@CompanyDetailFragment, companyId,
+                    viewModel.colorName, Request.EditJobEvaluation.code)
         }
 
         binding.imageEditDescription.setOnClickListener {
             ActivityNavigator.showCompanyEditDescription(this@CompanyDetailFragment, companyId,
-                    viewModel.colorName, REQ_CODE_COMPANY_EDIT_DESCRIPTION)
+                    viewModel.colorName, Request.EditDescription.code)
         }
 
     }

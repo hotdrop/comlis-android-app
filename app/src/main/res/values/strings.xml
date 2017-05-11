@@ -59,6 +59,8 @@
     <string name="label_doing_business">事業内容</string>
     <string name="label_want_business">ビジョン</string>
 
+    <string name="label_job_evaluation">募集要項の評価</string>
+
     <string name="label_description">詳細</string>
     <string name="label_etc">その他</string>
     <string name="label_employees_num_unit">名</string>
@@ -67,17 +69,17 @@
     <string name="label_empty_date">ー</string>
 
     <!-- evaluation fragment -->
-    <string name="title_correct_sentence">文章として正しいか。</string>
+    <string name="title_correct_sentence">文章として正しい。</string>
     <string name="note_correct_sentence">そもそも記載内容が文章として成立しているか。</string>
-    <string name="title_development_env">開発環境が書いてあるか。</string>
+    <string name="title_development_env">開発環境が書いてある。</string>
     <string name="note_development_env">（言語、開発手法、人数など）適当に列挙されているのは怪しい。</string>
-    <string name="title_want_skill">欲しいスキルに対して具体的な説明がされているか。</string>
+    <string name="title_want_skill">欲しいスキルに対して具体的な説明がされている。</string>
     <string name="note_want_skill">例えば単に「Web開発者」ではなく「ReactとRedux等のFluxアーキテクチャを用いた云々」などエンジニアでないと分からない程度の詳しさになっているか。</string>
-    <string name="title_person_image">欲しい人物像と期待内容が明記されているか。</string>
+    <string name="title_person_image">欲しい人物像と期待内容が明記されている。</string>
     <string name="note_person_image">募集したい人物像と期待していることが記載されているか？書いてあることがある意味すごすぎたり期待が高すぎるのは色々と怪しい可能性がある。</string>
-    <string name="title_appeal">会社の魅力が十分に記載されているか。</string>
+    <string name="title_appeal">会社の魅力が十分に記載されている。</string>
     <string name="note_appeal">弊社のサービス開発を担当していただきます、では魅力がわからない。</string>
-    <string name="title_job_offer_reason">求人を出した理由が記載されているか。</string>
+    <string name="title_job_offer_reason">求人を出した理由が記載されている。</string>
     <string name="note_job_offer_reason">サービスを大きくしたり事業拡大などが良い。離職率が高いイメージがなければ良い。</string>
 
 

@@ -143,7 +143,7 @@ class SearchFragment: BaseFragment() {
             val binding = holder.binding
             binding.viewModel = getItem(position)
             binding.cardView.setOnClickListener {
-                ActivityNavigator.showCompanyDetail(this@SearchFragment, binding.viewModel.id, REQ_CODE_COMPANY_DETAIL)
+                ActivityNavigator.showCompanyDetail(this@SearchFragment, binding.viewModel.id, Request.Detail.code)
             }
             val animView1 = binding.animationView1.setFavoriteStar()
             val animView2 = binding.animationView2.setFavoriteStar()

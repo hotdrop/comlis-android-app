@@ -28,6 +28,10 @@ object ActivityNavigator {
         CompanyEditBusinessActivity.startForResult(fragment, companyId, colorName, requestCode)
     }
 
+    fun showCompanyJobEvaluation(fragment: Fragment, companyId: Int, colorName: String, requestCode: Int) {
+        CompanyJobEvaluationActivity.startForResult(fragment, companyId, colorName, requestCode)
+    }
+
     fun showCompanyEditDescription(fragment: Fragment, companyId: Int, colorName: String, requestCode: Int) {
         CompanyEditDescriptionActivity.startForResult(fragment, companyId, colorName, requestCode)
     }

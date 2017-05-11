@@ -83,7 +83,7 @@ class CompanyTabFragment: BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_DETAIL || data == null) {
+        if(resultCode != Activity.RESULT_OK || requestCode != Request.Detail.code || data == null) {
             return
         }
         val refreshMode = data.getIntExtra(REFRESH_MODE, NONE)
@@ -169,7 +169,7 @@ class CompanyTabFragment: BaseFragment() {
             }
 
             binding.cardView.setOnClickListener {
-                ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.id, REQ_CODE_COMPANY_DETAIL)
+                ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.id, Request.Detail.code)
             }
 
             // Recycle後に復帰した際、追加したタグを削除しておかないとタグが積まれていくためremoveAllする。

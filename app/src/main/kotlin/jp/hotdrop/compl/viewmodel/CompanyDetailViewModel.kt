@@ -1,6 +1,7 @@
 package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.support.annotation.ColorRes
 import android.support.v4.view.ViewCompat
 import android.view.View
@@ -127,6 +128,35 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     }
     private var isModeEdit = false
 
+    fun initImages() {
+
+        setImageCover(binding.imgCover, colorName)
+
+        binding.let {
+            val darkColor = ColorUtil.getResDark(colorName, context)
+            it.imageEditAbstract.setColorFilter(darkColor)
+            it.imageEditInformation.setColorFilter(darkColor)
+            it.imageEditJobEvaluation.setColorFilter(darkColor)
+            it.imageEditBusiness.setColorFilter(darkColor)
+            it.imageEditDescription.setColorFilter(darkColor)
+
+            it.fabDetailMenu.backgroundTintList = ColorStateList.valueOf(darkColor)
+            it.fabEdit.backgroundTintList = ColorStateList.valueOf(darkColor)
+            it.fabTag.backgroundTintList = ColorStateList.valueOf(darkColor)
+            it.fabTrash.backgroundTintList = ColorStateList.valueOf(darkColor)
+        }
+    }
+
+    private fun setImageCover(imageView: ImageView, colorName: String) {
+        when(colorName) {
+            ColorUtil.BLUE_NAME -> imageView.setImageResource(R.drawable.blue_cover)
+            ColorUtil.GREEN_NAME -> imageView.setImageResource(R.drawable.green_cover)
+            ColorUtil.RED_NAME -> imageView.setImageResource(R.drawable.red_cover)
+            ColorUtil.YELLOW_NAME -> imageView.setImageResource(R.drawable.yellow_cover)
+            ColorUtil.PURPLE_NAME -> imageView.setImageResource(R.drawable.purple_cover)
+        }
+    }
+
     fun onClickMenuFab() {
         if(isFabMenuOpen) collapseFabMenu() else expandFabMenu()
     }
@@ -189,6 +219,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         binding.imageEditAbstract.visibleIcon()
         binding.imageEditInformation.visibleIcon()
         binding.imageEditBusiness.visibleIcon()
+        binding.imageEditJobEvaluation.visibleIcon()
         binding.imageEditDescription.visibleIcon()
         isModeEdit = true
     }
@@ -198,6 +229,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         binding.imageEditAbstract.goneIcon()
         binding.imageEditInformation.goneIcon()
         binding.imageEditBusiness.goneIcon()
+        binding.imageEditJobEvaluation.goneIcon()
         binding.imageEditDescription.goneIcon()
         isModeEdit = false
     }

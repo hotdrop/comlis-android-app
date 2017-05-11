@@ -1,6 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.fragment.CompanyJobEvaluationFragment">
 
     <data>
@@ -26,7 +25,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginStart="@dimen/spacing"
-                    android:checked="@={viewModel.jobEvaluation.correctSentence}"/>
+                    android:checked="@={viewModel.viewCorrectSentence}"/>
 
                 <TextView
                     android:id="@+id/correct_sentence_title"
@@ -55,7 +54,7 @@
                     android:layout_below="@id/line_correct_sentence"
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginStart="@dimen/spacing"
-                    android:checked="@={viewModel.jobEvaluation.developmentEnv}"/>
+                    android:checked="@={viewModel.viewDevelopmentEnv}"/>
 
                 <TextView
                     android:id="@+id/development_env_title"
@@ -84,7 +83,7 @@
                     android:layout_below="@id/line_development_env"
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginStart="@dimen/spacing"
-                    android:checked="@={viewModel.jobEvaluation.wantSkill}"/>
+                    android:checked="@={viewModel.viewWantSkill}"/>
 
                 <TextView
                     android:id="@+id/want_skill_title"
@@ -113,7 +112,7 @@
                     android:layout_below="@id/line_want_skill"
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginStart="@dimen/spacing"
-                    android:checked="@={viewModel.jobEvaluation.personImage}"/>
+                    android:checked="@={viewModel.viewPersonImage}"/>
 
                 <TextView
                     android:id="@+id/person_image_title"
@@ -142,7 +141,7 @@
                     android:layout_below="@id/line_person_image"
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginStart="@dimen/spacing"
-                    android:checked="@={viewModel.jobEvaluation.appeal}"/>
+                    android:checked="@={viewModel.viewAppeal}"/>
 
                 <TextView
                     android:id="@+id/appeal_title"
@@ -171,7 +170,7 @@
                     android:layout_below="@id/line_appeal"
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginStart="@dimen/spacing"
-                    android:checked="@={viewModel.jobEvaluation.jobOfferReason}"/>
+                    android:checked="@={viewModel.viewJobOfferReason}"/>
 
                 <TextView
                     android:id="@+id/job_offer_reason_title"

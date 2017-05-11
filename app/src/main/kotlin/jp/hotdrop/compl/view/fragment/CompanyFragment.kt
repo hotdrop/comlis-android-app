@@ -69,7 +69,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode != Activity.RESULT_OK || requestCode != REQ_CODE_COMPANY_REGISTER || data == null) {
+        if(resultCode != Activity.RESULT_OK || requestCode != Request.Register.code || data == null) {
             return
         }
         tabName = data.getStringExtra(EXTRA_CATEGORY_NAME)
@@ -105,7 +105,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
         binding.viewPager.adapter = adapter
         binding.tabLayout.setupWithViewPager(binding.viewPager)
         binding.tabLayout.addOnTabSelectedListener(SelectedTabListener(binding.viewPager))
-        binding.fab.setOnClickListener { ActivityNavigator.showCompanyRegister(this, tabName, REQ_CODE_COMPANY_REGISTER) }
+        binding.fab.setOnClickListener { ActivityNavigator.showCompanyRegister(this, tabName, Request.Register.code) }
 
         if(stockSelectedTabName != null) {
             binding.viewPager.currentItem = adapter.getPagePosition(stockSelectedTabName)

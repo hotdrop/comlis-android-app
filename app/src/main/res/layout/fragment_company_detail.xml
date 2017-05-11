@@ -272,16 +272,74 @@
                     android:text="@{viewModel.viewWantBusiness}"/>
 
                 <TextView
-                    android:id="@+id/label_description_title"
+                    android:id="@+id/label_job_evaluation_title"
                     style="@style/SectionTitle"
                     android:textColor="@{viewModel.getColorRes}"
                     android:layout_below="@id/txt_want_business"
+                    android:text="@string/label_job_evaluation"/>
+
+                <ImageView
+                    android:id="@+id/image_edit_job_evaluation"
+                    style="@style/EditIconImage"
+                    android:layout_below="@id/txt_want_business"
+                    android:layout_toEndOf="@id/label_job_evaluation_title"
+                    android:layout_alignBottom="@id/label_job_evaluation_title"
+                    android:src="@drawable/ic_mode_edit"/>
+
+                <View
+                    android:id="@+id/line_job_evaluation_title"
+                    style="@style/TitleBorder"
+                    android:layout_below="@id/label_job_evaluation_title" />
+
+                <TextView
+                    android:id="@+id/job_eval_correct_sentence"
+                    style="@style/JobEvaluationLabel"
+                    android:layout_below="@id/line_job_evaluation_title"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:drawableStart="@drawable/ic_star_rate"
+                    android:text="@string/title_correct_sentence" />
+                <TextView
+                    android:id="@+id/job_eval_development_env"
+                    style="@style/JobEvaluationLabel"
+                    android:layout_below="@id/job_eval_correct_sentence"
+                    android:drawableStart="@drawable/ic_star_rate"
+                    android:text="@string/title_development_env" />
+                <TextView
+                    android:id="@+id/job_eval_want_skill"
+                    style="@style/JobEvaluationLabel"
+                    android:layout_below="@id/job_eval_development_env"
+                    android:drawableStart="@drawable/ic_star_rate"
+                    android:text="@string/title_want_skill" />
+                <TextView
+                    android:id="@+id/job_eval_person_image"
+                    style="@style/JobEvaluationLabel"
+                    android:layout_below="@id/job_eval_want_skill"
+                    android:drawableStart="@drawable/ic_star_rate"
+                    android:text="@string/title_person_image" />
+                <TextView
+                    android:id="@+id/job_eval_appeal"
+                    style="@style/JobEvaluationLabel"
+                    android:layout_below="@id/job_eval_person_image"
+                    android:drawableStart="@drawable/ic_star_rate"
+                    android:text="@string/title_appeal" />
+                <TextView
+                    android:id="@+id/job_eval_offer_reason"
+                    style="@style/JobEvaluationLabel"
+                    android:layout_below="@id/job_eval_appeal"
+                    android:drawableStart="@drawable/ic_star_rate"
+                    android:text="@string/title_job_offer_reason" />
+
+                <TextView
+                    android:id="@+id/label_description_title"
+                    style="@style/SectionTitle"
+                    android:textColor="@{viewModel.getColorRes}"
+                    android:layout_below="@id/job_eval_offer_reason"
                     android:text="@string/label_description"/>
 
                 <ImageView
                     android:id="@+id/image_edit_description"
                     style="@style/EditIconImage"
-                    android:layout_below="@id/txt_want_business"
+                    android:layout_below="@id/job_eval_offer_reason"
                     android:layout_toEndOf="@id/label_description_title"
                     android:layout_alignBottom="@id/label_description_title"
                     android:src="@drawable/ic_mode_edit"/>
