@@ -20,7 +20,6 @@ class JobEvaluationViewModel @Inject constructor(val context: Context) {
     @Inject
     lateinit var categoryDao: CategoryDao
 
-    lateinit var jobEvaluation: JobEvaluation
     lateinit var colorName: String
 
     var viewCorrectSentence = false
@@ -33,21 +32,22 @@ class JobEvaluationViewModel @Inject constructor(val context: Context) {
     fun loadData(companyId: Int): Completable {
         return companyDao.findObserve(companyId)
                 .flatMapCompletable { company ->
-                    loadColorName(company)
-                    jobEvaluationDao.find(companyId).flatMapCompletable { je ->
-                        loadViewModel(je)
-                        Completable.complete()
-                    }
+                    setData(company)
                 }
 
     }
 
-    private fun loadColorName(company: Company) {
+    private fun setData(company: Company): Completable {
         colorName = categoryDao.find(company.categoryId).colorType
-    }
-
-    private fun loadViewModel(je: JobEvaluation) {
-        jobEvaluation = je
+        return jobEvaluationDao.find(company.id).flatMapCompletable { je ->
+            viewCorrectSentence = je.correctSentence
+            viewDevelopmentEnv= je.developmentEnv
+            viewWantSkill= je.wantSkill
+            viewPersonImage= je.personImage
+            viewAppeal= je.appeal
+            viewJobOfferReason= je.jobOfferReason
+            Completable.complete()
+        }
     }
 
     @ColorRes

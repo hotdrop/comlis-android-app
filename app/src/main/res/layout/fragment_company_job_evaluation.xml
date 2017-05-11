@@ -25,6 +25,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginStart="@dimen/spacing"
+                    android:backgroundTint="@{viewModel.getColorRes}"
                     android:checked="@={viewModel.viewCorrectSentence}"/>
 
                 <TextView

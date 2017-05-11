@@ -25,6 +25,7 @@ class JobEvaluationDao @Inject constructor(ormaHolder: OrmaHolder) {
     }
 
     fun count(companyId: Int): Int {
+        // TODO バグってる。カウントは１しかない
         return relation().selector().companyIdEq(companyId).count()
     }
 
