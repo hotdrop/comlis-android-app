@@ -176,17 +176,15 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         setEvaluationColor(jobEvaluation.jobOfferReason, binding.jobEvalOfferReason)
     }
 
-    private val evaluationTextColor = ContextCompat.getColor(context, R.color.checked_evaluation_text)
-    private val evaluationDrawColor = ContextCompat.getColor(context, R.color.checked_evaluation_draw)
-    private val unEvaluationTextColor = ContextCompat.getColor(context, R.color.unchecked_evaluation_text)
-    private val unEvaluationDrawColor = ContextCompat.getColor(context, R.color.unchecked_evaluation_draw)
+    private val evaluationTextColor = ContextCompat.getColor(context, R.color.checked_evaluation)
+    private val unCheckedColor = ContextCompat.getColor(context, R.color.unchecked_evaluation)
     private fun setEvaluationColor(checked: Boolean, v: TextView) {
         if(checked) {
             v.setTextColor(evaluationTextColor)
-            v.compoundDrawableTintList = ColorStateList.valueOf(evaluationDrawColor)
+            v.compoundDrawableTintList = ColorStateList.valueOf(ColorUtil.getResDark(colorName, context))
         } else {
-            v.setTextColor(unEvaluationTextColor)
-            v.compoundDrawableTintList = ColorStateList.valueOf(unEvaluationDrawColor)
+            v.setTextColor(unCheckedColor)
+            v.compoundDrawableTintList = ColorStateList.valueOf(unCheckedColor)
         }
     }
 

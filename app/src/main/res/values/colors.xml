@@ -38,10 +38,8 @@
     <color name="label">@color/gray</color>
     <color name="text">@color/black</color>
     <color name="subtext">@color/gray</color>
-    <color name="unchecked_evaluation_text">@color/light_gray</color>
-    <color name="unchecked_evaluation_draw">@color/light_gray</color>
-    <color name="checked_evaluation_text">@color/black</color>
-    <color name="checked_evaluation_draw">@color/yellow</color>
+    <color name="unchecked_evaluation">@color/light_gray</color>
+    <color name="checked_evaluation">@color/gray</color>
     <color name="empty_text">@color/gray</color>
     <color name="attention">@color/red</color>
 

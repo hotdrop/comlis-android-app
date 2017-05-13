@@ -25,7 +25,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginStart="@dimen/spacing"
-                    android:backgroundTint="@{viewModel.getColorRes}"
+                    android:buttonTint="@{viewModel.getColorRes}"
                     android:checked="@={viewModel.viewCorrectSentence}"/>
 
                 <TextView
@@ -55,6 +55,7 @@
                     android:layout_below="@id/line_correct_sentence"
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginStart="@dimen/spacing"
+                    android:buttonTint="@{viewModel.getColorRes}"
                     android:checked="@={viewModel.viewDevelopmentEnv}"/>
 
                 <TextView
@@ -84,6 +85,7 @@
                     android:layout_below="@id/line_development_env"
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginStart="@dimen/spacing"
+                    android:buttonTint="@{viewModel.getColorRes}"
                     android:checked="@={viewModel.viewWantSkill}"/>
 
                 <TextView
@@ -113,6 +115,7 @@
                     android:layout_below="@id/line_want_skill"
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginStart="@dimen/spacing"
+                    android:buttonTint="@{viewModel.getColorRes}"
                     android:checked="@={viewModel.viewPersonImage}"/>
 
                 <TextView
@@ -142,6 +145,7 @@
                     android:layout_below="@id/line_person_image"
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginStart="@dimen/spacing"
+                    android:buttonTint="@{viewModel.getColorRes}"
                     android:checked="@={viewModel.viewAppeal}"/>
 
                 <TextView
@@ -171,6 +175,7 @@
                     android:layout_below="@id/line_appeal"
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginStart="@dimen/spacing"
+                    android:buttonTint="@{viewModel.getColorRes}"
                     android:checked="@={viewModel.viewJobOfferReason}"/>
 
                 <TextView
