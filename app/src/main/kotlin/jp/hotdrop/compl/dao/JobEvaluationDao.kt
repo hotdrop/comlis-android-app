@@ -19,14 +19,19 @@ class JobEvaluationDao @Inject constructor(ormaHolder: OrmaHolder) {
     }
 
     fun upsert(obj: JobEvaluation) {
-        orma.transactionSync {
-            relation().upsert(obj)
-        }
+        relation().upsert(obj)
     }
 
-    fun count(companyId: Int): Int {
-        // TODO バグってる。カウントは１しかない
-        return relation().selector().companyIdEq(companyId).count()
+    fun countChecked(companyId: Int): Int {
+        val je = relation().selector().companyIdEq(companyId).value()
+        var cnt = 0
+        if(je.correctSentence) cnt++
+        if(je.developmentEnv) cnt++
+        if(je.wantSkill) cnt++
+        if(je.personImage) cnt++
+        if(je.appeal) cnt++
+        if(je.jobOfferReason) cnt++
+        return cnt
     }
 
     private fun relation(): JobEvaluation_Relation {

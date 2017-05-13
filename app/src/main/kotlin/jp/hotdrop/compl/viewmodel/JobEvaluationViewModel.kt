@@ -39,15 +39,17 @@ class JobEvaluationViewModel @Inject constructor(val context: Context) {
 
     private fun setData(company: Company): Completable {
         colorName = categoryDao.find(company.categoryId).colorType
-        return jobEvaluationDao.find(company.id).flatMapCompletable { je ->
-            viewCorrectSentence = je.correctSentence
-            viewDevelopmentEnv= je.developmentEnv
-            viewWantSkill= je.wantSkill
-            viewPersonImage= je.personImage
-            viewAppeal= je.appeal
-            viewJobOfferReason= je.jobOfferReason
-            Completable.complete()
-        }
+
+        return jobEvaluationDao.find(company.id)
+                .flatMapCompletable { je ->
+                    viewCorrectSentence = je.correctSentence
+                    viewDevelopmentEnv= je.developmentEnv
+                    viewWantSkill= je.wantSkill
+                    viewPersonImage= je.personImage
+                    viewAppeal= je.appeal
+                    viewJobOfferReason= je.jobOfferReason
+                    Completable.complete()
+                }
     }
 
     @ColorRes

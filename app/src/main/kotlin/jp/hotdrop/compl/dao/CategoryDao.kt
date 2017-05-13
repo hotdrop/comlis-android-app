@@ -15,13 +15,13 @@ class CategoryDao @Inject constructor(ormaHolder: OrmaHolder) {
     fun find(id: Int): Category {
         return categoryRelation().selector()
                 .idEq(id)
-                .first()
+                .value()
     }
 
     fun find(name: String): Category {
         return categoryRelation().selector()
                 .nameEq(name)
-                .first()
+                .value()
     }
 
     fun findAll(): Single<List<Category>> {

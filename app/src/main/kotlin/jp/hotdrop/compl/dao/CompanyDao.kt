@@ -18,7 +18,7 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
     fun find(id: Int): Company {
         return companyRelation().selector()
                 .idEq(id)
-                .first()
+                .value()
     }
 
     fun findObserve(id: Int): Maybe<Company> {
