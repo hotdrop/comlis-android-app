@@ -2,7 +2,6 @@ package jp.hotdrop.compl.dao
 
 import io.reactivex.Maybe
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.model.*
 import java.util.*
 import javax.inject.Inject

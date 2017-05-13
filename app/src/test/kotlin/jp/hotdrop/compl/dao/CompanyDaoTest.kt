@@ -26,6 +26,7 @@ class CompanyDaoTest {
         val ormaHolder = OrmaHolder(orma)
         tagDao = TagDao(ormaHolder)
         companyDao = CompanyDao(ormaHolder)
+        companyDao.tagDao = tagDao
     }
 
     @Test
