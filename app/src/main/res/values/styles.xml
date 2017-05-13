@@ -248,6 +248,8 @@
         <item name="android:layout_marginStart">@dimen/spacing</item>
         <item name="android:ellipsize">end</item>
         <item name="android:lines">1</item>
+        <item name="android:drawableTint">@color/unchecked_evaluation_draw</item>
+        <item name="android:textColor">@color/unchecked_evaluation_text</item>
         <item name="android:textSize">@dimen/text_small</item>
     </style>
 

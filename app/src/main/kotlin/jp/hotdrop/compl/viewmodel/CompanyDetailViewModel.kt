@@ -3,18 +3,22 @@ package jp.hotdrop.compl.viewmodel
 import android.content.Context
 import android.content.res.ColorStateList
 import android.support.annotation.ColorRes
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
+import android.widget.TextView
 import io.reactivex.Completable
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
+import jp.hotdrop.compl.dao.JobEvaluationDao
 import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
 import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.model.JobEvaluation
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 import javax.inject.Inject
@@ -31,6 +35,8 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     lateinit var companyDao: CompanyDao
     @Inject
     lateinit var categoryDao: CategoryDao
+    @Inject
+    lateinit var jobEvaluationDao: JobEvaluationDao
 
     lateinit var binding: FragmentCompanyDetailBinding
 
@@ -53,6 +59,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     var viewRegisterDate = ""
     var viewUpdateDate = ""
 
+    lateinit var jobEvaluation: JobEvaluation
     lateinit var colorName: String
     lateinit var viewTags: List<Tag>
 
@@ -60,11 +67,10 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         return companyDao.findObserve(companyId)
                 .flatMapCompletable { company ->
                     setData(company, newBinding)
-                    Completable.complete()
                 }
     }
 
-    private fun setData(company: Company, newBinding: FragmentCompanyDetailBinding) {
+    private fun setData(company: Company, newBinding: FragmentCompanyDetailBinding): Completable {
 
         id = company.id
         categoryId = company.categoryId
@@ -92,6 +98,13 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
 
         colorName = categoryDao.find(categoryId).colorType
         viewTags = companyDao.findByTag(id)
+
+        jobEvaluation = JobEvaluation().apply { companyId = id }
+        return jobEvaluationDao.find(id)
+                .flatMapCompletable { je ->
+                    jobEvaluation = je
+                    Completable.complete()
+                }
     }
 
     @ColorRes
@@ -130,7 +143,8 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
 
     fun initImages() {
 
-        setImageCover(binding.imgCover, colorName)
+        setImageCover(binding.imgCover)
+        setEvaluation()
 
         binding.let {
             val darkColor = ColorUtil.getResDark(colorName, context)
@@ -147,13 +161,36 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         }
     }
 
-    private fun setImageCover(imageView: ImageView, colorName: String) {
+    private fun setImageCover(imageView: ImageView) {
         when(colorName) {
             ColorUtil.BLUE_NAME -> imageView.setImageResource(R.drawable.blue_cover)
             ColorUtil.GREEN_NAME -> imageView.setImageResource(R.drawable.green_cover)
             ColorUtil.RED_NAME -> imageView.setImageResource(R.drawable.red_cover)
             ColorUtil.YELLOW_NAME -> imageView.setImageResource(R.drawable.yellow_cover)
             ColorUtil.PURPLE_NAME -> imageView.setImageResource(R.drawable.purple_cover)
+        }
+    }
+
+    private fun setEvaluation() {
+        setEvaluationColor(jobEvaluation.correctSentence, binding.jobEvalCorrectSentence)
+        setEvaluationColor(jobEvaluation.developmentEnv, binding.jobEvalDevelopmentEnv)
+        setEvaluationColor(jobEvaluation.wantSkill, binding.jobEvalWantSkill)
+        setEvaluationColor(jobEvaluation.appeal, binding.jobEvalAppeal)
+        setEvaluationColor(jobEvaluation.personImage, binding.jobEvalPersonImage)
+        setEvaluationColor(jobEvaluation.jobOfferReason, binding.jobEvalOfferReason)
+    }
+
+    private val evaluationTextColor = ContextCompat.getColor(context, R.color.checked_evaluation_text)
+    private val evaluationDrawColor = ContextCompat.getColor(context, R.color.checked_evaluation_draw)
+    private val unEvaluationTextColor = ContextCompat.getColor(context, R.color.unchecked_evaluation_text)
+    private val unEvaluationDrawColor = ContextCompat.getColor(context, R.color.unchecked_evaluation_draw)
+    private fun setEvaluationColor(checked: Boolean, v: TextView) {
+        if(checked) {
+            v.setTextColor(evaluationTextColor)
+            v.compoundDrawableTintList = ColorStateList.valueOf(evaluationDrawColor)
+        } else {
+            v.setTextColor(unEvaluationTextColor)
+            v.compoundDrawableTintList = ColorStateList.valueOf(unEvaluationDrawColor)
         }
     }
 
