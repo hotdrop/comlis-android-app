@@ -3,7 +3,6 @@ package jp.hotdrop.compl.dao
 import android.content.Context
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
-import io.reactivex.schedulers.TestScheduler
 import jp.hotdrop.compl.model.JobEvaluation
 import jp.hotdrop.compl.model.OrmaDatabase
 import org.junit.Before
@@ -39,12 +38,9 @@ class JobEvaluationDaoTest {
             jobOfferReason = false
         }
         dao.upsert(je)
-        dao.find(testCompanyId).subscribeOn(TestScheduler())
-                .observeOn(TestScheduler())
-                .subscribe(
-                        { je2 -> assert(equal(je, je2)) },
-                        { e -> error("If the value obtained from DB is NULL." + e.message) }
-                ).dispose()
+        val je2 = dao.find(testCompanyId)
+
+        assert(equal(je, je2!!))
     }
 
     @Test
@@ -62,62 +58,8 @@ class JobEvaluationDaoTest {
         dao.upsert(je)
         je.jobOfferReason = true
         dao.upsert(je)
-        dao.find(testCompanyId).subscribeOn(TestScheduler())
-                .observeOn(TestScheduler())
-                .subscribe(
-                        { je2 -> assert(equal(je, je2)) },
-                        { e -> error("If the value obtained from DB is NULL." + e.message) }
-                ).dispose()
-    }
-
-    @Test
-    fun countTest() {
-        val testId1 = 111
-        dao.upsert(JobEvaluation().apply { companyId = testId1 })
-
-        val testId2 = 223
-        dao.upsert(JobEvaluation().apply {
-            companyId = testId2
-            correctSentence = true
-        })
-        val testId3 = 321
-        dao.upsert(JobEvaluation().apply {
-            companyId = testId3
-            correctSentence = true
-            developmentEnv = true
-            wantSkill = true
-            appeal = true
-            personImage = true
-            jobOfferReason = true
-        })
-
-        dao.find(testId1).subscribeOn(TestScheduler())
-                .observeOn(TestScheduler())
-                .subscribe(
-                        { je ->
-                            val cntZero = dao.countChecked(je.companyId)
-                            assert(cntZero == 0)
-                        },
-                        { e -> error("count zero test error." + e.message) }
-                ).dispose()
-        dao.find(testId2).subscribeOn(TestScheduler())
-                .observeOn(TestScheduler())
-                .subscribe(
-                        { je ->
-                            val cntOne = dao.countChecked(je.companyId)
-                            assert(cntOne == 1)
-                        },
-                        { e -> error("count one test error." + e.message) }
-                ).dispose()
-        dao.find(testId3).subscribeOn(TestScheduler())
-                .observeOn(TestScheduler())
-                .subscribe(
-                        { je ->
-                            val cntSix = dao.countChecked(je.companyId)
-                            assert(cntSix == 6)
-                        },
-                        { e -> error("count six test error." + e.message) }
-                ).dispose()
+        val je2 = dao.find(testCompanyId)
+        assert(equal(je, je2!!))
     }
 
     private fun equal(je1: JobEvaluation, je2: JobEvaluation): Boolean {

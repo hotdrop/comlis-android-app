@@ -67,10 +67,11 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         return companyDao.findObserve(companyId)
                 .flatMapCompletable { company ->
                     setData(company, newBinding)
+                    Completable.complete()
                 }
     }
 
-    private fun setData(company: Company, newBinding: FragmentCompanyDetailBinding): Completable {
+    private fun setData(company: Company, newBinding: FragmentCompanyDetailBinding) {
 
         id = company.id
         categoryId = company.categoryId
@@ -99,12 +100,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         colorName = categoryDao.find(categoryId).colorType
         viewTags = companyDao.findByTag(id)
 
-        jobEvaluation = JobEvaluation().apply { companyId = id }
-        return jobEvaluationDao.find(id)
-                .flatMapCompletable { je ->
-                    jobEvaluation = je
-                    Completable.complete()
-                }
+        jobEvaluation = jobEvaluationDao.find(id) ?: JobEvaluation().apply { companyId = id }
     }
 
     @ColorRes

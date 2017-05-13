@@ -20,11 +20,12 @@
     <string name="description_company_reorder">会社情報の並び順を変更するためのイメージアイコンです。</string>
 
     <!-- company list and detail -->
-    <string name="label_display_employees_num">従業員数:</string>
-    <string name="label_display_salary">年収:</string>
-    <string name="label_display_wanted_job">募集職種:</string>
-    <string name="label_display_work_place">勤務地候補:</string>
-    <string name="label_display_url">URL:</string>
+    <string name="label_display_wanted_job">募集職種: </string>
+    <string name="label_display_job_evaluation">募集要項の評価点: </string>
+    <string name="label_display_employees_num">従業員数: </string>
+    <string name="label_display_salary">年収: </string>
+    <string name="label_display_work_place">勤務地候補: </string>
+    <string name="label_display_url">URL: </string>
 
     <!-- company detail -->
     <string name="label_display_doing_business">事業内容:</string>
@@ -64,6 +65,7 @@
     <string name="label_description">詳細</string>
     <string name="label_etc">その他</string>
     <string name="label_employees_num_unit">名</string>
+    <string name="label_job_evaluation_unit">点</string>
 
     <string name="label_empty_value">未登録</string>
     <string name="label_empty_date">ー</string>

@@ -20,6 +20,7 @@ import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
+import jp.hotdrop.compl.dao.JobEvaluationDao
 import jp.hotdrop.compl.databinding.FragmentCompanyTabBinding
 import jp.hotdrop.compl.databinding.ItemCompanyBinding
 import jp.hotdrop.compl.databinding.ItemCompanyListTagBinding
@@ -40,6 +41,8 @@ class CompanyTabFragment: BaseFragment() {
     lateinit var companyDao: CompanyDao
     @Inject
     lateinit var categoryDao: CategoryDao
+    @Inject
+    lateinit var jobEvaluationDao: JobEvaluationDao
 
     private val categoryId by lazy { arguments.getInt(EXTRA_CATEGORY_ID) }
 
@@ -92,7 +95,7 @@ class CompanyTabFragment: BaseFragment() {
 
         when(refreshMode) {
             UPDATE -> {
-                val vm = CompanyViewModel(companyDao.find(companyId), context, companyDao, categoryDao)
+                val vm = CompanyViewModel(companyDao.find(companyId), context, companyDao, categoryDao, jobEvaluationDao)
                 adapter.refresh(vm)
             }
             // notifyRemoveで実装した場合、並び替えしてから削除するとConcurrentModificationExceptionになるためリスト再生成する。
@@ -116,7 +119,7 @@ class CompanyTabFragment: BaseFragment() {
         adapter = Adapter(context)
 
         if(companies.isNotEmpty()) {
-            adapter.addAll(companies.map{ company -> CompanyViewModel(company, context, companyDao, categoryDao) })
+            adapter.addAll(companies.map{ company -> CompanyViewModel(company, context, companyDao, categoryDao, jobEvaluationDao) })
             goneEmptyMessage()
         } else {
             visibleEmptyMessage()

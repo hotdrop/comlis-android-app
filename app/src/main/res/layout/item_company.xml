@@ -59,16 +59,31 @@
                     android:text="@{viewModel.viewWantedJob}" />
 
                 <TextView
-                    android:id="@+id/label_salary"
+                    android:id="@+id/label_job_evaluation"
                     style="@style/ListSubItemLabel"
                     android:layout_below="@id/label_wanted_job"
+                    android:layout_toEndOf="@id/icon_reorder"
+                    android:text="@string/label_display_job_evaluation"/>
+
+                <TextView
+                    android:id="@+id/txt_job_evaluation"
+                    style="@style/ListSubItemText"
+                    android:layout_below="@id/txt_wanted_job"
+                    android:layout_alignTop="@id/label_job_evaluation"
+                    android:layout_toEndOf="@id/label_job_evaluation"
+                    android:text="@{viewModel.viewJobEvaluation}" />
+
+                <TextView
+                    android:id="@+id/label_salary"
+                    style="@style/ListSubItemLabel"
+                    android:layout_below="@id/label_job_evaluation"
                     android:layout_toEndOf="@id/icon_reorder"
                     android:text="@string/label_display_salary" />
 
                 <TextView
                     android:id="@+id/txt_salary"
                     style="@style/ListSubItemText"
-                    android:layout_below="@id/txt_wanted_job"
+                    android:layout_below="@id/txt_job_evaluation"
                     android:layout_alignTop="@id/label_salary"
                     android:layout_toEndOf="@id/label_salary"
                     android:text="@{viewModel.viewSalary}"/>
