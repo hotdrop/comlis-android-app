@@ -7,7 +7,7 @@ import com.github.gfx.android.orma.annotation.Table
 @Table
 class JobEvaluation {
 
-    @PrimaryKey(autoincrement = false)
+    @PrimaryKey(auto = false, autoincrement = false)
     var companyId: Int = 0
 
     @Column

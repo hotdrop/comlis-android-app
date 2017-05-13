@@ -28,7 +28,7 @@ class JobEvaluationDaoTest {
 
     @Test
     fun upsertForInsertTest() {
-        val testCompanyId = 1
+        val testCompanyId = 50
         val je = JobEvaluation().apply {
             companyId = testCompanyId
             correctSentence = true
@@ -49,7 +49,7 @@ class JobEvaluationDaoTest {
 
     @Test
     fun upsertForUpdateTest() {
-        val testCompanyId = 2
+        val testCompanyId = 60
         val je = JobEvaluation().apply {
             companyId = testCompanyId
             correctSentence = true
@@ -72,15 +72,15 @@ class JobEvaluationDaoTest {
 
     @Test
     fun countTest() {
-        val testId1 = 1
+        val testId1 = 111
         dao.upsert(JobEvaluation().apply { companyId = testId1 })
 
-        val testId2 = 2
+        val testId2 = 223
         dao.upsert(JobEvaluation().apply {
             companyId = testId2
             correctSentence = true
         })
-        val testId3 = 3
+        val testId3 = 321
         dao.upsert(JobEvaluation().apply {
             companyId = testId3
             correctSentence = true

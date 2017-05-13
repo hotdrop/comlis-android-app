@@ -20,7 +20,8 @@ class JobEvaluationViewModel @Inject constructor(val context: Context) {
     @Inject
     lateinit var categoryDao: CategoryDao
 
-    lateinit var colorName: String
+    private var companyId = -1
+    private lateinit var colorName: String
 
     var viewCorrectSentence = false
     var viewDevelopmentEnv= false
@@ -38,6 +39,8 @@ class JobEvaluationViewModel @Inject constructor(val context: Context) {
     }
 
     private fun setData(company: Company): Completable {
+
+        companyId = company.id
         colorName = categoryDao.find(company.categoryId).colorType
 
         return jobEvaluationDao.find(company.id)
@@ -62,6 +65,7 @@ class JobEvaluationViewModel @Inject constructor(val context: Context) {
     }
 
     private fun makeData() = JobEvaluation().apply {
+        companyId = this@JobEvaluationViewModel.companyId
         correctSentence = viewCorrectSentence
         developmentEnv = viewDevelopmentEnv
         wantSkill = viewWantSkill
