@@ -21,7 +21,7 @@
 
     <!-- company list and detail -->
     <string name="label_display_wanted_job">募集職種: </string>
-    <string name="label_display_job_evaluation">募集要項の評価点: </string>
+    <string name="label_display_job_evaluation">募集要項の評価: </string>
     <string name="label_display_employees_num">従業員数: </string>
     <string name="label_display_salary">年収: </string>
     <string name="label_display_work_place">勤務地候補: </string>
