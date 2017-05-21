@@ -48,7 +48,7 @@ class CompanyEditOverviewViewModel @Inject constructor(val context: Context): Vi
 
     fun existName(name: String): Boolean {
         if(name.isBlank()) return false
-        return companyDao.exist(name, companyId)
+        return companyDao.existExclusionId(name, companyId)
     }
 
     fun update(selectedCategorySpinnerId: Int) {

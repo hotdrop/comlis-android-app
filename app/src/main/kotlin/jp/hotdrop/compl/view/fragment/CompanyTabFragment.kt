@@ -161,14 +161,12 @@ class CompanyTabFragment: BaseFragment() {
 
         override fun onBindViewHolder(holder: BindingHolder<ItemCompanyBinding>?, position: Int) {
             holder ?: return
-            // applyにしようと思ったがネストが深くなるのでこのままにした。
-            val binding = holder.binding
-            binding.viewModel = getItem(position)
-            binding.iconReorder.setOnTouchListener { _, motionEvent ->
-                if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
-                    onStartDrag(holder)
+            val binding = holder.binding.apply {
+                viewModel = getItem(position)
+                iconReorder.setOnTouchListener { _, motionEvent ->
+                    if(isMotionEventDown(motionEvent)) onStartDrag(holder)
+                    false
                 }
-                false
             }
 
             binding.cardView.setOnClickListener {
@@ -179,6 +177,10 @@ class CompanyTabFragment: BaseFragment() {
             binding.flexBoxContainer.removeAllViews()
             binding.viewModel.viewTags.forEach { tag -> setCardView(binding.flexBoxContainer, tag) }
             initFavoriteEvent(binding)
+        }
+
+        private fun isMotionEventDown(motionEvent: MotionEvent): Boolean {
+            return (MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN)
         }
 
         fun refresh(vm: CompanyViewModel) {

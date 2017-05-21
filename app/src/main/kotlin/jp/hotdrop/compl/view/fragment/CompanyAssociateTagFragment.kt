@@ -107,8 +107,9 @@ class CompanyAssociateTagFragment: BaseFragment() {
 
         override fun onBindViewHolder(holder: BindingHolder<ItemTagAssociateBinding>?, position: Int) {
             holder ?: return
-            val binding = holder.binding
-            binding.viewModel = getItem(position)
+            val binding = holder.binding.apply {
+                viewModel = getItem(position)
+            }
 
             binding.cardView.setOnClickListener {
                 val vm = binding.viewModel

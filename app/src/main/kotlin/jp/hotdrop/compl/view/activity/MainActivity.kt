@@ -28,11 +28,20 @@ class MainActivity : BaseActivity() {
         initFragments(savedInstanceState)
     }
 
+    override fun onBackPressed() {
+        if(switchFragment(companyFragment, CompanyFragment.TAG)) {
+            binding.bottomNav.menu.findItem(R.id.nav_companies).isChecked = true
+            binding.title.text = getString(R.string.companies)
+            return
+        }
+        super.onBackPressed()
+    }
+
     private fun initView() {
-        binding.bottomNav.setOnNavigationItemSelectedListener { item ->
-            binding.title.text= item.title
-            item.isChecked = true
-            when(item.itemId) {
+        binding.bottomNav.setOnNavigationItemSelectedListener { menuItem ->
+            binding.title.text= menuItem.title
+            menuItem.isChecked = true
+            when(menuItem.itemId) {
                 R.id.nav_companies -> switchFragment(companyFragment, CompanyFragment.TAG)
                 R.id.nav_categories -> switchFragment(categoryFragment, CategoryFragment.TAG)
                 R.id.nav_tags -> switchFragment(tagFragment, TagFragment.TAG)
@@ -45,39 +54,28 @@ class MainActivity : BaseActivity() {
         companyFragment = supportFragmentManager.findFragmentByTag(CompanyFragment.TAG) ?: CompanyFragment.newInstance()
         categoryFragment = supportFragmentManager.findFragmentByTag(CategoryFragment.TAG) ?: CategoryFragment.newInstance()
         tagFragment = supportFragmentManager.findFragmentByTag(TagFragment.TAG) ?: TagFragment.newInstance()
-
-        if(savedInstanceState == null) {
-            switchFragment(companyFragment, CompanyFragment.TAG)
-        }
+        savedInstanceState ?: switchFragment(companyFragment, CompanyFragment.TAG)
     }
 
-    private fun switchFragment(fragment: Fragment, tag: String): Boolean {
+    private fun switchFragment(fragment: Fragment, sign: String): Boolean {
+
         if(fragment.isAdded) {
             return false
         }
 
         val ft = supportFragmentManager.beginTransaction()
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.content_view)
-        if(currentFragment != null) {
-            ft.detach(currentFragment)
+        supportFragmentManager.findFragmentById(R.id.content_view)?.let {
+            ft.detach(it)
         }
+
         if(fragment.isDetached) {
             ft.attach(fragment)
         } else {
-            ft.add(R.id.content_view, fragment, tag)
+            ft.add(R.id.content_view, fragment, sign)
         }
         // フラグメントの交換時にフェードイン/アウトをつける
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
 
         return true
-    }
-
-    override fun onBackPressed() {
-        if(switchFragment(companyFragment, CompanyFragment.TAG)) {
-            binding.bottomNav.menu.findItem(R.id.nav_companies).isChecked = true
-            binding.title.text = getString(R.string.companies)
-            return
-        }
-        super.onBackPressed()
     }
 }

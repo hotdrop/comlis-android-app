@@ -37,7 +37,7 @@ abstract class BaseFragment: Fragment() {
         EditDescription(8)
     }
 
-    enum class RefleshMode(val code: Int) {
+    enum class RefreshMode(val code: Int) {
         None(1),
         Update(2),
         Delete(3),

@@ -73,17 +73,17 @@ class CategoryDao @Inject constructor(ormaHolder: OrmaHolder) {
         }
     }
 
-    fun exist(name: String, id: Int = -1): Boolean {
-        if(id == -1) {
-            return !categoryRelation().selector()
-                    .nameEq(name)
-                    .isEmpty
-        } else {
-            return !categoryRelation().selector()
-                    .nameEq(name)
-                    .idNotEq(id)
-                    .isEmpty
-        }
+    fun exist(name: String): Boolean {
+        return !categoryRelation().selector()
+                .nameEq(name)
+                .isEmpty
+    }
+
+    fun existExclusionId(name: String, id: Int): Boolean {
+        return !categoryRelation().selector()
+                .nameEq(name)
+                .idNotEq(id)
+                .isEmpty
     }
 
     private fun maxOrder(): Int {

@@ -81,17 +81,17 @@ class TagDao @Inject constructor(ormaHolder: OrmaHolder) {
         }
     }
 
-    fun exist(name: String, id: Int = -1): Boolean {
-        if(id == -1) {
-            return !tagRelation().selector()
-                    .nameEq(name)
-                    .isEmpty
-        } else {
-            return !tagRelation().selector()
-                    .nameEq(name)
-                    .idNotEq(id)
-                    .isEmpty
-        }
+    fun exist(name: String): Boolean {
+        return !tagRelation().selector()
+                .nameEq(name)
+                .isEmpty
+    }
+
+    fun existExclusionId(name: String, id: Int = -1): Boolean {
+        return !tagRelation().selector()
+                .nameEq(name)
+                .idNotEq(id)
+                .isEmpty
     }
 
     private fun maxOrder(): Int {

@@ -43,6 +43,7 @@ class CategoryFragment : BaseFragment() {
     private lateinit var binding: FragmentCategoryBinding
     private lateinit var adapter: Adapter
     private lateinit var helper: ItemTouchHelper
+
     private var isReorder = false
 
     companion object {
@@ -121,6 +122,7 @@ class CategoryFragment : BaseFragment() {
 
     /**
      * ダイアログで、入力した分類名に応じてボタンと注意書きの制御を行う拡張関数
+     * TODO これRxでやったほうがコード短くなると思う・・
      */
     private val REGISTER_MODE: Int = -1
     fun AppCompatEditText.changeTextListener(view: View, dialog: AlertDialog, editText: AppCompatEditText,
@@ -133,7 +135,7 @@ class CategoryFragment : BaseFragment() {
                     when {
                         editTxt == "" -> disableButton()
                         categoryId == REGISTER_MODE -> if(categoryDao.exist(editTxt)) disableButtonWithAttention() else enableButton()
-                        else -> if(editTxt != originName && categoryDao.exist(editTxt, categoryId)) disableButtonWithAttention() else enableButton()
+                        else -> if(editTxt != originName && categoryDao.existExclusionId(editTxt, categoryId)) disableButtonWithAttention() else enableButton()
                     }
                 }
                 private fun disableButton() {
@@ -202,25 +204,29 @@ class CategoryFragment : BaseFragment() {
         editText.changeTextListener(view, dialog, editText, vm.category.id, vm.viewName)
     }
 
-    inner class Adapter(context: Context)
-        : ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context) {
+    /**
+     * アダプター
+     */
+    inner class Adapter(context: Context): ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context) {
 
         override fun onBindViewHolder(holder: BindingHolder<ItemCategoryBinding>?, position: Int) {
             holder ?: return
-            val binding = holder.binding
-            binding.viewModel = getItem(position)
-            binding.iconReorderGroup.setOnTouchListener { _, motionEvent ->
-                if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
-                    onStartDrag(holder)
+            val binding = holder.binding.apply {
+                viewModel = getItem(position)
+                iconReorderGroup.setOnTouchListener { _, motionEvent ->
+                    if(isMotionEventDown(motionEvent)) onStartDrag(holder)
+                    false
                 }
-                false
             }
-
             binding.cardView.setOnClickListener { showUpdateDialog(binding.viewModel) }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCategoryBinding> {
             return BindingHolder(context, parent, R.layout.item_category)
+        }
+
+        private fun isMotionEventDown(motionEvent: MotionEvent): Boolean {
+            return (MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN)
         }
 
         fun refresh(vm: CategoryViewModel) {

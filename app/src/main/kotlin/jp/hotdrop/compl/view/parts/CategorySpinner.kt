@@ -22,9 +22,7 @@ class CategorySpinner(private val spinner: Spinner, private val activity: Activi
 
     fun getSelection(): Int {
         val selectedName = spinner.selectedItem as String
-        return categoryList.filter{ it.name == selectedName }
-                .first()
-                .id
+        return categoryList.filter{ it.name == selectedName }.first().id
     }
 
     fun setSelection(name: String?) {

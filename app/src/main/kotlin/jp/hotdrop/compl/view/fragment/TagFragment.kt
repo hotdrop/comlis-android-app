@@ -121,7 +121,7 @@ class TagFragment: BaseFragment() {
                     when {
                         editTxt == "" -> disableButton()
                         tagId == REGISTER_MODE -> if(tagDao.exist(editTxt)) disableButtonWithAttention() else enableButton()
-                        else -> if(editTxt != originName && tagDao.exist(editTxt, tagId)) disableButtonWithAttention() else enableButton()
+                        else -> if(editTxt != originName && tagDao.existExclusionId(editTxt, tagId)) disableButtonWithAttention() else enableButton()
                     }
                 }
                 private fun disableButton() {
