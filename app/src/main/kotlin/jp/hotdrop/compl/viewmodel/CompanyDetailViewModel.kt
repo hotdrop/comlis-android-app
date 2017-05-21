@@ -104,18 +104,12 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     }
 
     @ColorRes
-    fun getColorRes(): Int {
-        return ColorUtil.getResDark(colorName, context)
-    }
+    fun getColorRes(): Int = ColorUtil.getResDark(colorName, context)
 
     @ColorRes
-    fun getLightColorRes(): Int {
-        return ColorUtil.getResLight(colorName, context)
-    }
+    fun getLightColorRes(): Int = ColorUtil.getResLight(colorName, context)
 
-    fun getCategoryName(): String {
-        return categoryDao.find(categoryId).name
-    }
+    fun getCategoryName(): String = categoryDao.find(categoryId).name
 
     fun delete() {
         companyDao.delete(id)
@@ -127,6 +121,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     private val fabCloseAnimation: Animation by lazy {
         AnimationUtils.loadAnimation(context, R.anim.fab_close)
     }
+    // TODO この状態変数はよくない。
     private var isFabMenuOpen = false
 
     private val editIconOpenAnimation: Animation by lazy {
@@ -135,6 +130,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     private val editIconCloseAnimation: Animation by lazy {
         AnimationUtils.loadAnimation(context, R.anim.edit_icon_close)
     }
+    // TODO こっちも同じ。現在の状態を確認するメソッドで実装すべき
     private var isModeEdit = false
 
     fun initImages() {

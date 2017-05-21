@@ -42,9 +42,7 @@ class CompanyEditOverviewViewModel @Inject constructor(val context: Context): Vi
     }
 
     @ColorRes
-    fun getColorRes(): Int {
-        return ColorUtil.getResDark(colorName, context)
-    }
+    fun getColorRes(): Int = ColorUtil.getResDark(colorName, context)
 
     fun existName(name: String): Boolean {
         if(name.isBlank()) return false

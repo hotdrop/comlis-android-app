@@ -18,9 +18,7 @@ class CategoryViewModel(var category: Category, val context: Context,
     }
 
     @ColorRes
-    fun getColorRes(): Int {
-        return ColorUtil.getResLight(category.colorType, context)
-    }
+    fun getColorRes(): Int = ColorUtil.getResLight(category.colorType, context)
 
     fun change(vm: CategoryViewModel) {
         category = vm.category
@@ -28,9 +26,8 @@ class CategoryViewModel(var category: Category, val context: Context,
         itemCount = vm.itemCount
     }
 
-    override fun equals(other: Any?): Boolean {
-        return (other as CategoryViewModel).category.id == category.id || super.equals(other)
-    }
+    override fun equals(other: Any?): Boolean =
+            (other as CategoryViewModel).category.id == category.id || super.equals(other)
 
     fun makeCategory(): Category = category.apply {
         name = viewName

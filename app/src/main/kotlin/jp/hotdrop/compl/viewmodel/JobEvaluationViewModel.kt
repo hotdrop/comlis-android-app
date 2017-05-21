@@ -54,9 +54,7 @@ class JobEvaluationViewModel @Inject constructor(val context: Context) {
     }
 
     @ColorRes
-    fun getColorRes(): Int {
-        return ColorUtil.getResDark(colorName, context)
-    }
+    fun getColorRes(): Int = ColorUtil.getResDark(colorName, context)
 
     fun update() {
         jobEvaluationDao.upsert(makeData())

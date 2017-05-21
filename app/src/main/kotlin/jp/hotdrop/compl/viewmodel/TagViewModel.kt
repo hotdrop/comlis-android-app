@@ -13,9 +13,7 @@ class TagViewModel(var tag: Tag, val context: Context, tagDao: TagDao): ViewMode
     var attachCount = tagDao.countByAttachCompany(tag).toString()
 
     @ColorRes
-    fun getColorRes(): Int {
-        return ColorUtil.getResLight(tag.colorType, context)
-    }
+    fun getColorRes(): Int = ColorUtil.getResLight(tag.colorType, context)
 
     fun change(vm: TagViewModel) {
         this.tag = vm.tag
@@ -23,9 +21,7 @@ class TagViewModel(var tag: Tag, val context: Context, tagDao: TagDao): ViewMode
         attachCount = vm.attachCount
     }
 
-    override fun equals(other: Any?): Boolean {
-        return (other as TagViewModel).tag.id == tag.id || super.equals(other)
-    }
+    override fun equals(other: Any?): Boolean = ((other as TagViewModel).tag.id == tag.id || super.equals(other))
 
     fun makeTag(): Tag = tag.apply {
         name = viewName

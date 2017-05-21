@@ -11,17 +11,11 @@ abstract class ViewModel {
         return true
     }
 
-    fun String.toStringOrNull(): String? {
-        return if(!this.isEmpty()) this else null
-    }
+    fun String.toStringOrNull(): String? = if(!this.isEmpty()) this else null
 
-    fun String.toIntOrZero(): Int {
-        return if(!this.isEmpty()) this.toInt() else 0
-    }
+    fun String.toIntOrZero(): Int = if(!this.isEmpty()) this.toInt() else 0
 
-    fun Date.format(): String? {
-        return DateFormat.format("yyyy-MM-dd(E) HH:mm:ss", this).toString()
-    }
+    fun Date.format(): String? = DateFormat.format("yyyy-MM-dd(E) HH:mm:ss", this).toString()
 
     // LottieAnimationViewの拡張関数がBaseFragmentとここで散在しているのがあまり良くないが
     // 無理やりまとめるのも良くないので今はこうする。

@@ -10,13 +10,9 @@ abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val 
 
     protected val list: MutableList<T> = mutableListOf()
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+    override fun getItemCount(): Int = list.size
 
-    fun getItem(index: Int): T {
-        return list[index]
-    }
+    fun getItem(index: Int): T = list[index]
 
     fun getItemPosition(item: T): Int {
         list.withIndex().forEach {

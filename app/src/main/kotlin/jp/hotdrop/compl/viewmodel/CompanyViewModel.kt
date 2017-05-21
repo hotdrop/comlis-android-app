@@ -80,13 +80,9 @@ class CompanyViewModel(company: Company,
     }
 
     @ColorRes
-    fun getColorRes(): Int {
-        return ColorUtil.getResNormal(colorName, context)
-    }
+    fun getColorRes(): Int = ColorUtil.getResNormal(colorName, context)
 
-    override fun equals(other: Any?): Boolean {
-        return (other as CompanyViewModel).id == id || super.equals(other)
-    }
+    override fun equals(other: Any?): Boolean = (other as CompanyViewModel).id == id || super.equals(other)
 
     fun onClickFirstFavorite(binding: ItemCompanyBinding) {
         if(viewFavorite == 1) {

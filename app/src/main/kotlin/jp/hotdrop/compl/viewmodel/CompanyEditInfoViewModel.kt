@@ -52,9 +52,7 @@ class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewMo
     }
 
     @ColorRes
-    fun getColorRes(): Int {
-        return ColorUtil.getResDark(colorName, context)
-    }
+    fun getColorRes(): Int = ColorUtil.getResDark(colorName, context)
 
     fun update() {
         val company =  makeCompany()

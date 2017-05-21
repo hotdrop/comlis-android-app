@@ -8,7 +8,9 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 
-class TagAssociateViewModel(val companyId: Int = -1, var tag: Tag, val context: Context,
+class TagAssociateViewModel(val companyId: Int = -1,
+                            var tag: Tag,
+                            val context: Context,
                             val companyDao: CompanyDao): ViewModel() {
 
     var viewName = tag.name
@@ -19,20 +21,12 @@ class TagAssociateViewModel(val companyId: Int = -1, var tag: Tag, val context: 
     }
 
     @ColorRes
-    fun getColorRes(): Int {
-        return if(isAssociate) {
-            ColorUtil.getResLight(tag.colorType, context)
-        } else {
-            ColorUtil.getResTransparent(tag.colorType, context)
-        }
-    }
+    fun getColorRes(): Int =
+        if(isAssociate) ColorUtil.getResLight(tag.colorType, context)
+        else ColorUtil.getResTransparent(tag.colorType, context)
 
     @ColorRes
-    fun getBackGroundColorRes(): Int {
-        return if(isAssociate) {
-            ContextCompat.getColor(context, R.color.item_tag_background)
-        } else {
-            ContextCompat.getColor(context, R.color.item_tag_unselected_background)
-        }
-    }
+    fun getBackGroundColorRes(): Int =
+        if(isAssociate) ContextCompat.getColor(context, R.color.item_tag_background)
+        else ContextCompat.getColor(context, R.color.item_tag_unselected_background)
 }
