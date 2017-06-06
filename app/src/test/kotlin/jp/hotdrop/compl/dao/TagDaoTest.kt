@@ -26,7 +26,8 @@ class TagDaoTest {
     }
 
     @Test
-    fun insertAndFindTest() {
+    fun findTest() {
+        // insertのテストもここで兼ねる
         val tagName = "test1"
         val tag = createTag(tagName)
         tagDao.insert(tag)
@@ -36,7 +37,7 @@ class TagDaoTest {
     }
 
     @Test
-    fun findAllAndInIdTest() {
+    fun findInIdTest() {
         val tagNames = mutableListOf("test1", "test2", "test3", "test4", "test5")
         tagNames.forEach { tagDao.insert(createTag(it)) }
         val tags = tagDao.findAll().blockingGet().toList()
@@ -58,14 +59,39 @@ class TagDaoTest {
 
     }
 
+    @Test
     fun deleteTest() {
+        val t1 = createTag("delete1")
+        val t2 = createTag("delete2")
+        tagDao.insert(t1)
+        tagDao.insert(t2)
+
+        tagDao.delete(t1)
+        assert(!tagDao.exist("delete1"))
+        tagDao.delete(t2)
+        assert(!tagDao.exist("delete2"))
     }
 
+    @Test
     fun existTest() {
-
+        val tagNames = mutableListOf("test1", "test2", "test3", "test4", "test5")
+        tagNames.forEach { tagDao.insert(createTag(it)) }
+        tagNames.forEach { tagName ->
+            assert(tagDao.exist(tagName))
+        }
     }
 
+    @Test
     fun existExclusionIdTest() {
+        tagDao.insert(createTag("ownName"))
+        tagDao.insert(createTag("sameName"))
+
+        // ownNameとsameNameはフィールドからの入力文字列を想定しているので変数ではなくいちいち文字列を直指定しています。
+        val tagsFromDb = tagDao.find("ownName")
+        val isSuccess = tagDao.existExclusionId("ownName", tagsFromDb.id)
+        assert(isSuccess)
+        val isFailure = tagDao.existExclusionId("sameName", tagsFromDb.id)
+        assert(!isFailure)
     }
 
     private fun createTag(argName: String) = Tag().apply {

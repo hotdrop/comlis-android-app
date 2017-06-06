@@ -87,7 +87,7 @@ class TagDao @Inject constructor(ormaHolder: OrmaHolder) {
                 .isEmpty
     }
 
-    fun existExclusionId(name: String, id: Int = -1): Boolean {
+    fun existExclusionId(name: String, id: Int): Boolean {
         return !tagRelation().selector()
                 .nameEq(name)
                 .idNotEq(id)
