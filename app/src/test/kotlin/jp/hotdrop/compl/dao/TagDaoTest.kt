@@ -27,7 +27,6 @@ class TagDaoTest {
 
     @Test
     fun findTest() {
-        // insertのテストもここで兼ねる
         val tagName = "test1"
         val tag = createTag(tagName)
         tagDao.insert(tag)
@@ -52,11 +51,52 @@ class TagDaoTest {
     fun countByAttachCompanyTest() {
     }
 
-    fun updateTest() {
+    @Test
+    fun insertTest() {
+        val tagName1 = "test1"
+        val tagName2 = "test2"
+        val tag1 = createTag(tagName1)
+        val tag2 = createTag(tagName2)
+        tagDao.insert(tag1)
+        tagDao.insert(tag2)
+
+        val tag1FromDb = tagDao.find(tagName1)
+        val tag2FromDb = tagDao.find(tagName2)
+        assertCompareTag(tag1, tag1FromDb)
+        assertCompareTag(tag2, tag2FromDb)
+        assert(tag1FromDb.viewOrder == 1)
+        assert(tag2FromDb.viewOrder == 2)
     }
 
-    fun updateAllOrderTest() {
+    @Test
+    fun updateTest() {
+        val tagName = "insert"
+        tagDao.insert(createTag(tagName, "firstColor"))
+        val tagFromDb = tagDao.find(tagName)
 
+        val tagUpdate = createTag("update", "secondColor").apply {
+            id =  tagFromDb.id
+            registerDate = tagFromDb.registerDate
+            viewOrder = 5
+        }
+        tagDao.update(tagUpdate)
+
+        val tagUpdated = tagDao.find(tagUpdate.name)
+        assertCompareTag(tagUpdate, tagUpdated)
+        assert(tagUpdated.viewOrder == 5)
+    }
+
+    @Test
+    fun updateAllOrderTest() {
+        mutableListOf(createTag("order 1 To 3 "), createTag("order 2 To 1 "), createTag("order 3 TO 2 ")).forEach { tagDao.insert(it) }
+        val tagsFromDb = tagDao.findAll().blockingGet().toList()
+        val makeReorderTags = mutableListOf(tagsFromDb[1], tagsFromDb[2], tagsFromDb[0])
+        tagDao.updateAllOrder(makeReorderTags)
+
+        val tagsFromDbAtReordered = tagDao.findAll().blockingGet().toList()
+        makeReorderTags.forEachIndexed { index, tag ->
+            assertCompareTag(tag, tagsFromDbAtReordered[index])
+        }
     }
 
     @Test
@@ -94,9 +134,9 @@ class TagDaoTest {
         assert(!isFailure)
     }
 
-    private fun createTag(argName: String) = Tag().apply {
+    private fun createTag(argName: String, argColorType: String = "ブルー") = Tag().apply {
         name = argName
-        colorType = "ブルー"
+        colorType = argColorType
     }
 
     private fun assertCompareTag(t1: Tag, t2: Tag) {
