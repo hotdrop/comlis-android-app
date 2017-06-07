@@ -3,6 +3,7 @@ package jp.hotdrop.compl.dao
 import android.content.Context
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
+import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.OrmaDatabase
 import jp.hotdrop.compl.model.Tag
 import org.junit.Before
@@ -13,6 +14,7 @@ import org.junit.runner.RunWith
 class TagDaoTest {
 
     private lateinit var tagDao: TagDao
+    private lateinit var companyDao: CompanyDao
 
     private fun getContext(): Context {
         return InstrumentationRegistry.getTargetContext()
@@ -23,6 +25,7 @@ class TagDaoTest {
         val orma = OrmaDatabase.builder(getContext()).name(null).build()
         val ormaHolder = OrmaHolder(orma)
         tagDao = TagDao(ormaHolder)
+        companyDao = CompanyDao(ormaHolder)
     }
 
     @Test
@@ -48,7 +51,30 @@ class TagDaoTest {
         }
     }
 
+    @Test
     fun countByAttachCompanyTest() {
+
+        val noAttachTagName = "tag1"
+        val oneAttachTagName = "tag2"
+        val threeAttachTagName = "tag3"
+        companyDao.insert(createCompany("test1"))
+        companyDao.insert(createCompany("test2"))
+        companyDao.insert(createCompany("test3"))
+        companyDao.insert(createCompany("test4"))
+        mutableListOf(createTag(noAttachTagName), createTag(oneAttachTagName), createTag(threeAttachTagName))
+                .forEach { tagDao.insert(it) }
+
+        val companies = companyDao.findAll().blockingGet().toList()
+        val noAttachTag = tagDao.find(noAttachTagName)
+        val oneAttachTag = tagDao.find(oneAttachTagName)
+        val threeAttachTag = tagDao.find(threeAttachTagName)
+
+        companies.take(1).forEach { companyDao.associateTagByCompany(it.id, mutableListOf(oneAttachTag)) }
+        companies.takeLast(3).forEach { companyDao.associateTagByCompany(it.id, mutableListOf(threeAttachTag)) }
+
+        assert(tagDao.countByAttachCompany(noAttachTag) == 0)
+        assert(tagDao.countByAttachCompany(oneAttachTag) == 1)
+        assert(tagDao.countByAttachCompany(threeAttachTag) == 3)
     }
 
     @Test
@@ -143,5 +169,10 @@ class TagDaoTest {
         assert(t1.name == t2.name)
         assert(t1.colorType == t2.colorType)
         assert(t1.registerDate == t2.registerDate)
+    }
+
+    private fun createCompany(argName: String) = Company().apply {
+        name = argName
+        categoryId = 1
     }
 }
