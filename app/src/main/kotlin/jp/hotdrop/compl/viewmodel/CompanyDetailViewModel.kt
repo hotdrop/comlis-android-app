@@ -121,8 +121,6 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     private val fabCloseAnimation: Animation by lazy {
         AnimationUtils.loadAnimation(context, R.anim.fab_close)
     }
-    // TODO この状態変数はよくない。
-    private var isFabMenuOpen = false
 
     private val editIconOpenAnimation: Animation by lazy {
         AnimationUtils.loadAnimation(context, R.anim.edit_icon_open)
@@ -185,7 +183,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     }
 
     fun onClickMenuFab() {
-        if(isFabMenuOpen) collapseFabMenu() else expandFabMenu()
+        if(isOpenFabMenu()) collapseFabMenu() else expandFabMenu()
     }
 
     fun onClickModeEditFab() {
@@ -211,7 +209,6 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         binding.fabTrash.isClickable = true
         binding.fabTag.isClickable = true
         binding.fabEdit.isClickable = true
-        isFabMenuOpen = true
     }
 
     private fun collapseFabMenu() {
@@ -226,7 +223,6 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         binding.fabTrash.isClickable = false
         binding.fabTag.isClickable = false
         binding.fabEdit.isClickable = false
-        isFabMenuOpen = false
     }
 
     private fun ImageView.visibleIcon(): Unit {
@@ -262,7 +258,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     }
 
     fun isOpenFabMenu(): Boolean {
-        return isFabMenuOpen
+        return (binding.fabTrash.isClickable && binding.fabTag.isClickable && binding.fabEdit.isClickable)
     }
 
     fun closeFabMenu() {
@@ -272,7 +268,6 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         binding.fabTrash.isClickable = false
         binding.fabTag.isClickable = false
         binding.fabEdit.isClickable = false
-        isFabMenuOpen = false
         binding.fabDetailMenu.rotation = 0.toFloat()
     }
 
