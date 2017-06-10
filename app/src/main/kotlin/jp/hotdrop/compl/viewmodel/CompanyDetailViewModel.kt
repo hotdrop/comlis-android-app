@@ -128,8 +128,6 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     private val editIconCloseAnimation: Animation by lazy {
         AnimationUtils.loadAnimation(context, R.anim.edit_icon_close)
     }
-    // TODO こっちも同じ。現在の状態を確認するメソッドで実装すべき
-    private var isModeEdit = false
 
     fun initImages() {
 
@@ -244,7 +242,6 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         binding.imageEditBusiness.visibleIcon()
         binding.imageEditJobEvaluation.visibleIcon()
         binding.imageEditDescription.visibleIcon()
-        isModeEdit = true
     }
 
     private fun goneEditIcons() {
@@ -254,7 +251,6 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         binding.imageEditBusiness.goneIcon()
         binding.imageEditJobEvaluation.goneIcon()
         binding.imageEditDescription.goneIcon()
-        isModeEdit = false
     }
 
     fun isOpenFabMenu(): Boolean {
