@@ -41,4 +41,8 @@ class CategoryViewModel(private var category: Category,
     fun delete() {
         categoryDao.delete(category)
     }
+
+    fun isRegisterCompanyInCategory(): Boolean {
+        return itemCount.toInt() > 0
+    }
 }

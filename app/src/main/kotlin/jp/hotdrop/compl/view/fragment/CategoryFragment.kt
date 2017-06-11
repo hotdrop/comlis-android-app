@@ -198,7 +198,7 @@ class CategoryFragment : BaseFragment() {
                 .create()
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
-        if(vm.itemCount.toInt() > 0) {
+        if(vm.isRegisterCompanyInCategory()) {
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE).isEnabled = false
             view.findViewById(R.id.label_category_delete_attention).visibility = View.VISIBLE
         }
