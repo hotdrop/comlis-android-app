@@ -2,31 +2,21 @@ package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
 import android.support.annotation.ColorRes
-import jp.hotdrop.compl.dao.CategoryDao
-import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.util.ColorUtil
 
 class CategoryViewModel(var category: Category,
-                        private val context: Context,
-                        private val categoryDao: CategoryDao,
-                        companyDao: CompanyDao): ViewModel() {
+                        registerCompanyItemCount: Int,
+                        private val context: Context): ViewModel() {
 
     var viewName = category.name
-    // TextViewにバインドしているので文字列にしないとダメ
-    var itemCount = companyDao.countByCategory(category.id).toString()
+    // TextViewにバインドしているので文字列にする
+    var itemCount = registerCompanyItemCount.toString()
 
     @ColorRes
     fun getColorRes(): Int = ColorUtil.getResLight(category.colorType, context)
-
     fun getId() = category.id
     fun getColorType() = category.colorType
-
-    fun change(vm: CategoryViewModel) {
-        category = vm.category
-        viewName = vm.viewName
-        itemCount = vm.itemCount
-    }
 
     override fun equals(other: Any?): Boolean =
             (other as CategoryViewModel).category.id == category.id || super.equals(other)

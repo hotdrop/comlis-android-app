@@ -39,7 +39,10 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
     fun loadData() {
         val disposable = categoryDao.findAll()
                 .map { categories ->
-                    categories.map { CategoryViewModel(it, context, categoryDao, companyDao) }
+                    categories.map {
+                        val itemCount = getRegisterCompanyCount(it.id)
+                        CategoryViewModel(it, itemCount, context)
+                    }
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -75,20 +78,22 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
     fun register(categoryName: String, colorType: String) {
         categoryDao.insert(categoryName, colorType)
         val category = categoryDao.find(categoryName)
-        val vm = CategoryViewModel(category, context, categoryDao, companyDao)
+        val itemCount = getRegisterCompanyCount(category.id)
+        val vm = CategoryViewModel(category, itemCount, context)
         viewModels.add(vm)
         checkAndUpdateEmptyMessageVisibility()
     }
 
     fun update(vm: CategoryViewModel, newName: String, newColorType: String) {
-        val category = vm.category.apply {
+        val c = vm.category.apply {
             name = newName
             colorType = newColorType
         }
-        categoryDao.update(category)
-        val newVm = CategoryViewModel(category, context, categoryDao, companyDao)
+        categoryDao.update(c)
+        val itemCount = getRegisterCompanyCount(vm.getId())
+        val newVm = CategoryViewModel(c, itemCount, context)
         val idx = viewModels.indexOf(vm)
-        viewModels[idx].change(newVm)
+        viewModels[idx] = newVm
     }
 
     fun updateItemOrder() {
@@ -107,6 +112,10 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
         } else {
             emptyMessageVisibility = View.VISIBLE
         }
+    }
+
+    private fun getRegisterCompanyCount(categoryId: Int): Int {
+        return companyDao.countByCategory(categoryId)
     }
 
     interface Callback {
