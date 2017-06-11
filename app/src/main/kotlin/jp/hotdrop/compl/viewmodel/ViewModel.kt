@@ -1,10 +1,11 @@
 package jp.hotdrop.compl.viewmodel
 
+import android.databinding.BaseObservable
 import android.text.format.DateFormat
 import com.airbnb.lottie.LottieAnimationView
 import java.util.*
 
-abstract class ViewModel {
+abstract class ViewModel: BaseObservable() {
 
     fun String.isNumber(): Boolean {
         this.forEach { c -> if(!c.isDigit()) return false }

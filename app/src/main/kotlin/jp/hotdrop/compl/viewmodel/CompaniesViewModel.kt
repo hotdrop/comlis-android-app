@@ -18,7 +18,7 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
     @Inject
     lateinit var jobEvaluationDao: JobEvaluationDao
 
-    private lateinit var viewModels: List<CompanyViewModel>
+    lateinit var viewModels: List<CompanyViewModel>
 
     fun loadData(categoryId: Int): Completable {
         return companyDao.findByCategory(categoryId)

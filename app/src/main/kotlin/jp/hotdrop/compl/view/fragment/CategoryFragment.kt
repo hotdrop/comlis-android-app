@@ -1,6 +1,7 @@
 package jp.hotdrop.compl.view.fragment
 
 import android.content.Context
+import android.databinding.ObservableList
 import android.os.Bundle
 import android.support.v4.view.MotionEventCompat
 import android.support.v7.app.AlertDialog
@@ -15,9 +16,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Spinner
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.FragmentCategoryBinding
 import jp.hotdrop.compl.databinding.ItemCategoryBinding
@@ -28,10 +26,8 @@ import jp.hotdrop.compl.viewmodel.CategoriesViewModel
 import jp.hotdrop.compl.viewmodel.CategoryViewModel
 import javax.inject.Inject
 
-class CategoryFragment : BaseFragment() {
+class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
 
-    @Inject
-    lateinit var compositeDisposable: CompositeDisposable
     @Inject
     lateinit var viewModel: CategoriesViewModel
 
@@ -51,33 +47,21 @@ class CategoryFragment : BaseFragment() {
         getComponent().inject(this)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.setCallback(this)
+        viewModel.loadData()
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCategoryBinding.inflate(inflater, container, false)
-        loadData()
+        binding.viewModel = viewModel
+        initView()
         return binding.root
     }
 
-    private fun loadData() {
-        val disposable = viewModel.loadData()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { onSuccess() },
-                        { throwable -> showErrorAsToast(ErrorType.LoadFailureCategory, throwable) }
-                )
-        compositeDisposable.add(disposable)
-    }
-
-    private fun onSuccess() {
-        adapter = Adapter(context)
-
-        if(viewModel.isNotEmpty()) {
-            adapter.addAll(viewModel.getData())
-            goneEmptyMessage()
-        } else {
-            visibleEmptyMessage()
-        }
-        
+    private fun initView() {
+        adapter = Adapter(context, viewModel.getViewModels())
         helper = ItemTouchHelper(CategoryItemTouchHelperCallback(adapter))
 
         binding.recyclerView.let {
@@ -92,23 +76,27 @@ class CategoryFragment : BaseFragment() {
     }
 
     private fun visibleEmptyMessage() {
-        binding.listEmptyView.visibility = View.VISIBLE
+        //binding.listEmptyView.visibility = View.VISIBLE
     }
 
     private fun goneEmptyMessage() {
-        binding.listEmptyView.visibility = View.GONE
+        //binding.listEmptyView.visibility = View.GONE
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         if(isReorder) {
-            viewModel.updateItemOrder(adapter.getCategoryIdsAsCurrentOrder())
+            viewModel.updateItemOrder()//adapter.getCategoryIdsAsCurrentOrder())
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        compositeDisposable.dispose()
+        viewModel.destroy()
+    }
+
+    override fun showError(throwable: Throwable) {
+        showErrorAsToast(ErrorType.LoadFailureCategory, throwable)
     }
 
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
@@ -208,7 +196,28 @@ class CategoryFragment : BaseFragment() {
     /**
      * アダプター
      */
-    inner class Adapter(context: Context): ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context) {
+    inner class Adapter(context: Context, list: ObservableList<CategoryViewModel>):
+            ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context, list) {
+
+        init {
+            list.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<CategoryViewModel>>() {
+                override fun onChanged(sender: ObservableList<CategoryViewModel>?) {
+                    notifyDataSetChanged()
+                }
+                override fun onItemRangeInserted(sender: ObservableList<CategoryViewModel>?, positionStart: Int, itemCount: Int) {
+                    notifyItemRangeInserted(positionStart, itemCount)
+                }
+                override fun onItemRangeChanged(sender: ObservableList<CategoryViewModel>?, positionStart: Int, itemCount: Int) {
+                    notifyItemRangeChanged(positionStart, itemCount)
+                }
+                override fun onItemRangeRemoved(sender: ObservableList<CategoryViewModel>?, positionStart: Int, itemCount: Int) {
+                    notifyItemRangeRemoved(positionStart, itemCount)
+                }
+                override fun onItemRangeMoved(sender: ObservableList<CategoryViewModel>?, fromPosition: Int, toPosition: Int, itemCount: Int) {
+                    notifyItemMoved(fromPosition, toPosition)
+                }
+            })
+        }
 
         override fun onBindViewHolder(holder: BindingHolder<ItemCategoryBinding>?, position: Int) {
             holder ?: return
@@ -249,10 +258,6 @@ class CategoryFragment : BaseFragment() {
                 adapter.removeItem(position)
                 notifyItemRemoved(position)
             }
-        }
-
-        fun getCategoryIdsAsCurrentOrder(): List<Int> {
-            return list.map {vm -> vm.getId()}.toMutableList()
         }
     }
 

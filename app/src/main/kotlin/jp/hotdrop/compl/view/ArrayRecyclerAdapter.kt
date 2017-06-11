@@ -8,7 +8,11 @@ import java.util.*
 abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val context: Context)
     : RecyclerView.Adapter<VH>() {
 
-    protected val list: MutableList<T> = mutableListOf()
+    protected var list: MutableList<T> = mutableListOf()
+
+    constructor(context: Context, list: MutableList<T>): this(context) {
+        this.list = list
+    }
 
     override fun getItemCount(): Int = list.size
 
