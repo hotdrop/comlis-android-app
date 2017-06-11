@@ -8,55 +8,36 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.dao.JobEvaluationDao
 import jp.hotdrop.compl.databinding.ItemCompanyBinding
 import jp.hotdrop.compl.model.Company
-import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 
-class CompanyViewModel(company: Company,
+class CompanyViewModel(private var company: Company,
                        private val context: Context,
                        private val companyDao: CompanyDao,
-                       private val categoryDao: CategoryDao,
-                       private val jobEvaluationDao: JobEvaluationDao): ViewModel() {
+                       categoryDao: CategoryDao,
+                       jobEvaluationDao: JobEvaluationDao): ViewModel() {
 
     private val SALARY_UNIT = context.getString(R.string.label_salary_unit)
     private val SALARY_RANGE_MARK = context.getString(R.string.label_salary_range_mark)
     private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
     private val JOB_EVALUATION_UNIT = context.getString(R.string.label_job_evaluation_unit)
 
-    var id = -1
-
-    // 画面表示する項目はmodelとは別にフィールド値を持たせる
-    var viewName = ""
-    var viewWantedJob = ""
+    var viewName = company.name
+    var viewWantedJob = company.wantedJob ?: ""
     var viewJobEvaluation = "0" + JOB_EVALUATION_UNIT
-    var viewEmployeesNum = ""
-    var viewSalary = ""
-    var viewFavorite = 0
+    var viewEmployeesNum = company.employeesNum.toString() + EMPLOYEES_NUM_UNIT
+    var viewSalary = company.salaryLow.toString() + SALARY_UNIT
+    var viewFavorite = company.favorite
 
-    lateinit var viewTags: List<Tag>
-    lateinit var colorName: String
+    var colorName = categoryDao.find(company.categoryId).colorType
+    var viewTags = companyDao.findByTag(company.id).take(5)
+
 
     init {
-        setData(company)
-    }
-
-    private fun setData(company: Company) {
-        id = company.id
-
-        viewName = company.name
-        viewWantedJob = company.wantedJob ?: ""
-
-        viewEmployeesNum = company.employeesNum.toString() + EMPLOYEES_NUM_UNIT
-        viewSalary = company.salaryLow.toString() + SALARY_UNIT
         if(company.salaryHigh > 0) {
             viewSalary += SALARY_RANGE_MARK + company.salaryHigh.toString() + SALARY_UNIT
         }
 
-        colorName = categoryDao.find(company.categoryId).colorType
-        viewFavorite = company.favorite
-
-        viewTags = companyDao.findByTag(company.id).take(5)
-
-        jobEvaluationDao.find(id)?.let {
+        jobEvaluationDao.find(company.id)?.let {
             var score = 0
             if(it.correctSentence) score += 20
             if(it.developmentEnv) score += 10
@@ -68,21 +49,26 @@ class CompanyViewModel(company: Company,
         }
     }
 
+    fun getId(): Int {
+        return company.id
+    }
+
     fun change(vm: CompanyViewModel) {
+        company = vm.company
         viewName = vm.viewName
         viewWantedJob = vm.viewWantedJob
         viewJobEvaluation = vm.viewJobEvaluation
         viewEmployeesNum = vm.viewEmployeesNum
         viewSalary = vm.viewSalary
-        colorName = vm.colorName
         viewFavorite = vm.viewFavorite
+        colorName = vm.colorName
         viewTags = vm.viewTags
     }
 
     @ColorRes
     fun getColorRes(): Int = ColorUtil.getResNormal(colorName, context)
 
-    override fun equals(other: Any?): Boolean = (other as CompanyViewModel).id == id || super.equals(other)
+    override fun equals(other: Any?): Boolean = (other as CompanyViewModel).company.id == company.id || super.equals(other)
 
     fun onClickFirstFavorite(binding: ItemCompanyBinding) {
         if(viewFavorite == 1) {
@@ -92,7 +78,7 @@ class CompanyViewModel(company: Company,
             binding.animationView2.reset()
             binding.animationView3.reset()
             viewFavorite = 1
-            companyDao.updateFavorite(id, viewFavorite)
+            companyDao.updateFavorite(company.id, viewFavorite)
         }
     }
 
@@ -104,7 +90,7 @@ class CompanyViewModel(company: Company,
             binding.animationView2.playAnimation()
             binding.animationView3.reset()
             viewFavorite = 2
-            companyDao.updateFavorite(id, viewFavorite)
+            companyDao.updateFavorite(company.id, viewFavorite)
         }
     }
 
@@ -116,7 +102,7 @@ class CompanyViewModel(company: Company,
             binding.animationView2.playAnimation()
             binding.animationView3.playAnimation()
             viewFavorite = 3
-            companyDao.updateFavorite(id, viewFavorite)
+            companyDao.updateFavorite(company.id, viewFavorite)
         }
     }
 
@@ -125,6 +111,6 @@ class CompanyViewModel(company: Company,
         binding.animationView2.reset()
         binding.animationView3.reset()
         viewFavorite = 0
-        companyDao.updateFavorite(id, 0)
+        companyDao.updateFavorite(company.id, 0)
     }
 }

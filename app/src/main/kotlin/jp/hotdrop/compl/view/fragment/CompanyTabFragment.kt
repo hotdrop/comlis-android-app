@@ -111,7 +111,7 @@ class CompanyTabFragment: BaseFragment() {
         adapter = Adapter(context)
 
         if(viewModel.isNotEmpty()) {
-            adapter.addAll(viewModel.getCompanyViewModels())
+            adapter.addAll(viewModel.getData())
             goneEmptyMessage()
         } else {
             visibleEmptyMessage()
@@ -162,7 +162,7 @@ class CompanyTabFragment: BaseFragment() {
             }
 
             binding.cardView.setOnClickListener {
-                ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.id, Request.Detail.code)
+                ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.getId(), Request.Detail.code)
             }
 
             // Recycle後に復帰した際、追加したタグを削除しておかないとタグが積まれていくためremoveAllする。
@@ -189,7 +189,7 @@ class CompanyTabFragment: BaseFragment() {
         }
 
         fun getCompanyIdsAsCurrentOrder(): List<Int> {
-            return list.map { vm -> vm.id }.toMutableList()
+            return list.map { vm -> vm.getId() }.toMutableList()
         }
 
         private fun setCardView(flexboxLayout: FlexboxLayout, tag: Tag) {

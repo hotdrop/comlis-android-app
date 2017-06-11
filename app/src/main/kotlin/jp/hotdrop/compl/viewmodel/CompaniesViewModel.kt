@@ -9,7 +9,7 @@ import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
 import javax.inject.Inject
 
-class CompaniesViewModel @Inject constructor(val context: Context): ViewModel() {
+class CompaniesViewModel @Inject constructor(private val context: Context): ViewModel() {
 
     @Inject
     lateinit var companyDao: CompanyDao
@@ -22,14 +22,15 @@ class CompaniesViewModel @Inject constructor(val context: Context): ViewModel() 
 
     fun loadData(categoryId: Int): Completable {
         return companyDao.findByCategory(categoryId)
-                .flatMapCompletable { companies ->
-                    setData(companies)
+                .flatMapCompletable {
+                    setData(it)
                     Completable.complete()
                 }
     }
 
     private fun setData(companies: List<Company>) {
         viewModels = companies.map {
+            // TODO Dao渡しまくるのなんとかしたい・・
             CompanyViewModel(it, context, companyDao, categoryDao, jobEvaluationDao)
         }
     }
@@ -38,7 +39,7 @@ class CompaniesViewModel @Inject constructor(val context: Context): ViewModel() 
         return viewModels.isNotEmpty()
     }
 
-    fun getCompanyViewModels(): List<CompanyViewModel> {
+    fun getData(): List<CompanyViewModel> {
         return viewModels
     }
 
