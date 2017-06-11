@@ -19,14 +19,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.dao.CategoryDao
-import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCategoryBinding
 import jp.hotdrop.compl.databinding.ItemCategoryBinding
-import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
 import jp.hotdrop.compl.view.parts.ColorSpinner
+import jp.hotdrop.compl.viewmodel.CategoriesViewModel
 import jp.hotdrop.compl.viewmodel.CategoryViewModel
 import javax.inject.Inject
 
@@ -34,11 +32,8 @@ class CategoryFragment : BaseFragment() {
 
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
-
     @Inject
-    lateinit var companyDao: CompanyDao
-    @Inject
-    lateinit var categoryDao: CategoryDao
+    lateinit var viewModel: CategoriesViewModel
 
     private lateinit var binding: FragmentCategoryBinding
     private lateinit var adapter: Adapter
@@ -63,21 +58,21 @@ class CategoryFragment : BaseFragment() {
     }
 
     private fun loadData() {
-        val disposable = categoryDao.findAll()
+        val disposable = viewModel.loadData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        { categories -> onLoadSuccess(categories) },
+                        { onSuccess() },
                         { throwable -> showErrorAsToast(ErrorType.LoadFailureCategory, throwable) }
                 )
         compositeDisposable.add(disposable)
     }
 
-    private fun onLoadSuccess(categories: List<Category>) {
+    private fun onSuccess() {
         adapter = Adapter(context)
 
-        if(categories.isNotEmpty()) {
-            adapter.addAll(categories.map{ c -> CategoryViewModel(c, context, companyDao) })
+        if(viewModel.isNotEmpty()) {
+            adapter.addAll(viewModel.getData())
             goneEmptyMessage()
         } else {
             visibleEmptyMessage()
@@ -107,7 +102,7 @@ class CategoryFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         if(isReorder) {
-            categoryDao.updateAllOrder(adapter.getModels())
+            viewModel.updateItemOrder(adapter.getCategoryIdsAsCurrentOrder())
         }
     }
 
@@ -131,13 +126,22 @@ class CategoryFragment : BaseFragment() {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/*no op*/}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {/*no op*/ }
                 override fun afterTextChanged(s: Editable?) {
-                    val editTxt = editText.text.toString()
                     when {
-                        editTxt == "" -> disableButton()
-                        categoryId == REGISTER_MODE -> if(categoryDao.exist(editTxt)) disableButtonWithAttention() else enableButton()
-                        else -> if(editTxt != originName && categoryDao.existExclusionId(editTxt, categoryId)) disableButtonWithAttention() else enableButton()
+                        editText.text.toString() == "" -> {
+                            disableButton()
+                        }
+                        categoryId == REGISTER_MODE -> {
+                            if(existName()) disableButtonWithAttention() else enableButton()
+                        }
+                        else -> {
+                            if(existNameExclusionOwn()) disableButtonWithAttention() else enableButton()
+                        }
                     }
                 }
+                private fun existName(): Boolean = viewModel.existName(editText.text.toString())
+                private fun existNameExclusionOwn(): Boolean =
+                        (editText.text.toString() != originName && viewModel.existNameExclusionId(editText.text.toString(), categoryId))
+
                 private fun disableButton() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
                     view.findViewById(R.id.label_category_attention).visibility = View.GONE
@@ -159,9 +163,8 @@ class CategoryFragment : BaseFragment() {
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
-                    categoryDao.insert(editText.text.toString(), spinner.getSelection())
-                    val category = categoryDao.find(editText.text.toString())
-                    adapter.add(CategoryViewModel(category, context, companyDao))
+                    viewModel.register(editText.text.toString(), spinner.getSelection())
+                    adapter.add(viewModel.getCategoryViewModel(editText.text.toString()))
                     dialogInterface.dismiss()
                     goneEmptyMessage()
                 })
@@ -176,18 +179,16 @@ class CategoryFragment : BaseFragment() {
         val editText = view.findViewById(R.id.text_category_name) as AppCompatEditText
         editText.setText(vm.viewName as CharSequence)
         val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
-        spinner.setSelection(vm.category.colorType)
+        spinner.setSelection(vm.getColorType())
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
-                    vm.viewName = editText.text.toString()
-                    vm.category.colorType = spinner.getSelection()
-                    categoryDao.update(vm.makeCategory())
+                    vm.update(editText.text.toString(), spinner.getSelection())
                     adapter.refresh(vm)
                     dialogInterface.dismiss()
                 })
                 .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
-                    categoryDao.delete(vm.category)
+                    vm.delete()
                     adapter.remove(vm)
                     if(adapter.itemCount == 0) {
                         visibleEmptyMessage()
@@ -201,7 +202,7 @@ class CategoryFragment : BaseFragment() {
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE).isEnabled = false
             view.findViewById(R.id.label_category_delete_attention).visibility = View.VISIBLE
         }
-        editText.changeTextListener(view, dialog, editText, vm.category.id, vm.viewName)
+        editText.changeTextListener(view, dialog, editText, vm.getId(), vm.viewName)
     }
 
     /**
@@ -250,8 +251,8 @@ class CategoryFragment : BaseFragment() {
             }
         }
 
-        fun getModels(): List<Category> {
-            return list.map {vm -> vm.category}.toMutableList()
+        fun getCategoryIdsAsCurrentOrder(): List<Int> {
+            return list.map {vm -> vm.getId()}.toMutableList()
         }
     }
 

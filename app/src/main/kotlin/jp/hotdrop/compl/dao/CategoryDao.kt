@@ -54,12 +54,12 @@ class CategoryDao @Inject constructor(ormaHolder: OrmaHolder) {
         }
     }
 
-    fun updateAllOrder(categories: List<Category>) {
+    fun updateAllOrder(categoryIds: List<Int>) {
         orma.transactionSync {
-            for((index, category) in categories.withIndex()) {
+            for((index, id) in categoryIds.withIndex()) {
                 categoryRelation().updater()
                         .viewOrder(index)
-                        .idEq(category.id)
+                        .idEq(id)
                         .execute()
             }
         }
