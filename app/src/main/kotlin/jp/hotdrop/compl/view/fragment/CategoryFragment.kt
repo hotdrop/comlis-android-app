@@ -34,7 +34,6 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
     private lateinit var binding: FragmentCategoryBinding
     private lateinit var adapter: Adapter
     private lateinit var helper: ItemTouchHelper
-
     private var isReorder = false
 
     companion object {
@@ -75,18 +74,10 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
         binding.fabButton.setOnClickListener { showRegisterDialog() }
     }
 
-    private fun visibleEmptyMessage() {
-        //binding.listEmptyView.visibility = View.VISIBLE
-    }
-
-    private fun goneEmptyMessage() {
-        //binding.listEmptyView.visibility = View.GONE
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         if(isReorder) {
-            viewModel.updateItemOrder()//adapter.getCategoryIdsAsCurrentOrder())
+            viewModel.updateItemOrder()
         }
     }
 
@@ -105,7 +96,6 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
 
     /**
      * ダイアログで、入力した分類名に応じてボタンと注意書きの制御を行う拡張関数
-     * TODO これRxでやったほうがコード短くなると思う・・
      */
     private val REGISTER_MODE: Int = -1
     fun AppCompatEditText.changeTextListener(view: View, dialog: AlertDialog, editText: AppCompatEditText,
@@ -115,15 +105,9 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {/*no op*/ }
                 override fun afterTextChanged(s: Editable?) {
                     when {
-                        editText.text.toString() == "" -> {
-                            disableButton()
-                        }
-                        categoryId == REGISTER_MODE -> {
-                            if(existName()) disableButtonWithAttention() else enableButton()
-                        }
-                        else -> {
-                            if(existNameExclusionOwn()) disableButtonWithAttention() else enableButton()
-                        }
+                        editText.text.toString() == "" -> disableButton()
+                        categoryId == REGISTER_MODE -> if(existName()) disableButtonWithAttention() else enableButton()
+                        else -> if(existNameExclusionOwn()) disableButtonWithAttention() else enableButton()
                     }
                 }
                 private fun existName(): Boolean = viewModel.existName(editText.text.toString())
@@ -152,9 +136,7 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
                 .setView(view)
                 .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
                     viewModel.register(editText.text.toString(), spinner.getSelection())
-                    adapter.add(viewModel.getCategoryViewModel(editText.text.toString()))
                     dialogInterface.dismiss()
-                    goneEmptyMessage()
                 })
                 .create()
         dialog.show()
@@ -171,16 +153,11 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
-                    vm.update(editText.text.toString(), spinner.getSelection())
-                    adapter.refresh(vm)
+                    viewModel.update(vm, editText.text.toString(), spinner.getSelection())
                     dialogInterface.dismiss()
                 })
                 .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
-                    vm.delete()
-                    adapter.remove(vm)
-                    if(adapter.itemCount == 0) {
-                        visibleEmptyMessage()
-                    }
+                    viewModel.delete(vm)
                     dialogInterface.dismiss()
                 })
                 .create()
@@ -237,27 +214,6 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
 
         private fun isMotionEventDown(motionEvent: MotionEvent): Boolean {
             return (MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN)
-        }
-
-        fun refresh(vm: CategoryViewModel) {
-            val position = adapter.getItemPosition(vm)
-            if(position != -1) {
-                adapter.getItem(position).change(vm)
-                notifyItemChanged(position)
-            }
-        }
-
-        fun add(vm: CategoryViewModel) {
-            addItem(vm)
-            notifyItemInserted(itemCount)
-        }
-
-        fun remove(vm: CategoryViewModel) {
-            val position = adapter.getItemPosition(vm)
-            if(position != -1) {
-                adapter.removeItem(position)
-                notifyItemRemoved(position)
-            }
         }
     }
 

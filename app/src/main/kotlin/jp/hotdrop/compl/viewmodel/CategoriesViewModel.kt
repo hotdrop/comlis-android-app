@@ -11,10 +11,8 @@ import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.BR
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
-import jp.hotdrop.compl.di.scope.FragmentScope
 import javax.inject.Inject
 
-@FragmentScope
 class CategoriesViewModel @Inject constructor(val context: Context): ViewModel() {
 
     @Inject
@@ -59,20 +57,12 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
     private fun onSuccess(categoryViewModels: List<CategoryViewModel>) {
         if(categoryViewModels.isNotEmpty()) {
             viewModels.addAll(categoryViewModels)
-            emptyMessageVisibility = View.GONE
-        } else {
-            emptyMessageVisibility = View.VISIBLE
         }
+        checkAndUpdateEmptyMessageVisibility()
     }
 
     fun getViewModels(): ObservableList<CategoryViewModel> {
-        return viewModels
-    }
-
-    fun updateItemOrder() {
-        val categoryIds = viewModels.map { it.getId() }
-        categoryDao.updateAllOrder(categoryIds)
-    }
+        return viewModels    }
 
     fun existName(categoryName: String): Boolean {
         return categoryDao.exist(categoryName)
@@ -84,11 +74,39 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
 
     fun register(categoryName: String, colorType: String) {
         categoryDao.insert(categoryName, colorType)
+        val category = categoryDao.find(categoryName)
+        val vm = CategoryViewModel(category, context, categoryDao, companyDao)
+        viewModels.add(vm)
+        checkAndUpdateEmptyMessageVisibility()
     }
 
-    fun getCategoryViewModel(categoryName: String): CategoryViewModel {
-        val category = categoryDao.find(categoryName)
-        return CategoryViewModel(category, context, categoryDao, companyDao)
+    fun update(vm: CategoryViewModel, newName: String, newColorType: String) {
+        val category = vm.category.apply {
+            name = newName
+            colorType = newColorType
+        }
+        categoryDao.update(category)
+        val newVm = CategoryViewModel(category, context, categoryDao, companyDao)
+        val idx = viewModels.indexOf(vm)
+        viewModels[idx].change(newVm)
+    }
+
+    fun updateItemOrder() {
+        val categoryIds = viewModels.map { it.getId() }
+        categoryDao.updateAllOrder(categoryIds)
+    }
+
+    fun delete(vm: CategoryViewModel) {
+        viewModels.remove(vm)
+        checkAndUpdateEmptyMessageVisibility()
+    }
+
+    private fun checkAndUpdateEmptyMessageVisibility() {
+        if(viewModels.isNotEmpty()) {
+            emptyMessageVisibility = View.GONE
+        } else {
+            emptyMessageVisibility = View.VISIBLE
+        }
     }
 
     interface Callback {

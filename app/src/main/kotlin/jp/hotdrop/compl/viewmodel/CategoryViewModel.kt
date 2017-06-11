@@ -7,13 +7,13 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.util.ColorUtil
 
-class CategoryViewModel(private var category: Category,
+class CategoryViewModel(var category: Category,
                         private val context: Context,
                         private val categoryDao: CategoryDao,
                         companyDao: CompanyDao): ViewModel() {
 
     var viewName = category.name
-    // バインドしているので文字列にしないとダメ
+    // TextViewにバインドしているので文字列にしないとダメ
     var itemCount = companyDao.countByCategory(category.id).toString()
 
     @ColorRes
@@ -30,17 +30,6 @@ class CategoryViewModel(private var category: Category,
 
     override fun equals(other: Any?): Boolean =
             (other as CategoryViewModel).category.id == category.id || super.equals(other)
-
-    fun update(newCategoryName: String, newColorType: String) {
-        viewName = newCategoryName
-        category.name = newCategoryName
-        category.colorType = newColorType
-        categoryDao.update(category)
-    }
-
-    fun delete() {
-        categoryDao.delete(category)
-    }
 
     fun isRegisterCompanyInCategory(): Boolean {
         return itemCount.toInt() > 0
