@@ -18,19 +18,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.dao.CategoryDao
-import jp.hotdrop.compl.dao.CompanyDao
-import jp.hotdrop.compl.dao.JobEvaluationDao
 import jp.hotdrop.compl.databinding.FragmentCompanyTabBinding
 import jp.hotdrop.compl.databinding.ItemCompanyBinding
 import jp.hotdrop.compl.databinding.ItemCompanyListTagBinding
-import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
 import jp.hotdrop.compl.view.activity.ActivityNavigator
+import jp.hotdrop.compl.viewmodel.CompaniesViewModel
 import jp.hotdrop.compl.viewmodel.CompanyViewModel
-import jp.hotdrop.compl.viewmodel.TagAssociateViewModel
 import javax.inject.Inject
 
 class CompanyTabFragment: BaseFragment() {
@@ -38,11 +34,7 @@ class CompanyTabFragment: BaseFragment() {
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
     @Inject
-    lateinit var companyDao: CompanyDao
-    @Inject
-    lateinit var categoryDao: CategoryDao
-    @Inject
-    lateinit var jobEvaluationDao: JobEvaluationDao
+    lateinit var viewModel: CompaniesViewModel
 
     private val categoryId by lazy { arguments.getInt(EXTRA_CATEGORY_ID) }
 
@@ -74,7 +66,7 @@ class CompanyTabFragment: BaseFragment() {
         super.onStop()
         compositeDisposable.clear()
         if(isMoveItem) {
-            companyDao.updateAllOrder(adapter.getCompanyIdsAsCurrentOrder())
+            viewModel.updateItemOrder(adapter.getCompanyIdsAsCurrentOrder())
             isMoveItem = false
         }
     }
@@ -95,7 +87,7 @@ class CompanyTabFragment: BaseFragment() {
 
         when(refreshMode) {
             UPDATE -> {
-                val vm = CompanyViewModel(companyDao.find(companyId), context, companyDao, categoryDao, jobEvaluationDao)
+                val vm =  viewModel.getCompanyViewModel(companyId)
                 adapter.refresh(vm)
             }
             // notifyRemoveで実装した場合、並び替えしてから削除するとConcurrentModificationExceptionになるためリスト再生成する。
@@ -105,21 +97,21 @@ class CompanyTabFragment: BaseFragment() {
     }
 
     private fun loadData() {
-        val disposable = companyDao.findByCategory(categoryId)
+        val disposable = viewModel.loadData(categoryId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        { companies -> onLoadSuccess(companies) },
+                        { onSuccess() },
                         { throwable -> showErrorAsToast(ErrorType.LoadFailureCompanies, throwable) }
                 )
         compositeDisposable.add(disposable)
     }
 
-    private fun onLoadSuccess(companies: List<Company>) {
+    private fun onSuccess() {
         adapter = Adapter(context)
 
-        if(companies.isNotEmpty()) {
-            adapter.addAll(companies.map{ company -> CompanyViewModel(company, context, companyDao, categoryDao, jobEvaluationDao) })
+        if(viewModel.isNotEmpty()) {
+            adapter.addAll(viewModel.getCompanyViewModels())
             goneEmptyMessage()
         } else {
             visibleEmptyMessage()
@@ -203,7 +195,7 @@ class CompanyTabFragment: BaseFragment() {
         private fun setCardView(flexboxLayout: FlexboxLayout, tag: Tag) {
             val binding = DataBindingUtil.inflate<ItemCompanyListTagBinding>(getLayoutInflater(null),
                     R.layout.item_company_list_tag, flexboxLayout, false)
-            binding.viewModel = TagAssociateViewModel(tag = tag, context = context, companyDao = companyDao)
+            binding.viewModel = viewModel.getTagAssociateViewModel(tag)
             flexboxLayout.addView(binding.root)
         }
 

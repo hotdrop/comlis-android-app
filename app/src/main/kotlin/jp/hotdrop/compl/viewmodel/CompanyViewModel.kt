@@ -39,7 +39,7 @@ class CompanyViewModel(company: Company,
         setData(company)
     }
 
-    fun setData(company: Company) {
+    private fun setData(company: Company) {
         id = company.id
 
         viewName = company.name
