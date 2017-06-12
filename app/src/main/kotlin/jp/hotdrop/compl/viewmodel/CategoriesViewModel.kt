@@ -58,6 +58,7 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
     }
 
     private fun onSuccess(categoryViewModels: List<CategoryViewModel>) {
+        viewModels.clear()
         if(categoryViewModels.isNotEmpty()) {
             viewModels.addAll(categoryViewModels)
         }

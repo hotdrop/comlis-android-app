@@ -49,12 +49,12 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.setCallback(this)
-        viewModel.loadData()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCategoryBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
+        viewModel.loadData()
         initView()
         return binding.root
     }
@@ -174,7 +174,7 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
      * アダプター
      */
     inner class Adapter(context: Context, list: ObservableList<CategoryViewModel>)
-        : ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context, list) {
+        :            ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context, list) {
 
         init {
             list.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<CategoryViewModel>>() {
