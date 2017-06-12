@@ -6,28 +6,29 @@ import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 
 class TagViewModel(var tag: Tag,
-                   attachCompanyCount: Int,
-                   val context: Context): ViewModel() {
+                   var attachCompanyCount: Int,
+                   private val context: Context): ViewModel() {
 
     var viewName = tag.name
-    // TextViewにバインドしているので文字列にする
-    // TODO ここは良くないので内部ではIntで持ってgetで文字列を受け取る
-    var attachCount = attachCompanyCount.toString()
+
+    override fun equals(other: Any?): Boolean = ((other as TagViewModel).tag.id == tag.id || super.equals(other))
+
+    fun isAttachCompany(): Boolean = attachCompanyCount > 0
 
     @ColorRes
     fun getColorRes(): Int = ColorUtil.getResLight(tag.colorType, context)
+
     fun getId() = tag.id
+
     fun getColorType() = tag.colorType
+
+    // TextViewにバインドしているので文字列にする
+    fun getAttachCompanyCountToString() = attachCompanyCount.toString()
 
     fun change(vm: TagViewModel) {
         this.tag = vm.tag
         viewName = vm.viewName
-        attachCount = vm.attachCount
+        attachCompanyCount = vm.attachCompanyCount
     }
 
-    override fun equals(other: Any?): Boolean = ((other as TagViewModel).tag.id == tag.id || super.equals(other))
-
-    fun isAttachCompany(): Boolean {
-        return attachCount.toInt() > 0
-    }
 }

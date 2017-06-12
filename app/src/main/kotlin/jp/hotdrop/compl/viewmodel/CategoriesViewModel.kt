@@ -90,7 +90,7 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
         }
         categoryDao.update(c)
         val idx = viewModels.indexOf(vm)
-        viewModels[idx] = CategoryViewModel(c, vm.itemCount.toInt(), context)
+        viewModels[idx] = CategoryViewModel(c, vm.registerCompanyCount, context)
     }
 
     fun updateItemOrder() {

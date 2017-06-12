@@ -64,7 +64,7 @@
                     style="@style/ListSubItemText"
                     android:layout_below="@id/txt_name"
                     android:layout_toEndOf="@id/label_register_count"
-                    android:text="@{viewModel.itemCount}" />
+                    android:text="@{viewModel.registerCompanyCountToString}" />
 
             </RelativeLayout>
 
