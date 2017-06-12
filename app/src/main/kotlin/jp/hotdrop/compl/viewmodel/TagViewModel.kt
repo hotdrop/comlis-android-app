@@ -2,28 +2,25 @@ package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
 import android.support.annotation.ColorRes
-import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 
-class TagViewModel(var tag: Tag, val context: Context, tagDao: TagDao): ViewModel() {
+class TagViewModel(var tag: Tag,
+                   attachCompanyCount: Int,
+                   val context: Context): ViewModel() {
 
-    // 画面表示に使うデータだけmodelとは別にフィールド値を持たせる
     var viewName = tag.name
-    var attachCount = tagDao.countByAttachCompany(tag).toString()
+    // TextViewにバインドしているので文字列にする
+    var attachCount = attachCompanyCount.toString()
 
     @ColorRes
     fun getColorRes(): Int = ColorUtil.getResLight(tag.colorType, context)
-
-    fun change(vm: TagViewModel) {
-        this.tag = vm.tag
-        viewName = vm.viewName
-        attachCount = vm.attachCount
-    }
+    fun getId() = tag.id
+    fun getColorType() = tag.colorType
 
     override fun equals(other: Any?): Boolean = ((other as TagViewModel).tag.id == tag.id || super.equals(other))
 
-    fun makeTag(): Tag = tag.apply {
-        name = viewName
+    fun isAttachCompany(): Boolean {
+        return attachCount.toInt() > 0
     }
 }

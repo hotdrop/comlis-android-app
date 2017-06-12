@@ -15,26 +15,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Spinner
 import com.google.android.flexbox.FlexboxLayoutManager
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.databinding.FragmentTagBinding
 import jp.hotdrop.compl.databinding.ItemTagBinding
-import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
 import jp.hotdrop.compl.view.parts.ColorSpinner
 import jp.hotdrop.compl.viewmodel.TagViewModel
+import jp.hotdrop.compl.viewmodel.TagsViewModel
 import javax.inject.Inject
 
-class TagFragment: BaseFragment() {
+class TagFragment: BaseFragment(), TagsViewModel.Callback {
 
     @Inject
-    lateinit var compositeDisposable: CompositeDisposable
-    @Inject
-    lateinit var tagDao: TagDao
+    lateinit var viewModel: TagsViewModel
 
     private lateinit var binding: FragmentTagBinding
     private lateinit var adapter: FlexItemAdapter
@@ -50,61 +44,50 @@ class TagFragment: BaseFragment() {
         getComponent().inject(this)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.setCallBack(this)
+        viewModel.loadData()
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentTagBinding.inflate(inflater, container, false)
-        loadData()
+        binding.viewModel = viewModel
+        initView()
         return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        tagDao.updateAllOrder(adapter.getModels())
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.dispose()
-    }
-
-    private fun loadData() {
-        val disposable = tagDao.findAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { tags -> onLoadSuccess(tags) },
-                        { throwable -> showErrorAsToast(ErrorType.LoadFailureTags, throwable) }
-                )
-        compositeDisposable.add(disposable)
-    }
-
-    private fun onLoadSuccess(tags: List<Tag>) {
+    private fun initView() {
         adapter = FlexItemAdapter(context)
-
-        if(tags.isNotEmpty()) {
-            adapter.addAll(tags.map { t -> TagViewModel(t, context, tagDao) })
-            goneEmptyMessage()
-        } else {
-            visibleEmptyMessage()
-        }
-
         helper = ItemTouchHelper(TagItemTouchHelperCallback(adapter))
+
         binding.recyclerView.let {
             it.setHasFixedSize(true)
             it.layoutManager = FlexboxLayoutManager()
             it.adapter = adapter
             it.addItemDecoration(helper)
         }
-        helper.attachToRecyclerView(binding.recyclerView)
 
+        helper.attachToRecyclerView(binding.recyclerView)
         binding.fabButton.setOnClickListener { showRegisterDialog() }
     }
 
-    private fun visibleEmptyMessage() {
-        binding.listEmptyView.visibility = View.VISIBLE
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.updateItemOrder()
     }
 
-    private fun goneEmptyMessage() {
-        binding.listEmptyView.visibility = View.GONE
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.destroy()
+    }
+
+    override fun showError(throwable: Throwable) {
+        showErrorAsToast(ErrorType.LoadFailureTags, throwable)
+    }
+
+    private fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
+        helper.startDrag(viewHolder)
     }
 
     /**
@@ -117,13 +100,15 @@ class TagFragment: BaseFragment() {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/*no op*/}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {/*no op*/ }
                 override fun afterTextChanged(s: Editable?) {
-                    val editTxt = editText.text.toString()
                     when {
-                        editTxt == "" -> disableButton()
-                        tagId == REGISTER_MODE -> if(tagDao.exist(editTxt)) disableButtonWithAttention() else enableButton()
-                        else -> if(editTxt != originName && tagDao.existExclusionId(editTxt, tagId)) disableButtonWithAttention() else enableButton()
+                        editText.text.toString() == "" -> disableButton()
+                        tagId == REGISTER_MODE -> if(existName()) disableButtonWithAttention() else enableButton()
+                        else -> if(existNameExclusionOwn()) disableButtonWithAttention() else enableButton()
                     }
                 }
+                private fun existName(): Boolean = viewModel.existName(editText.text.toString())
+                private fun existNameExclusionOwn(): Boolean =
+                        (editText.text.toString() != originName && viewModel.existNameExclusionId(editText.text.toString(), tagId))
                 private fun disableButton() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
                     view.findViewById(R.id.label_tag_attention).visibility = View.GONE
@@ -145,14 +130,8 @@ class TagFragment: BaseFragment() {
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
-                    tagDao.insert(Tag().apply {
-                        name = editText.text.toString()
-                        colorType = spinner.getSelection()
-                    })
-                    val tag = tagDao.find(editText.text.toString())
-                    adapter.add(TagViewModel(tag, context, tagDao))
+                    viewModel.register(editText.text.toString(), spinner.getSelection())
                     dialogInterface.dismiss()
-                    goneEmptyMessage()
                 })
                 .create()
         dialog.show()
@@ -165,35 +144,24 @@ class TagFragment: BaseFragment() {
         val editText = view.findViewById(R.id.text_tag_name) as AppCompatEditText
         editText.setText(vm.viewName as CharSequence)
         val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
-        spinner.setSelection(vm.tag.colorType)
+        spinner.setSelection(vm.getColorType())
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
-                    vm.viewName = editText.text.toString()
-                    vm.tag.colorType = spinner.getSelection()
-                    tagDao.update(vm.makeTag())
-                    adapter.refresh(vm)
+                    viewModel.update(vm, editText.text.toString(), spinner.getSelection())
                     dialogInterface.dismiss()
                 })
                 .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
-                    tagDao.delete(vm.tag)
-                    adapter.remove(vm)
-                    if(adapter.itemCount == 0) {
-                        visibleEmptyMessage()
-                    }
+                    viewModel.delete(vm)
                     dialogInterface.dismiss()
                 })
                 .create()
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
-        if(vm.attachCount.toInt() > 0) {
+        if(vm.isAttachCompany()) {
             view.findViewById(R.id.label_tag_delete_attention).visibility = View.VISIBLE
         }
-        editText.changeTextListener(view, dialog, editText, vm.tag.id, vm.viewName)
-    }
-
-    private fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
-        helper.startDrag(viewHolder)
+        editText.changeTextListener(view, dialog, editText, vm.getId(), vm.viewName)
     }
 
     inner class FlexItemAdapter(context: Context)
@@ -214,31 +182,6 @@ class TagFragment: BaseFragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemTagBinding> {
             return BindingHolder(context, parent, R.layout.item_tag)
-        }
-
-        fun refresh(vm: TagViewModel) {
-            val position = adapter.getItemPosition(vm)
-            if(position != -1) {
-                adapter.getItem(position).change(vm)
-                notifyItemChanged(position)
-            }
-        }
-
-        fun add(vm: TagViewModel) {
-            addItem(vm)
-            notifyItemInserted(itemCount)
-        }
-
-        fun remove(vm: TagViewModel) {
-            val position = adapter.getItemPosition(vm)
-            if(position != -1) {
-                adapter.removeItem(position)
-                notifyItemRemoved(position)
-            }
-        }
-
-        fun getModels(): List<Tag> {
-            return list.map{ it.tag }.toList()
         }
     }
 
