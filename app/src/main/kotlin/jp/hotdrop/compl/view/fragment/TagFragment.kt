@@ -15,9 +15,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Spinner
 import com.google.android.flexbox.FlexboxLayoutManager
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.FragmentTagBinding
 import jp.hotdrop.compl.databinding.ItemTagBinding
+import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
 import jp.hotdrop.compl.view.parts.ColorSpinner
@@ -25,8 +29,10 @@ import jp.hotdrop.compl.viewmodel.TagViewModel
 import jp.hotdrop.compl.viewmodel.TagsViewModel
 import javax.inject.Inject
 
-class TagFragment: BaseFragment(), TagsViewModel.Callback {
+class TagFragment: BaseFragment() {
 
+    @Inject
+    lateinit var compositeDisposable: CompositeDisposable
     @Inject
     lateinit var viewModel: TagsViewModel
 
@@ -44,23 +50,35 @@ class TagFragment: BaseFragment(), TagsViewModel.Callback {
         getComponent().inject(this)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.setCallBack(this)
-        viewModel.loadData()
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentTagBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        initView()
+        loadData()
         return binding.root
     }
 
-    private fun initView() {
-        adapter = FlexItemAdapter(context)
-        helper = ItemTouchHelper(TagItemTouchHelperCallback(adapter))
+    private fun loadData() {
+        val disposable = viewModel.getData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { onSuccess(it) },
+                        { showErrorAsToast(ErrorType.LoadFailureTags, it) }
+                )
+        compositeDisposable.add(disposable)
+    }
 
+    private fun onSuccess(tagViewModels: List<TagViewModel>) {
+        adapter = FlexItemAdapter(context)
+
+        if(tagViewModels.isNotEmpty()) {
+            adapter.addAll(tagViewModels)
+            viewModel.goneEmptyMessageOnScreen()
+        } else {
+            viewModel.visibilityEmptyMessageOnScreen()
+        }
+
+        helper = ItemTouchHelper(TagItemTouchHelperCallback(adapter))
         binding.recyclerView.let {
             it.setHasFixedSize(true)
             it.layoutManager = FlexboxLayoutManager()
@@ -74,16 +92,12 @@ class TagFragment: BaseFragment(), TagsViewModel.Callback {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.updateItemOrder()
+        viewModel.updateItemOrder(adapter.getModels())
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.destroy()
-    }
-
-    override fun showError(throwable: Throwable) {
-        showErrorAsToast(ErrorType.LoadFailureTags, throwable)
+        compositeDisposable.clear()
     }
 
     private fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
@@ -131,6 +145,7 @@ class TagFragment: BaseFragment(), TagsViewModel.Callback {
                 .setView(view)
                 .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
                     viewModel.register(editText.text.toString(), spinner.getSelection())
+                    adapter.add(viewModel.getViewModel(editText.text.toString()))
                     dialogInterface.dismiss()
                 })
                 .create()
@@ -149,10 +164,15 @@ class TagFragment: BaseFragment(), TagsViewModel.Callback {
                 .setView(view)
                 .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
                     viewModel.update(vm, editText.text.toString(), spinner.getSelection())
+                    adapter.refresh(viewModel.getViewModel(editText.text.toString()))
                     dialogInterface.dismiss()
                 })
                 .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
                     viewModel.delete(vm)
+                    adapter.remove(vm)
+                    if(adapter.itemCount <= 0) {
+                        viewModel.visibilityEmptyMessageOnScreen()
+                    }
                     dialogInterface.dismiss()
                 })
                 .create()
@@ -182,6 +202,31 @@ class TagFragment: BaseFragment(), TagsViewModel.Callback {
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemTagBinding> {
             return BindingHolder(context, parent, R.layout.item_tag)
+        }
+
+        fun refresh(vm: TagViewModel) {
+            val position = adapter.getItemPosition(vm)
+            if(position != -1) {
+                adapter.getItem(position).change(vm)
+                notifyItemChanged(position)
+            }
+        }
+
+        fun add(vm: TagViewModel) {
+            addItem(vm)
+            notifyItemInserted(itemCount)
+        }
+
+        fun remove(vm: TagViewModel) {
+            val position = adapter.getItemPosition(vm)
+            if(position != -1) {
+                adapter.removeItem(position)
+                notifyItemRemoved(position)
+            }
+        }
+
+        fun getModels(): List<Tag> {
+            return list.map{ it.tag }.toList()
         }
     }
 

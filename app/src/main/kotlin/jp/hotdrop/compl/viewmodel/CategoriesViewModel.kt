@@ -47,8 +47,8 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        { categoryViewModels -> onSuccess(categoryViewModels) },
-                        { throwable -> callback.showError(throwable)}
+                        { onSuccess(it) },
+                        { callback.showError(it) }
                 )
         compositeDisposable.add(disposable)
     }
@@ -79,8 +79,7 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
         categoryDao.insert(categoryName, colorType)
         val category = categoryDao.find(categoryName)
         val itemCount = getRegisterCompanyCount(category.id)
-        val vm = CategoryViewModel(category, itemCount, context)
-        viewModels.add(vm)
+        viewModels.add(CategoryViewModel(category, itemCount, context))
         checkAndUpdateEmptyMessageVisibility()
     }
 
@@ -90,10 +89,8 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
             colorType = newColorType
         }
         categoryDao.update(c)
-        val itemCount = getRegisterCompanyCount(vm.getId())
-        val newVm = CategoryViewModel(c, itemCount, context)
         val idx = viewModels.indexOf(vm)
-        viewModels[idx] = newVm
+        viewModels[idx] = CategoryViewModel(c, vm.itemCount.toInt(), context)
     }
 
     fun updateItemOrder() {
@@ -102,6 +99,7 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
     }
 
     fun delete(vm: CategoryViewModel) {
+        categoryDao.delete(vm.category)
         viewModels.remove(vm)
         checkAndUpdateEmptyMessageVisibility()
     }

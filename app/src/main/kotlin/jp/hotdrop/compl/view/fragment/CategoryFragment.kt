@@ -173,8 +173,8 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
     /**
      * アダプター
      */
-    inner class Adapter(context: Context, list: ObservableList<CategoryViewModel>):
-            ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context, list) {
+    inner class Adapter(context: Context, list: ObservableList<CategoryViewModel>)
+        : ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context, list) {
 
         init {
             list.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<CategoryViewModel>>() {

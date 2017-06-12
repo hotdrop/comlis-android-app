@@ -2,12 +2,8 @@ package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
 import android.databinding.Bindable
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableList
 import android.view.View
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.Single
 import jp.hotdrop.compl.BR
 import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.model.Tag
@@ -16,12 +12,7 @@ import javax.inject.Inject
 class TagsViewModel @Inject constructor(val context: Context): ViewModel() {
 
     @Inject
-    lateinit var compositeDisposable: CompositeDisposable
-    @Inject
     lateinit var tagDao: TagDao
-
-    private var viewModels: ObservableList<TagViewModel> = ObservableArrayList()
-    private lateinit var callback: Callback
 
     @get:Bindable
     var emptyMessageVisibility = View.GONE
@@ -30,36 +21,21 @@ class TagsViewModel @Inject constructor(val context: Context): ViewModel() {
             notifyPropertyChanged(BR.emptyMessageVisibility)
         }
 
-    fun setCallBack(callback: Callback) {
-        this.callback = callback
-    }
-
-    fun loadData() {
-        val disposable = tagDao.findAll()
+    /**
+     * 他と違ってTagsViewModelはBaseObservableで実装していない。
+     * 理由は、最初に実装したコードからあまり変更を加えず、Tagを実現しているflexbox-layoutでのswipと
+     * BaseObservableListへの変更通知の整合性を保とうと奮闘してた。
+     * しかし、今のコードはTagFragmentのTagItemTouchHelperCallbackクラスで多少強引に実装しているためうまくいかなかった。
+     * ちょっと根本から考え直さないと厳しそうなため一旦は元の実装のままTagsViewModelを追加する方向にした。
+     */
+    fun getData(): Single<List<TagViewModel>> {
+        return tagDao.findAll()
                 .map { tags ->
                     tags.map {
                         val attachCnt = tagDao.countByAttachCompany(it)
                         TagViewModel(it, attachCnt, context)
                     }
                 }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { onSuccess(it) },
-                        { callback.showError(it) }
-                )
-        compositeDisposable.add(disposable)
-    }
-
-    private fun onSuccess(tagViewModels: List<TagViewModel>) {
-        if(tagViewModels.isNotEmpty()) {
-            viewModels.addAll(tagViewModels)
-        }
-        checkAndUpdateEmptyMessageVisibility()
-    }
-
-    fun destroy() {
-        compositeDisposable.clear()
     }
 
     fun existName(name: String): Boolean {
@@ -70,15 +46,17 @@ class TagsViewModel @Inject constructor(val context: Context): ViewModel() {
         return tagDao.existExclusionId(name, id)
     }
 
+    fun getViewModel(name: String): TagViewModel {
+        val tag = tagDao.find(name)
+        val attachCnt = tagDao.countByAttachCompany(tag)
+        return TagViewModel(tag, attachCnt, context)
+    }
+
     fun register(name: String, colorType: String) {
         tagDao.insert(Tag().apply {
             this.name = name
             this.colorType = colorType
         })
-        val tag = tagDao.find(name)
-        val attachCnt = tagDao.countByAttachCompany(tag)
-        viewModels.add(TagViewModel(tag, attachCnt, context))
-        checkAndUpdateEmptyMessageVisibility()
     }
 
     fun update(vm: TagViewModel, newName: String, newColorType: String) {
@@ -87,30 +65,20 @@ class TagsViewModel @Inject constructor(val context: Context): ViewModel() {
             colorType = newColorType
         }
         tagDao.update(t)
-        val idx = viewModels.indexOf(vm)
-        viewModels[idx] = TagViewModel(t, vm.attachCount.toInt(), context)
     }
 
-    fun updateItemOrder() {
-        val tags = viewModels.map { it.tag }
+    fun updateItemOrder(tags: List<Tag>) {
         tagDao.updateAllOrder(tags)
     }
 
     fun delete(vm: TagViewModel) {
-        viewModels.remove(vm)
-        checkAndUpdateEmptyMessageVisibility()
+        tagDao.delete(vm.tag)
     }
 
-    private fun checkAndUpdateEmptyMessageVisibility() {
-        if(viewModels.isNotEmpty()) {
-            emptyMessageVisibility = View.GONE
-        } else {
-            emptyMessageVisibility = View.VISIBLE
-        }
+    fun visibilityEmptyMessageOnScreen() {
+        emptyMessageVisibility = View.VISIBLE
     }
-
-    interface Callback {
-        fun showError(throwable: Throwable)
+    fun goneEmptyMessageOnScreen() {
+        emptyMessageVisibility = View.GONE
     }
-
 }
