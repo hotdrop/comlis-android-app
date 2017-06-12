@@ -194,9 +194,10 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         }
     }
 
+    private val FAB_MENU_OPEN_ROTATION = 90.toFloat()
     private fun expandFabMenu() {
         ViewCompat.animate(binding.fabDetailMenu)
-                .rotation(90.toFloat())
+                .rotation(FAB_MENU_OPEN_ROTATION)
                 .withLayer()
                 .setDuration(300)
                 .setInterpolator(OvershootInterpolator(10.toFloat()))
@@ -210,7 +211,8 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     }
 
     private fun collapseFabMenu() {
-        ViewCompat.animate(binding.fabDetailMenu).rotation(0.toFloat())
+        ViewCompat.animate(binding.fabDetailMenu)
+                .rotation(0.toFloat())
                 .withLayer()
                 .setDuration(300)
                 .setInterpolator(OvershootInterpolator(10.toFloat()))
@@ -253,9 +255,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         binding.imageEditDescription.goneIcon()
     }
 
-    fun isOpenFabMenu(): Boolean {
-        return (binding.fabTrash.isClickable && binding.fabTag.isClickable && binding.fabEdit.isClickable)
-    }
+    fun isOpenFabMenu(): Boolean = binding.fabDetailMenu.rotation == FAB_MENU_OPEN_ROTATION
 
     fun closeFabMenu() {
         binding.fabMenuTrashLayout.startAnimation(fabCloseAnimation)

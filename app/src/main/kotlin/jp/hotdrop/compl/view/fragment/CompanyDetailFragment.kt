@@ -218,7 +218,6 @@ class CompanyDetailFragment: BaseFragment() {
             ActivityNavigator.showCompanyEditDescription(this@CompanyDetailFragment, companyId,
                     viewModel.colorName, Request.EditDescription.code)
         }
-
     }
 
     private fun initFavoriteEvent() {
