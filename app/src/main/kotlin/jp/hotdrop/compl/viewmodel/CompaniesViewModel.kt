@@ -52,7 +52,8 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
     }
 
     fun getTagAssociateViewModel(tag: Tag): TagAssociateViewModel {
-        return TagAssociateViewModel(tag = tag, context = context, companyDao = companyDao)
+        // 関連付けしているタグしか取得していないため、無条件で第二引数をtrue（関連付けられているという意味）にする。
+        return TagAssociateViewModel(tag, true, context)
     }
 
 }

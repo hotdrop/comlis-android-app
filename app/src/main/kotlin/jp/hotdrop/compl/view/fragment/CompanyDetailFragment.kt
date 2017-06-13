@@ -137,7 +137,8 @@ class CompanyDetailFragment: BaseFragment() {
         fun setCardView(layout: FlexboxLayout, tag: Tag) {
             val binding = DataBindingUtil.inflate<ItemTagAssociateBinding>(getLayoutInflater(null),
                     R.layout.item_tag_associate, layout, false)
-            binding.viewModel = TagAssociateViewModel(tag = tag, context = context, companyDao = companyDao)
+            // 関連付けしているタグしか取得していないため、無条件で第二引数をtrue（関連付けられているという意味）にする。
+            binding.viewModel = TagAssociateViewModel(tag, true, context)
             layout.addView(binding.root)
         }
 

@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.fragment.CompanyAssociateTagFragment" >
 
+    <data>
+        <variable
+            name="viewModel"
+            type="jp.hotdrop.compl.viewmodel.TagsAssociateViewModel" />
+    </data>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
