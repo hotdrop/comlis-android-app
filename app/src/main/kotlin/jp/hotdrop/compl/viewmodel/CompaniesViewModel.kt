@@ -1,11 +1,16 @@
 package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
-import io.reactivex.Completable
+import android.databinding.ObservableArrayList
+import android.databinding.ObservableList
+import android.view.View
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import jp.hotdrop.compl.BR
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.dao.JobEvaluationDao
-import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
 import javax.inject.Inject
 
@@ -17,43 +22,94 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
     lateinit var categoryDao: CategoryDao
     @Inject
     lateinit var jobEvaluationDao: JobEvaluationDao
+    @Inject
+    lateinit var compositeDisposable: CompositeDisposable
 
-    lateinit var viewModels: List<CompanyViewModel>
+    private var viewModels: ObservableList<CompanyViewModel> = ObservableArrayList()
+    private lateinit var callback: Callback
+    private var movedItem = false
 
-    fun loadData(categoryId: Int): Completable {
-        return companyDao.findByCategory(categoryId)
-                .flatMapCompletable {
-                    setData(it)
-                    Completable.complete()
-                }
-    }
-
-    private fun setData(companies: List<Company>) {
-        viewModels = companies.map {
-            // TODO Dao渡しまくるのなんとかしたい・・
-            CompanyViewModel(it, context, companyDao, categoryDao, jobEvaluationDao)
+    var emptyMessageVisibility = View.GONE
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.emptyMessageVisibility)
         }
+
+    fun setCallback(callback: Callback) {
+        this.callback = callback
     }
 
-    fun isNotEmpty(): Boolean {
-        return viewModels.isNotEmpty()
+    fun loadData(categoryId: Int) {
+        val disposable = companyDao.findByCategory(categoryId)
+                .map { companies ->
+                    companies.map {
+                        // TODO Dao渡しまくるのなんとかしたい・・
+                        CompanyViewModel(it, context, companyDao, categoryDao, jobEvaluationDao)
+                    }
+                }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { onSuccess(it) },
+                        { callback.showError(it) }
+                )
+        compositeDisposable.add(disposable)
     }
 
-    fun getData(): List<CompanyViewModel> {
+    private fun onSuccess(companyViewModels: List<CompanyViewModel>) {
+        viewModels.clear()
+        viewModels.addAll(companyViewModels)
+        checkAndUpdateEmptyMessageVisibility()
+    }
+
+    fun stop() {
+        compositeDisposable.dispose()
+    }
+
+    fun destroy() {
+        compositeDisposable.clear()
+    }
+
+    fun getViewModels(): ObservableList<CompanyViewModel> {
         return viewModels
     }
 
-    fun getCompanyViewModel(companyId: Int): CompanyViewModel {
-        return CompanyViewModel(companyDao.find(companyId), context, companyDao, categoryDao, jobEvaluationDao)
+    fun updateItemOrder() {
+        if(movedItem) {
+            val companyIds = viewModels.map { it.getId() }
+            companyDao.updateAllOrder(companyIds)
+            movedItem = false
+        }
     }
 
-    fun updateItemOrder(companyIds: List<Int>) {
-        companyDao.updateAllOrder(companyIds)
+    fun update(companyId: Int) {
+        val idx = viewModels.indexOf(viewModels.find { it.getId() == companyId })
+        val newCompany = companyDao.find(companyId)
+        viewModels[idx] = CompanyViewModel(newCompany, context, companyDao, categoryDao, jobEvaluationDao)
+    }
+
+    fun delete(companyId: Int) {
+        viewModels.remove(viewModels.find { it.getId() == companyId })
+        checkAndUpdateEmptyMessageVisibility()
+    }
+
+    fun movedItem() {
+        movedItem = true
     }
 
     fun getTagAssociateViewModel(tag: Tag): TagAssociateViewModel {
-        // 関連付けしているタグしか取得していないため、無条件で第二引数をtrue（関連付けられているという意味）にする。
+        // 関連付けしているタグしか取得していないため、無条件で第二引数をtrueにする。（関連付けられているという意味）
         return TagAssociateViewModel(tag, true, context)
     }
 
+    private fun checkAndUpdateEmptyMessageVisibility() {
+        if(viewModels.isNotEmpty()) {
+            emptyMessageVisibility = View.GONE
+        } else {
+            emptyMessageVisibility = View.VISIBLE
+        }
+    }
+
+    interface Callback {
+        fun showError(throwable: Throwable)
+    }
 }

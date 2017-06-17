@@ -37,13 +37,6 @@ abstract class BaseFragment: Fragment() {
         EditDescription(8)
     }
 
-    enum class RefreshMode(val code: Int) {
-        None(1),
-        Update(2),
-        Delete(3),
-        ChangeCategory(4)
-    }
-
     private val fragmentComponent by lazy {
         val activity= activity as? BaseActivity ?: throw IllegalStateException("This fragment is not BaseActivity.")
         activity.getComponent().plus(FragmentModule(this))

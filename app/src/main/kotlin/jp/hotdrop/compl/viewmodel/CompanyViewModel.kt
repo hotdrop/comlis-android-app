@@ -8,31 +8,46 @@ import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.dao.JobEvaluationDao
 import jp.hotdrop.compl.databinding.ItemCompanyBinding
 import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 
 class CompanyViewModel(private var company: Company,
                        private val context: Context,
                        private val companyDao: CompanyDao,
-                       categoryDao: CategoryDao,
-                       jobEvaluationDao: JobEvaluationDao): ViewModel() {
+                       private val categoryDao: CategoryDao,
+                       private val jobEvaluationDao: JobEvaluationDao): ViewModel() {
 
     private val SALARY_UNIT = context.getString(R.string.label_salary_unit)
     private val SALARY_RANGE_MARK = context.getString(R.string.label_salary_range_mark)
     private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
     private val JOB_EVALUATION_UNIT = context.getString(R.string.label_job_evaluation_unit)
 
-    var viewName = company.name
-    var viewWantedJob = company.wantedJob ?: ""
-    var viewJobEvaluation = "0" + JOB_EVALUATION_UNIT
-    var viewEmployeesNum = company.employeesNum.toString() + EMPLOYEES_NUM_UNIT
-    var viewSalary = company.salaryLow.toString() + SALARY_UNIT
-    var viewFavorite = company.favorite
+    lateinit var viewName: String
+    lateinit var viewWantedJob: String
+    lateinit var viewJobEvaluation: String
+    lateinit var viewEmployeesNum: String
+    lateinit var viewSalary: String
+    var viewFavorite = 0
 
-    var colorName = categoryDao.find(company.categoryId).colorType
-    var viewTags = companyDao.findByTag(company.id).take(5)
-
+    lateinit var colorName: String
+    lateinit var viewTags: List<Tag>
 
     init {
+        setData(company)
+    }
+
+    private fun setData(company: Company) {
+
+        viewName = company.name
+        viewWantedJob = company.wantedJob ?: ""
+        viewJobEvaluation = "0" + JOB_EVALUATION_UNIT
+        viewEmployeesNum = company.employeesNum.toString() + EMPLOYEES_NUM_UNIT
+        viewSalary = company.salaryLow.toString() + SALARY_UNIT
+        viewFavorite = company.favorite
+
+        colorName = categoryDao.find(company.categoryId).colorType
+        viewTags = companyDao.findByTag(company.id).take(5)
+
         if(company.salaryHigh > 0) {
             viewSalary += SALARY_RANGE_MARK + company.salaryHigh.toString() + SALARY_UNIT
         }
@@ -49,26 +64,14 @@ class CompanyViewModel(private var company: Company,
         }
     }
 
-    fun getId(): Int {
-        return company.id
-    }
-
-    fun change(vm: CompanyViewModel) {
-        company = vm.company
-        viewName = vm.viewName
-        viewWantedJob = vm.viewWantedJob
-        viewJobEvaluation = vm.viewJobEvaluation
-        viewEmployeesNum = vm.viewEmployeesNum
-        viewSalary = vm.viewSalary
-        viewFavorite = vm.viewFavorite
-        colorName = vm.colorName
-        viewTags = vm.viewTags
-    }
-
     @ColorRes
     fun getColorRes(): Int = ColorUtil.getResNormal(colorName, context)
 
     override fun equals(other: Any?): Boolean = (other as CompanyViewModel).company.id == company.id || super.equals(other)
+
+    fun getId(): Int {
+        return company.id
+    }
 
     fun onClickFirstFavorite(binding: ItemCompanyBinding) {
         if(viewFavorite == 1) {
