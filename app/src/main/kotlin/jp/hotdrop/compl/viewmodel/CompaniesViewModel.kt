@@ -1,6 +1,7 @@
 package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
+import android.databinding.Bindable
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableList
 import android.view.View
@@ -29,6 +30,7 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
     private lateinit var callback: Callback
     private var movedItem = false
 
+    @get:Bindable
     var emptyMessageVisibility = View.GONE
         set(value) {
             field = value
