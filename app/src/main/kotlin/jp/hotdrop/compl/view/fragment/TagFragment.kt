@@ -145,6 +145,7 @@ class TagFragment: BaseFragment() {
                 .setView(view)
                 .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
                     viewModel.register(editText.text.toString(), spinner.getSelection())
+                    viewModel.goneEmptyMessageOnScreen()
                     adapter.add(viewModel.getViewModel(editText.text.toString()))
                     dialogInterface.dismiss()
                 })
