@@ -31,7 +31,7 @@ class JobEvaluationViewModel @Inject constructor(val context: Context) {
     var viewJobOfferReason= false
 
     fun loadData(companyId: Int): Completable {
-        return companyDao.findObserve(companyId)
+        return companyDao.find(companyId)
                 .flatMapCompletable { company ->
                     setData(company)
                     Completable.complete()

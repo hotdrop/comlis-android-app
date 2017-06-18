@@ -14,13 +14,7 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
     @Inject
     lateinit var tagDao: TagDao
 
-    fun find(id: Int): Company {
-        return companyRelation().selector()
-                .idEq(id)
-                .value()
-    }
-
-    fun findObserve(id: Int): Maybe<Company> {
+    fun find(id: Int): Maybe<Company> {
         return companyRelation().selector()
                 .idEq(id)
                 .executeAsObservable()

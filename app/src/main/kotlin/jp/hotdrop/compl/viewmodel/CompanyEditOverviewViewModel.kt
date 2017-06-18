@@ -26,7 +26,7 @@ class CompanyEditOverviewViewModel @Inject constructor(val context: Context): Vi
     var isChangeCategory: Boolean = false
 
     fun loadData(companyId: Int): Completable {
-        return companyDao.findObserve(companyId)
+        return companyDao.find(companyId)
                 .flatMapCompletable { company ->
                     setData(company)
                     Completable.complete()

@@ -35,7 +35,7 @@ class CompanyDaoTest {
         companyDao.insert(company)
 
         val companyGetDb = companyDao.findAll().blockingGet()[0]
-        val companyGetDbById = companyDao.find(companyGetDb.id)
+        val companyGetDbById = companyDao.find(companyGetDb.id).blockingGet()
         assertCompareCompany(company, companyGetDb)
         assertCompareCompany(companyGetDb, companyGetDbById)
         assertCompareCompany(companyGetDbById, company)
@@ -102,7 +102,7 @@ class CompanyDaoTest {
                 }
         companyDao.update(companyChangeData)
 
-        val companyFromDB = companyDao.find(companyChangeData.id)
+        val companyFromDB = companyDao.find(companyChangeData.id).blockingGet()
 
         assertCompareCompany(companyChangeData, companyFromDB)
         assert(companyChangeData.viewOrder == companyFromDB.viewOrder)

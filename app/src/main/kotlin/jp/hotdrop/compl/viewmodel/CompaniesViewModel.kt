@@ -45,7 +45,6 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
         val disposable = companyDao.findByCategory(categoryId)
                 .map { companies ->
                     companies.map {
-                        // TODO Dao渡しまくるのなんとかしたい・・
                         CompanyViewModel(it, context, companyDao, categoryDao, jobEvaluationDao)
                     }
                 }.subscribeOn(Schedulers.io())
@@ -61,10 +60,6 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
         viewModels.clear()
         viewModels.addAll(companyViewModels)
         checkAndUpdateEmptyMessageVisibility()
-    }
-
-    fun stop() {
-        compositeDisposable.dispose()
     }
 
     fun destroy() {
@@ -84,9 +79,16 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
     }
 
     fun update(companyId: Int) {
-        val idx = viewModels.indexOf(viewModels.find { it.getId() == companyId })
-        val newCompany = companyDao.find(companyId)
-        viewModels[idx] = CompanyViewModel(newCompany, context, companyDao, categoryDao, jobEvaluationDao)
+        val dispose = companyDao.find(companyId)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            {
+                                val idx = viewModels.indexOf(viewModels.find { it.getId() == companyId })
+                                viewModels[idx] = CompanyViewModel(it, context, companyDao, categoryDao, jobEvaluationDao)
+                            },
+                            { callback.showError(it) }
+                    )
+        compositeDisposable.add(dispose)
     }
 
     fun delete(companyId: Int) {

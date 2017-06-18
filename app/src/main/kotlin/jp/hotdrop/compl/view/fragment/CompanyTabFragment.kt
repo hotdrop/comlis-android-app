@@ -79,7 +79,6 @@ class CompanyTabFragment: BaseFragment(), CompaniesViewModel.Callback {
 
     override fun onStop() {
         super.onStop()
-        viewModel.stop()
         viewModel.updateItemOrder()
     }
 

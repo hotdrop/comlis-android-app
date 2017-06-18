@@ -177,6 +177,9 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
         :            ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context, list) {
 
         init {
+            // ObservableListでのCallbackを行うと並び順を変更する（CardViewのReorderをする）際にモーションのブレが発生する。
+            // 特に先頭のCardViewを移動しようとした場合の残像がひどい。あと若干重くなる。
+            // 軽い方がいいかもしれないので元の状態に戻すかも・・
             list.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<CategoryViewModel>>() {
                 override fun onChanged(sender: ObservableList<CategoryViewModel>?) {
                     notifyDataSetChanged()

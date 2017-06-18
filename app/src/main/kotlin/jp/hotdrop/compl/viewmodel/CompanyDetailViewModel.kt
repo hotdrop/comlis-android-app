@@ -64,7 +64,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     lateinit var viewTags: List<Tag>
 
     fun loadData(companyId: Int, newBinding: FragmentCompanyDetailBinding): Completable {
-        return companyDao.findObserve(companyId)
+        return companyDao.find(companyId)
                 .flatMapCompletable { company ->
                     setData(company, newBinding)
                     Completable.complete()

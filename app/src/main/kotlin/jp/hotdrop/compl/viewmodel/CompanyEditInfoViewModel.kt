@@ -27,7 +27,7 @@ class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewMo
     private var companyId: Int = -1
 
     fun loadData(companyId: Int): Completable {
-        return companyDao.findObserve(companyId)
+        return companyDao.find(companyId)
                 .flatMapCompletable { company ->
                     setData(company)
                     Completable.complete()
