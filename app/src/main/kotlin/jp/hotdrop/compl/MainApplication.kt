@@ -2,21 +2,19 @@ package jp.hotdrop.compl
 
 import android.app.Application
 import com.deploygate.sdk.DeployGate
-import jp.hotdrop.compl.di.AppComponent
-import jp.hotdrop.compl.di.AppModule
-import jp.hotdrop.compl.di.DaggerAppComponent
+import jp.hotdrop.compl.di.ApplicationComponent
+import jp.hotdrop.compl.di.ApplicationModule
+import jp.hotdrop.compl.di.DaggerApplicationComponent
 
 class MainApplication: Application() {
 
-    private lateinit var appComponent: AppComponent
+    private lateinit var mainComponent: ApplicationComponent
 
-    @Suppress("DEPRECATION")
     override fun onCreate() {
         super.onCreate()
         // DIしたクラスが各Activityクラスで利用できるよう、Componentクラスを生成する。
-        appComponent = DaggerAppComponent
-                .builder()
-                .appModule(AppModule(this))
+        mainComponent = DaggerApplicationComponent.builder()
+                .applicationModule(ApplicationModule(this))
                 .build()
 
         if (!DeployGate.isInitialized()) {
@@ -24,5 +22,5 @@ class MainApplication: Application() {
         }
     }
 
-    fun getComponent(): AppComponent = appComponent
+    fun getComponent(): ApplicationComponent = mainComponent
 }

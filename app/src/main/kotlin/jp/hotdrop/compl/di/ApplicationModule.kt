@@ -10,12 +10,10 @@ import jp.hotdrop.compl.dao.OrmaHolder
 import jp.hotdrop.compl.model.OrmaDatabase
 
 @Module
-class AppModule(app: Application) {
-
-    private var context: Context = app
+class ApplicationModule(private val appContext: Application) {
 
     @Provides
-    fun provideContext(): Context = context
+    fun provideContext(): Context = appContext
 
     @Provides
     fun provideOrmaHolder(context: Context): OrmaHolder {
