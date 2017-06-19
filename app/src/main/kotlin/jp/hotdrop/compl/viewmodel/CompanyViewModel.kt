@@ -73,9 +73,16 @@ class CompanyViewModel(private var company: Company,
         return company.id
     }
 
+    fun playFavorite(binding: ItemCompanyBinding) {
+        resetFavoriteAnimation(binding)
+        listOf(binding.animationView1, binding.animationView2, binding.animationView3).take(viewFavorite).forEach {
+            it.playAnimation()
+        }
+    }
+
     fun onClickFirstFavorite(binding: ItemCompanyBinding) {
         if(viewFavorite == 1) {
-            resetFavorite(binding)
+            clearFavorite(binding)
         } else {
             binding.animationView1.playAnimation()
             binding.animationView2.reset()
@@ -87,7 +94,7 @@ class CompanyViewModel(private var company: Company,
 
     fun onClickSecondFavorite(binding: ItemCompanyBinding) {
         if(viewFavorite == 2) {
-            resetFavorite(binding)
+            clearFavorite(binding)
         } else {
             binding.animationView1.playAnimation()
             binding.animationView2.playAnimation()
@@ -99,7 +106,7 @@ class CompanyViewModel(private var company: Company,
 
     fun onClickThirdFavorite(binding: ItemCompanyBinding) {
         if(viewFavorite == 3) {
-            resetFavorite(binding)
+            clearFavorite(binding)
         } else {
             binding.animationView1.playAnimation()
             binding.animationView2.playAnimation()
@@ -109,11 +116,21 @@ class CompanyViewModel(private var company: Company,
         }
     }
 
-    fun resetFavorite(binding: ItemCompanyBinding) {
-        binding.animationView1.reset()
-        binding.animationView2.reset()
-        binding.animationView3.reset()
+    private fun clearFavorite(binding: ItemCompanyBinding) {
+        resetFavoriteAnimation(binding)
+        updateNonFavorite()
+    }
+
+    private fun updateNonFavorite() {
         viewFavorite = 0
         companyDao.updateFavorite(company.id, 0)
     }
+
+    private fun resetFavoriteAnimation(binding: ItemCompanyBinding) {
+        binding.animationView1.reset()
+        binding.animationView2.reset()
+        binding.animationView3.reset()
+    }
+
+
 }

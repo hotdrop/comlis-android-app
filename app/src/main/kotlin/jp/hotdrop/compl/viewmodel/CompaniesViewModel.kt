@@ -28,7 +28,6 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
 
     private var viewModels: ObservableList<CompanyViewModel> = ObservableArrayList()
     private lateinit var callback: Callback
-    private var movedItem = false
 
     @get:Bindable
     var emptyMessageVisibility = View.GONE
@@ -71,11 +70,8 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
     }
 
     fun updateItemOrder() {
-        if(movedItem) {
-            val companyIds = viewModels.map { it.getId() }
-            companyDao.updateAllOrder(companyIds)
-            movedItem = false
-        }
+        val companyIds = viewModels.map { it.getId() }
+        companyDao.updateAllOrder(companyIds)
     }
 
     fun update(companyId: Int) {
@@ -92,10 +88,6 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
     fun delete(companyId: Int) {
         viewModels.remove(viewModels.find { it.getId() == companyId })
         checkAndUpdateEmptyMessageVisibility()
-    }
-
-    fun movedItem() {
-        movedItem = true
     }
 
     fun getTagAssociateViewModel(tag: Tag): TagAssociateViewModel {

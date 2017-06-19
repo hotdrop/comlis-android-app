@@ -34,7 +34,7 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
     private lateinit var binding: FragmentCategoryBinding
     private lateinit var adapter: Adapter
     private lateinit var helper: ItemTouchHelper
-    private var isReorder = false
+    private var isReordered = false
 
     companion object {
         val TAG: String = CategoryFragment::class.java.simpleName
@@ -76,8 +76,9 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        if(isReorder) {
+        if(isReordered) {
             viewModel.updateItemOrder()
+            isReordered = false
         }
     }
 
@@ -174,12 +175,9 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
      * アダプター
      */
     inner class Adapter(context: Context, list: ObservableList<CategoryViewModel>)
-        :            ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context, list) {
+        : ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context, list) {
 
         init {
-            // ObservableListでのCallbackを行うと並び順を変更する（CardViewのReorderをする）際にモーションのブレが発生する。
-            // 特に先頭のCardViewを移動しようとした場合の残像がひどい。あと若干重くなる。
-            // 軽い方がいいかもしれないので元の状態に戻すかも・・
             list.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<CategoryViewModel>>() {
                 override fun onChanged(sender: ObservableList<CategoryViewModel>?) {
                     notifyDataSetChanged()
@@ -225,6 +223,10 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
      */
     inner class CategoryItemTouchHelperCallback(val adapter: Adapter): ItemTouchHelper.Callback() {
 
+        val NONE_POSITION = -1
+        var fromPosition = NONE_POSITION
+        var toPosition = NONE_POSITION
+
         override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
             val dragFrags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN
             val swipeFlags = 0
@@ -235,12 +237,26 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
             if(viewHolder == null || target == null) {
                 return false
             }
-            isReorder = true
-            return adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+            if(fromPosition == NONE_POSITION) {
+                fromPosition = viewHolder.adapterPosition
+            }
+            toPosition = target.adapterPosition
+            adapter.onNotifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
+            isReordered = true
+            return true
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
             return
+        }
+
+        override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?) {
+            super.clearView(recyclerView, viewHolder)
+            if(fromPosition != NONE_POSITION && toPosition != NONE_POSITION && fromPosition != toPosition) {
+                adapter.onItemMove(fromPosition, toPosition)
+            }
+            fromPosition = NONE_POSITION
+            toPosition = NONE_POSITION
         }
 
         override fun isLongPressDragEnabled(): Boolean {

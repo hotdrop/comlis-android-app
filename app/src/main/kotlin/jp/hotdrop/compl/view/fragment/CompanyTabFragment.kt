@@ -40,6 +40,7 @@ class CompanyTabFragment: BaseFragment(), CompaniesViewModel.Callback {
     private lateinit var binding: FragmentCompanyTabBinding
     private lateinit var adapter: Adapter
     private lateinit var helper: ItemTouchHelper
+    private var isReordered = false
 
     companion object {
         private val EXTRA_CATEGORY_ID = "categoryId"
@@ -79,7 +80,10 @@ class CompanyTabFragment: BaseFragment(), CompaniesViewModel.Callback {
 
     override fun onStop() {
         super.onStop()
-        viewModel.updateItemOrder()
+        if(isReordered) {
+            viewModel.updateItemOrder()
+            isReordered = false
+        }
     }
 
     override fun onDestroy() {
@@ -175,26 +179,45 @@ class CompanyTabFragment: BaseFragment(), CompaniesViewModel.Callback {
         private fun initFavoriteEvent(binding: ItemCompanyBinding) {
 
             val vm = binding.viewModel
-            val animView1 = binding.animationView1.apply {
+            binding.animationView1.apply {
                 setFavoriteStar()
                 setOnClickListener { vm.onClickFirstFavorite(binding) }
             }
-            val animView2 = binding.animationView2.apply {
+            binding.animationView2.apply {
                 setFavoriteStar()
                 setOnClickListener { vm.onClickSecondFavorite(binding) }
             }
-            val animView3 = binding.animationView3.apply {
+            binding.animationView3.apply {
                 setFavoriteStar()
                 setOnClickListener { vm.onClickThirdFavorite(binding) }
             }
-            mutableListOf(animView1, animView2, animView3).take(vm.viewFavorite).forEach { it.playAnimation() }
+            vm.playFavorite(binding)
         }
     }
 
     /**
      * アイテム選択時のコールバッククラス
+     *
+     * 最初はObservableListを使わず、自力でadapter.getItemPositionでpositionを取得しnotifyItemChangedなどを実装していた。
+     * しかし、変更を逐次CallbackしてくれるObservableListでRecyclerViewの変更を制御した方が良い感じに実装できそうだったため、
+     * ViewModelでBaseObservableを継承してadapterでaddOnListChangedCallbackを実装して対応した。
+     *
+     * この状態（AdapterとViewModelだけ修正してItemTouchHelperCallbackはそのままの状態）で、アイテムの並び順をタッチイベントで
+     * 変えようとするとモーションのブレ、残像、アイテムの分身などが発生する。
+     *
+     * 原因は、最初のItemTouchHelperCallbackの実装のせい。
+     * 最初の段階ではタッチイベントでアイテムを動かした瞬間にアイテムを保持しているコレクションとnotifyItemMovedイベントを発生させていた。
+     * 上下の移動でかつゴリゴリ変更結果をadapterに書いていた時はこの実装でよかったのだが、ObservableListを使って変更内容をCallbackする
+     * ようにしたのでアイテムを動かしている間も変更内容がコールバックされてしまい色々おかしくなった。
+     *
+     * 従って、コールバックでの変更通知（実際にはArrayRecyclerAdapterが保持するアイテムリスト中のアイテム入れ替えタイミング）は
+     * UI上でのアイテム移動が完了したタイミングで行うようにした。
      */
-    inner class CompanyItemTouchHelperCallback(val adapter: CompanyTabFragment.Adapter): ItemTouchHelper.Callback() {
+    inner class CompanyItemTouchHelperCallback(val adapter: Adapter): ItemTouchHelper.Callback() {
+
+        val NONE_POSITION = -1
+        var fromPosition = NONE_POSITION
+        var toPosition = NONE_POSITION
 
         override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
             val dragFrags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN
@@ -206,12 +229,26 @@ class CompanyTabFragment: BaseFragment(), CompaniesViewModel.Callback {
             if(viewHolder == null || target == null) {
                 return false
             }
-            viewModel.movedItem()
-            return adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+            if(fromPosition == NONE_POSITION) {
+                fromPosition = viewHolder.adapterPosition
+            }
+            toPosition = target.adapterPosition
+            adapter.onNotifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
+            isReordered = true
+            return true
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
             return
+        }
+
+        override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?) {
+            super.clearView(recyclerView, viewHolder)
+            if(fromPosition != NONE_POSITION && toPosition != NONE_POSITION && fromPosition != toPosition) {
+                adapter.onItemMove(fromPosition, toPosition)
+            }
+            fromPosition = NONE_POSITION
+            toPosition = NONE_POSITION
         }
 
         override fun isLongPressDragEnabled(): Boolean {

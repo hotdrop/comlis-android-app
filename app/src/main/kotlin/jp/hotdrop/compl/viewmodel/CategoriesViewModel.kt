@@ -66,7 +66,8 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
     }
 
     fun getViewModels(): ObservableList<CategoryViewModel> {
-        return viewModels    }
+        return viewModels
+    }
 
     fun existName(categoryName: String): Boolean {
         return categoryDao.exist(categoryName)
