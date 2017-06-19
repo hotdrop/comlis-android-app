@@ -32,9 +32,9 @@ import javax.inject.Inject
 class TagFragment: BaseFragment() {
 
     @Inject
-    lateinit var compositeDisposable: CompositeDisposable
-    @Inject
     lateinit var viewModel: TagsViewModel
+    @Inject
+    lateinit var compositeDisposable: CompositeDisposable
 
     private lateinit var binding: FragmentTagBinding
     private lateinit var adapter: FlexItemAdapter
@@ -206,11 +206,9 @@ class TagFragment: BaseFragment() {
         }
 
         fun refresh(vm: TagViewModel) {
-            val position = adapter.getItemPosition(vm)
-            if(position != -1) {
-                adapter.getItem(position).change(vm)
-                notifyItemChanged(position)
-            }
+            val position = adapter.getItemPosition(vm) ?: return
+            adapter.getItem(position).change(vm)
+            notifyItemChanged(position)
         }
 
         fun add(vm: TagViewModel) {
@@ -219,11 +217,9 @@ class TagFragment: BaseFragment() {
         }
 
         fun remove(vm: TagViewModel) {
-            val position = adapter.getItemPosition(vm)
-            if(position != -1) {
-                adapter.removeItem(position)
-                notifyItemRemoved(position)
-            }
+            val position = adapter.getItemPosition(vm) ?: return
+            adapter.removeItem(position)
+            notifyItemRemoved(position)
         }
 
         fun getModels(): List<Tag> {

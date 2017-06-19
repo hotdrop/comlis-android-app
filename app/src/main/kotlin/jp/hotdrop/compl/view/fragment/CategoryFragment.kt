@@ -1,7 +1,6 @@
 package jp.hotdrop.compl.view.fragment
 
 import android.content.Context
-import android.databinding.ObservableList
 import android.os.Bundle
 import android.support.v4.view.MotionEventCompat
 import android.support.v7.app.AlertDialog
@@ -16,6 +15,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Spinner
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.FragmentCategoryBinding
 import jp.hotdrop.compl.databinding.ItemCategoryBinding
@@ -26,14 +28,17 @@ import jp.hotdrop.compl.viewmodel.CategoriesViewModel
 import jp.hotdrop.compl.viewmodel.CategoryViewModel
 import javax.inject.Inject
 
-class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
+class CategoryFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModel: CategoriesViewModel
+    @Inject
+    lateinit var compositeDisposable: CompositeDisposable
 
     private lateinit var binding: FragmentCategoryBinding
     private lateinit var adapter: Adapter
     private lateinit var helper: ItemTouchHelper
+
     private var isReordered = false
 
     companion object {
@@ -46,23 +51,35 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
         getComponent().inject(this)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.setCallback(this)
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCategoryBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        viewModel.loadData()
-        initView()
+        loadData()
         return binding.root
     }
 
-    private fun initView() {
-        adapter = Adapter(context, viewModel.getViewModels())
-        helper = ItemTouchHelper(CategoryItemTouchHelperCallback(adapter))
+    private fun loadData() {
+        val disposable = viewModel.getData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { onSuccess(it) },
+                        { showErrorAsToast(ErrorType.LoadFailureCategory, it) }
+                )
+        compositeDisposable.add(disposable)
+    }
 
+    private fun onSuccess(categoryViewModels: List<CategoryViewModel>) {
+        adapter = Adapter(context)
+
+        if(categoryViewModels.isNotEmpty()) {
+            adapter.addAll(categoryViewModels)
+            viewModel.goneEmptyMessageOnScreen()
+        } else {
+            viewModel.visibilityEmptyMessageOnScreen()
+        }
+
+        helper = ItemTouchHelper(CategoryItemTouchHelperCallback(adapter))
         binding.recyclerView.let {
             it.addItemDecoration(helper)
             it.setHasFixedSize(true)
@@ -77,18 +94,14 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
     override fun onDestroyView() {
         super.onDestroyView()
         if(isReordered) {
-            viewModel.updateItemOrder()
+            viewModel.updateItemOrder(adapter.getCategoryIdsAsCurrentOrder())
             isReordered = false
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.destroy()
-    }
-
-    override fun showError(throwable: Throwable) {
-        showErrorAsToast(ErrorType.LoadFailureCategory, throwable)
+        compositeDisposable.clear()
     }
 
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
@@ -137,6 +150,8 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
                 .setView(view)
                 .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
                     viewModel.register(editText.text.toString(), spinner.getSelection())
+                    viewModel.goneEmptyMessageOnScreen()
+                    adapter.add(viewModel.getViewModel(editText.text.toString()))
                     dialogInterface.dismiss()
                 })
                 .create()
@@ -155,10 +170,15 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
                 .setView(view)
                 .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
                     viewModel.update(vm, editText.text.toString(), spinner.getSelection())
+                    adapter.refresh(viewModel.getViewModel(editText.text.toString()))
                     dialogInterface.dismiss()
                 })
                 .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
                     viewModel.delete(vm)
+                    adapter.remove(vm)
+                    if(adapter.itemCount <= 0) {
+                        viewModel.visibilityEmptyMessageOnScreen()
+                    }
                     dialogInterface.dismiss()
                 })
                 .create()
@@ -173,36 +193,20 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
 
     /**
      * アダプター
+     * ViewModelでBaseObservableを継承し、ObservableListを使用してCallbackで変更を通知していたが
+     * ItemTouchHelperとの連携がうまく行かなかったのでやめた。
      */
-    inner class Adapter(context: Context, list: ObservableList<CategoryViewModel>)
-        : ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context, list) {
-
-        init {
-            list.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<CategoryViewModel>>() {
-                override fun onChanged(sender: ObservableList<CategoryViewModel>?) {
-                    notifyDataSetChanged()
-                }
-                override fun onItemRangeInserted(sender: ObservableList<CategoryViewModel>?, positionStart: Int, itemCount: Int) {
-                    notifyItemRangeInserted(positionStart, itemCount)
-                }
-                override fun onItemRangeChanged(sender: ObservableList<CategoryViewModel>?, positionStart: Int, itemCount: Int) {
-                    notifyItemRangeChanged(positionStart, itemCount)
-                }
-                override fun onItemRangeRemoved(sender: ObservableList<CategoryViewModel>?, positionStart: Int, itemCount: Int) {
-                    notifyItemRangeRemoved(positionStart, itemCount)
-                }
-                override fun onItemRangeMoved(sender: ObservableList<CategoryViewModel>?, fromPosition: Int, toPosition: Int, itemCount: Int) {
-                    notifyItemMoved(fromPosition, toPosition)
-                }
-            })
-        }
+    inner class Adapter(context: Context)
+        : ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context) {
 
         override fun onBindViewHolder(holder: BindingHolder<ItemCategoryBinding>?, position: Int) {
             holder ?: return
             val binding = holder.binding.apply {
                 viewModel = getItem(position)
                 iconReorderGroup.setOnTouchListener { _, motionEvent ->
-                    if(isMotionEventDown(motionEvent)) onStartDrag(holder)
+                    if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
+                        onStartDrag(holder)
+                    }
                     false
                 }
             }
@@ -213,8 +217,25 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
             return BindingHolder(context, parent, R.layout.item_category)
         }
 
-        private fun isMotionEventDown(motionEvent: MotionEvent): Boolean {
-            return (MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN)
+        fun refresh(vm: CategoryViewModel) {
+            val position = adapter.getItemPosition(vm) ?: return
+            adapter.getItem(position).change(vm)
+            notifyItemChanged(position)
+        }
+
+        fun add(vm: CategoryViewModel) {
+            addItem(vm)
+            notifyItemInserted(itemCount)
+        }
+
+        fun remove(vm: CategoryViewModel) {
+            val position = adapter.getItemPosition(vm) ?: return
+            adapter.removeItem(position)
+            notifyItemRemoved(position)
+        }
+
+        fun getCategoryIdsAsCurrentOrder(): List<Int> {
+            return list.map {vm -> vm.getId()}.toMutableList()
         }
     }
 
@@ -222,10 +243,6 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
      * アイテム選択時のコールバッククラス
      */
     inner class CategoryItemTouchHelperCallback(val adapter: Adapter): ItemTouchHelper.Callback() {
-
-        val NONE_POSITION = -1
-        var fromPosition = NONE_POSITION
-        var toPosition = NONE_POSITION
 
         override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
             val dragFrags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN
@@ -237,26 +254,13 @@ class CategoryFragment : BaseFragment(), CategoriesViewModel.Callback {
             if(viewHolder == null || target == null) {
                 return false
             }
-            if(fromPosition == NONE_POSITION) {
-                fromPosition = viewHolder.adapterPosition
-            }
-            toPosition = target.adapterPosition
-            adapter.onNotifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
             isReordered = true
+            adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
             return true
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
             return
-        }
-
-        override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?) {
-            super.clearView(recyclerView, viewHolder)
-            if(fromPosition != NONE_POSITION && toPosition != NONE_POSITION && fromPosition != toPosition) {
-                adapter.onItemMove(fromPosition, toPosition)
-            }
-            fromPosition = NONE_POSITION
-            toPosition = NONE_POSITION
         }
 
         override fun isLongPressDragEnabled(): Boolean {

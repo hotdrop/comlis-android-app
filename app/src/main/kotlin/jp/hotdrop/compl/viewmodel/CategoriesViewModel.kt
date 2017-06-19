@@ -2,12 +2,8 @@ package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
 import android.databinding.Bindable
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableList
 import android.view.View
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.Single
 import jp.hotdrop.compl.BR
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
@@ -19,11 +15,6 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
     lateinit var categoryDao: CategoryDao
     @Inject
     lateinit var companyDao: CompanyDao
-    @Inject
-    lateinit var compositeDisposable: CompositeDisposable
-
-    private var viewModels: ObservableList<CategoryViewModel> = ObservableArrayList()
-    private lateinit var callback: Callback
 
     @get:Bindable
     var emptyMessageVisibility = View.GONE
@@ -32,41 +23,14 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
             notifyPropertyChanged(BR.emptyMessageVisibility)
         }
 
-    fun setCallback(callback: Callback) {
-        this.callback = callback
-    }
-
-    fun loadData() {
-        val disposable = categoryDao.findAll()
+    fun getData(): Single<List<CategoryViewModel>> {
+        return categoryDao.findAll()
                 .map { categories ->
                     categories.map {
                         val itemCount = getRegisterCompanyCount(it.id)
                         CategoryViewModel(it, itemCount, context)
                     }
                 }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { onSuccess(it) },
-                        { callback.showError(it) }
-                )
-        compositeDisposable.add(disposable)
-    }
-
-    fun destroy() {
-        compositeDisposable.clear()
-    }
-
-    private fun onSuccess(categoryViewModels: List<CategoryViewModel>) {
-        viewModels.clear()
-        if(categoryViewModels.isNotEmpty()) {
-            viewModels.addAll(categoryViewModels)
-        }
-        checkAndUpdateEmptyMessageVisibility()
-    }
-
-    fun getViewModels(): ObservableList<CategoryViewModel> {
-        return viewModels
     }
 
     fun existName(categoryName: String): Boolean {
@@ -77,12 +41,14 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
         return categoryDao.existExclusionId(categoryName, id)
     }
 
+    fun getViewModel(name: String): CategoryViewModel {
+        val category = categoryDao.find(name)
+        val itemCount = companyDao.countByCategory(category.id)
+        return CategoryViewModel(categoryDao.find(name), itemCount, context)
+    }
+
     fun register(categoryName: String, colorType: String) {
         categoryDao.insert(categoryName, colorType)
-        val category = categoryDao.find(categoryName)
-        val itemCount = getRegisterCompanyCount(category.id)
-        viewModels.add(CategoryViewModel(category, itemCount, context))
-        checkAndUpdateEmptyMessageVisibility()
     }
 
     fun update(vm: CategoryViewModel, newName: String, newColorType: String) {
@@ -91,34 +57,25 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
             colorType = newColorType
         }
         categoryDao.update(c)
-        // キーとなるcategoryIdは変更ないため、拡張関数でデータを差し替える
-        viewModels.extendReplace(CategoryViewModel(c, vm.registerCompanyCount, context))
     }
 
-    fun updateItemOrder() {
-        val categoryIds = viewModels.map { it.getId() }
+    fun updateItemOrder(categoryIds: List<Int>) {
         categoryDao.updateAllOrder(categoryIds)
     }
 
     fun delete(vm: CategoryViewModel) {
         categoryDao.delete(vm.category)
-        viewModels.remove(vm)
-        checkAndUpdateEmptyMessageVisibility()
     }
 
-    private fun checkAndUpdateEmptyMessageVisibility() {
-        if(viewModels.isNotEmpty()) {
-            emptyMessageVisibility = View.GONE
-        } else {
-            emptyMessageVisibility = View.VISIBLE
-        }
+    fun visibilityEmptyMessageOnScreen() {
+        emptyMessageVisibility = View.VISIBLE
+    }
+
+    fun goneEmptyMessageOnScreen() {
+        emptyMessageVisibility = View.GONE
     }
 
     private fun getRegisterCompanyCount(categoryId: Int): Int {
         return companyDao.countByCategory(categoryId)
-    }
-
-    interface Callback {
-        fun showError(throwable: Throwable)
     }
 }

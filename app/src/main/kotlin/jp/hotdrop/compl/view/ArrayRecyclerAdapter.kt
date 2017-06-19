@@ -14,28 +14,50 @@ abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val 
         this.list = list
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int {
+        return list.size
+    }
 
-    fun getItem(index: Int): T = list[index]
+    fun getItem(index: Int): T {
+        return list[index]
+    }
 
-    fun getItemPosition(item: T): Int {
+    fun getItemPosition(item: T): Int? {
         list.withIndex().forEach {
             if(it.value == item) {
                 return it.index
             }
         }
-        return -1
+        return null
     }
 
-    fun addItem(item: T) = list.add(item)
-    fun addAll(items: List<T>) = list.addAll(items)
-    fun removeItem(index: Int) = list.removeAt(index)
-    fun clear() = list.clear()
-    fun onItemMove(fromPosition: Int, toPosition: Int) = Collections.swap(list, fromPosition, toPosition)
-    fun onNotifyItemMoved(fromPosition: Int, toPosition: Int) = notifyItemMoved(fromPosition, toPosition)
+    fun addItem(item: T) {
+        list.add(item)
+    }
+
+    fun addAll(items: List<T>) {
+        list.addAll(items)
+    }
+
+    fun removeItem(index: Int) {
+        list.removeAt(index)
+    }
+
+    fun clear() {
+        list.clear()
+    }
+
+    fun onItemMove(fromPosition: Int, toPosition: Int) {
+        Collections.swap(list, fromPosition, toPosition)
+        notifyItemMoved(fromPosition, toPosition)
+    }
+
+    fun onNotifyItemMoved(fromPosition: Int, toPosition: Int) {
+        notifyItemMoved(fromPosition, toPosition)
+    }
 
     /**
-     * flexbox-layoutで上下左右のドラッグができるリストはこっちのonItemMovedメソッド使う
+    * flexbox-layoutで上下左右のドラッグができるリストはこっちのonItemMovedメソッド使う
      * 上下の場合は常に互いのアイテムをswapさせれば問題なかったが、flexbox-layoutを使って上下左右のドラッグを可能にすると
      * アイテムを飛び越えられるので隣接するアイテムのswapだけでは対応できない。
      * なので上下左右のアイテム移動用にonListUpdateを用意した。

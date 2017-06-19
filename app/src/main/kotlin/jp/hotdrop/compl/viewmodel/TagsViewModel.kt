@@ -21,13 +21,6 @@ class TagsViewModel @Inject constructor(val context: Context): ViewModel() {
             notifyPropertyChanged(BR.emptyMessageVisibility)
         }
 
-    /**
-     * 他と違ってTagsViewModelはBaseObservableで実装していない。
-     * 理由は、最初に実装したコードからあまり変更を加えず、Tagを実現しているflexbox-layoutでのswipと
-     * BaseObservableListへの変更通知の整合性を保とうと奮闘してた。
-     * しかし、今のコードはTagFragmentのTagItemTouchHelperCallbackクラスで多少強引に実装しているためうまくいかなかった。
-     * ちょっと根本から考え直さないと厳しそうなため一旦は元の実装のままTagsViewModelを追加する方向にした。
-     */
     fun getData(): Single<List<TagViewModel>> {
         return tagDao.findAll()
                 .map { tags ->

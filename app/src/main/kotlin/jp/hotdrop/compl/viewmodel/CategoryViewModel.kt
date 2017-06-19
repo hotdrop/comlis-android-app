@@ -26,4 +26,9 @@ class CategoryViewModel(var category: Category,
     // TextViewにバインドしているので文字列にする
     fun getRegisterCompanyCountToString() = registerCompanyCount.toString()
 
+    fun change(vm: CategoryViewModel) {
+        category = vm.category
+        viewName = vm.viewName
+        registerCompanyCount = vm.registerCompanyCount
+    }
 }
