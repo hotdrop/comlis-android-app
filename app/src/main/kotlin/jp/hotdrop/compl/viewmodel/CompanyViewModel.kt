@@ -64,6 +64,17 @@ class CompanyViewModel(private var company: Company,
         }
     }
 
+    fun change(vm: CompanyViewModel) {
+        viewName = vm.viewName
+        viewWantedJob = vm.viewWantedJob
+        viewJobEvaluation = vm.viewJobEvaluation
+        viewEmployeesNum = vm.viewEmployeesNum
+        viewSalary = vm.viewSalary
+        colorName = vm.colorName
+        viewFavorite = vm.viewFavorite
+        viewTags = vm.viewTags
+    }
+
     @ColorRes
     fun getColorRes(): Int = ColorUtil.getResNormal(colorName, context)
 

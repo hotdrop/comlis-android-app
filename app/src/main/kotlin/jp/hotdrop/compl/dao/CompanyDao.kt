@@ -21,6 +21,10 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
                 .firstElement()
     }
 
+    fun findNonObservable(id: Int): Company {
+        return companyRelation().selector().idEq(id).value()
+    }
+
     fun findAll(): Single<List<Company>> {
         return companyRelation().selector()
                 .executeAsObservable()

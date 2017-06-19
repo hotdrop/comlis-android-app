@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.databinding.ObservableList
 import android.os.Bundle
 import android.support.v4.view.MotionEventCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -15,7 +14,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.flexbox.FlexboxLayout
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.FragmentCompanyTabBinding
 import jp.hotdrop.compl.databinding.ItemCompanyBinding
@@ -28,12 +29,12 @@ import jp.hotdrop.compl.viewmodel.CompaniesViewModel
 import jp.hotdrop.compl.viewmodel.CompanyViewModel
 import javax.inject.Inject
 
-class CompanyTabFragment: BaseFragment(), CompaniesViewModel.Callback {
+class CompanyTabFragment: BaseFragment() {
 
     @Inject
-    lateinit var compositeDisposable: CompositeDisposable
-    @Inject
     lateinit var viewModel: CompaniesViewModel
+    @Inject
+    lateinit var compositeDisposable: CompositeDisposable
 
     private val categoryId by lazy { arguments.getInt(EXTRA_CATEGORY_ID) }
 
@@ -54,45 +55,56 @@ class CompanyTabFragment: BaseFragment(), CompaniesViewModel.Callback {
         getComponent().inject(this)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.setCallback(this)
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyTabBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        viewModel.loadData(categoryId)
-        initView()
+        loadData()
         return binding.root
     }
 
-    private fun initView() {
-        adapter = Adapter(context, viewModel.getViewModels())
+    private fun loadData() {
+        val disposable = viewModel.getData(categoryId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { onSuccess(it) },
+                        { showErrorAsToast(ErrorType.LoadFailureCompanies, it) }
+                )
+        compositeDisposable.add(disposable)
+    }
+
+    private fun onSuccess(companyViewModels: List<CompanyViewModel>) {
+        adapter = Adapter(context)
+
+        if(companyViewModels.isNotEmpty()) {
+            adapter.addAll(companyViewModels)
+            viewModel.goneEmptyMessageOnScreen()
+        } else {
+            viewModel.visibilityEmptyMessageOnScreen()
+        }
+
         helper = ItemTouchHelper(CompanyItemTouchHelperCallback(adapter))
+
         binding.recyclerView.let {
             it.addItemDecoration(helper)
             it.adapter = adapter
             it.layoutManager = LinearLayoutManager(activity)
         }
+
         helper.attachToRecyclerView(binding.recyclerView)
     }
 
     override fun onStop() {
         super.onStop()
         if(isReordered) {
-            viewModel.updateItemOrder()
+            viewModel.updateItemOrder(adapter.getCompanyIdsAsCurrentOrder())
             isReordered = false
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.destroy()
-    }
-
-    override fun showError(throwable: Throwable) {
-        showErrorAsToast(ErrorType.LoadFailureCompanies, throwable)
+        compositeDisposable.clear()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -104,8 +116,13 @@ class CompanyTabFragment: BaseFragment(), CompaniesViewModel.Callback {
         val companyId = data.getIntExtra(EXTRA_COMPANY_ID, -1)
 
         when(refreshMode) {
-            UPDATE -> viewModel.update(companyId)
-            DELETE -> viewModel.delete(companyId)
+            UPDATE ->  adapter.refresh(viewModel.getCompanyViewModel(companyId))
+            DELETE ->  {
+                adapter.remove(companyId)
+                if(adapter.itemCount <= 0) {
+                    viewModel.visibilityEmptyMessageOnScreen()
+                }
+            }
             CHANGE_CATEGORY -> activity.intent = data
         }
     }
@@ -118,28 +135,13 @@ class CompanyTabFragment: BaseFragment(), CompaniesViewModel.Callback {
         helper.startDrag(viewHolder)
     }
 
-    inner class Adapter(context: Context, list: ObservableList<CompanyViewModel>):
-            ArrayRecyclerAdapter<CompanyViewModel, BindingHolder<ItemCompanyBinding>>(context, list) {
-
-        init {
-            list.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<CompanyViewModel>>() {
-                override fun onChanged(sender: ObservableList<CompanyViewModel>?) {
-                    notifyDataSetChanged()
-                }
-                override fun onItemRangeInserted(sender: ObservableList<CompanyViewModel>?, positionStart: Int, itemCount: Int) {
-                    notifyItemRangeInserted(positionStart, itemCount)
-                }
-                override fun onItemRangeChanged(sender: ObservableList<CompanyViewModel>?, positionStart: Int, itemCount: Int) {
-                    notifyItemRangeChanged(positionStart, itemCount)
-                }
-                override fun onItemRangeRemoved(sender: ObservableList<CompanyViewModel>?, positionStart: Int, itemCount: Int) {
-                    notifyItemRangeRemoved(positionStart, itemCount)
-                }
-                override fun onItemRangeMoved(sender: ObservableList<CompanyViewModel>?, fromPosition: Int, toPosition: Int, itemCount: Int) {
-                    notifyItemMoved(fromPosition, toPosition)
-                }
-            })
-        }
+    /**
+     * アダプター
+     * ViewModelでBaseObservableを継承し、ObservableListを使用してCallbackで変更を通知していたが
+     * ItemTouchHelperとの連携がうまく行かなかったのでやめた。
+     */
+    inner class Adapter(context: Context):
+            ArrayRecyclerAdapter<CompanyViewModel, BindingHolder<ItemCompanyBinding>>(context) {
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCompanyBinding> {
             return BindingHolder(context, parent, R.layout.item_company)
@@ -150,7 +152,9 @@ class CompanyTabFragment: BaseFragment(), CompaniesViewModel.Callback {
             val binding = holder.binding.apply {
                 viewModel = getItem(position)
                 iconReorder.setOnTouchListener { _, motionEvent ->
-                    if(isMotionEventDown(motionEvent)) onStartDrag(holder)
+                    if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
+                        onStartDrag(holder)
+                    }
                     false
                 }
             }
@@ -165,15 +169,35 @@ class CompanyTabFragment: BaseFragment(), CompaniesViewModel.Callback {
             initFavoriteEvent(binding)
         }
 
-        private fun isMotionEventDown(motionEvent: MotionEvent): Boolean {
-            return (MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN)
-        }
-
         private fun setCardView(flexboxLayout: FlexboxLayout, tag: Tag) {
             val binding = DataBindingUtil.inflate<ItemCompanyListTagBinding>(getLayoutInflater(null),
                     R.layout.item_company_list_tag, flexboxLayout, false)
             binding.viewModel = viewModel.getTagAssociateViewModel(tag)
             flexboxLayout.addView(binding.root)
+        }
+
+        fun refresh(vm: CompanyViewModel) {
+            val position = adapter.getItemPosition(vm) ?: return
+            adapter.getItem(position).change(vm)
+            notifyItemChanged(position)
+        }
+
+        fun add(vm: CompanyViewModel) {
+            adapter.addItem(vm)
+            adapter.notifyItemInserted(adapter.itemCount)
+        }
+
+        fun remove(companyId: Int) {
+            list.forEachIndexed { index, vm ->
+                if(vm.getId() == companyId) {
+                    adapter.removeItem(index)
+                    notifyItemRemoved(index)
+                }
+            }
+        }
+
+        fun getCompanyIdsAsCurrentOrder(): List<Int> {
+            return list.map { vm -> vm.getId() }.toMutableList()
         }
 
         private fun initFavoriteEvent(binding: ItemCompanyBinding) {
@@ -197,27 +221,8 @@ class CompanyTabFragment: BaseFragment(), CompaniesViewModel.Callback {
 
     /**
      * アイテム選択時のコールバッククラス
-     *
-     * 最初はObservableListを使わず、自力でadapter.getItemPositionでpositionを取得しnotifyItemChangedなどを実装していた。
-     * しかし、変更を逐次CallbackしてくれるObservableListでRecyclerViewの変更を制御した方が良い感じに実装できそうだったため、
-     * ViewModelでBaseObservableを継承してadapterでaddOnListChangedCallbackを実装して対応した。
-     *
-     * この状態（AdapterとViewModelだけ修正してItemTouchHelperCallbackはそのままの状態）で、アイテムの並び順をタッチイベントで
-     * 変えようとするとモーションのブレ、残像、アイテムの分身などが発生する。
-     *
-     * 原因は、最初のItemTouchHelperCallbackの実装のせい。
-     * 最初の段階ではタッチイベントでアイテムを動かした瞬間にアイテムを保持しているコレクションとnotifyItemMovedイベントを発生させていた。
-     * 上下の移動でかつゴリゴリ変更結果をadapterに書いていた時はこの実装でよかったのだが、ObservableListを使って変更内容をCallbackする
-     * ようにしたのでアイテムを動かしている間も変更内容がコールバックされてしまい色々おかしくなった。
-     *
-     * 従って、コールバックでの変更通知（実際にはArrayRecyclerAdapterが保持するアイテムリスト中のアイテム入れ替えタイミング）は
-     * UI上でのアイテム移動が完了したタイミングで行うようにした。
      */
     inner class CompanyItemTouchHelperCallback(val adapter: Adapter): ItemTouchHelper.Callback() {
-
-        val NONE_POSITION = -1
-        var fromPosition = NONE_POSITION
-        var toPosition = NONE_POSITION
 
         override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
             val dragFrags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN
@@ -229,26 +234,13 @@ class CompanyTabFragment: BaseFragment(), CompaniesViewModel.Callback {
             if(viewHolder == null || target == null) {
                 return false
             }
-            if(fromPosition == NONE_POSITION) {
-                fromPosition = viewHolder.adapterPosition
-            }
-            toPosition = target.adapterPosition
-            adapter.onNotifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
             isReordered = true
+            adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
             return true
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
             return
-        }
-
-        override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?) {
-            super.clearView(recyclerView, viewHolder)
-            if(fromPosition != NONE_POSITION && toPosition != NONE_POSITION && fromPosition != toPosition) {
-                adapter.onItemMove(fromPosition, toPosition)
-            }
-            fromPosition = NONE_POSITION
-            toPosition = NONE_POSITION
         }
 
         override fun isLongPressDragEnabled(): Boolean {

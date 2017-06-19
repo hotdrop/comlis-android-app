@@ -2,12 +2,8 @@ package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
 import android.databinding.Bindable
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableList
 import android.view.View
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.Single
 import jp.hotdrop.compl.BR
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
@@ -23,11 +19,6 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
     lateinit var categoryDao: CategoryDao
     @Inject
     lateinit var jobEvaluationDao: JobEvaluationDao
-    @Inject
-    lateinit var compositeDisposable: CompositeDisposable
-
-    private var viewModels: ObservableList<CompanyViewModel> = ObservableArrayList()
-    private lateinit var callback: Callback
 
     @get:Bindable
     var emptyMessageVisibility = View.GONE
@@ -36,58 +27,22 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
             notifyPropertyChanged(BR.emptyMessageVisibility)
         }
 
-    fun setCallback(callback: Callback) {
-        this.callback = callback
-    }
-
-    fun loadData(categoryId: Int) {
-        val disposable = companyDao.findByCategory(categoryId)
+    fun getData(categoryId: Int): Single<List<CompanyViewModel>> {
+        return companyDao.findByCategory(categoryId)
                 .map { companies ->
                     companies.map {
                         CompanyViewModel(it, context, companyDao, categoryDao, jobEvaluationDao)
                     }
-                }.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { onSuccess(it) },
-                        { callback.showError(it) }
-                )
-        compositeDisposable.add(disposable)
+                }
     }
 
-    private fun onSuccess(companyViewModels: List<CompanyViewModel>) {
-        viewModels.clear()
-        viewModels.addAll(companyViewModels)
-        checkAndUpdateEmptyMessageVisibility()
+    fun getCompanyViewModel(companyId: Int): CompanyViewModel {
+        val company = companyDao.findNonObservable(companyId)
+        return CompanyViewModel(company, context, companyDao, categoryDao, jobEvaluationDao)
     }
 
-    fun destroy() {
-        compositeDisposable.clear()
-    }
-
-    fun getViewModels(): ObservableList<CompanyViewModel> {
-        return viewModels
-    }
-
-    fun updateItemOrder() {
-        val companyIds = viewModels.map { it.getId() }
+    fun updateItemOrder(companyIds: List<Int>) {
         companyDao.updateAllOrder(companyIds)
-    }
-
-    fun update(companyId: Int) {
-        val dispose = companyDao.find(companyId)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            // キーとなるcompanyIdは変更ないため、拡張関数でデータを差し替える
-                            { viewModels.extendReplace(CompanyViewModel(it, context, companyDao, categoryDao, jobEvaluationDao)) },
-                            { callback.showError(it) }
-                    )
-        compositeDisposable.add(dispose)
-    }
-
-    fun delete(companyId: Int) {
-        viewModels.remove(viewModels.find { it.getId() == companyId })
-        checkAndUpdateEmptyMessageVisibility()
     }
 
     fun getTagAssociateViewModel(tag: Tag): TagAssociateViewModel {
@@ -95,15 +50,11 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
         return TagAssociateViewModel(tag, true, context)
     }
 
-    private fun checkAndUpdateEmptyMessageVisibility() {
-        if(viewModels.isNotEmpty()) {
-            emptyMessageVisibility = View.GONE
-        } else {
-            emptyMessageVisibility = View.VISIBLE
-        }
+    fun visibilityEmptyMessageOnScreen() {
+        emptyMessageVisibility = View.VISIBLE
     }
 
-    interface Callback {
-        fun showError(throwable: Throwable)
+    fun goneEmptyMessageOnScreen() {
+        emptyMessageVisibility = View.GONE
     }
 }

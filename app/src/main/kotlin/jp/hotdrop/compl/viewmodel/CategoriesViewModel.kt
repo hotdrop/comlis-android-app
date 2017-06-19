@@ -43,7 +43,7 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
 
     fun getViewModel(name: String): CategoryViewModel {
         val category = categoryDao.find(name)
-        val itemCount = companyDao.countByCategory(category.id)
+        val itemCount = getRegisterCompanyCount(category.id)
         return CategoryViewModel(categoryDao.find(name), itemCount, context)
     }
 

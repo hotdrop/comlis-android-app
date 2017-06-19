@@ -18,16 +18,6 @@ abstract class ViewModel: BaseObservable() {
 
     fun Date.format(): String? = DateFormat.format("yyyy-MM-dd(E) HH:mm:ss", this).toString()
 
-    // RecyclerViewなどでViewModelを更新したい場合、元のキー（equalsで判定するID）は
-    // 同じだが中身が変更されている場合の差し換え用拡張関数
-    fun <T> MutableList<T>.extendReplace(n: T) {
-        this.forEachIndexed { index, t ->
-            if(t == n) {
-                this[index] = n
-            }
-        }
-    }
-
     // LottieAnimationViewの拡張関数がBaseFragmentとここで散在しているのがあまり良くないが
     // 無理やりまとめるのも良くないので今はこうする。
     fun LottieAnimationView.reset() {
