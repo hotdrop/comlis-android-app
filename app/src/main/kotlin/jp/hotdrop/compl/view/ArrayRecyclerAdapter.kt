@@ -52,16 +52,17 @@ abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val 
         notifyItemMoved(fromPosition, toPosition)
     }
 
-    fun onNotifyItemMoved(fromPosition: Int, toPosition: Int) {
+
+    /**
+     * flexbox-layoutで上下左右のドラッグができるリストはこっちのonItemMovedメソッド使う
+     * 上下の場合は常に互いのアイテムをswapさせれば問題なかったが、flexbox-layoutを使って上下左右のドラッグを可能にすると
+     * アイテムを飛び越えられるので隣接するアイテムのswapだけでは対応できない。
+     * なので上下左右のアイテム移動用にonItemMoveとonListUpdateを用意した。
+     */
+    fun onItemMovedForFlexBox(fromPosition: Int, toPosition: Int) {
         notifyItemMoved(fromPosition, toPosition)
     }
 
-    /**
-    * flexbox-layoutで上下左右のドラッグができるリストはこっちのonItemMovedメソッド使う
-     * 上下の場合は常に互いのアイテムをswapさせれば問題なかったが、flexbox-layoutを使って上下左右のドラッグを可能にすると
-     * アイテムを飛び越えられるので隣接するアイテムのswapだけでは対応できない。
-     * なので上下左右のアイテム移動用にonListUpdateを用意した。
-     */
     fun onListUpdateForFlexBox(fromPosition: Int, toPosition: Int) {
         val moveItem = list[fromPosition]
         list.removeAt(fromPosition)

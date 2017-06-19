@@ -256,7 +256,7 @@ class TagFragment: BaseFragment() {
                 fromPosition = viewHolder.adapterPosition
             }
             toPosition = target.adapterPosition
-            adapter.onNotifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
+            adapter.onItemMovedForFlexBox(viewHolder.adapterPosition, target.adapterPosition)
             return true
         }
 
