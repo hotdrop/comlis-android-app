@@ -27,29 +27,12 @@ abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val 
         return -1
     }
 
-    fun addItem(item: T) {
-        list.add(item)
-    }
-
-    fun addAll(items: List<T>) {
-        list.addAll(items)
-    }
-
-    fun removeItem(index: Int) {
-        list.removeAt(index)
-    }
-
-    fun clear() {
-        list.clear()
-    }
-
-    fun onItemMove(fromPosition: Int, toPosition: Int) {
-        Collections.swap(list, fromPosition, toPosition)
-    }
-
-    fun onNotifyItemMoved(fromPosition: Int, toPosition: Int) {
-        notifyItemMoved(fromPosition, toPosition)
-    }
+    fun addItem(item: T) = list.add(item)
+    fun addAll(items: List<T>) = list.addAll(items)
+    fun removeItem(index: Int) = list.removeAt(index)
+    fun clear() = list.clear()
+    fun onItemMove(fromPosition: Int, toPosition: Int) = Collections.swap(list, fromPosition, toPosition)
+    fun onNotifyItemMoved(fromPosition: Int, toPosition: Int) = notifyItemMoved(fromPosition, toPosition)
 
     /**
      * flexbox-layoutで上下左右のドラッグができるリストはこっちのonItemMovedメソッド使う
