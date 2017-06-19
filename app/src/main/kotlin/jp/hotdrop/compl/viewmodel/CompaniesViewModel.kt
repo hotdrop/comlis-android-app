@@ -82,10 +82,8 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
         val dispose = companyDao.find(companyId)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
-                            {
-                                val idx = viewModels.indexOf(viewModels.find { it.getId() == companyId })
-                                viewModels[idx] = CompanyViewModel(it, context, companyDao, categoryDao, jobEvaluationDao)
-                            },
+                            // キーとなるcompanyIdは変更ないため、拡張関数でデータを差し替える
+                            { viewModels.extendReplace(CompanyViewModel(it, context, companyDao, categoryDao, jobEvaluationDao)) },
                             { callback.showError(it) }
                     )
         compositeDisposable.add(dispose)

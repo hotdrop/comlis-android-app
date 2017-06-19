@@ -90,8 +90,8 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
             colorType = newColorType
         }
         categoryDao.update(c)
-        val idx = viewModels.indexOf(vm)
-        viewModels[idx] = CategoryViewModel(c, vm.registerCompanyCount, context)
+        // キーとなるcategoryIdは変更ないため、拡張関数でデータを差し替える
+        viewModels.extendReplace(CategoryViewModel(c, vm.registerCompanyCount, context))
     }
 
     fun updateItemOrder() {
