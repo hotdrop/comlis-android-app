@@ -33,11 +33,9 @@ class CompanyDetailFragment: BaseFragment() {
     @Inject
     lateinit var companyDao: CompanyDao
 
-    lateinit var binding: FragmentCompanyDetailBinding
-
-    private var isRefresh = false
-
+    private lateinit var binding: FragmentCompanyDetailBinding
     private val companyId by lazy { arguments.getInt(EXTRA_COMPANY_ID) }
+    private var isRefresh = false
 
     companion object {
         fun create(companyId: Int) = CompanyDetailFragment().apply {

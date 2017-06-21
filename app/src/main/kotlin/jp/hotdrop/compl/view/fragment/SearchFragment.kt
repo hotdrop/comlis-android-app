@@ -26,9 +26,8 @@ class SearchFragment: BaseFragment() {
     @Inject
     lateinit var viewModel: SearchViewModel
 
-    lateinit var binding: FragmentSearchBinding
+    private lateinit var binding: FragmentSearchBinding
     private var adapter: Adapter? = null
-
     private var searchText: String? = null
 
     companion object {
@@ -94,9 +93,7 @@ class SearchFragment: BaseFragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if(newText == null || newText.isBlank()) {
-                    if(adapter != null) {
-                        adapter!!.clearAll()
-                    }
+                    adapter?.clearAll()
                     return true
                 }
                 search(newText)
@@ -125,7 +122,7 @@ class SearchFragment: BaseFragment() {
     private fun onLoadSuccess(searchResults: List<ItemSearchResultViewModel>) {
         adapter = Adapter(context)
         if(searchResults.isNotEmpty()) {
-            adapter!!.addAll(searchResults)
+            adapter?.addAll(searchResults)
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
