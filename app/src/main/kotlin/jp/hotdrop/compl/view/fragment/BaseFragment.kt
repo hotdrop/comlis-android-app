@@ -5,6 +5,7 @@ import android.support.annotation.ColorRes
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatButton
+import android.support.v7.widget.AppCompatEditText
 import android.widget.Toast
 import com.airbnb.lottie.LottieAnimationView
 import com.deploygate.sdk.DeployGate
@@ -57,6 +58,8 @@ abstract class BaseFragment: Fragment() {
         this.isEnabled = false
         this.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.button_disabled))
     }
+
+    fun AppCompatEditText.toText() = this.text.toString()
 
     sealed class ErrorType {
         object LoadFailureCompanies: ErrorType()

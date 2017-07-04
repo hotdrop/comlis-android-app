@@ -66,40 +66,38 @@ class SearchFragment: BaseFragment() {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.search_menu, menu)
 
-        val menuItem = menu?.findItem(R.id.menu_search)
-        MenuItemCompat.setOnActionExpandListener(menuItem, object: MenuItemCompat.OnActionExpandListener {
-            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                return true
-            }
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                activity?.finish()
-                return false
-            }
-        })
-
-        val searchView = (MenuItemCompat.getActionView(menuItem) as SearchView).apply {
-            setIconifiedByDefault(false)
-            // searchViewの位置が中央すぎるので、xmlでのgravity調整やtoolbarをいじったり、contentInsetStartWithNavigationしたりした。
-            // しかし、どれもこれも色々試してもうんともすんとも言わないのでとりあえずPaddingで対応・・
-            setPadding(-52,0,0,0)
-            queryHint = context.getString(R.string.hint_search_text_field)
-            clearFocus()
-        }
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                onQueryTextChange(query)
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if(newText == null || newText.isBlank()) {
-                    adapter?.clearAll()
+        menu?.findItem(R.id.menu_search).let {
+            MenuItemCompat.setOnActionExpandListener(it, object: MenuItemCompat.OnActionExpandListener {
+                override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                     return true
                 }
-                search(newText)
-                return true
+                override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                    activity?.finish()
+                    return false
+                }
+            })
+            val searchView = (MenuItemCompat.getActionView(it) as SearchView).apply {
+                setIconifiedByDefault(false)
+                // searchViewの位置が中央すぎるので、xmlでのgravity調整やtoolbarをいじったり、contentInsetStartWithNavigationしたりした。
+                // しかし、どれもこれも色々試してもうんともすんとも言わないのでとりあえずPaddingで対応・・
+                setPadding(-52,0,0,0)
+                queryHint = context.getString(R.string.hint_search_text_field)
+                clearFocus()
             }
-        })
+            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return onQueryTextChange(query)
+                }
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if(newText == null || newText.isBlank()) {
+                        adapter?.clearAll()
+                        return true
+                    }
+                    search(newText)
+                    return true
+                }
+            })
+        }
     }
 
     override fun onDestroyView() {

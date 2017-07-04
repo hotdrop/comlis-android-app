@@ -115,14 +115,14 @@ class TagFragment: BaseFragment() {
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {/*no op*/ }
                 override fun afterTextChanged(s: Editable?) {
                     when {
-                        editText.text.toString() == "" -> disableButton()
+                        editText.toText() == "" -> disableButton()
                         tagId == REGISTER_MODE -> if(existName()) disableButtonWithAttention() else enableButton()
                         else -> if(existNameExclusionOwn()) disableButtonWithAttention() else enableButton()
                     }
                 }
-                private fun existName(): Boolean = viewModel.existName(editText.text.toString())
+                private fun existName(): Boolean = viewModel.existName(editText.toText())
                 private fun existNameExclusionOwn(): Boolean =
-                        (editText.text.toString() != originName && viewModel.existNameExclusionId(editText.text.toString(), tagId))
+                        (editText.toText() != originName && viewModel.existNameExclusionId(editText.toText(), tagId))
                 private fun disableButton() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
                     view.findViewById(R.id.label_tag_attention).visibility = View.GONE
@@ -144,9 +144,9 @@ class TagFragment: BaseFragment() {
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
-                    viewModel.register(editText.text.toString(), spinner.getSelection())
+                    viewModel.register(editText.toText(), spinner.getSelection())
                     viewModel.goneEmptyMessageOnScreen()
-                    adapter.add(viewModel.getViewModel(editText.text.toString()))
+                    adapter.add(viewModel.getViewModel(editText.toText()))
                     dialogInterface.dismiss()
                 })
                 .create()
@@ -164,8 +164,8 @@ class TagFragment: BaseFragment() {
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
-                    viewModel.update(vm, editText.text.toString(), spinner.getSelection())
-                    adapter.refresh(viewModel.getViewModel(editText.text.toString()))
+                    viewModel.update(vm, editText.toText(), spinner.getSelection())
+                    adapter.refresh(viewModel.getViewModel(editText.toText()))
                     dialogInterface.dismiss()
                 })
                 .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
