@@ -45,12 +45,6 @@ class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewMo
         companyId = company.id
     }
 
-    fun isAllNumbers(value: String): Boolean {
-        // 未入力（空）ならOK。ブランクが入っていたらダメなのでisBlankではなくisEmptyにしている。
-        if(value.isEmpty()) return true
-        return value.isNumber()
-    }
-
     @ColorRes
     fun getColorRes(): Int = ColorUtil.getResDark(colorName, context)
 

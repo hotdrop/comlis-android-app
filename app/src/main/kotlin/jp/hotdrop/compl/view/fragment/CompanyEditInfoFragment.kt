@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.AppCompatEditText
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,9 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.BiFunction
+import io.reactivex.rxkotlin.Observables
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.databinding.FragmentCompanyEditInfoBinding
 import jp.hotdrop.compl.viewmodel.CompanyEditInfoViewModel
@@ -40,65 +43,52 @@ class CompanyEditInfoFragment: BaseFragment() {
         getComponent().inject(this)
     }
 
+    private fun AppCompatEditText.createEmptyOrNumberObservable(): Observable<Boolean> {
+        return RxTextView
+                .textChangeEvents(this)
+                .map {
+                    it.text().isEmpty() || it.text().isNumber()
+                }.distinctUntilChanged()
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyEditInfoBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
         binding.viewModel = viewModel
 
-        val disposable = viewModel.loadData(companyId)
+        viewModel.loadData(companyId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { binding.viewModel = viewModel },
-                        { throwable -> showErrorAsToast(ErrorType.LoadFailureCompany, throwable) }
+                .subscribeBy(
+                        onComplete = { binding.viewModel = viewModel },
+                        onError = { showErrorAsToast(ErrorType.LoadFailureCompany, it) }
                 )
-        compositeDisposable.add(disposable)
+                .addTo(compositeDisposable)
 
-        val employeeNumObservable = RxTextView.textChangeEvents(binding.txtEmployeesNum)
-                .map { viewModel.isAllNumbers(it.text().toString()) }
-                .distinctUntilChanged()
-        val salaryLowObservable = RxTextView.textChangeEvents(binding.txtSalaryLower)
-                .map { viewModel.isAllNumbers(it.text().toString()) }
-                .distinctUntilChanged()
-        val salaryHighObservable = RxTextView.textChangeEvents(binding.txtSalaryHigh)
-                .map { viewModel.isAllNumbers(it.text().toString()) }
-                .distinctUntilChanged()
+        val employeeNumObservable = binding.txtEmployeesNum.createEmptyOrNumberObservable()
+        val salaryLowObservable = binding.txtSalaryLower.createEmptyOrNumberObservable()
+        val salaryHighObservable = binding.txtSalaryHigh.createEmptyOrNumberObservable()
 
-        val disposable1 = employeeNumObservable
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{ isNumber ->
-                    binding.labelEmployeesNumAttention.visibility = if (isNumber) View.GONE else View.VISIBLE
-                }
-        compositeDisposable.add(disposable1)
+        employeeNumObservable
+                .subscribeBy(
+                        onNext = { binding.labelEmployeesNumAttention.visibility = if (it) View.GONE else View.VISIBLE }
+                )
+                .addTo(compositeDisposable)
 
-        val salaryCombined: Observable<Boolean> = Observable.combineLatest(
-                salaryLowObservable,
-                salaryHighObservable,
-                BiFunction { low: Boolean, high: Boolean -> low && high })
-        val disposable2 = salaryCombined
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { result ->
-                    binding.labelSalaryAttention.visibility = if (result) View.GONE else View.VISIBLE
-                }
-        compositeDisposable.add(disposable2)
+        Observables
+                .combineLatest(salaryLowObservable, salaryHighObservable, { isLow, isHigh -> isLow && isHigh})
+                .subscribeBy(
+                        onNext = { binding.labelSalaryAttention.visibility = if(it) View.GONE else View.VISIBLE }
+                )
+                .addTo(compositeDisposable)
 
-        val buttonObservable: Observable<Boolean> = Observable.combineLatest(
-                employeeNumObservable,
-                salaryCombined,
-                BiFunction { isEmployeeValidate: Boolean, isSalaryValidate: Boolean -> ( isEmployeeValidate && isSalaryValidate ) })
-        val disposable3 = buttonObservable
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{ enabled ->
-                    if(enabled) {
-                        binding.updateButton.enabledWithColor(viewModel.getColorRes())
-                    } else {
-                        binding.updateButton.disabledWithColor()
-                    }
-                }
-        compositeDisposable.add(disposable3)
+        Observables
+                .combineLatest(employeeNumObservable, salaryLowObservable, salaryHighObservable,
+                    { isEmployee, isLow, isHigh -> isEmployee && isLow && isHigh })
+                .subscribeBy( onNext = {
+                    if(it) binding.updateButton.enabledWithColor(viewModel.getColorRes()) else binding.updateButton.disabledWithColor()
+                })
+                .addTo(compositeDisposable)
 
         binding.updateButton.setOnClickListener{ onClickUpdate() }
         return binding.root

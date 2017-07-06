@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.Spinner
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.FragmentCategoryBinding
@@ -66,7 +67,7 @@ class CategoryFragment : BaseFragment() {
                         { onSuccess(it) },
                         { showErrorAsToast(ErrorType.LoadFailureCategory, it) }
                 )
-        compositeDisposable.add(disposable)
+        compositeDisposable.plusAssign(disposable)
     }
 
     private fun onSuccess(categoryViewModels: List<CategoryViewModel>) {

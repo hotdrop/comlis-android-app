@@ -61,6 +61,11 @@ abstract class BaseFragment: Fragment() {
 
     fun AppCompatEditText.toText() = this.text.toString()
 
+    fun CharSequence.isNumber(): Boolean {
+        this.forEach { c -> if(!c.isDigit()) return false }
+        return true
+    }
+
     sealed class ErrorType {
         object LoadFailureCompanies: ErrorType()
         object LoadFailureCompany: ErrorType()
