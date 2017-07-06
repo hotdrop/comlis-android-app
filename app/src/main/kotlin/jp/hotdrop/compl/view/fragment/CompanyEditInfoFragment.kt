@@ -4,12 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.AppCompatEditText
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.jakewharton.rxbinding2.widget.RxTextView
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.Observables
@@ -43,14 +40,6 @@ class CompanyEditInfoFragment: BaseFragment() {
         getComponent().inject(this)
     }
 
-    private fun AppCompatEditText.createEmptyOrNumberObservable(): Observable<Boolean> {
-        return RxTextView
-                .textChangeEvents(this)
-                .map {
-                    it.text().isEmpty() || it.text().isNumber()
-                }.distinctUntilChanged()
-    }
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyEditInfoBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
@@ -60,38 +49,52 @@ class CompanyEditInfoFragment: BaseFragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                        onComplete = { binding.viewModel = viewModel },
+                        onComplete = {
+                            createObservableToEditTexts()
+                            binding.updateButton.setOnClickListener{ onClickUpdate() }
+                        },
                         onError = { showErrorAsToast(ErrorType.LoadFailureCompany, it) }
                 )
                 .addTo(compositeDisposable)
+        return binding.root
+    }
 
+    private fun createObservableToEditTexts() {
         val employeeNumObservable = binding.txtEmployeesNum.createEmptyOrNumberObservable()
         val salaryLowObservable = binding.txtSalaryLower.createEmptyOrNumberObservable()
         val salaryHighObservable = binding.txtSalaryHigh.createEmptyOrNumberObservable()
 
-        employeeNumObservable
+        // PublisherがUIスレッドで実行されるのでObserveOnでのAndroidのmainThreadは指定しない。
+        // 本当は指定すべきかもしれんが・・
+        employeeNumObservable.subscribeBy(
+                onNext = { viewEmployeesNumAttention(it) }
+        ).addTo(compositeDisposable)
+
+        Observables.combineLatest(salaryLowObservable, salaryHighObservable,
+                { isLow, isHigh -> isLow && isHigh})
                 .subscribeBy(
-                        onNext = { binding.labelEmployeesNumAttention.visibility = if (it) View.GONE else View.VISIBLE }
+                        onNext = { viewSalaryAttention(it) }
                 )
                 .addTo(compositeDisposable)
 
-        Observables
-                .combineLatest(salaryLowObservable, salaryHighObservable, { isLow, isHigh -> isLow && isHigh})
+        Observables.combineLatest(employeeNumObservable, salaryLowObservable, salaryHighObservable,
+                { isEmployee, isLow, isHigh -> isEmployee && isLow && isHigh })
                 .subscribeBy(
-                        onNext = { binding.labelSalaryAttention.visibility = if(it) View.GONE else View.VISIBLE }
+                        onNext = { enableOrDisableUpdateButton(it) }
                 )
                 .addTo(compositeDisposable)
+    }
 
-        Observables
-                .combineLatest(employeeNumObservable, salaryLowObservable, salaryHighObservable,
-                    { isEmployee, isLow, isHigh -> isEmployee && isLow && isHigh })
-                .subscribeBy( onNext = {
-                    if(it) binding.updateButton.enabledWithColor(viewModel.getColorRes()) else binding.updateButton.disabledWithColor()
-                })
-                .addTo(compositeDisposable)
+    private fun viewEmployeesNumAttention(gone: Boolean) {
+        binding.labelEmployeesNumAttention.visibility = if(gone) View.GONE else View.VISIBLE
+    }
 
-        binding.updateButton.setOnClickListener{ onClickUpdate() }
-        return binding.root
+    private fun viewSalaryAttention(gone: Boolean) {
+        binding.labelSalaryAttention.visibility = if(gone) View.GONE else View.VISIBLE
+    }
+
+    private fun enableOrDisableUpdateButton(enable: Boolean) {
+        if(enable) binding.updateButton.enabledWithColor(viewModel.getColorRes()) else binding.updateButton.disabledWithColor()
     }
 
     private fun onClickUpdate() {

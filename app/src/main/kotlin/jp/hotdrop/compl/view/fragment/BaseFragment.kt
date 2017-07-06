@@ -9,6 +9,8 @@ import android.support.v7.widget.AppCompatEditText
 import android.widget.Toast
 import com.airbnb.lottie.LottieAnimationView
 import com.deploygate.sdk.DeployGate
+import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.Observable
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.di.FragmentComponent
 import jp.hotdrop.compl.di.FragmentModule
@@ -61,7 +63,13 @@ abstract class BaseFragment: Fragment() {
 
     fun AppCompatEditText.toText() = this.text.toString()
 
-    fun CharSequence.isNumber(): Boolean {
+    fun AppCompatEditText.createEmptyOrNumberObservable(): Observable<Boolean> =
+        RxTextView.textChangeEvents(this)
+                .map {
+                    it.text().isEmpty() || it.text().isNumber()
+                }.distinctUntilChanged()
+
+    private fun CharSequence.isNumber(): Boolean {
         this.forEach { c -> if(!c.isDigit()) return false }
         return true
     }
