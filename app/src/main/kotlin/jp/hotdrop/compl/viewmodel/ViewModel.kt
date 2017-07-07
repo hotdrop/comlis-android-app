@@ -7,11 +7,6 @@ import java.util.*
 
 abstract class ViewModel: BaseObservable() {
 
-    fun String.isNumber(): Boolean {
-        this.forEach { c -> if(!c.isDigit()) return false }
-        return true
-    }
-
     fun String.toStringOrNull(): String? = if(!this.isEmpty()) this else null
 
     fun String.toIntOrZero(): Int = if(!this.isEmpty()) this.toInt() else 0

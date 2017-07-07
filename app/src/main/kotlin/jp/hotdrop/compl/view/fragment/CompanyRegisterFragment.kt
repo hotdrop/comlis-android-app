@@ -4,15 +4,15 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.AppCompatEditText
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jakewharton.rxbinding2.widget.RxTextView
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.BiFunction
-import io.reactivex.functions.Function3
+import io.reactivex.rxkotlin.Observables
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.databinding.FragmentCompanyRegisterBinding
@@ -47,84 +47,79 @@ class CompanyRegisterFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyRegisterBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
+        binding.viewModel = viewModel
+
+        createObservableToEditTexts()
         categorySpinner = CategorySpinner(binding.spinnerCategory, activity, categoryDao).apply {
             setSelection(selectedCategoryName)
         }
-
-        val nameEmptyObservable = RxTextView.textChangeEvents(binding.txtName)
-                .map { it.text().isBlank() }
-                .distinctUntilChanged()
-        val nameDuplicateObservable = RxTextView.textChangeEvents(binding.txtName)
-                .map { viewModel.existName(it.text().toString()) }
-                .distinctUntilChanged()
-        val nameObservableCombined: Observable<Boolean> = Observable.combineLatest(
-                nameEmptyObservable,
-                nameDuplicateObservable,
-                BiFunction { isEmpty: Boolean, isDuplicate: Boolean ->
-                    when {
-                        isEmpty -> binding.labelNameAttention.text = context.getString(R.string.company_name_empty_attention)
-                        isDuplicate -> binding.labelNameAttention.text = context.getString(R.string.company_name_attention)
-                    }
-                    (!isEmpty && !isDuplicate)
-                })
-        val disposable1 = nameObservableCombined
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { result ->
-                    binding.labelNameAttention.visibility = if (result) View.GONE else View.VISIBLE
-                }
-        compositeDisposable.add(disposable1)
-
-        val employeeNumObservable = RxTextView.textChangeEvents(binding.txtEmployeesNum)
-                .map { viewModel.isAllNumbers(it.text().toString()) }
-                .distinctUntilChanged()
-        val disposable2 = employeeNumObservable
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{ isNumber ->
-                    binding.labelEmployeesNumAttention.visibility = if (isNumber) View.GONE else View.VISIBLE
-                }
-        compositeDisposable.add(disposable2)
-
-        val salaryLowObservable = RxTextView.textChangeEvents(binding.txtSalaryLower)
-                .map { viewModel.isAllNumbers(it.text().toString()) }
-                .distinctUntilChanged()
-        val salaryHighObservable = RxTextView.textChangeEvents(binding.txtSalaryHigh)
-                .map { viewModel.isAllNumbers(it.text().toString()) }
-                .distinctUntilChanged()
-        val salaryObservableCombined: Observable<Boolean> = Observable.combineLatest(
-                salaryLowObservable,
-                salaryHighObservable,
-                BiFunction { low: Boolean, high: Boolean -> low && high })
-        val disposable3 = salaryObservableCombined
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { result ->
-                    binding.labelSalaryAttention.visibility = if (result) View.GONE else View.VISIBLE
-                }
-        compositeDisposable.add(disposable3)
-
-        val buttonObservable: Observable<Boolean> = Observable.combineLatest(
-                nameObservableCombined,
-                employeeNumObservable,
-                salaryObservableCombined,
-                Function3 { isNameValidate, isEmployeeValidate: Boolean, isSalaryValidate: Boolean ->
-                    ( isNameValidate && isEmployeeValidate && isSalaryValidate )
-                })
-        val disposable4 = buttonObservable
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{ binding.registerButton.isEnabled = it }
-        compositeDisposable.add(disposable4)
-
         binding.registerButton.setOnClickListener { onClickRegister() }
-        binding.viewModel = viewModel
+
         return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        compositeDisposable.dispose()
+    private fun AppCompatEditText.createNotExistObservable() =
+            RxTextView.textChangeEvents(this)
+                    .filter { it.text().toString().isNotBlank() }
+                    .map { !viewModel.existName(it.text().toString()) }
+                    .distinctUntilChanged()
+
+    private fun createObservableToEditTexts() {
+
+        // 最初にこの関数で生成するObservableを読めた方がいいと思ったので生成は最初に
+        // 全部してしまう。（VBのように変数をいちいち関数の最初でやる、みたいな慣習に従ったわけではない）
+        val nameNotBlankObservable = binding.txtName.createNotBlankObservable()
+        val nameNotExistObservable = binding.txtName.createNotExistObservable()
+        val employeeNumObservable = binding.txtEmployeesNum.createEmptyOrNumberObservable()
+        val salaryLowObservable = binding.txtSalaryLower.createEmptyOrNumberObservable()
+        val salaryHighObservable = binding.txtSalaryHigh.createEmptyOrNumberObservable()
+
+        Observables.combineLatest(nameNotBlankObservable, nameNotExistObservable,
+                { isNotBlack, isNotExist ->
+                    when {
+                        !isNotBlack -> setLabelNameAttentionToEmptyMessage()
+                        !isNotExist -> setLabelNameAttentionToExistMessage()
+                    }
+                    (isNotBlack && isNotExist)
+                })
+                .subscribeBy(onNext = {viewNameAttention(it)})
+                .addTo(compositeDisposable)
+
+        employeeNumObservable.subscribeBy(onNext = {viewEmployeesNumAttention(it)})
+                .addTo(compositeDisposable)
+
+        Observables.combineLatest(salaryLowObservable, salaryHighObservable,
+                    { isLow, isHigh -> isLow && isHigh })
+                .subscribeBy { viewSalaryAttention(it) }
+                .addTo(compositeDisposable)
+
+        // combineFunctionの引数は、スコープが短いことと各々のBoolean値を識別する必要がないため1文字にする
+        Observables.combineLatest(nameNotBlankObservable, nameNotExistObservable,
+                        employeeNumObservable,
+                        salaryLowObservable, salaryHighObservable,
+                        { a, b, c, d, e -> ( a && b && c && d && e ) })
+                .subscribeBy(onNext = {binding.registerButton.isEnabled = it})
+                .addTo(compositeDisposable)
+    }
+
+    private fun setLabelNameAttentionToEmptyMessage() {
+        binding.labelNameAttention.text = context.getString(R.string.company_name_empty_attention)
+    }
+
+    private fun setLabelNameAttentionToExistMessage() {
+        binding.labelNameAttention.text = context.getString(R.string.company_name_attention)
+    }
+
+    private fun viewNameAttention(gone: Boolean) {
+        binding.labelNameAttention.visibility = if (gone) View.GONE else View.VISIBLE
+    }
+
+    private fun viewEmployeesNumAttention(gone: Boolean) {
+        binding.labelEmployeesNumAttention.visibility = if(gone) View.GONE else View.VISIBLE
+    }
+
+    private fun viewSalaryAttention(gone: Boolean) {
+        binding.labelSalaryAttention.visibility = if(gone) View.GONE else View.VISIBLE
     }
 
     private fun onClickRegister() {
@@ -135,5 +130,10 @@ class CompanyRegisterFragment : BaseFragment() {
         }
         activity.setResult(Activity.RESULT_OK, intent)
         exit()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        compositeDisposable.dispose()
     }
 }

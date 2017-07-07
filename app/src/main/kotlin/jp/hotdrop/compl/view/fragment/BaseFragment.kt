@@ -63,11 +63,15 @@ abstract class BaseFragment: Fragment() {
 
     fun AppCompatEditText.toText() = this.text.toString()
 
+    fun AppCompatEditText.createNotBlankObservable(): Observable<Boolean> =
+            RxTextView.textChangeEvents(this)
+                    .map { it.text().isNotBlank() }
+                    .distinctUntilChanged()
+
     fun AppCompatEditText.createEmptyOrNumberObservable(): Observable<Boolean> =
         RxTextView.textChangeEvents(this)
-                .map {
-                    it.text().isEmpty() || it.text().isNumber()
-                }.distinctUntilChanged()
+                .map { it.text().isEmpty() || it.text().isNumber() }
+                .distinctUntilChanged()
 
     private fun CharSequence.isNumber(): Boolean {
         this.forEach { c -> if(!c.isDigit()) return false }

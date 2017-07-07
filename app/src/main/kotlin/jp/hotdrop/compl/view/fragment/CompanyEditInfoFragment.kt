@@ -60,28 +60,25 @@ class CompanyEditInfoFragment: BaseFragment() {
     }
 
     private fun createObservableToEditTexts() {
+
         val employeeNumObservable = binding.txtEmployeesNum.createEmptyOrNumberObservable()
         val salaryLowObservable = binding.txtSalaryLower.createEmptyOrNumberObservable()
         val salaryHighObservable = binding.txtSalaryHigh.createEmptyOrNumberObservable()
 
         // PublisherがUIスレッドで実行されるのでObserveOnでのAndroidのmainThreadは指定しない。
-        // 本当は指定すべきかもしれんが・・
-        employeeNumObservable.subscribeBy(
-                onNext = { viewEmployeesNumAttention(it) }
-        ).addTo(compositeDisposable)
-
-        Observables.combineLatest(salaryLowObservable, salaryHighObservable,
-                { isLow, isHigh -> isLow && isHigh})
-                .subscribeBy(
-                        onNext = { viewSalaryAttention(it) }
-                )
+        // 本当は暗黙にすると怖いので指定すべきかもしれない・・
+        employeeNumObservable.subscribeBy(onNext = { viewEmployeesNumAttention(it) })
                 .addTo(compositeDisposable)
 
+        Observables.combineLatest(salaryLowObservable, salaryHighObservable,
+                    { isLow, isHigh -> isLow && isHigh})
+                .subscribeBy(onNext = { viewSalaryAttention(it) })
+                .addTo(compositeDisposable)
+
+        // combineFunctionの引数は、スコープが短いことと各々のBoolean値を識別する必要がないため1文字にする
         Observables.combineLatest(employeeNumObservable, salaryLowObservable, salaryHighObservable,
-                { isEmployee, isLow, isHigh -> isEmployee && isLow && isHigh })
-                .subscribeBy(
-                        onNext = { enableOrDisableUpdateButton(it) }
-                )
+                    { a, b, c -> a && b && c })
+                .subscribeBy(onNext = { enableOrDisableUpdateButton(it) })
                 .addTo(compositeDisposable)
     }
 
