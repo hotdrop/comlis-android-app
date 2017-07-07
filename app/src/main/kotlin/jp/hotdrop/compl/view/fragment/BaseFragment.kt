@@ -73,10 +73,7 @@ abstract class BaseFragment: Fragment() {
                 .map { it.text().isEmpty() || it.text().isNumber() }
                 .distinctUntilChanged()
 
-    private fun CharSequence.isNumber(): Boolean {
-        this.forEach { c -> if(!c.isDigit()) return false }
-        return true
-    }
+    private fun CharSequence.isNumber(): Boolean = this.all { it.isDigit() }
 
     sealed class ErrorType {
         object LoadFailureCompanies: ErrorType()
