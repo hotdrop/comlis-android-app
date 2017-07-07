@@ -12,17 +12,16 @@ import jp.hotdrop.compl.util.ColorUtil
 class ColorSpinner(private val spinner: Spinner, private val context: Context) {
 
     private val adapter by lazy {
-        Adapter(context, R.layout.simple_dropdown_item_1line, ColorUtil.getNames())
+        Adapter(context, R.layout.simple_dropdown_item_1line, ColorUtil.getNames()).apply {
+            setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+        }
     }
 
     init {
-        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
     }
 
-    fun getSelection(): String {
-        return spinner.selectedItem as String
-    }
+    fun getSelection(): String = spinner.selectedItem as String
 
     fun setSelection(name: String) {
         val position = adapter.getPosition(name)
@@ -32,26 +31,21 @@ class ColorSpinner(private val spinner: Spinner, private val context: Context) {
     private inner class Adapter(context: Context?, textViewResourceId: Int, var colorNames: List<String>)
         : ArrayAdapter<String>(context, textViewResourceId, colorNames) {
 
-        private val ITEM_TEXT_SIZE = 20.toFloat()
-
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val v = convertView ?: View.inflate(context, android.R.layout.simple_dropdown_item_1line, null)
-            val textView = ((v as TextView).findViewById(android.R.id.text1) as TextView).apply {
-                setTextColor(ColorUtil.getResDark(colorNames[position], context))
-                text = colorNames[position]
-                textSize = ITEM_TEXT_SIZE
-            }
-            return textView
+            return getTextViewWithSetColor(v as TextView, position)
         }
 
         override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val v = convertView ?: View.inflate(context, android.R.layout.simple_dropdown_item_1line, null)
-            val textView = ((v as TextView).findViewById(android.R.id.text1) as TextView).apply {
+            return getTextViewWithSetColor(v as TextView, position)
+        }
+
+        private fun getTextViewWithSetColor(v: TextView, position: Int): View =
+            (v.findViewById(android.R.id.text1) as TextView).apply {
                 setTextColor(ColorUtil.getResDark(colorNames[position], context))
                 text = colorNames[position]
-                textSize = ITEM_TEXT_SIZE
-            }
-            return textView
+                textSize = 20.toFloat()
         }
     }
 }
