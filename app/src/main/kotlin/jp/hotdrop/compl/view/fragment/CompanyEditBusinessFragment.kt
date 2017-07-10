@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.databinding.FragmentCompanyEditBusinessBinding
 import jp.hotdrop.compl.viewmodel.CompanyEditBusinessViewModel
@@ -41,16 +43,16 @@ class CompanyEditBusinessFragment: BaseFragment() {
         binding = FragmentCompanyEditBusinessBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
         binding.viewModel = viewModel
-        val disposable = viewModel.loadData(companyId)
+
+        viewModel.loadData(companyId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { binding.viewModel = viewModel },
-                        { throwable -> showErrorAsToast(ErrorType.LoadFailureCompany, throwable) }
+                .subscribeBy(
+                        onComplete = { binding.updateButton.setOnClickListener{ onClickUpdate() }},
+                        onError = { showErrorAsToast(ErrorType.LoadFailureCompany, it) }
                 )
-        compositeDisposable.add(disposable)
+                .addTo(compositeDisposable)
 
-        binding.updateButton.setOnClickListener{ onClickUpdate() }
         return binding.root
     }
 

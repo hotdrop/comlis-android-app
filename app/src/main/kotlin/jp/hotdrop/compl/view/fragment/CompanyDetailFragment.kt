@@ -13,6 +13,8 @@ import android.view.ViewGroup
 import com.google.android.flexbox.FlexboxLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CompanyDao
@@ -57,80 +59,71 @@ class CompanyDetailFragment: BaseFragment() {
     }
 
     private fun initToolbar() {
-        val activity = (activity as AppCompatActivity)
-        activity.setSupportActionBar(binding.toolbar)
-        activity.supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            setDisplayShowHomeEnabled(true)
-            setDisplayShowTitleEnabled(false)
-            setHomeButtonEnabled(true)
+        (activity as AppCompatActivity).apply {
+            setSupportActionBar(binding.toolbar)
+            supportActionBar?.apply {
+                setDisplayHomeAsUpEnabled(true)
+                setDisplayShowHomeEnabled(true)
+                setDisplayShowTitleEnabled(false)
+                setHomeButtonEnabled(true)
+            }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(!canPassResult(requestCode, resultCode) || data == null) {
-            return
-        }
-        val refreshMode = data.getIntExtra(REFRESH_MODE, NONE)
-        if(refreshMode != UPDATE && refreshMode != CHANGE_CATEGORY) {
+
+        val refreshMode = data?.getIntExtra(REFRESH_MODE, NONE) ?: NONE
+        if(!canPassResult(requestCode, resultCode, refreshMode)) {
             return
         }
 
         loadData()
 
-        if(refreshMode == CHANGE_CATEGORY) {
-            setResultForChangeCategory()
+        val intent = if(refreshMode == CHANGE_CATEGORY) {
+            getChangeCategoryIntent()
         } else {
-            setResultForUpdate()
+            getUpdateIntent()
         }
+
+        activity.setResult(Activity.RESULT_OK, intent)
+        isRefresh = true
         viewModel.closeFabMenu()
     }
 
-    private fun canPassResult(requestCode: Int, resultCode: Int): Boolean {
-        return (resultCode == Activity.RESULT_OK && (Request.values().filter { req -> req.code == requestCode }.isNotEmpty()))
-    }
+    private fun canPassResult(requestCode: Int, resultCode: Int, refreshMode: Int): Boolean =
+            (resultCode == Activity.RESULT_OK &&
+                    (Request.values().filter { it.code == requestCode }.isNotEmpty()) &&
+                    (refreshMode == UPDATE || refreshMode == CHANGE_CATEGORY))
 
-    private fun setResultForUpdate() {
-        val intent = Intent().apply {
-            putExtra(REFRESH_MODE, UPDATE)
-            putExtra(EXTRA_COMPANY_ID, viewModel.id)
-        }
-        activity.setResult(Activity.RESULT_OK, intent)
-        isRefresh = true
-    }
-
-    private fun setResultForTrash() {
-        val intent = Intent().apply {
-            putExtra(REFRESH_MODE, DELETE)
-            putExtra(EXTRA_COMPANY_ID, viewModel.id)
-        }
-        activity.setResult(Activity.RESULT_OK, intent)
-        isRefresh = true
-    }
-
-    private fun setResultForChangeCategory() {
-        val intent = Intent().apply {
+    private fun getChangeCategoryIntent() = Intent().apply {
             putExtra(REFRESH_MODE, CHANGE_CATEGORY)
             putExtra(EXTRA_COMPANY_ID, viewModel.id)
             putExtra(EXTRA_CATEGORY_NAME, viewModel.getCategoryName())
         }
-        activity.setResult(Activity.RESULT_OK, intent)
-        isRefresh = true
-    }
+
+    private fun getUpdateIntent() = Intent().apply {
+            putExtra(REFRESH_MODE, UPDATE)
+            putExtra(EXTRA_COMPANY_ID, viewModel.id)
+        }
+
+    private fun getTrashIntent() = Intent().apply {
+            putExtra(REFRESH_MODE, DELETE)
+            putExtra(EXTRA_COMPANY_ID, viewModel.id)
+        }
 
     private fun loadData() {
-        val disposable = viewModel.loadData(companyId, binding)
+        viewModel.loadData(companyId, binding)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { onSuccess() },
-                        { throwable -> showErrorAsToast(ErrorType.LoadFailureCompany, throwable) }
+                .subscribeBy(
+                        onComplete = { initView() },
+                        onError = { showErrorAsToast(ErrorType.LoadFailureCompany, it) }
                 )
-        compositeDisposable.add(disposable)
+                .addTo(compositeDisposable)
     }
 
-    private fun onSuccess() {
+    private fun initView() {
 
         fun setCardView(layout: FlexboxLayout, tag: Tag) {
             val binding = DataBindingUtil.inflate<ItemTagAssociateBinding>(getLayoutInflater(null),
@@ -140,12 +133,11 @@ class CompanyDetailFragment: BaseFragment() {
             layout.addView(binding.root)
         }
 
-        viewModel.initImages()
-        binding.viewModel = viewModel
+        binding.viewModel = viewModel.apply { initImages() }
 
         val flexBox = binding.flexBoxContainer
         flexBox.removeAllViews()
-        viewModel.viewTags.forEach { tag -> setCardView(flexBox, tag) }
+        viewModel.viewTags.forEach { setCardView(flexBox, it) }
 
         initOnClickEvent()
         initFavoriteEvent()
@@ -178,7 +170,8 @@ class CompanyDetailFragment: BaseFragment() {
                     .setPositiveButton(R.string.dialog_ok, {dialogInterface, _ ->
                         viewModel.delete()
                         dialogInterface.dismiss()
-                        setResultForTrash()
+                        activity.setResult(Activity.RESULT_OK, getTrashIntent())
+                        isRefresh = true
                         exit()
                     })
                     .setNegativeButton(R.string.dialog_cancel, null)
@@ -226,7 +219,8 @@ class CompanyDetailFragment: BaseFragment() {
         // 画面更新される。
         fun changedFavorite() {
             if(viewModel.isEditFavorite() && !isRefresh) {
-                setResultForUpdate()
+                activity.setResult(Activity.RESULT_OK, getUpdateIntent())
+                isRefresh = true
             }
         }
 

@@ -12,6 +12,8 @@ import android.support.v4.view.ViewPager
 import android.view.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
@@ -56,14 +58,16 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     override fun onResume() {
         super.onResume()
         val refreshMode = activity.intent.getIntExtra(REFRESH_MODE, NONE)
-        if(refreshMode == CHANGE_CATEGORY) {
-            // CompanyDetailFragmentを経由して分類変更がされた場合はこのルートを通る
-            tabName = activity.intent.getStringExtra(EXTRA_CATEGORY_NAME)
-            loadData()
-            activity.intent.let {
-                it.removeExtra(REFRESH_MODE)
-                it.removeExtra(EXTRA_CATEGORY_NAME)
-            }
+        if(refreshMode != CHANGE_CATEGORY) {
+            return
+        }
+
+        // CompanyDetailFragmentを経由して分類変更がされた場合はこのルートを通る
+        tabName = activity.intent.getStringExtra(EXTRA_CATEGORY_NAME)
+        loadData()
+        activity.intent.let {
+            it.removeExtra(REFRESH_MODE)
+            it.removeExtra(EXTRA_CATEGORY_NAME)
         }
     }
 
@@ -78,17 +82,20 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
 
     private fun loadData() {
         showProgress()
-        val disposable = categoryDao.findAll()
+        categoryDao.findAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { list -> onLoadSuccess(list) },
-                        { throwable -> onLoadFailure(throwable) }
+                .subscribeBy(
+                        onSuccess = { initView(it) },
+                        onError = {
+                            showErrorAsToast(ErrorType.LoadFailureCompany, it)
+                            hideProgress()
+                        }
                 )
-        compositeDisposable.add(disposable)
+                .addTo(compositeDisposable)
     }
 
-    private fun onLoadSuccess(categories: List<Category>) {
+    private fun initView(categories: List<Category>) {
         // FragmentをネストするのでFragmentManagerではなくchildFragmentManagerを使う
         adapter = Adapter(childFragmentManager)
 
@@ -103,19 +110,16 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
         val stockSelectedTabName = tabName
 
         binding.viewPager.adapter = adapter
-        binding.tabLayout.setupWithViewPager(binding.viewPager)
-        binding.tabLayout.addOnTabSelectedListener(SelectedTabListener(binding.viewPager))
+        binding.tabLayout.let {
+            it.setupWithViewPager(binding.viewPager)
+            it.addOnTabSelectedListener(SelectedTabListener(binding.viewPager))
+        }
         binding.fab.setOnClickListener { ActivityNavigator.showCompanyRegister(this, tabName, Request.Register.code) }
 
         if(stockSelectedTabName != null) {
             binding.viewPager.currentItem = adapter.getPagePosition(stockSelectedTabName)
         }
 
-        hideProgress()
-    }
-
-    private fun onLoadFailure(e: Throwable) {
-        showErrorAsToast(ErrorType.LoadFailureCompany, e)
         hideProgress()
     }
 

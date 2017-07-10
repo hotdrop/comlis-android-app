@@ -16,6 +16,8 @@ import android.view.ViewGroup
 import com.google.android.flexbox.FlexboxLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.FragmentCompanyTabBinding
@@ -63,17 +65,17 @@ class CompanyTabFragment: BaseFragment() {
     }
 
     private fun loadData() {
-        val disposable = viewModel.getData(categoryId)
+        viewModel.getData(categoryId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { onSuccess(it) },
-                        { showErrorAsToast(ErrorType.LoadFailureCompanies, it) }
+                .subscribeBy(
+                        onSuccess =  { initView(it) },
+                        onError = { showErrorAsToast(ErrorType.LoadFailureCompanies, it) }
                 )
-        compositeDisposable.add(disposable)
+                .addTo(compositeDisposable)
     }
 
-    private fun onSuccess(companyViewModels: List<CompanyViewModel>) {
+    private fun initView(companyViewModels: List<CompanyViewModel>) {
         adapter = Adapter(context)
 
         if(companyViewModels.isNotEmpty()) {

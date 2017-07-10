@@ -8,6 +8,8 @@ import android.support.v7.widget.SearchView
 import android.view.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.FragmentSearchBinding
@@ -107,14 +109,14 @@ class SearchFragment: BaseFragment() {
 
     private fun search(newText: String) {
         searchText = newText
-        val disposable = viewModel.getSearchResults(newText)
+        viewModel.getSearchResults(newText)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { onLoadSuccess(it) },
-                        { throwable -> showErrorAsToast(ErrorType.LoadFailureSearch, throwable) }
+                .subscribeBy(
+                        onSuccess = { onLoadSuccess(it) },
+                        onError = { showErrorAsToast(ErrorType.LoadFailureSearch, it) }
                 )
-        compositeDisposable.add(disposable)
+                .addTo(compositeDisposable)
     }
 
     private fun onLoadSuccess(searchResults: List<ItemSearchResultViewModel>) {

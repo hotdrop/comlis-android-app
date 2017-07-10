@@ -17,7 +17,8 @@ import android.view.ViewGroup
 import android.widget.Spinner
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.plusAssign
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.FragmentCategoryBinding
@@ -60,17 +61,17 @@ class CategoryFragment : BaseFragment() {
     }
 
     private fun loadData() {
-        val disposable = viewModel.getData()
+        viewModel.getData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { onSuccess(it) },
-                        { showErrorAsToast(ErrorType.LoadFailureCategory, it) }
+                .subscribeBy(
+                        onSuccess = { initView(it) },
+                        onError = { showErrorAsToast(ErrorType.LoadFailureCategory, it) }
                 )
-        compositeDisposable.plusAssign(disposable)
+                .addTo(compositeDisposable)
     }
 
-    private fun onSuccess(categoryViewModels: List<CategoryViewModel>) {
+    private fun initView(categoryViewModels: List<CategoryViewModel>) {
         adapter = Adapter(context)
 
         if(categoryViewModels.isNotEmpty()) {
