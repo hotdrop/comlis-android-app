@@ -22,13 +22,12 @@ class CompanyEditBusinessViewModel @Inject constructor(val context: Context): Vi
 
     private var companyId: Int = -1
 
-    fun loadData(companyId: Int): Completable {
-        return companyDao.find(companyId)
+    fun loadData(companyId: Int): Completable =
+        companyDao.find(companyId)
                 .flatMapCompletable { company ->
                     setData(company)
                     Completable.complete()
                 }
-    }
 
     private fun setData(company: Company) {
         viewDoingBusiness = company.doingBusiness ?: ""
@@ -38,7 +37,7 @@ class CompanyEditBusinessViewModel @Inject constructor(val context: Context): Vi
     }
 
     @ColorRes
-    fun getColorRes(): Int = ColorUtil.getResDark(colorName, context)
+    fun getColorRes() = ColorUtil.getResDark(colorName, context)
 
     fun update() {
         val company =  makeCompany()

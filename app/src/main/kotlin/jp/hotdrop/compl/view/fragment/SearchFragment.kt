@@ -113,13 +113,13 @@ class SearchFragment: BaseFragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                        onSuccess = { onLoadSuccess(it) },
+                        onSuccess = { loadView(it) },
                         onError = { showErrorAsToast(ErrorType.LoadFailureSearch, it) }
                 )
                 .addTo(compositeDisposable)
     }
 
-    private fun onLoadSuccess(searchResults: List<ItemSearchResultViewModel>) {
+    private fun loadView(searchResults: List<ItemSearchResultViewModel>) {
         adapter = Adapter(context)
         if(searchResults.isNotEmpty()) {
             adapter?.addAll(searchResults)

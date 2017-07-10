@@ -23,5 +23,5 @@ class ItemSearchResultViewModel(company: Company, val context: Context, val cate
     }
 
     @ColorRes
-    fun getColorRes(): Int = ColorUtil.getResDark(colorName, context)
+    fun getColorRes() = ColorUtil.getResDark(colorName, context)
 }

@@ -60,7 +60,7 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
     }
 
     private fun initView() {
-        adapter = FlexboxItemAdapter(context, viewModel.getViewModels())
+        adapter = FlexboxItemAdapter(context, viewModel.viewModels)
         binding.recyclerView.let {
             it.setHasFixedSize(true)
             it.layoutManager = FlexboxLayoutManager()

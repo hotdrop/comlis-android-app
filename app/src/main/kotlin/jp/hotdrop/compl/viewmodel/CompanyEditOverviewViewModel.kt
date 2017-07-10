@@ -25,13 +25,12 @@ class CompanyEditOverviewViewModel @Inject constructor(val context: Context): Vi
 
     var isChangeCategory: Boolean = false
 
-    fun loadData(companyId: Int): Completable {
-        return companyDao.find(companyId)
+    fun loadData(companyId: Int): Completable =
+        companyDao.find(companyId)
                 .flatMapCompletable { company ->
                     setData(company)
                     Completable.complete()
                 }
-    }
 
     private fun setData(company: Company) {
         viewName = company.name
@@ -42,12 +41,14 @@ class CompanyEditOverviewViewModel @Inject constructor(val context: Context): Vi
     }
 
     @ColorRes
-    fun getColorRes(): Int = ColorUtil.getResDark(colorName, context)
+    fun getColorRes() =
+            ColorUtil.getResDark(colorName, context)
 
-    fun existName(name: String): Boolean {
-        if(name.isBlank()) return false
-        return companyDao.existExclusionId(name, companyId)
-    }
+    fun existName(name: String) =
+        if(name.isBlank())
+            false
+        else
+            companyDao.existExclusionId(name, companyId)
 
     fun update(selectedCategorySpinnerId: Int) {
         isChangeCategory = (categoryId != selectedCategorySpinnerId)

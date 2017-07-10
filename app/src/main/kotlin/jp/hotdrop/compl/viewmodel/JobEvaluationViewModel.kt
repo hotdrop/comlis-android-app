@@ -30,14 +30,12 @@ class JobEvaluationViewModel @Inject constructor(val context: Context) {
     var viewAppeal= false
     var viewJobOfferReason= false
 
-    fun loadData(companyId: Int): Completable {
-        return companyDao.find(companyId)
+    fun loadData(companyId: Int): Completable =
+        companyDao.find(companyId)
                 .flatMapCompletable { company ->
                     setData(company)
                     Completable.complete()
                 }
-
-    }
 
     private fun setData(company: Company) {
         companyId = company.id
@@ -54,7 +52,7 @@ class JobEvaluationViewModel @Inject constructor(val context: Context) {
     }
 
     @ColorRes
-    fun getColorRes(): Int = ColorUtil.getResDark(colorName, context)
+    fun getColorRes() = ColorUtil.getResDark(colorName, context)
 
     fun update() {
         jobEvaluationDao.upsert(makeData())

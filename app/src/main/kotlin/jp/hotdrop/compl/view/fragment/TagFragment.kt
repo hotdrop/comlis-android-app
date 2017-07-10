@@ -17,6 +17,8 @@ import android.widget.Spinner
 import com.google.android.flexbox.FlexboxLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.FragmentTagBinding
@@ -58,17 +60,17 @@ class TagFragment: BaseFragment() {
     }
 
     private fun loadData() {
-        val disposable = viewModel.getData()
+        viewModel.getData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { onSuccess(it) },
-                        { showErrorAsToast(ErrorType.LoadFailureTags, it) }
+                .subscribeBy(
+                        onSuccess = { initView(it) },
+                        onError = { showErrorAsToast(ErrorType.LoadFailureTags, it) }
                 )
-        compositeDisposable.add(disposable)
+                .addTo(compositeDisposable)
     }
 
-    private fun onSuccess(tagViewModels: List<TagViewModel>) {
+    private fun initView(tagViewModels: List<TagViewModel>) {
         adapter = FlexItemAdapter(context)
 
         if(tagViewModels.isNotEmpty()) {
@@ -222,9 +224,7 @@ class TagFragment: BaseFragment() {
             notifyItemRemoved(position)
         }
 
-        fun getModels(): List<Tag> {
-            return list.map{ it.tag }.toList()
-        }
+        fun getModels(): List<Tag> = list.map{ it.tag }.toList()
     }
 
     /**

@@ -76,19 +76,19 @@ class CompanyViewModel(private var company: Company,
     }
 
     @ColorRes
-    fun getColorRes(): Int = ColorUtil.getResNormal(colorName, context)
+    fun getColorRes() =
+            ColorUtil.getResNormal(colorName, context)
 
-    override fun equals(other: Any?): Boolean = (other as CompanyViewModel).company.id == company.id || super.equals(other)
+    override fun equals(other: Any?) =
+            (other as CompanyViewModel).company.id == company.id || super.equals(other)
 
-    fun getId(): Int {
-        return company.id
-    }
+    fun getId() = company.id
 
     fun playFavorite(binding: ItemCompanyBinding) {
         resetFavoriteAnimation(binding)
-        listOf(binding.animationView1, binding.animationView2, binding.animationView3).take(viewFavorite).forEach {
-            it.playAnimation()
-        }
+        listOf(binding.animationView1, binding.animationView2, binding.animationView3)
+                .take(viewFavorite)
+                .forEach { it.playAnimation() }
     }
 
     fun onClickFirstFavorite(binding: ItemCompanyBinding) {
@@ -142,6 +142,4 @@ class CompanyViewModel(private var company: Company,
         binding.animationView2.reset()
         binding.animationView3.reset()
     }
-
-
 }

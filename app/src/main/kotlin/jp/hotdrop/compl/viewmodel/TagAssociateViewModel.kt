@@ -19,12 +19,16 @@ class TagAssociateViewModel(var tag: Tag,
     }
 
     @ColorRes
-    fun getColorRes(): Int =
-        if(isAssociated) ColorUtil.getResLight(tag.colorType, context)
-        else ColorUtil.getResTransparent(tag.colorType, context)
+    fun getColorRes() =
+        if(isAssociated)
+            ColorUtil.getResLight(tag.colorType, context)
+        else
+            ColorUtil.getResTransparent(tag.colorType, context)
 
     @ColorRes
-    fun getBackGroundColorRes(): Int =
-        if(isAssociated) ContextCompat.getColor(context, R.color.item_tag_background)
-        else ContextCompat.getColor(context, R.color.item_tag_unselected_background)
+    fun getBackGroundColorRes() =
+        if(isAssociated)
+            ContextCompat.getColor(context, R.color.item_tag_background)
+        else
+            ContextCompat.getColor(context, R.color.item_tag_unselected_background)
 }

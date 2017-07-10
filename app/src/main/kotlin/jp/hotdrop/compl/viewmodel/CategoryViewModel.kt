@@ -11,13 +11,13 @@ class CategoryViewModel(var category: Category,
 
     var viewName = category.name
 
-    override fun equals(other: Any?): Boolean =
+    override fun equals(other: Any?) =
             (other as CategoryViewModel).category.id == category.id || super.equals(other)
 
-    fun isRegisterCompanyInCategory(): Boolean = registerCompanyCount > 0
+    fun isRegisterCompanyInCategory() = registerCompanyCount > 0
 
     @ColorRes
-    fun getColorRes(): Int = ColorUtil.getResLight(category.colorType, context)
+    fun getColorRes() = ColorUtil.getResLight(category.colorType, context)
 
     fun getId() = category.id
 

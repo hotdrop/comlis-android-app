@@ -26,13 +26,12 @@ class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewMo
 
     private var companyId: Int = -1
 
-    fun loadData(companyId: Int): Completable {
-        return companyDao.find(companyId)
+    fun loadData(companyId: Int): Completable =
+        companyDao.find(companyId)
                 .flatMapCompletable { company ->
                     setData(company)
                     Completable.complete()
                 }
-    }
 
     private fun setData(company: Company) {
         viewEmployeesNum = if(company.employeesNum > 0) company.employeesNum.toString() else ""
@@ -46,7 +45,7 @@ class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewMo
     }
 
     @ColorRes
-    fun getColorRes(): Int = ColorUtil.getResDark(colorName, context)
+    fun getColorRes() = ColorUtil.getResDark(colorName, context)
 
     fun update() {
         val company =  makeCompany()

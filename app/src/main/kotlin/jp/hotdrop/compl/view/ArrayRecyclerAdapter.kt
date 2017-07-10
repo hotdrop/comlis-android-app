@@ -14,21 +14,13 @@ abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val 
         this.list = list
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+    override fun getItemCount() = list.size
 
-    fun getItem(index: Int): T {
-        return list[index]
-    }
+    fun getItem(index: Int) = list[index]
 
     fun getItemPosition(item: T): Int? {
-        list.withIndex().forEach {
-            if(it.value == item) {
-                return it.index
-            }
-        }
-        return null
+        val idx = list.indexOf(item)
+        return if(idx == -1) null else idx
     }
 
     fun addItem(item: T) {

@@ -63,13 +63,12 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     lateinit var colorName: String
     lateinit var viewTags: List<Tag>
 
-    fun loadData(companyId: Int, newBinding: FragmentCompanyDetailBinding): Completable {
-        return companyDao.find(companyId)
+    fun loadData(companyId: Int, newBinding: FragmentCompanyDetailBinding): Completable =
+        companyDao.find(companyId)
                 .flatMapCompletable { company ->
                     setData(company, newBinding)
                     Completable.complete()
                 }
-    }
 
     private fun setData(company: Company, newBinding: FragmentCompanyDetailBinding) {
 
@@ -104,12 +103,12 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     }
 
     @ColorRes
-    fun getColorRes(): Int = ColorUtil.getResDark(colorName, context)
+    fun getColorRes() = ColorUtil.getResDark(colorName, context)
 
     @ColorRes
-    fun getLightColorRes(): Int = ColorUtil.getResLight(colorName, context)
+    fun getLightColorRes() = ColorUtil.getResLight(colorName, context)
 
-    fun getCategoryName(): String = categoryDao.find(categoryId).name
+    fun getCategoryName() = categoryDao.find(categoryId).name
 
     fun delete() {
         companyDao.delete(id)
@@ -170,6 +169,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
 
     private val evaluationTextColor = ContextCompat.getColor(context, R.color.checked_evaluation)
     private val unCheckedColor = ContextCompat.getColor(context, R.color.unchecked_evaluation)
+
     private fun setEvaluationColor(checked: Boolean, v: TextView) {
         if(checked) {
             v.setTextColor(evaluationTextColor)
@@ -255,7 +255,8 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         binding.imageEditDescription.goneIcon()
     }
 
-    fun isOpenFabMenu(): Boolean = binding.fabDetailMenu.rotation == FAB_MENU_OPEN_ROTATION
+    fun isOpenFabMenu() =
+            binding.fabDetailMenu.rotation == FAB_MENU_OPEN_ROTATION
 
     fun closeFabMenu() {
         binding.fabMenuTrashLayout.startAnimation(fabCloseAnimation)
@@ -303,9 +304,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         }
     }
 
-    fun isEditFavorite(): Boolean {
-        return (originalFavorite != viewFavorite)
-    }
+    fun isEditFavorite() = (originalFavorite != viewFavorite)
 
     private fun resetFavorite() {
         binding.animationView1.reset()

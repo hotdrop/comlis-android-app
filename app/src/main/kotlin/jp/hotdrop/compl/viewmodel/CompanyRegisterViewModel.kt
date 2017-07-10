@@ -23,9 +23,11 @@ class CompanyRegisterViewModel @Inject constructor(val context: Context,
     var viewNote = ""
     // viewOrder is not declared. Because autoSet max+1 value when insert in CompanyDao
 
-    fun existName(name: String): Boolean = companyDao.exist(name)
+    fun existName(name: String) =
+            companyDao.exist(name)
 
-    fun getCategoryName(selectedCategorySpinnerId: Int): String = categoryDao.find(selectedCategorySpinnerId).name
+    fun getCategoryName(selectedCategorySpinnerId: Int) =
+            categoryDao.find(selectedCategorySpinnerId).name
 
     fun register(selectedCategorySpinnerId: Int) {
         val company =  makeData(selectedCategorySpinnerId)

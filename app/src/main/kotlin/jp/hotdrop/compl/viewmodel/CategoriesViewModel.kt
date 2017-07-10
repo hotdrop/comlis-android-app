@@ -23,23 +23,20 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
             notifyPropertyChanged(BR.emptyMessageVisibility)
         }
 
-    fun getData(): Single<List<CategoryViewModel>> {
-        return categoryDao.findAll()
+    fun getData(): Single<List<CategoryViewModel>> =
+            categoryDao.findAll()
                 .map { categories ->
                     categories.map {
                         val itemCount = getRegisterCompanyCount(it.id)
                         CategoryViewModel(it, itemCount, context)
                     }
                 }
-    }
 
-    fun existName(categoryName: String): Boolean {
-        return categoryDao.exist(categoryName)
-    }
+    fun existName(categoryName: String) =
+            categoryDao.exist(categoryName)
 
-    fun existNameExclusionId(categoryName: String, id: Int): Boolean {
-        return categoryDao.existExclusionId(categoryName, id)
-    }
+    fun existNameExclusionId(categoryName: String, id: Int) =
+            categoryDao.existExclusionId(categoryName, id)
 
     fun getViewModel(name: String): CategoryViewModel {
         val category = categoryDao.find(name)
@@ -75,7 +72,6 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
         emptyMessageVisibility = View.GONE
     }
 
-    private fun getRegisterCompanyCount(categoryId: Int): Int {
-        return companyDao.countByCategory(categoryId)
-    }
+    private fun getRegisterCompanyCount(categoryId: Int) =
+        companyDao.countByCategory(categoryId)
 }

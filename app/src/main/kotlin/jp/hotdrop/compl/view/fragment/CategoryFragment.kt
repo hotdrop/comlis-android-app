@@ -215,9 +215,8 @@ class CategoryFragment : BaseFragment() {
             binding.cardView.setOnClickListener { showUpdateDialog(binding.viewModel) }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCategoryBinding> {
-            return BindingHolder(context, parent, R.layout.item_category)
-        }
+        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCategoryBinding> =
+                BindingHolder(context, parent, R.layout.item_category)
 
         fun refresh(vm: CategoryViewModel) {
             val position = adapter.getItemPosition(vm) ?: return
@@ -236,9 +235,7 @@ class CategoryFragment : BaseFragment() {
             notifyItemRemoved(position)
         }
 
-        fun getCategoryIdsAsCurrentOrder(): List<Int> {
-            return list.map {vm -> vm.getId()}.toMutableList()
-        }
+        fun getCategoryIdsAsCurrentOrder(): List<Int> = list.map {vm -> vm.getId()}.toMutableList()
     }
 
     /**

@@ -11,16 +11,17 @@ class TagViewModel(var tag: Tag,
 
     var viewName = tag.name
 
-    override fun equals(other: Any?): Boolean = ((other as TagViewModel).tag.id == tag.id || super.equals(other))
+    override fun equals(other: Any?) =
+            ((other as TagViewModel).getId() == tag.id || super.equals(other))
 
-    fun isAttachCompany(): Boolean = attachCompanyCount > 0
+    fun isAttachCompany() = attachCompanyCount > 0
 
     @ColorRes
-    fun getColorRes(): Int = ColorUtil.getResLight(tag.colorType, context)
-
-    fun getId() = tag.id
+    fun getColorRes() = ColorUtil.getResLight(tag.colorType, context)
 
     fun getColorType() = tag.colorType
+
+    fun getId() = tag.id
 
     // TextViewにバインドしているので文字列にする
     fun getAttachCompanyCountToString() = attachCompanyCount.toString()

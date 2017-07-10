@@ -27,14 +27,13 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
             notifyPropertyChanged(BR.emptyMessageVisibility)
         }
 
-    fun getData(categoryId: Int): Single<List<CompanyViewModel>> {
-        return companyDao.findByCategory(categoryId)
+    fun getData(categoryId: Int): Single<List<CompanyViewModel>> =
+        companyDao.findByCategory(categoryId)
                 .map { companies ->
                     companies.map {
                         CompanyViewModel(it, context, companyDao, categoryDao, jobEvaluationDao)
                     }
                 }
-    }
 
     fun getCompanyViewModel(companyId: Int): CompanyViewModel {
         val company = companyDao.findNonObservable(companyId)
@@ -45,10 +44,8 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
         companyDao.updateAllOrder(companyIds)
     }
 
-    fun getTagAssociateViewModel(tag: Tag): TagAssociateViewModel {
-        // 関連付けしているタグしか取得していないため、無条件で第二引数をtrueにする。（関連付けられているという意味）
-        return TagAssociateViewModel(tag, true, context)
-    }
+    // 関連付けしているタグしか取得していないため、無条件で第二引数をtrueにする。（関連付けられているという意味）
+    fun getTagAssociateViewModel(tag: Tag) = TagAssociateViewModel(tag, true, context)
 
     fun visibilityEmptyMessageOnScreen() {
         emptyMessageVisibility = View.VISIBLE
