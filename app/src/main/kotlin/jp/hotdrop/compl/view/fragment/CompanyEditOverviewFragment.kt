@@ -4,14 +4,16 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.AppCompatEditText
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jakewharton.rxbinding2.widget.RxTextView
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.BiFunction
+import io.reactivex.rxkotlin.Observables
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
@@ -51,54 +53,64 @@ class CompanyEditOverviewFragment: BaseFragment() {
         setHasOptionsMenu(false)
         binding.viewModel = viewModel
 
-        val disposable1 = viewModel.loadData(companyId)
+        viewModel.loadData(companyId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe (
-                    { onLoadSuccess() },
-                    { throwable -> showErrorAsToast(ErrorType.LoadFailureCompany, throwable) }
+                .subscribeBy(
+                        onComplete = {
+                            createObservableToEditTexts()
+                            categorySpinner = CategorySpinner(binding.spinnerCategory, activity, categoryDao).apply {
+                                setSelection(viewModel.categoryId)
+                            }
+                            binding.updateButton.setOnClickListener{ onClickUpdate() }
+                        },
+                        onError = { showErrorAsToast(ErrorType.LoadFailureCompany, it) }
                 )
-        compositeDisposable.add(disposable1)
+                .addTo(compositeDisposable)
 
-        val nameEmptyObservable = RxTextView.textChangeEvents(binding.txtName)
-                .map { it.text().isBlank() }
-                .distinctUntilChanged()
-        val nameDuplicateObservable = RxTextView.textChangeEvents(binding.txtName)
-                .map { viewModel.existName(it.text().toString()) }
-                .distinctUntilChanged()
-        val nameObservableCombined: Observable<Boolean> = Observable.combineLatest(
-                nameEmptyObservable,
-                nameDuplicateObservable,
-                BiFunction { isEmpty: Boolean, isDuplicate: Boolean ->
-                    when {
-                        isEmpty -> binding.labelNameAttention.text = context.getString(R.string.company_name_empty_attention)
-                        isDuplicate -> binding.labelNameAttention.text = context.getString(R.string.company_name_attention)
-                    }
-                    (!isEmpty && !isDuplicate)
-                })
-        val disposable2 = nameObservableCombined
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { result ->
-                    if (result) {
-                        binding.labelNameAttention.visibility = View.GONE
-                        binding.updateButton.enabledWithColor(viewModel.getColorRes())
-                    } else {
-                        binding.labelNameAttention.visibility = View.VISIBLE
-                        binding.updateButton.disabledWithColor()
-                    }
-                }
-        compositeDisposable.add(disposable2)
-
-        binding.updateButton.setOnClickListener{ onClickUpdate() }
         return binding.root
     }
 
-    private fun onLoadSuccess() {
-        binding.viewModel = viewModel
-        categorySpinner = CategorySpinner(binding.spinnerCategory, activity, categoryDao).apply {
-            setSelection(viewModel.categoryId)
-        }
+    private fun AppCompatEditText.createNotExistObservable() =
+            RxTextView.textChangeEvents(this)
+                    .filter { it.text().toString().isNotBlank() }
+                    .map { !viewModel.existName(it.text().toString()) }
+                    .distinctUntilChanged()
+
+    private fun createObservableToEditTexts() {
+        val nameNotBlankObservable = binding.txtName.createNotBlankObservable()
+        val nameNotExistObservable = binding.txtName.createNotExistObservable()
+
+        Observables.combineLatest(nameNotBlankObservable, nameNotExistObservable,
+                { isNotBlack, isNotExist ->
+                    when {
+                        !isNotBlack -> setLabelNameAttentionToEmptyMessage()
+                        !isNotExist -> setLabelNameAttentionToExistMessage()
+                    }
+                    (isNotBlack && isNotExist)
+                })
+                .subscribeBy(onNext = {
+                    if(it) enableUpdateButtonWithGoneNameAttention() else disableUpdateButtonWithNameAttention()
+                })
+                .addTo(compositeDisposable)
+    }
+
+    private fun setLabelNameAttentionToEmptyMessage() {
+        binding.labelNameAttention.text = context.getString(R.string.company_name_empty_attention)
+    }
+
+    private fun setLabelNameAttentionToExistMessage() {
+        binding.labelNameAttention.text = context.getString(R.string.company_name_attention)
+    }
+
+    private fun disableUpdateButtonWithNameAttention() {
+        binding.labelNameAttention.visibility = View.VISIBLE
+        binding.updateButton.disabledWithColor()
+    }
+
+    private fun enableUpdateButtonWithGoneNameAttention() {
+        binding.labelNameAttention.visibility = View.GONE
+        binding.updateButton.enabledWithColor(viewModel.getColorRes())
     }
 
     private fun onClickUpdate() {
