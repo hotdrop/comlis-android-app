@@ -34,7 +34,7 @@ class TagDaoTest {
         val tag = createTag(tagName)
         tagDao.insert(tag)
 
-        val tagFromDb = tagDao.find(tagName)
+        val tagFromDb = tagDao.find(tagName)!!
         assertCompareTag(tag, tagFromDb)
     }
 
@@ -44,7 +44,7 @@ class TagDaoTest {
         tagNames.forEach { tagDao.insert(createTag(it)) }
         val tags = tagDao.findAll().blockingGet().toList()
         val ids = tags.filter{ tag -> tag.id%2 == 0 }.map { it.id }
-        val tagByEvenNumberId = tagDao.findInId(ids)
+        val tagByEvenNumberId = tagDao.findInIds(ids)
         assert(ids.size == 3)
         tagByEvenNumberId.forEach { tag ->
             assert(tagNames.contains(tag.name))
@@ -65,16 +65,22 @@ class TagDaoTest {
                 .forEach { tagDao.insert(it) }
 
         val companies = companyDao.findAll().blockingGet().toList()
-        val noAttachTag = tagDao.find(noAttachTagName)
-        val oneAttachTag = tagDao.find(oneAttachTagName)
-        val threeAttachTag = tagDao.find(threeAttachTagName)
 
-        companies.take(1).forEach { companyDao.associateTagByCompany(it.id, mutableListOf(oneAttachTag)) }
-        companies.takeLast(3).forEach { companyDao.associateTagByCompany(it.id, mutableListOf(threeAttachTag)) }
 
-        assert(tagDao.countByAttachCompany(noAttachTag) == 0)
-        assert(tagDao.countByAttachCompany(oneAttachTag) == 1)
-        assert(tagDao.countByAttachCompany(threeAttachTag) == 3)
+        assert(tagDao.find(noAttachTagName) == null)
+
+        tagDao.find(oneAttachTagName)?.also { tag ->
+            companies.take(1).forEach {
+                companyDao.associateTagByCompany(it.id, mutableListOf(tag))
+            }
+            assert(tagDao.countByAttachCompany(tag) == 1)
+        }
+        tagDao.find(threeAttachTagName)?.also { tag ->
+            companies.takeLast(3).forEach {
+                companyDao.associateTagByCompany(it.id, mutableListOf(tag))
+            }
+            assert(tagDao.countByAttachCompany(tag) == 3)
+        }
     }
 
     @Test
@@ -86,8 +92,8 @@ class TagDaoTest {
         tagDao.insert(tag1)
         tagDao.insert(tag2)
 
-        val tag1FromDb = tagDao.find(tagName1)
-        val tag2FromDb = tagDao.find(tagName2)
+        val tag1FromDb = tagDao.find(tagName1)!!
+        val tag2FromDb = tagDao.find(tagName2)!!
         assertCompareTag(tag1, tag1FromDb)
         assertCompareTag(tag2, tag2FromDb)
         assert(tag1FromDb.viewOrder == 1)
@@ -98,7 +104,7 @@ class TagDaoTest {
     fun updateTest() {
         val tagName = "insert"
         tagDao.insert(createTag(tagName, "firstColor"))
-        val tagFromDb = tagDao.find(tagName)
+        val tagFromDb = tagDao.find(tagName)!!
 
         val tagUpdate = createTag("update", "secondColor").apply {
             id =  tagFromDb.id
@@ -107,7 +113,7 @@ class TagDaoTest {
         }
         tagDao.update(tagUpdate)
 
-        val tagUpdated = tagDao.find(tagUpdate.name)
+        val tagUpdated = tagDao.find(tagUpdate.name)!!
         assertCompareTag(tagUpdate, tagUpdated)
         assert(tagUpdated.viewOrder == 5)
     }
@@ -153,7 +159,7 @@ class TagDaoTest {
         tagDao.insert(createTag("sameName"))
 
         // ownNameとsameNameはフィールドからの入力文字列を想定しているので変数ではなくいちいち文字列を直指定しています。
-        val tagsFromDb = tagDao.find("ownName")
+        val tagsFromDb = tagDao.find("ownName")!!
         val isSuccess = tagDao.existExclusionId("ownName", tagsFromDb.id)
         assert(isSuccess)
         val isFailure = tagDao.existExclusionId("sameName", tagsFromDb.id)

@@ -11,8 +11,15 @@ class CategoryDao @Inject constructor(ormaHolder: OrmaHolder) {
 
     private val orma = ormaHolder.orma
 
-    fun find(id: Int) = categoryRelation().selector().idEq(id).value()
-    fun find(name: String) = categoryRelation().selector().nameEq(name).value()
+    fun find(id: Int) =
+            categoryRelation().selector()
+                    .idEq(id)
+                    .value()
+
+    fun find(name: String) =
+            categoryRelation().selector()
+                    .nameEq(name)
+                    .value()
 
     fun findAll(): Single<List<Category>> =
          categoryRelation().selector()

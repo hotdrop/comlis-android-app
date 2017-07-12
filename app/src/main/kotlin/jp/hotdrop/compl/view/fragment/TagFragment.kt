@@ -147,8 +147,10 @@ class TagFragment: BaseFragment() {
                 .setView(view)
                 .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
                     viewModel.register(editText.toText(), spinner.getSelection())
-                    viewModel.goneEmptyMessageOnScreen()
-                    adapter.add(viewModel.getViewModel(editText.toText()))
+                    viewModel.getViewModel(editText.toText())?.let { adapter.add(it) }
+                    if(adapter.itemCount == 1) {
+                        viewModel.goneEmptyMessageOnScreen()
+                    }
                     dialogInterface.dismiss()
                 })
                 .create()
@@ -159,15 +161,13 @@ class TagFragment: BaseFragment() {
 
     private fun showUpdateDialog(vm: TagViewModel) {
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_tag, null)
-        val editText = view.findViewById(R.id.text_tag_name) as AppCompatEditText
-        editText.setText(vm.viewName as CharSequence)
-        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
-        spinner.setSelection(vm.getColorType())
+        val editText = (view.findViewById(R.id.text_tag_name) as AppCompatEditText).apply { setText(vm.viewName as CharSequence) }
+        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context).apply { setSelection(vm.getColorType()) }
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
                     viewModel.update(vm, editText.toText(), spinner.getSelection())
-                    adapter.refresh(viewModel.getViewModel(editText.toText()))
+                    viewModel.getViewModel(editText.toText())?.let { adapter.refresh(it) }
                     dialogInterface.dismiss()
                 })
                 .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
