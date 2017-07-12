@@ -111,9 +111,9 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
         val stockSelectedTabName = tabName
 
         binding.viewPager.adapter = adapter
-        binding.tabLayout.let {
-            it.setupWithViewPager(binding.viewPager)
-            it.addOnTabSelectedListener(SelectedTabListener(binding.viewPager))
+        binding.tabLayout.run {
+            setupWithViewPager(binding.viewPager)
+            addOnTabSelectedListener(SelectedTabListener(binding.viewPager))
         }
         binding.fab.setOnClickListener { ActivityNavigator.showCompanyRegister(this, tabName, Request.Register.code) }
 

@@ -26,9 +26,9 @@ class CompanyRegisterActivity : BaseActivity() {
         getComponent().inject(this)
 
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.let {
-            it.title = binding.toolbar.title
-            it.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.run {
+            title = binding.toolbar.title
+            setDisplayHomeAsUpEnabled(true)
         }
 
         val tabName = intent.getStringExtra(EXTRA_TAB_NAME)

@@ -87,8 +87,8 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         }
         viewWantedJob = company.wantedJob ?: EMPTY_VALUE
         viewWorkPlace = company.workPlace ?: EMPTY_VALUE
-        company.url?.let {
-            viewUrl = it
+        company.url?.run {
+            viewUrl = this
             visibleUrl = View.VISIBLE
         }
         viewDoingBusiness = company.doingBusiness ?: EMPTY_VALUE
@@ -135,18 +135,18 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         setImageCover(binding.imgCover)
         setEvaluation()
 
-        binding.let {
+        binding.run {
             val darkColor = ColorUtil.getResDark(colorName, context)
-            it.imageEditAbstract.setColorFilter(darkColor)
-            it.imageEditInformation.setColorFilter(darkColor)
-            it.imageEditJobEvaluation.setColorFilter(darkColor)
-            it.imageEditBusiness.setColorFilter(darkColor)
-            it.imageEditDescription.setColorFilter(darkColor)
+            imageEditAbstract.setColorFilter(darkColor)
+            imageEditInformation.setColorFilter(darkColor)
+            imageEditJobEvaluation.setColorFilter(darkColor)
+            imageEditBusiness.setColorFilter(darkColor)
+            imageEditDescription.setColorFilter(darkColor)
 
-            it.fabDetailMenu.backgroundTintList = ColorStateList.valueOf(darkColor)
-            it.fabEdit.backgroundTintList = ColorStateList.valueOf(darkColor)
-            it.fabTag.backgroundTintList = ColorStateList.valueOf(darkColor)
-            it.fabTrash.backgroundTintList = ColorStateList.valueOf(darkColor)
+            fabDetailMenu.backgroundTintList = ColorStateList.valueOf(darkColor)
+            fabEdit.backgroundTintList = ColorStateList.valueOf(darkColor)
+            fabTag.backgroundTintList = ColorStateList.valueOf(darkColor)
+            fabTrash.backgroundTintList = ColorStateList.valueOf(darkColor)
         }
     }
 

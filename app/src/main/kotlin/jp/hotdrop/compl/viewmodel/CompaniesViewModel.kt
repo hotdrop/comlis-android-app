@@ -28,17 +28,17 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
         }
 
     fun getData(categoryId: Int): Single<List<CompanyViewModel>> =
-        companyDao.findByCategory(categoryId)
-                .map { companies ->
-                    companies.map {
-                        CompanyViewModel(it, context, companyDao, categoryDao, jobEvaluationDao)
+            companyDao.findByCategory(categoryId)
+                    .map { companies ->
+                        companies.map {
+                            CompanyViewModel(it, context, companyDao, categoryDao, jobEvaluationDao)
+                        }
                     }
-                }
 
-    fun getCompanyViewModel(companyId: Int): CompanyViewModel {
-        val company = companyDao.find(companyId)
-        return CompanyViewModel(company, context, companyDao, categoryDao, jobEvaluationDao)
-    }
+    fun getCompanyViewModel(companyId: Int) =
+            companyDao.find(companyId).let {
+                CompanyViewModel(it, context, companyDao, categoryDao, jobEvaluationDao)
+            }
 
     fun updateItemOrder(companyIds: List<Int>) {
         companyDao.updateAllOrder(companyIds)

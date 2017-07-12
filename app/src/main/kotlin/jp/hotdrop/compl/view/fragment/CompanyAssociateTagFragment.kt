@@ -61,15 +61,15 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
 
     private fun initView() {
         adapter = FlexboxItemAdapter(context, viewModel.viewModels)
-        binding.recyclerView.let {
-            it.setHasFixedSize(true)
-            it.layoutManager = FlexboxLayoutManager()
-            it.adapter = adapter
+        binding.recyclerView.run {
+            setHasFixedSize(true)
+            layoutManager = FlexboxLayoutManager()
+            this.adapter = adapter
         }
 
-        binding.fabDone.let {
-            it.backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(colorName, context))
-            it.setOnClickListener {
+        binding.fabDone.run {
+            backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(colorName, context))
+            setOnClickListener {
                 viewModel.update()
                 val intent = Intent().apply { putExtra(REFRESH_MODE, UPDATE) }
                 activity.setResult(Activity.RESULT_OK, intent)
@@ -123,10 +123,10 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
             binding.cardView.setOnClickListener {
                 val vm = binding.viewModel
                 vm.changeAssociateState()
-                binding.let {
-                    it.borderLeft.setBackgroundColor(vm.getColorRes())
-                    it.borderRight.setBackgroundColor(vm.getColorRes())
-                    it.cardView.setCardBackgroundColor(vm.getBackGroundColorRes())
+                binding.run {
+                    borderLeft.setBackgroundColor(vm.getColorRes())
+                    borderRight.setBackgroundColor(vm.getColorRes())
+                    cardView.setCardBackgroundColor(vm.getBackGroundColorRes())
                 }
             }
         }

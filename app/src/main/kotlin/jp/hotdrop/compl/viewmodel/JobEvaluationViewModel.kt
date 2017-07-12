@@ -43,13 +43,13 @@ class JobEvaluationViewModel @Inject constructor(val context: Context) {
         companyId = company.id
         colorName = categoryDao.find(company.categoryId).colorType
 
-        jobEvaluationDao.find(company.id)?.let {
-            viewCorrectSentence = it.correctSentence
-            viewDevelopmentEnv= it.developmentEnv
-            viewWantSkill= it.wantSkill
-            viewPersonImage= it.personImage
-            viewAppeal= it.appeal
-            viewJobOfferReason= it.jobOfferReason
+        jobEvaluationDao.find(company.id)?.run {
+            viewCorrectSentence = correctSentence
+            viewDevelopmentEnv= developmentEnv
+            viewWantSkill= wantSkill
+            viewPersonImage= personImage
+            viewAppeal= appeal
+            viewJobOfferReason= jobOfferReason
         }
     }
 

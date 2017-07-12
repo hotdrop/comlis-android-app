@@ -30,9 +30,9 @@ class CompanyJobEvaluationActivity: BaseActivity() {
         getComponent().inject(this)
 
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.let {
-            it.title = binding.toolbar.title
-            it.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.run {
+            title = binding.toolbar.title
+            setDisplayHomeAsUpEnabled(true)
         }
 
         val colorName = intent.getStringExtra(EXTRA_COLOR_NAME)

@@ -52,14 +52,14 @@ class CompanyViewModel(private var company: Company,
             viewSalary += SALARY_RANGE_MARK + company.salaryHigh.toString() + SALARY_UNIT
         }
 
-        jobEvaluationDao.find(company.id)?.let {
+        jobEvaluationDao.find(company.id)?.run {
             var score = 0
-            if(it.correctSentence) score += 20
-            if(it.developmentEnv) score += 10
-            if(it.appeal) score += 20
-            if(it.wantSkill) score += 20
-            if(it.personImage) score += 10
-            if(it.jobOfferReason) score += 20
+            if(correctSentence) score += 20
+            if(developmentEnv) score += 10
+            if(appeal) score += 20
+            if(wantSkill) score += 20
+            if(personImage) score += 10
+            if(jobOfferReason) score += 20
             viewJobEvaluation = score.toString() + JOB_EVALUATION_UNIT
         }
     }

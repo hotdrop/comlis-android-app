@@ -25,8 +25,8 @@ abstract class BaseActivity: AppCompatActivity() {
     }
 
     fun replaceFragment(fragment: Fragment, @IdRes @LayoutRes layoutResId: Int) {
-        val ft = supportFragmentManager.beginTransaction()
-        ft.replace(layoutResId, fragment, fragment.javaClass.simpleName)
-        ft.commit()
+        supportFragmentManager.beginTransaction()
+                .replace(layoutResId, fragment, fragment.javaClass.simpleName)
+                .commit()
     }
 }

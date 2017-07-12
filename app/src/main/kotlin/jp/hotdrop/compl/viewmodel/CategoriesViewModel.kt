@@ -39,8 +39,9 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
             categoryDao.existExclusionId(categoryName, id)
 
     fun getViewModel(name: String): CategoryViewModel {
-        val category = categoryDao.find(name)
-        val itemCount = getRegisterCompanyCount(category.id)
+        val itemCount = categoryDao.find(name).let { category ->
+            getRegisterCompanyCount(category.id)
+        }
         return CategoryViewModel(categoryDao.find(name), itemCount, context)
     }
 

@@ -24,8 +24,8 @@ class SearchActivity: BaseActivity() {
         getComponent().inject(this)
 
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.let {
-            it.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.run {
+            setDisplayHomeAsUpEnabled(true)
         }
 
         replaceFragment(SearchFragment.create(), R.id.content_view)
