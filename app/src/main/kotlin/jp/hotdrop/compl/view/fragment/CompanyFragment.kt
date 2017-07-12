@@ -14,6 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.rxkotlin.toSingle
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
@@ -83,6 +84,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     private fun loadData() {
         showProgress()
         categoryDao.findAll()
+                .toSingle()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
@@ -98,7 +100,6 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     private fun initView(categories: List<Category>) {
         // FragmentをネストするのでFragmentManagerではなくchildFragmentManagerを使う
         adapter = Adapter(childFragmentManager)
-
         if(categories.isNotEmpty()) {
             categories.forEach { category -> addFragment(category.name, category.id) }
             binding.listEmptyView.visibility = View.GONE

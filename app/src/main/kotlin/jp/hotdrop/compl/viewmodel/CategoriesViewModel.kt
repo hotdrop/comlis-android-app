@@ -4,6 +4,7 @@ import android.content.Context
 import android.databinding.Bindable
 import android.view.View
 import io.reactivex.Single
+import io.reactivex.rxkotlin.toSingle
 import jp.hotdrop.compl.BR
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
@@ -25,12 +26,11 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
 
     fun getData(): Single<List<CategoryViewModel>> =
             categoryDao.findAll()
-                .map { categories ->
-                    categories.map {
+                    .map {
                         val itemCount = getRegisterCompanyCount(it.id)
                         CategoryViewModel(it, itemCount, context)
                     }
-                }
+                    .toSingle()
 
     fun existName(categoryName: String) =
             categoryDao.exist(categoryName)

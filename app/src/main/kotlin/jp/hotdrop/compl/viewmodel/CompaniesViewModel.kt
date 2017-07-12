@@ -36,7 +36,7 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
                 }
 
     fun getCompanyViewModel(companyId: Int): CompanyViewModel {
-        val company = companyDao.findNonObservable(companyId)
+        val company = companyDao.find(companyId)
         return CompanyViewModel(company, context, companyDao, categoryDao, jobEvaluationDao)
     }
 

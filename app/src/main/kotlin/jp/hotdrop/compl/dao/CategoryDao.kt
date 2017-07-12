@@ -1,6 +1,5 @@
 package jp.hotdrop.compl.dao
 
-import io.reactivex.Single
 import jp.hotdrop.compl.model.Category
 import java.util.*
 import javax.inject.Inject
@@ -21,10 +20,9 @@ class CategoryDao @Inject constructor(ormaHolder: OrmaHolder) {
                     .nameEq(name)
                     .value()
 
-    fun findAll(): Single<List<Category>> =
-         categoryRelation().selector()
+    fun findAll(): List<Category> =
+            categoryRelation().selector()
                  .orderByViewOrderAsc()
-                 .executeAsObservable()
                  .toList()
 
     fun insert(argName: String, argColorType: String) {

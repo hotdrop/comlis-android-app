@@ -15,10 +15,11 @@ class SearchViewModel @Inject constructor(val context: Context): ViewModel() {
     lateinit var categoryDao: CategoryDao
 
     fun getSearchResults(searchText: String): Single<List<ItemSearchResultViewModel>> =
-            companyDao.findAll().map { companies ->
-                companies.filter { company -> isMatch(company, searchText) }
-                        .map { ItemSearchResultViewModel(it, context, categoryDao) }
-        }
+            companyDao.findAll()
+                    .map { companies ->
+                        companies.filter { company -> isMatch(company, searchText) }
+                                .map { ItemSearchResultViewModel(it, context, categoryDao) }
+                    }
 
     private fun isMatch(company: Company, searchText: String): Boolean {
         if(company.name.contains(searchText, true)) {

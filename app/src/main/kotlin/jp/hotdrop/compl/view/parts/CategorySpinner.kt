@@ -9,10 +9,7 @@ import jp.hotdrop.compl.model.Category
 
 class CategorySpinner(private val spinner: Spinner, private val activity: Activity, categoryDao: CategoryDao) {
 
-    // TODO blockingGet使っているのは良くない。以下のいずれかにするか決めかねている
-    //  カテゴリーのリストを引数にとる。（ViewModel経由でスピナーを生成するようにして、ViewModelでリストを作る）
-    //  カテゴリーでDB取得のObservableを扱う。ただ、カテゴリー数が大したことないので必要性を感じない
-    private val categoryList = categoryDao.findAll().blockingGet()
+    private val categoryList = categoryDao.findAll()
     private val adapter by lazy {
         val categoryNames = categoryList.map(Category::name)
         ArrayAdapter(activity, R.layout.simple_dropdown_item_1line, categoryNames).apply {

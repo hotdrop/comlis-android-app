@@ -1,6 +1,5 @@
 package jp.hotdrop.compl.dao
 
-import io.reactivex.Maybe
 import io.reactivex.Single
 import jp.hotdrop.compl.model.*
 import java.util.*
@@ -14,43 +13,34 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
     @Inject
     lateinit var tagDao: TagDao
 
-    fun find(id: Int): Maybe<Company> {
-        return companyRelation().selector()
-                .idEq(id)
-                .executeAsObservable()
-                .firstElement()
-    }
+    fun find(id: Int) =
+            companyRelation().selector()
+                    .idEq(id)
+                    .value()
 
-    fun findNonObservable(id: Int): Company {
-        return companyRelation().selector().idEq(id).value()
-    }
-
-    fun findAll(): Single<List<Company>> {
-        return companyRelation().selector()
+    fun findAll(): Single<List<Company>> =
+            companyRelation().selector()
                 .executeAsObservable()
                 .toList()
-    }
 
-    fun findByCategory(categoryId: Int): Single<List<Company>> {
-        return companyRelation().selector()
+    fun findByCategory(categoryId: Int): Single<List<Company>> =
+        companyRelation().selector()
                 .categoryIdEq(categoryId)
                 .orderByViewOrderAsc()
                 .executeAsObservable()
                 .toList()
-    }
 
     fun findByTag(companyId: Int): List<Tag> {
         val tagIds = associateCompanyAndTagRelation()
                 .selector()
                 .companyIdEq(companyId)
-        return tagDao.findInId(tagIds.map { it.tagId })
+        return tagDao.findInIds(tagIds.map { it.tagId })
     }
 
-    fun countByCategory(categoryId: Int): Int {
-        return companyRelation().selector()
+    fun countByCategory(categoryId: Int) =
+            companyRelation().selector()
                 .categoryIdEq(categoryId)
                 .count()
-    }
 
     fun insert(company: Company) {
         orma.transactionSync {

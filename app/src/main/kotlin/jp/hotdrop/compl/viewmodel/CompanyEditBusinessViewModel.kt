@@ -3,6 +3,7 @@ package jp.hotdrop.compl.viewmodel
 import android.content.Context
 import android.support.annotation.ColorRes
 import io.reactivex.Completable
+import io.reactivex.rxkotlin.toSingle
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
@@ -24,6 +25,7 @@ class CompanyEditBusinessViewModel @Inject constructor(val context: Context): Vi
 
     fun loadData(companyId: Int): Completable =
         companyDao.find(companyId)
+                .toSingle()
                 .flatMapCompletable { company ->
                     setData(company)
                     Completable.complete()

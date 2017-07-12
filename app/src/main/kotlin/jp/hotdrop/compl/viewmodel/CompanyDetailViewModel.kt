@@ -12,6 +12,7 @@ import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import io.reactivex.Completable
+import io.reactivex.rxkotlin.toSingle
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.dao.CompanyDao
@@ -64,11 +65,12 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     lateinit var viewTags: List<Tag>
 
     fun loadData(companyId: Int, newBinding: FragmentCompanyDetailBinding): Completable =
-        companyDao.find(companyId)
-                .flatMapCompletable { company ->
-                    setData(company, newBinding)
-                    Completable.complete()
-                }
+            companyDao.find(companyId)
+                    .toSingle()
+                    .flatMapCompletable {
+                        setData(it, newBinding)
+                        Completable.complete()
+                    }
 
     private fun setData(company: Company, newBinding: FragmentCompanyDetailBinding) {
 
