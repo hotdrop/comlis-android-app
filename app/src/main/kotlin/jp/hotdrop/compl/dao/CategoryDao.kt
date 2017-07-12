@@ -2,7 +2,6 @@ package jp.hotdrop.compl.dao
 
 import io.reactivex.Single
 import jp.hotdrop.compl.model.Category
-import jp.hotdrop.compl.model.Category_Relation
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,24 +11,14 @@ class CategoryDao @Inject constructor(ormaHolder: OrmaHolder) {
 
     private val orma = ormaHolder.orma
 
-    fun find(id: Int): Category {
-        return categoryRelation().selector()
-                .idEq(id)
-                .value()
-    }
+    fun find(id: Int) = categoryRelation().selector().idEq(id).value()
+    fun find(name: String) = categoryRelation().selector().nameEq(name).value()
 
-    fun find(name: String): Category {
-        return categoryRelation().selector()
-                .nameEq(name)
-                .value()
-    }
-
-    fun findAll(): Single<List<Category>> {
-        return categoryRelation().selector()
-                .orderByViewOrderAsc()
-                .executeAsObservable()
-                .toList()
-    }
+    fun findAll(): Single<List<Category>> =
+         categoryRelation().selector()
+                 .orderByViewOrderAsc()
+                 .executeAsObservable()
+                 .toList()
 
     fun insert(argName: String, argColorType: String) {
         val category = Category().apply {
@@ -56,7 +45,7 @@ class CategoryDao @Inject constructor(ormaHolder: OrmaHolder) {
 
     fun updateAllOrder(categoryIds: List<Int>) {
         orma.transactionSync {
-            for((index, id) in categoryIds.withIndex()) {
+            categoryIds.forEachIndexed { index, id ->
                 categoryRelation().updater()
                         .viewOrder(index)
                         .idEq(id)
@@ -86,12 +75,7 @@ class CategoryDao @Inject constructor(ormaHolder: OrmaHolder) {
                 .isEmpty
     }
 
-    private fun maxOrder(): Int {
-        return categoryRelation().selector().maxByViewOrder() ?: 0
-    }
+    private fun maxOrder() = categoryRelation().selector().maxByViewOrder() ?: 0
 
-    private fun categoryRelation(): Category_Relation {
-        return orma.relationOfCategory()
-    }
-
+    private fun categoryRelation() = orma.relationOfCategory()
 }
