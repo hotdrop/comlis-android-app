@@ -18,5 +18,6 @@ class JobEvaluationDao @Inject constructor(ormaHolder: OrmaHolder) {
         relation().upsert(obj)
     }
 
-    private fun relation() = orma.relationOfJobEvaluation()
+    private fun relation() =
+            orma.relationOfJobEvaluation()
 }

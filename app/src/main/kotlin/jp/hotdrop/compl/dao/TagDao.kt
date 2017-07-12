@@ -18,20 +18,21 @@ class TagDao @Inject constructor(ormaHolder: OrmaHolder) {
 
     fun findInIds(ids: List<Int>): List<Tag> =
             tagRelation().selector()
-                .idIn(ids)
-                .orderByViewOrderAsc()
-                .toList()
+                    .idIn(ids)
+                    .orderByViewOrderAsc()
+                    .toList()
 
     fun findAll(): Single<List<Tag>> =
             tagRelation().selector()
-                .orderByViewOrderAsc()
-                .executeAsObservable()
-                .toList()
+                    .orderByViewOrderAsc()
+                    .executeAsObservable()
+                    .toList()
+
 
     fun countByAttachCompany(tag: Tag) =
-         associateCompanyAndTagRelation().selector()
-                .tagIdEq(tag.id)
-                .count()
+            associateCompanyAndTagRelation().selector()
+                    .tagIdEq(tag.id)
+                    .count()
 
     fun insert(argTag: Tag) {
         val tag = Tag().apply {
@@ -58,7 +59,7 @@ class TagDao @Inject constructor(ormaHolder: OrmaHolder) {
 
     fun updateAllOrder(tags: List<Tag>) {
         orma.transactionSync {
-            for((index, tag) in tags.withIndex()) {
+            tags.forEachIndexed { index, tag ->
                 tagRelation().updater()
                         .viewOrder(index)
                         .idEq(tag.id)
@@ -86,10 +87,14 @@ class TagDao @Inject constructor(ormaHolder: OrmaHolder) {
                     .idNotEq(id)
                     .isEmpty)
 
-    private fun maxOrder() = tagRelation().selector().maxByViewOrder() ?: 0
+    private fun maxOrder() =
+            tagRelation().selector()
+                    .maxByViewOrder() ?: 0
 
-    private fun tagRelation() = orma.relationOfTag()
+    private fun tagRelation() =
+            orma.relationOfTag()
 
-    private fun associateCompanyAndTagRelation() = orma.relationOfAssociateCompanyWithTag()
+    private fun associateCompanyAndTagRelation() =
+            orma.relationOfAssociateCompanyWithTag()
 
 }

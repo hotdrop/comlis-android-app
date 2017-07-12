@@ -1,7 +1,9 @@
 package jp.hotdrop.compl.dao
 
 import io.reactivex.Single
-import jp.hotdrop.compl.model.*
+import jp.hotdrop.compl.model.AssociateCompanyWithTag
+import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.model.Tag
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -146,7 +148,7 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
 
     fun updateAllOrder(companyIds: List<Int>) {
         orma.transactionSync {
-            for((index, id) in companyIds.withIndex()) {
+            companyIds.forEachIndexed { index, id ->
                 companyRelation().updater()
                         .viewOrder(index)
                         .idEq(id)
@@ -167,35 +169,30 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
         }
     }
 
-    fun hasAssociateTag(companyId: Int, tagId: Int): Boolean {
-        return !associateCompanyAndTagRelation().selector()
-                .companyIdEq(companyId)
-                .tagIdEq(tagId)
-                .isEmpty
-    }
+    fun hasAssociateTag(companyId: Int, tagId: Int) =
+            !associateCompanyAndTagRelation().selector()
+                    .companyIdEq(companyId)
+                    .tagIdEq(tagId)
+                    .isEmpty
 
-    fun maxOrder(): Int {
-        return companyRelation().selector().maxByViewOrder() ?: 0
-    }
+    fun maxOrder() =
+            companyRelation().selector()
+                    .maxByViewOrder() ?: 0
 
-    fun exist(name: String): Boolean {
-        return !companyRelation().selector()
-                .nameEq(name)
-                .isEmpty
-    }
+    fun exist(name: String) =
+            !companyRelation().selector()
+                    .nameEq(name)
+                    .isEmpty
 
-    fun existExclusionId(name: String, id: Int): Boolean {
-        return !companyRelation().selector()
-                .nameEq(name)
-                .idNotEq(id)
-                .isEmpty
-    }
+    fun existExclusionId(name: String, id: Int) =
+            !companyRelation().selector()
+                    .nameEq(name)
+                    .idNotEq(id)
+                    .isEmpty
 
-    private fun companyRelation(): Company_Relation {
-        return orma.relationOfCompany()
-    }
+    private fun companyRelation() =
+            orma.relationOfCompany()
 
-    private fun associateCompanyAndTagRelation(): AssociateCompanyWithTag_Relation {
-        return orma.relationOfAssociateCompanyWithTag()
-    }
+    private fun associateCompanyAndTagRelation() =
+            orma.relationOfAssociateCompanyWithTag()
 }
