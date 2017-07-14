@@ -194,6 +194,7 @@ class CompanyTabFragment: BaseFragment() {
                 if(vm.getId() == companyId) {
                     adapter.removeItem(index)
                     notifyItemRemoved(index)
+                    return
                 }
             }
         }
