@@ -8,7 +8,8 @@ import jp.hotdrop.compl.R
 
 object ColorUtil {
 
-    // 1とか2ではなく文字列にしている理由は、DBを直接見た時に分かりやすくするため
+    // この定数名は「val one = 1」と同じで全く意味ないが、値の方をそのままDBに保持している。
+    // 最初はenumにしようとしたがselectでデータの中身を直接みたとき、この定義と一緒じゃないと全く分からなかったのでこうした。
     val BLUE_NAME = "ブルー"
     val RED_NAME = "レッド"
     val YELLOW_NAME = "イエロー"
