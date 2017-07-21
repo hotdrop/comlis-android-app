@@ -154,7 +154,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        compositeDisposable.dispose()
+        compositeDisposable.clear()
     }
 
     private inner class Adapter(fm: FragmentManager): FragmentStatePagerAdapter(fm) {
