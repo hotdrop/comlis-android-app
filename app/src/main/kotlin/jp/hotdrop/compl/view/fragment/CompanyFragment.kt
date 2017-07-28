@@ -169,13 +169,9 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
             return null
         }
 
-        override fun getCount(): Int {
-            return fragments.size
-        }
+        override fun getCount() = fragments.size
 
-        override fun getPageTitle(position: Int): CharSequence {
-            return titles[position]
-        }
+        override fun getPageTitle(position: Int): CharSequence = titles[position]
 
         fun add(title: String, fragment: CompanyTabFragment) {
             fragments.add(fragment)

@@ -246,8 +246,6 @@ class CompanyTabFragment: BaseFragment() {
             return
         }
 
-        override fun isLongPressDragEnabled(): Boolean {
-            return false
-        }
+        override fun isLongPressDragEnabled() = false
     }
 }

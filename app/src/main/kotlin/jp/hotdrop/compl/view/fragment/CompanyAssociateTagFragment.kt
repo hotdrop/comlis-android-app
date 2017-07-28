@@ -110,9 +110,8 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
             })
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemTagAssociateBinding> {
-            return BindingHolder(context, parent, R.layout.item_tag_associate)
-        }
+        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemTagAssociateBinding> =
+                BindingHolder(context, parent, R.layout.item_tag_associate)
 
         override fun onBindViewHolder(holder: BindingHolder<ItemTagAssociateBinding>?, position: Int) {
             holder ?: return

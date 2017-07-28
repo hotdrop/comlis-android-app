@@ -273,9 +273,6 @@ class TagFragment: BaseFragment() {
             toPosition = NONE_POSITION
         }
 
-        override fun isLongPressDragEnabled(): Boolean {
-            return false
-        }
-
+        override fun isLongPressDragEnabled() = false
     }
 }
