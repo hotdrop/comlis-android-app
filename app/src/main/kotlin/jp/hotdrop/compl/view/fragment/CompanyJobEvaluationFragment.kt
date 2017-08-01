@@ -63,8 +63,8 @@ class CompanyJobEvaluationFragment: BaseFragment() {
         exit()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         compositeDisposable.clear()
     }
 }

@@ -84,8 +84,8 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         viewModel.destroy()
     }
 

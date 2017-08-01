@@ -108,9 +108,9 @@ class SearchFragment: BaseFragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        compositeDisposable.dispose()
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
     }
 
     private fun search(newText: String) {

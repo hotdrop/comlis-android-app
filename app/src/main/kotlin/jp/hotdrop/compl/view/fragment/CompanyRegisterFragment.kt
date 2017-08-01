@@ -143,8 +143,8 @@ class CompanyRegisterFragment : BaseFragment() {
         exit()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        compositeDisposable.dispose()
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
     }
 }
