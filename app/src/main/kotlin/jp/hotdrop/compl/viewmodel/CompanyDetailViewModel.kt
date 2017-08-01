@@ -108,12 +108,12 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     }
 
     private fun makeViewSalary(salaryLow: Int, salaryHigh: Int): String {
-        if(salaryLow < 0) {
+        if(salaryLow <= 0) {
             return EMPTY_VALUE
         }
         val viewSalaryLow = salaryLow.toString() + SALARY_UNIT
 
-        if(salaryHigh < 0) {
+        if(salaryHigh <= 0) {
             return viewSalaryLow
         }
         val viewSalaryHigh = salaryHigh.toString() + SALARY_UNIT
