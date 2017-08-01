@@ -41,7 +41,7 @@ class CompanyViewModel(private var company: Company,
         viewName = company.name
         viewWantedJob = company.wantedJob ?: ""
         viewJobEvaluation = "0" + JOB_EVALUATION_UNIT
-        viewEmployeesNum = company.employeesNum.toString() + EMPLOYEES_NUM_UNIT
+        viewEmployeesNum = if(company.employeesNum > 0) company.employeesNum.toString() + EMPLOYEES_NUM_UNIT else ""
         viewFavorite = company.favorite
 
         colorName = categoryDao.find(company.categoryId).colorType
@@ -62,11 +62,16 @@ class CompanyViewModel(private var company: Company,
     }
 
     private fun makeViewSalary(salaryLow: Int, salaryHigh: Int): String {
+        if(salaryLow <= 0) {
+            return ""
+        }
+
         val viewSalaryLow = salaryLow.toString() + SALARY_UNIT
         if(salaryHigh > 0) {
             val viewSalaryHigh = salaryHigh.toString() + SALARY_UNIT
             return viewSalaryLow + SALARY_RANGE_MARK + viewSalaryHigh
         }
+
         return viewSalaryLow
     }
 
