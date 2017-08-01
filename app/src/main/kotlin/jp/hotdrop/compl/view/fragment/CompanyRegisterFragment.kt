@@ -55,6 +55,9 @@ class CompanyRegisterFragment : BaseFragment() {
             setSelection(selectedCategoryName)
         }
 
+        // createObservableToEditTextsで設定したObservableはsubscribe（ユーザーが何か入力）しないと動かないので
+        // 初期状態ではボタンを非活性にしておく。
+        binding.registerButton.isEnabled = false
         binding.registerButton.setOnClickListener { onClickRegister() }
 
         return binding.root
@@ -68,13 +71,8 @@ class CompanyRegisterFragment : BaseFragment() {
 
     private fun createObservableToEditTexts() {
 
-        // 最初にこの関数で生成するObservableを読めた方がいいと思ったので生成は最初に
-        // 全部してしまう。（VBのように変数をいちいち関数の最初でやる、みたいな慣習に従ったわけではない）
         val nameNotBlankObservable = binding.txtName.createNotBlankObservable()
         val nameNotExistObservable = binding.txtName.createNotExistObservable()
-        val employeeNumObservable = binding.txtEmployeesNum.createEmptyOrNumberObservable()
-        val salaryLowObservable = binding.txtSalaryLower.createEmptyOrNumberObservable()
-        val salaryHighObservable = binding.txtSalaryHigh.createEmptyOrNumberObservable()
 
         Observables.combineLatest(nameNotBlankObservable, nameNotExistObservable,
                 { isNotBlack, isNotExist ->
@@ -89,12 +87,15 @@ class CompanyRegisterFragment : BaseFragment() {
                 )
                 .addTo(compositeDisposable)
 
+        val employeeNumObservable = binding.txtEmployeesNum.createEmptyOrNumberObservable()
         employeeNumObservable
                 .subscribeBy(
                         onNext = {viewEmployeesNumAttention(it)}
                 )
                 .addTo(compositeDisposable)
 
+        val salaryLowObservable = binding.txtSalaryLower.createEmptyOrNumberObservable()
+        val salaryHighObservable = binding.txtSalaryHigh.createEmptyOrNumberObservable()
         Observables.combineLatest(salaryLowObservable, salaryHighObservable,
                     { isLow, isHigh -> isLow && isHigh })
                 .subscribeBy { viewSalaryAttention(it) }
