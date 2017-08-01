@@ -25,6 +25,7 @@ class CompanyEditDescriptionActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val binding = DataBindingUtil.setContentView<ActivityCompanyEditDescriptionBinding>(this, R.layout.activity_company_edit_description)
 
         getComponent().inject(this)

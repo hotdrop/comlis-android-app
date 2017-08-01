@@ -48,6 +48,7 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         viewModel.setCallback(this)
         viewModel.loadData(companyId)
     }
@@ -55,12 +56,15 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyAssociateTagBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
+
         initView()
+
         return binding.root
     }
 
     private fun initView() {
         adapter = FlexboxItemAdapter(context, viewModel.viewModels)
+
         binding.recyclerView.let {
             it.setHasFixedSize(true)
             it.layoutManager = FlexboxLayoutManager()
@@ -71,8 +75,10 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
             backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(colorName, context))
             setOnClickListener {
                 viewModel.update()
+
                 val intent = Intent().apply { putExtra(REFRESH_MODE, UPDATE) }
                 activity.setResult(Activity.RESULT_OK, intent)
+
                 exit()
             }
         }
@@ -87,6 +93,14 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
         showErrorAsToast(ErrorType.LoadFailureTags, throwable)
     }
 
+    /**
+     * このFragmentクラスだけObservableで変更を通知する。
+     * 本当はリストを使用している画面は全てこの形式にしたかったのだが、CardViewをタップで並び順変更できるようにしている画面が多数であ流。
+     * これらの画面（具体的にはItemTouchHelperCallbackを実装している画面）でBaseObservableを継承したViewModel経由でリスト変更通知を
+     * 実装すると画面がチカチカしたり、重かったりとうまくいかなかった。（モーションのブレ、残像、アイテムの分身なども発生した）
+     * 本当はこれをやると設計が不統一になって可読性やメンテナンス性が下がるのでよくないが、このアプリはプロダクトではないしそもそも
+     * 勉強を兼ねてる個人向けなのでこの画面でのみ適用する。
+     */
     inner class FlexboxItemAdapter(context: Context, list: ObservableList<TagAssociateViewModel>)
         : ArrayRecyclerAdapter<TagAssociateViewModel, BindingHolder<ItemTagAssociateBinding>>(context, list) {
 
@@ -115,6 +129,7 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
 
         override fun onBindViewHolder(holder: BindingHolder<ItemTagAssociateBinding>?, position: Int) {
             holder ?: return
+
             val binding = holder.binding.apply {
                 viewModel = getItem(position)
             }

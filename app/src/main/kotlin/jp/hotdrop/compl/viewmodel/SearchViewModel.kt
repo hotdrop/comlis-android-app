@@ -22,17 +22,21 @@ class SearchViewModel @Inject constructor(val context: Context): ViewModel() {
                     }
 
     private fun isMatch(company: Company, searchText: String): Boolean {
+
         if(company.name.contains(searchText, true)) {
             return true
         }
+
         val overview = company.overview ?: return false
         if(overview.contains(searchText, true)) {
             return true
         }
+
         val note = company.note ?: return false
         if(note.contains(searchText, true)) {
             return true
         }
+
         return false
     }
 }

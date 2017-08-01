@@ -110,11 +110,17 @@ class TagFragment: BaseFragment() {
      * ダイアログで、入力した分類名に応じてボタンと注意書きの制御を行う拡張関数
      */
     private val REGISTER_MODE: Int = -1
-    fun AppCompatEditText.changeTextListener(view: View, dialog: AlertDialog, editText: AppCompatEditText,
-                                             tagId: Int = REGISTER_MODE, originName: String = "") =
+    fun AppCompatEditText.changeTextListener(view: View,
+                                             dialog: AlertDialog,
+                                             editText: AppCompatEditText,
+                                             tagId: Int = REGISTER_MODE,
+                                             originName: String = "") =
             addTextChangedListener(object: TextWatcher {
+
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/*no op*/}
+
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {/*no op*/ }
+
                 override fun afterTextChanged(s: Editable?) {
                     when {
                         editText.toText() == "" -> disableButton()
@@ -122,17 +128,23 @@ class TagFragment: BaseFragment() {
                         else -> if(existNameExclusionOwn()) disableButtonWithAttention() else enableButton()
                     }
                 }
-                private fun existName(): Boolean = viewModel.existName(editText.toText())
+
+                private fun existName(): Boolean =
+                        viewModel.existName(editText.toText())
+
                 private fun existNameExclusionOwn(): Boolean =
                         (editText.toText() != originName && viewModel.existNameExclusionId(editText.toText(), tagId))
+
                 private fun disableButton() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
                     view.findViewById(R.id.label_tag_attention).visibility = View.GONE
                 }
+
                 private fun disableButtonWithAttention() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
                     view.findViewById(R.id.label_tag_attention).visibility = View.VISIBLE
                 }
+
                 private fun enableButton() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
                     view.findViewById(R.id.label_tag_attention).visibility = View.GONE
@@ -142,7 +154,9 @@ class TagFragment: BaseFragment() {
     private fun showRegisterDialog() {
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_tag, null)
         val editText = view.findViewById(R.id.text_tag_name) as AppCompatEditText
+
         val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
+
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
@@ -154,36 +168,48 @@ class TagFragment: BaseFragment() {
                     dialogInterface.dismiss()
                 })
                 .create()
+
         dialog.show()
+
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+
         editText.changeTextListener(view, dialog, editText)
     }
 
     private fun showUpdateDialog(vm: TagViewModel) {
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_tag, null)
         val editText = (view.findViewById(R.id.text_tag_name) as AppCompatEditText).apply { setText(vm.viewName as CharSequence) }
+
         val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context).apply { setSelection(vm.getColorType()) }
+
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
                     viewModel.update(vm, editText.toText(), spinner.getSelection())
                     viewModel.getViewModel(editText.toText())?.let { adapter.refresh(it) }
+
                     dialogInterface.dismiss()
                 })
                 .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
                     viewModel.delete(vm)
                     adapter.remove(vm)
+
                     if(adapter.itemCount <= 0) {
                         viewModel.visibilityEmptyMessageOnScreen()
                     }
+
                     dialogInterface.dismiss()
                 })
                 .create()
+
         dialog.show()
+
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
+
         if(vm.isAttachCompany()) {
             view.findViewById(R.id.label_tag_delete_attention).visibility = View.VISIBLE
         }
+
         editText.changeTextListener(view, dialog, editText, vm.getId(), vm.viewName)
     }
 
@@ -192,8 +218,10 @@ class TagFragment: BaseFragment() {
 
         override fun onBindViewHolder(holder: BindingHolder<ItemTagBinding>?, position: Int) {
             holder ?: return
+
             val binding = holder.binding
             binding.viewModel = getItem(position)
+
             binding.cardView.setOnTouchListener { _, motionEvent ->
                 if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
                     onStartDrag(holder)
@@ -252,11 +280,13 @@ class TagFragment: BaseFragment() {
             if(viewHolder == null || target == null) {
                 return false
             }
+
             if(fromPosition == NONE_POSITION) {
                 fromPosition = viewHolder.adapterPosition
             }
             toPosition = target.adapterPosition
             adapter.onItemMovedForFlexBox(viewHolder.adapterPosition, target.adapterPosition)
+
             return true
         }
 
@@ -266,9 +296,11 @@ class TagFragment: BaseFragment() {
 
         override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?) {
             super.clearView(recyclerView, viewHolder)
+
             if(fromPosition != NONE_POSITION && toPosition != NONE_POSITION && fromPosition != toPosition) {
                 adapter.onListUpdateForFlexBox(fromPosition, toPosition)
             }
+
             fromPosition = NONE_POSITION
             toPosition = NONE_POSITION
         }

@@ -17,10 +17,10 @@ class CompanyViewModel(private var company: Company,
                        private val categoryDao: CategoryDao,
                        private val jobEvaluationDao: JobEvaluationDao): ViewModel() {
 
+    private val JOB_EVALUATION_UNIT = context.getString(R.string.label_job_evaluation_unit)
+    private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
     private val SALARY_UNIT = context.getString(R.string.label_salary_unit)
     private val SALARY_RANGE_MARK = context.getString(R.string.label_salary_range_mark)
-    private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
-    private val JOB_EVALUATION_UNIT = context.getString(R.string.label_job_evaluation_unit)
 
     lateinit var viewName: String
     lateinit var viewWantedJob: String
@@ -42,15 +42,12 @@ class CompanyViewModel(private var company: Company,
         viewWantedJob = company.wantedJob ?: ""
         viewJobEvaluation = "0" + JOB_EVALUATION_UNIT
         viewEmployeesNum = company.employeesNum.toString() + EMPLOYEES_NUM_UNIT
-        viewSalary = company.salaryLow.toString() + SALARY_UNIT
         viewFavorite = company.favorite
 
         colorName = categoryDao.find(company.categoryId).colorType
         viewTags = companyDao.findByTag(company.id).take(5)
 
-        if(company.salaryHigh > 0) {
-            viewSalary += SALARY_RANGE_MARK + company.salaryHigh.toString() + SALARY_UNIT
-        }
+        viewSalary = makeViewSalary(company.salaryLow, company.salaryHigh)
 
         jobEvaluationDao.find(company.id)?.run {
             var score = 0
@@ -62,6 +59,15 @@ class CompanyViewModel(private var company: Company,
             if(jobOfferReason) score += 20
             viewJobEvaluation = score.toString() + JOB_EVALUATION_UNIT
         }
+    }
+
+    private fun makeViewSalary(salaryLow: Int, salaryHigh: Int): String {
+        val viewSalaryLow = salaryLow.toString() + SALARY_UNIT
+        if(salaryHigh > 0) {
+            val viewSalaryHigh = salaryHigh.toString() + SALARY_UNIT
+            return viewSalaryLow + SALARY_RANGE_MARK + viewSalaryHigh
+        }
+        return viewSalaryLow
     }
 
     fun change(vm: CompanyViewModel) {
@@ -76,11 +82,9 @@ class CompanyViewModel(private var company: Company,
     }
 
     @ColorRes
-    fun getColorRes() =
-            ColorUtil.getResNormal(colorName, context)
+    fun getColorRes() = ColorUtil.getResNormal(colorName, context)
 
-    override fun equals(other: Any?) =
-            (other as CompanyViewModel).company.id == company.id || super.equals(other)
+    override fun equals(other: Any?) = (other as CompanyViewModel).company.id == company.id || super.equals(other)
 
     fun getId() = company.id
 
@@ -129,10 +133,6 @@ class CompanyViewModel(private var company: Company,
 
     private fun clearFavorite(binding: ItemCompanyBinding) {
         resetFavoriteAnimation(binding)
-        updateNonFavorite()
-    }
-
-    private fun updateNonFavorite() {
         viewFavorite = 0
         companyDao.updateFavorite(company.id, 0)
     }

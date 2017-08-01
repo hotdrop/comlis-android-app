@@ -70,14 +70,17 @@ class SearchFragment: BaseFragment() {
 
         menu?.findItem(R.id.menu_search).let {
             MenuItemCompat.setOnActionExpandListener(it, object: MenuItemCompat.OnActionExpandListener {
+
                 override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                     return true
                 }
+
                 override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
                     activity?.finish()
                     return false
                 }
             })
+
             val searchView = (MenuItemCompat.getActionView(it) as SearchView).apply {
                 setIconifiedByDefault(false)
                 // searchViewの位置が中央すぎるので、xmlでのgravity調整やtoolbarをいじったり、contentInsetStartWithNavigationしたりした。
@@ -86,10 +89,13 @@ class SearchFragment: BaseFragment() {
                 queryHint = context.getString(R.string.hint_search_text_field)
                 clearFocus()
             }
+
             searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     return onQueryTextChange(query)
                 }
+
                 override fun onQueryTextChange(newText: String?): Boolean {
                     if(newText == null || newText.isBlank()) {
                         adapter?.clearAll()
@@ -109,6 +115,7 @@ class SearchFragment: BaseFragment() {
 
     private fun search(newText: String) {
         searchText = newText
+
         viewModel.getSearchResults(newText)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -121,9 +128,11 @@ class SearchFragment: BaseFragment() {
 
     private fun loadView(searchResults: List<ItemSearchResultViewModel>) {
         adapter = Adapter(context)
+
         if(searchResults.isNotEmpty()) {
             adapter?.addAll(searchResults)
         }
+
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
     }
@@ -137,11 +146,14 @@ class SearchFragment: BaseFragment() {
 
         override fun onBindViewHolder(holder: BindingHolder<ItemSearchResultBinding>?, position: Int) {
             holder ?: return
+
             val binding = holder.binding
             binding.viewModel = getItem(position)
+
             binding.cardView.setOnClickListener {
                 ActivityNavigator.showCompanyDetail(this@SearchFragment, binding.viewModel.id, Request.Detail.code)
             }
+
             val animView1 = binding.animationView1.setFavoriteStar()
             val animView2 = binding.animationView2.setFavoriteStar()
             val animView3 = binding.animationView3.setFavoriteStar()

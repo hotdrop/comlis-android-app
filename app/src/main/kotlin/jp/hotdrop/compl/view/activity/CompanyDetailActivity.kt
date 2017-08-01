@@ -22,7 +22,9 @@ class CompanyDetailActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         DataBindingUtil.setContentView<ActivityCompanyDetailBinding>(this, R.layout.activity_company_detail)
+
         getComponent().inject(this)
 
         val companyId = intent.getIntExtra(EXTRA_COMPANY_ID, 0)

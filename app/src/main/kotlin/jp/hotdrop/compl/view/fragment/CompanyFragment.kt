@@ -58,14 +58,17 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
 
     override fun onResume() {
         super.onResume()
+
+        // CompanyDetailFragmentを経由して分類変更がされた場合はこのonResumeルートを通る
         val refreshMode = activity.intent.getIntExtra(REFRESH_MODE, NONE)
         if(refreshMode != CHANGE_CATEGORY) {
             return
         }
 
-        // CompanyDetailFragmentを経由して分類変更がされた場合はこのルートを通る
         tabName = activity.intent.getStringExtra(EXTRA_CATEGORY_NAME)
+
         loadData()
+
         activity.intent.let {
             it.removeExtra(REFRESH_MODE)
             it.removeExtra(EXTRA_CATEGORY_NAME)
@@ -74,15 +77,19 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if(resultCode != Activity.RESULT_OK || requestCode != Request.Register.code || data == null) {
             return
         }
+
         tabName = data.getStringExtra(EXTRA_CATEGORY_NAME)
+
         loadData()
     }
 
     private fun loadData() {
         showProgress()
+
         categoryDao.findAll()
                 .toSingle()
                 .subscribeOn(Schedulers.io())
@@ -100,6 +107,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     private fun initView(categories: List<Category>) {
         // FragmentをネストするのでFragmentManagerではなくchildFragmentManagerを使う
         adapter = Adapter(childFragmentManager)
+
         if(categories.isNotEmpty()) {
             categories.forEach { category -> addFragment(category.name, category.id) }
             binding.listEmptyView.visibility = View.GONE
@@ -145,6 +153,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
         when(item?.itemId) {
             R.id.item_search -> ActivityNavigator.showSearch(this@CompanyFragment)
         }
+
         return super.onOptionsItemSelected(item)
     }
 
@@ -171,7 +180,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
 
         override fun getCount() = fragments.size
 
-        override fun getPageTitle(position: Int): CharSequence = titles[position]
+        override fun getPageTitle(position: Int) = titles[position]
 
         fun add(title: String, fragment: CompanyTabFragment) {
             fragments.add(fragment)
@@ -185,16 +194,19 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
         }
     }
 
-    private inner class SelectedTabListener(viewPager: ViewPager): TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+    private inner class SelectedTabListener(viewPager: ViewPager):
+            TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
 
         override fun onTabSelected(tab: TabLayout.Tab?) {
             super.onTabSelected(tab)
+
             tab ?: return
             tabName = adapter.getPageTitle(tab.position).toString()
         }
 
         override fun onTabReselected(tab: TabLayout.Tab?) {
             super.onTabReselected(tab)
+
             tab ?: return
             (adapter.getItem(tab.position) as CompanyTabFragment).scrollUpToTop()
         }

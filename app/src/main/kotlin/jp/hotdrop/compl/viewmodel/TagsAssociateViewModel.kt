@@ -21,6 +21,7 @@ class TagsAssociateViewModel @Inject constructor(val context: Context): ViewMode
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
 
+    //
     val viewModels: ObservableList<TagAssociateViewModel> = ObservableArrayList()
 
     private lateinit var callback: Callback

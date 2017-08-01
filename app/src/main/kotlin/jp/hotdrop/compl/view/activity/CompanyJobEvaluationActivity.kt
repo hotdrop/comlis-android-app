@@ -25,6 +25,7 @@ class CompanyJobEvaluationActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val binding = DataBindingUtil.setContentView<ActivityCompanyJobEvaluationBinding>(this, R.layout.activity_company_job_evaluation)
 
         getComponent().inject(this)

@@ -81,20 +81,23 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         viewName = company.name
         viewOverview = company.overview ?: EMPTY_VALUE
         viewEmployeesNum = if(company.employeesNum > 0) company.employeesNum.toString() + EMPLOYEES_NUM_UNIT else EMPTY_VALUE
-        viewSalary = if(company.salaryLow > 0) company.salaryLow.toString() + SALARY_UNIT else EMPTY_VALUE
-        if(company.salaryHigh > 0) {
-            viewSalary += SALARY_RANGE_MARK + company.salaryHigh.toString() + SALARY_UNIT
-        }
+
+        viewSalary = makeViewSalary(company.salaryLow, company.salaryHigh)
+
         viewWantedJob = company.wantedJob ?: EMPTY_VALUE
         viewWorkPlace = company.workPlace ?: EMPTY_VALUE
+
         company.url?.run {
             viewUrl = this
             visibleUrl = View.VISIBLE
         }
+
         viewDoingBusiness = company.doingBusiness ?: EMPTY_VALUE
         viewWantBusiness = company.wantBusiness ?: EMPTY_VALUE
         viewNote = company.note ?: EMPTY_VALUE
+
         viewFavorite = company.favorite
+
         viewRegisterDate = company.registerDate?.format() ?: EMPTY_DATE
         viewUpdateDate = company.updateDate?.format() ?: EMPTY_DATE
 
@@ -102,6 +105,20 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         viewTags = companyDao.findByTag(id)
 
         jobEvaluation = jobEvaluationDao.find(id) ?: JobEvaluation().apply { companyId = id }
+    }
+
+    private fun makeViewSalary(salaryLow: Int, salaryHigh: Int): String {
+        if(salaryLow < 0) {
+            return EMPTY_VALUE
+        }
+        val viewSalaryLow = salaryLow.toString() + SALARY_UNIT
+
+        if(salaryHigh < 0) {
+            return viewSalaryLow
+        }
+        val viewSalaryHigh = salaryHigh.toString() + SALARY_UNIT
+
+        return viewSalaryLow + SALARY_RANGE_MARK + viewSalaryHigh
     }
 
     @ColorRes
@@ -170,6 +187,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     }
 
     private val evaluationTextColor = ContextCompat.getColor(context, R.color.checked_evaluation)
+
     private val unCheckedColor = ContextCompat.getColor(context, R.color.unchecked_evaluation)
 
     private fun setEvaluationColor(checked: Boolean, v: TextView) {
@@ -183,7 +201,10 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     }
 
     fun onClickMenuFab() {
-        if(isOpenFabMenu()) collapseFabMenu() else expandFabMenu()
+        if(isOpenFabMenu())
+            collapseFabMenu()
+        else
+            expandFabMenu()
     }
 
     fun onClickModeEditFab() {

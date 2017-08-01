@@ -114,11 +114,17 @@ class CategoryFragment : BaseFragment() {
      * ダイアログで、入力した分類名に応じてボタンと注意書きの制御を行う拡張関数
      */
     private val REGISTER_MODE: Int = -1
-    fun AppCompatEditText.changeTextListener(view: View, dialog: AlertDialog, editText: AppCompatEditText,
-                                             categoryId: Int = REGISTER_MODE, originName: String = "") =
+    fun AppCompatEditText.changeTextListener(view: View,
+                                             dialog: AlertDialog,
+                                             editText: AppCompatEditText,
+                                             categoryId: Int = REGISTER_MODE,
+                                             originName: String = "") =
             addTextChangedListener(object: TextWatcher {
+
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/*no op*/}
+
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {/*no op*/ }
+
                 override fun afterTextChanged(s: Editable?) {
                     when {
                         editText.toText() == "" -> disableButton()
@@ -126,7 +132,10 @@ class CategoryFragment : BaseFragment() {
                         else -> if(existNameExclusionOwn()) disableButtonWithAttention() else enableButton()
                     }
                 }
-                private fun existName(): Boolean = viewModel.existName(editText.toText())
+
+                private fun existName(): Boolean =
+                        viewModel.existName(editText.toText())
+
                 private fun existNameExclusionOwn(): Boolean =
                         (editText.toText() != originName && viewModel.existNameExclusionId(editText.toText(), categoryId))
 
@@ -134,10 +143,12 @@ class CategoryFragment : BaseFragment() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
                     view.findViewById(R.id.label_category_attention).visibility = View.GONE
                 }
+
                 private fun disableButtonWithAttention() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
                     view.findViewById(R.id.label_category_attention).visibility = View.VISIBLE
                 }
+
                 private fun enableButton() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
                     view.findViewById(R.id.label_category_attention).visibility = View.GONE
@@ -147,7 +158,9 @@ class CategoryFragment : BaseFragment() {
     private fun showRegisterDialog() {
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category, null)
         val editText = view.findViewById(R.id.text_category_name) as AppCompatEditText
+
         val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
+
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
@@ -157,39 +170,52 @@ class CategoryFragment : BaseFragment() {
                     dialogInterface.dismiss()
                 })
                 .create()
+
         dialog.show()
+
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+
         editText.changeTextListener(view, dialog, editText)
     }
 
     private fun showUpdateDialog(vm: CategoryViewModel) {
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category, null)
+
         val editText = view.findViewById(R.id.text_category_name) as AppCompatEditText
         editText.setText(vm.viewName as CharSequence)
+
         val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
         spinner.setSelection(vm.getColorType())
+
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
                 .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
+
                     viewModel.update(vm, editText.toText(), spinner.getSelection())
                     adapter.refresh(viewModel.getViewModel(editText.toText()))
+
                     dialogInterface.dismiss()
                 })
                 .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
                     viewModel.delete(vm)
                     adapter.remove(vm)
+
                     if(adapter.itemCount <= 0) {
                         viewModel.visibilityEmptyMessageOnScreen()
                     }
+
                     dialogInterface.dismiss()
                 })
                 .create()
+
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
+
         if(vm.isRegisterCompanyInCategory()) {
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE).isEnabled = false
             view.findViewById(R.id.label_category_delete_attention).visibility = View.VISIBLE
         }
+
         editText.changeTextListener(view, dialog, editText, vm.getId(), vm.viewName)
     }
 
@@ -203,6 +229,7 @@ class CategoryFragment : BaseFragment() {
 
         override fun onBindViewHolder(holder: BindingHolder<ItemCategoryBinding>?, position: Int) {
             holder ?: return
+
             val binding = holder.binding.apply {
                 viewModel = getItem(position)
                 iconReorderGroup.setOnTouchListener { _, motionEvent ->
@@ -212,6 +239,7 @@ class CategoryFragment : BaseFragment() {
                     false
                 }
             }
+
             binding.cardView.setOnClickListener { showUpdateDialog(binding.viewModel) }
         }
 
@@ -253,8 +281,10 @@ class CategoryFragment : BaseFragment() {
             if(viewHolder == null || target == null) {
                 return false
             }
+
             isReordered = true
             adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+
             return true
         }
 

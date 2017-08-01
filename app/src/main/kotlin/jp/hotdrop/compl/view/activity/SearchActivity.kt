@@ -19,8 +19,10 @@ class SearchActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         DataBindingUtil.setContentView<ActivitySearchBinding>(this, R.layout.activity_company_detail)
         val binding = DataBindingUtil.setContentView<ActivitySearchBinding>(this, R.layout.activity_search)
+
         getComponent().inject(this)
 
         setSupportActionBar(binding.toolbar)

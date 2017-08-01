@@ -53,8 +53,11 @@ class CompanyDetailFragment: BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyDetailBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
+
         initToolbar()
+
         loadData()
+
         return binding.root
     }
 
@@ -87,7 +90,9 @@ class CompanyDetailFragment: BaseFragment() {
         }
 
         activity.setResult(Activity.RESULT_OK, intent)
+
         isRefresh = true
+
         viewModel.closeFabMenu()
     }
 
@@ -231,6 +236,7 @@ class CompanyDetailFragment: BaseFragment() {
                 changedFavorite()
             }
         }
+
         val animView2 = binding.animationView2.apply {
             setFavoriteStar()
             setOnClickListener {
@@ -238,6 +244,7 @@ class CompanyDetailFragment: BaseFragment() {
                 changedFavorite()
             }
         }
+
         val animView3 = binding.animationView3.apply {
             setFavoriteStar()
             setOnClickListener {
@@ -245,6 +252,7 @@ class CompanyDetailFragment: BaseFragment() {
                 changedFavorite()
             }
         }
+
         mutableListOf(animView1, animView2, animView3).take(viewModel.viewFavorite).forEach { it.playAnimation() }
     }
 }

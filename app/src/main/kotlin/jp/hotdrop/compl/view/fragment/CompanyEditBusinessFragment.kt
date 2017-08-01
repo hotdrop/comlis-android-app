@@ -58,8 +58,10 @@ class CompanyEditBusinessFragment: BaseFragment() {
 
     private fun onClickUpdate() {
         viewModel.update()
+
         val intent = Intent().apply { putExtra(REFRESH_MODE, UPDATE) }
         activity.setResult(Activity.RESULT_OK, intent)
+
         exit()
     }
 

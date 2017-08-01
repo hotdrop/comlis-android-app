@@ -51,6 +51,7 @@ class CompanyEditOverviewFragment: BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyEditOverviewBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
+
         binding.viewModel = viewModel
 
         viewModel.loadData(companyId)
@@ -89,9 +90,11 @@ class CompanyEditOverviewFragment: BaseFragment() {
                     }
                     (isNotBlack && isNotExist)
                 })
-                .subscribeBy(onNext = {
-                    if(it) enableUpdateButtonWithGoneNameAttention() else disableUpdateButtonWithNameAttention()
-                })
+                .subscribeBy(
+                        onNext = {
+                            if(it) enableUpdateButtonWithGoneNameAttention() else disableUpdateButtonWithNameAttention()
+                        }
+                )
                 .addTo(compositeDisposable)
     }
 
@@ -115,10 +118,12 @@ class CompanyEditOverviewFragment: BaseFragment() {
 
     private fun onClickUpdate() {
         viewModel.update(categorySpinner.getSelection())
+
         val intent = Intent().apply {
             if(viewModel.isChangeCategory) putExtra(REFRESH_MODE, CHANGE_CATEGORY) else putExtra(REFRESH_MODE, UPDATE)
         }
         activity.setResult(Activity.RESULT_OK, intent)
+
         exit()
     }
 

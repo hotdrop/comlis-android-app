@@ -54,6 +54,7 @@ class CompanyEditOverviewViewModel @Inject constructor(val context: Context): Vi
 
     fun update(selectedCategorySpinnerId: Int) {
         isChangeCategory = (categoryId != selectedCategorySpinnerId)
+
         val company =  makeCompany(selectedCategorySpinnerId)
         companyDao.updateOverview(company)
     }

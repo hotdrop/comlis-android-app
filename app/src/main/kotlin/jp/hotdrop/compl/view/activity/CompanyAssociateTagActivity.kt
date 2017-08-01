@@ -25,7 +25,9 @@ class CompanyAssociateTagActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val binding = DataBindingUtil.setContentView<ActivityCompanyAssociateTagBinding>(this, R.layout.activity_company_associate_tag)
+
         getComponent().inject(this)
 
         setSupportActionBar(binding.toolbar)

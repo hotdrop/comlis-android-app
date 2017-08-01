@@ -22,6 +22,7 @@ class MainActivity : BaseActivity() {
 
         binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         setSupportActionBar(binding.toolbar)
+
         getComponent().inject(this)
 
         initView()
@@ -40,7 +41,9 @@ class MainActivity : BaseActivity() {
     private fun initView() {
         binding.bottomNav.setOnNavigationItemSelectedListener { menuItem ->
             binding.title.text= menuItem.title
+
             menuItem.isChecked = true
+
             when(menuItem.itemId) {
                 R.id.nav_companies -> switchFragment(companyFragment, CompanyFragment.TAG)
                 R.id.nav_categories -> switchFragment(categoryFragment, CategoryFragment.TAG)
@@ -73,6 +76,7 @@ class MainActivity : BaseActivity() {
         } else {
             ft.add(R.id.content_view, fragment, sign)
         }
+
         // フラグメントの交換時にフェードイン/アウトをつける
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
 

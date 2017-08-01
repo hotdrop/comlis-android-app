@@ -50,9 +50,11 @@ class CompanyRegisterFragment : BaseFragment() {
         binding.viewModel = viewModel
 
         createObservableToEditTexts()
+
         categorySpinner = CategorySpinner(binding.spinnerCategory, activity, categoryDao).apply {
             setSelection(selectedCategoryName)
         }
+
         binding.registerButton.setOnClickListener { onClickRegister() }
 
         return binding.root
@@ -82,10 +84,15 @@ class CompanyRegisterFragment : BaseFragment() {
                     }
                     (isNotBlack && isNotExist)
                 })
-                .subscribeBy(onNext = {viewNameAttention(it)})
+                .subscribeBy(
+                        onNext = {viewNameAttention(it)}
+                )
                 .addTo(compositeDisposable)
 
-        employeeNumObservable.subscribeBy(onNext = {viewEmployeesNumAttention(it)})
+        employeeNumObservable
+                .subscribeBy(
+                        onNext = {viewEmployeesNumAttention(it)}
+                )
                 .addTo(compositeDisposable)
 
         Observables.combineLatest(salaryLowObservable, salaryHighObservable,
@@ -98,7 +105,9 @@ class CompanyRegisterFragment : BaseFragment() {
                         employeeNumObservable,
                         salaryLowObservable, salaryHighObservable,
                         { a, b, c, d, e -> ( a && b && c && d && e ) })
-                .subscribeBy(onNext = {binding.registerButton.isEnabled = it})
+                .subscribeBy(
+                        onNext = {binding.registerButton.isEnabled = it}
+                )
                 .addTo(compositeDisposable)
     }
 
@@ -124,11 +133,13 @@ class CompanyRegisterFragment : BaseFragment() {
 
     private fun onClickRegister() {
         viewModel.register(categorySpinner.getSelection())
+
         val intent = Intent().apply {
             val categoryName = viewModel.getCategoryName(categorySpinner.getSelection())
             putExtra(EXTRA_CATEGORY_NAME, categoryName)
         }
         activity.setResult(Activity.RESULT_OK, intent)
+
         exit()
     }
 

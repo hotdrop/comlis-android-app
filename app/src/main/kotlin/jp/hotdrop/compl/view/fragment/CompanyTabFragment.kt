@@ -60,7 +60,9 @@ class CompanyTabFragment: BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyTabBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
+
         loadData()
+
         return binding.root
     }
 
@@ -98,6 +100,7 @@ class CompanyTabFragment: BaseFragment() {
 
     override fun onStop() {
         super.onStop()
+
         if(isReordered) {
             viewModel.updateItemOrder(adapter.getCompanyIdsAsCurrentOrder())
             isReordered = false
@@ -111,9 +114,11 @@ class CompanyTabFragment: BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if(resultCode != Activity.RESULT_OK || requestCode != Request.Detail.code || data == null) {
             return
         }
+
         val refreshMode = data.getIntExtra(REFRESH_MODE, NONE)
         val companyId = data.getIntExtra(EXTRA_COMPANY_ID, -1)
 
@@ -151,6 +156,7 @@ class CompanyTabFragment: BaseFragment() {
 
         override fun onBindViewHolder(holder: BindingHolder<ItemCompanyBinding>?, position: Int) {
             holder ?: return
+
             val binding = holder.binding.apply {
                 viewModel = getItem(position)
                 iconReorder.setOnTouchListener { _, motionEvent ->
@@ -174,6 +180,7 @@ class CompanyTabFragment: BaseFragment() {
         private fun setCardView(flexboxLayout: FlexboxLayout, tag: Tag) {
             val binding = DataBindingUtil.inflate<ItemCompanyListTagBinding>(getLayoutInflater(null),
                     R.layout.item_company_list_tag, flexboxLayout, false)
+
             binding.viewModel = viewModel.getTagAssociateViewModel(tag)
             flexboxLayout.addView(binding.root)
         }
@@ -199,9 +206,8 @@ class CompanyTabFragment: BaseFragment() {
             }
         }
 
-        fun getCompanyIdsAsCurrentOrder(): List<Int> {
-            return list.map { vm -> vm.getId() }.toMutableList()
-        }
+        fun getCompanyIdsAsCurrentOrder() =
+            list.map { vm -> vm.getId() }.toMutableList()
 
         private fun initFavoriteEvent(binding: ItemCompanyBinding) {
 
@@ -210,14 +216,17 @@ class CompanyTabFragment: BaseFragment() {
                 setFavoriteStar()
                 setOnClickListener { vm.onClickFirstFavorite(binding) }
             }
+
             binding.animationView2.apply {
                 setFavoriteStar()
                 setOnClickListener { vm.onClickSecondFavorite(binding) }
             }
+
             binding.animationView3.apply {
                 setFavoriteStar()
                 setOnClickListener { vm.onClickThirdFavorite(binding) }
             }
+
             vm.playFavorite(binding)
         }
     }
@@ -237,8 +246,11 @@ class CompanyTabFragment: BaseFragment() {
             if(viewHolder == null || target == null) {
                 return false
             }
+
             isReordered = true
+
             adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+
             return true
         }
 
