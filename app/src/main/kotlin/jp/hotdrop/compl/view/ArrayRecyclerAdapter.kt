@@ -27,6 +27,10 @@ abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val 
         list.add(item)
     }
 
+    fun addItemToFirst(item: T) {
+        list.add(0, item)
+    }
+
     fun addAll(items: List<T>) {
         list.addAll(items)
     }

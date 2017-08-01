@@ -253,8 +253,8 @@ class CategoryFragment : BaseFragment() {
         }
 
         fun add(vm: CategoryViewModel) {
-            addItem(vm)
-            notifyItemInserted(itemCount)
+            addItemToFirst(vm)
+            notifyItemInserted(0)
         }
 
         fun remove(vm: CategoryViewModel) {
@@ -263,7 +263,8 @@ class CategoryFragment : BaseFragment() {
             notifyItemRemoved(position)
         }
 
-        fun getCategoryIdsAsCurrentOrder(): List<Int> = list.map {vm -> vm.getId()}.toMutableList()
+        fun getCategoryIdsAsCurrentOrder(): List<Int> =
+                list.map {vm -> vm.getId()}.toMutableList().reversed()
     }
 
     /**

@@ -20,15 +20,19 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
                     .idEq(id)
                     .value()
 
+    // 登録した会社はリストの先頭に表示したい。
+    // でもviewOrderを負の値で登にするのが嫌だったので、viewOrderは普通にインクリメントし
+    // ViewOrderDescで取得する。
     fun findAll(): Single<List<Company>> =
             companyRelation().selector()
-                .executeAsObservable()
-                .toList()
+                    .orderByViewOrderDesc()
+                    .executeAsObservable()
+                    .toList()
 
     fun findByCategory(categoryId: Int): Single<List<Company>> =
         companyRelation().selector()
                 .categoryIdEq(categoryId)
-                .orderByViewOrderAsc()
+                .orderByViewOrderDesc()
                 .executeAsObservable()
                 .toList()
 

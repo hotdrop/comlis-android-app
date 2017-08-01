@@ -20,9 +20,10 @@ class CategoryDao @Inject constructor(ormaHolder: OrmaHolder) {
                     .nameEq(name)
                     .value()
 
+    // CompanyDaoと同理由によりDescで取得する
     fun findAll(): List<Category> =
             categoryRelation().selector()
-                 .orderByViewOrderAsc()
+                 .orderByViewOrderDesc()
                  .toList()
 
     fun insert(argName: String, argColorType: String) {

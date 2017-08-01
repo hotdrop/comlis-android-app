@@ -192,8 +192,8 @@ class CompanyTabFragment: BaseFragment() {
         }
 
         fun add(vm: CompanyViewModel) {
-            adapter.addItem(vm)
-            adapter.notifyItemInserted(adapter.itemCount)
+            adapter.addItemToFirst(vm)
+            adapter.notifyItemInserted(0)
         }
 
         fun remove(companyId: Int) {
@@ -207,7 +207,7 @@ class CompanyTabFragment: BaseFragment() {
         }
 
         fun getCompanyIdsAsCurrentOrder() =
-            list.map { vm -> vm.getId() }.toMutableList()
+            list.map { vm -> vm.getId() }.toMutableList().reversed()
 
         private fun initFavoriteEvent(binding: ItemCompanyBinding) {
 
