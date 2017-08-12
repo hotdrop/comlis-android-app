@@ -17,6 +17,7 @@ import jp.hotdrop.compl.databinding.ItemSearchResultBinding
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
 import jp.hotdrop.compl.view.activity.ActivityNavigator
+import jp.hotdrop.compl.view.parts.FavoriteStars
 import jp.hotdrop.compl.viewmodel.ItemSearchResultViewModel
 import jp.hotdrop.compl.viewmodel.SearchViewModel
 import javax.inject.Inject
@@ -154,12 +155,8 @@ class SearchFragment: BaseFragment() {
                 ActivityNavigator.showCompanyDetail(this@SearchFragment, binding.viewModel.id, Request.Detail.code)
             }
 
-            val animView1 = binding.animationView1.setFavoriteStar()
-            val animView2 = binding.animationView2.setFavoriteStar()
-            val animView3 = binding.animationView3.setFavoriteStar()
-            mutableListOf(animView1, animView2, animView3)
-                    .take(binding.viewModel.favorite)
-                    .forEach { it.progress = 1.toFloat() }
+            val favorites = FavoriteStars(binding.animationView1, binding.animationView2, binding.animationView3)
+            favorites.playAnimation(binding.viewModel.favorite)
         }
 
         fun clearAll() {

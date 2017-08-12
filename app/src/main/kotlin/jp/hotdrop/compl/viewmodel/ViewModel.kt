@@ -2,7 +2,6 @@ package jp.hotdrop.compl.viewmodel
 
 import android.databinding.BaseObservable
 import android.text.format.DateFormat
-import com.airbnb.lottie.LottieAnimationView
 import java.util.*
 
 abstract class ViewModel: BaseObservable() {
@@ -21,10 +20,4 @@ abstract class ViewModel: BaseObservable() {
 
     fun Date.format(): String? = DateFormat.format("yyyy-MM-dd(E) HH:mm:ss", this).toString()
 
-    // LottieAnimationViewの拡張関数がBaseFragmentとここで散在しているのがあまり良くないが
-    // 無理やりまとめるのも良くないので今はこうする。
-    fun LottieAnimationView.reset() {
-        this.cancelAnimation()
-        this.progress = 0.toFloat()
-    }
 }

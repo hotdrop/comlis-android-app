@@ -22,6 +22,7 @@ import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
 import jp.hotdrop.compl.databinding.ItemTagAssociateBinding
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.view.activity.ActivityNavigator
+import jp.hotdrop.compl.view.parts.FavoriteStars
 import jp.hotdrop.compl.viewmodel.CompanyDetailViewModel
 import jp.hotdrop.compl.viewmodel.TagAssociateViewModel
 import javax.inject.Inject
@@ -229,31 +230,29 @@ class CompanyDetailFragment: BaseFragment() {
             }
         }
 
-        val animView1 = binding.animationView1.apply {
-            setFavoriteStar()
+        viewModel.favorites = FavoriteStars(binding.animationView1, binding.animationView2, binding.animationView3)
+
+        binding.animationView1.apply {
             setOnClickListener {
                 viewModel.onClickFirstFavorite()
                 changedFavorite()
             }
         }
 
-        val animView2 = binding.animationView2.apply {
-            setFavoriteStar()
+        binding.animationView2.apply {
             setOnClickListener {
                 viewModel.onClickSecondFavorite()
                 changedFavorite()
             }
         }
 
-        val animView3 = binding.animationView3.apply {
-            setFavoriteStar()
+        binding.animationView3.apply {
             setOnClickListener {
                 viewModel.onClickThirdFavorite()
                 changedFavorite()
             }
         }
-
-        mutableListOf(animView1, animView2, animView3).take(viewModel.viewFavorite).forEach { it.playAnimation() }
+        viewModel.playFavorite()
     }
 
     override fun onDestroy() {

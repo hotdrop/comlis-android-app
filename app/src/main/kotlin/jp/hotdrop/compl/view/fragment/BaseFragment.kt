@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.AppCompatEditText
 import android.widget.Toast
-import com.airbnb.lottie.LottieAnimationView
 import com.deploygate.sdk.DeployGate
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
@@ -46,10 +45,6 @@ abstract class BaseFragment: Fragment() {
     }
 
     fun getComponent(): FragmentComponent = fragmentComponent
-
-    fun LottieAnimationView.setFavoriteStar(): LottieAnimationView = this.apply {
-        setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak)
-    }
 
     fun AppCompatButton.enabledWithColor(@ColorRes res: Int) {
         this.isEnabled = true

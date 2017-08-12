@@ -22,6 +22,7 @@ import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.JobEvaluation
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
+import jp.hotdrop.compl.view.parts.FavoriteStars
 import javax.inject.Inject
 
 class CompanyDetailViewModel @Inject constructor(val context: Context): ViewModel() {
@@ -63,6 +64,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     lateinit var jobEvaluation: JobEvaluation
     lateinit var colorName: String
     lateinit var viewTags: List<Tag>
+    lateinit var favorites: FavoriteStars
 
     fun loadData(companyId: Int, newBinding: FragmentCompanyDetailBinding): Completable =
             companyDao.find(companyId)
@@ -200,6 +202,8 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         }
     }
 
+    /** TODO このメニューの実装ももう少し綺麗にできるといいな・・ **/
+
     fun onClickMenuFab() {
         if(isOpenFabMenu())
             collapseFabMenu()
@@ -292,57 +296,49 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         binding.fabDetailMenu.rotation = 0.toFloat()
     }
 
-    // TODO このFavoriteはCompanyViewModelにも同じロジックを持っていて良くない。
-    // スターの数はアプリ内で統一するため3つなら3つとなる。なのでFavoriteクラスを作ってそこでやりくりしたほうがいい。
+    /**　ここからスターの実装 **/
+
     fun onClickFirstFavorite() {
-        if(isFavoriteOne()) {
+        if(viewFavorite == 1) {
             resetFavorite()
         } else {
-            binding.animationView1.playAnimation()
-            binding.animationView2.reset()
-            binding.animationView3.reset()
-            setFavoriteOne()
-            companyDao.updateFavorite(id, viewFavorite)
+            favorites.playAnimationToOne()
+            updateFavorite(1)
         }
     }
-    private fun isFavoriteOne() = (viewFavorite == 1)
-    private fun setFavoriteOne() { viewFavorite = 1 }
 
     fun onClickSecondFavorite() {
-        if(isFavoriteTwo()) {
+        if(viewFavorite == 2) {
             resetFavorite()
         } else {
-            binding.animationView1.playAnimation()
-            binding.animationView2.playAnimation()
-            binding.animationView3.reset()
-            setFavoriteTwo()
-            companyDao.updateFavorite(id, viewFavorite)
+            favorites.playAnimationToTwo()
+            updateFavorite(2)
         }
     }
-    private fun isFavoriteTwo() = (viewFavorite == 2)
-    private fun setFavoriteTwo() { viewFavorite = 2 }
 
     fun onClickThirdFavorite() {
-        if(isFavoriteThree()) {
+        if(viewFavorite == 3) {
             resetFavorite()
         } else {
-            binding.animationView1.playAnimation()
-            binding.animationView2.playAnimation()
-            binding.animationView3.playAnimation()
-            setFavoriteThree()
-            companyDao.updateFavorite(id, viewFavorite)
+            favorites.playAnimationToThree()
+            updateFavorite(3)
         }
     }
-    private fun isFavoriteThree() = (viewFavorite == 3)
-    private fun setFavoriteThree() { viewFavorite = 3 }
+
+    private fun resetFavorite() {
+        favorites.clear()
+        updateFavorite(0)
+    }
+
+    fun playFavorite() {
+        favorites.playAnimation(viewFavorite)
+    }
+
+    fun updateFavorite(favoriteNum: Int) {
+        viewFavorite = favoriteNum
+        companyDao.updateFavorite(id, favoriteNum)
+    }
 
     fun isEditFavorite() = (originalFavorite != viewFavorite)
 
-    private fun resetFavorite() {
-        binding.animationView1.reset()
-        binding.animationView2.reset()
-        binding.animationView3.reset()
-        viewFavorite = 0
-        companyDao.updateFavorite(id, 0)
-    }
 }

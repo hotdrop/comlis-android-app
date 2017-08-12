@@ -27,6 +27,7 @@ import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.view.ArrayRecyclerAdapter
 import jp.hotdrop.compl.view.BindingHolder
 import jp.hotdrop.compl.view.activity.ActivityNavigator
+import jp.hotdrop.compl.view.parts.FavoriteStars
 import jp.hotdrop.compl.viewmodel.CompaniesViewModel
 import jp.hotdrop.compl.viewmodel.CompanyViewModel
 import javax.inject.Inject
@@ -212,22 +213,21 @@ class CompanyTabFragment: BaseFragment() {
         private fun initFavoriteEvent(binding: ItemCompanyBinding) {
 
             val vm = binding.viewModel
+            vm.favorites = FavoriteStars(binding.animationView1, binding.animationView2, binding.animationView3)
+
             binding.animationView1.apply {
-                setFavoriteStar()
-                setOnClickListener { vm.onClickFirstFavorite(binding) }
+                setOnClickListener { vm.onClickFirstFavorite() }
             }
 
             binding.animationView2.apply {
-                setFavoriteStar()
-                setOnClickListener { vm.onClickSecondFavorite(binding) }
+                setOnClickListener { vm.onClickSecondFavorite() }
             }
 
             binding.animationView3.apply {
-                setFavoriteStar()
-                setOnClickListener { vm.onClickThirdFavorite(binding) }
+                setOnClickListener { vm.onClickThirdFavorite() }
             }
 
-            vm.playFavorite(binding)
+            vm.playFavorite()
         }
     }
 
