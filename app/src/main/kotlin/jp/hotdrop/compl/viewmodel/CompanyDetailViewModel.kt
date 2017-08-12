@@ -208,7 +208,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     }
 
     fun onClickModeEditFab() {
-        if(binding.imageEditAbstract.visibility == View.VISIBLE) {
+        if(isVisibleEditFab()) {
             goneEditIcons()
             closeFabMenu()
         } else {
@@ -216,6 +216,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
             collapseFabMenu()
         }
     }
+    private fun isVisibleEditFab() = (binding.imageEditAbstract.visibility == View.VISIBLE)
 
     private val FAB_MENU_OPEN_ROTATION = 90.toFloat()
     private fun expandFabMenu() {
@@ -291,41 +292,49 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         binding.fabDetailMenu.rotation = 0.toFloat()
     }
 
+    // TODO このFavoriteはCompanyViewModelにも同じロジックを持っていて良くない。
+    // スターの数はアプリ内で統一するため3つなら3つとなる。なのでFavoriteクラスを作ってそこでやりくりしたほうがいい。
     fun onClickFirstFavorite() {
-        if(viewFavorite == 1) {
+        if(isFavoriteOne()) {
             resetFavorite()
         } else {
             binding.animationView1.playAnimation()
             binding.animationView2.reset()
             binding.animationView3.reset()
-            viewFavorite = 1
+            setFavoriteOne()
             companyDao.updateFavorite(id, viewFavorite)
         }
     }
+    private fun isFavoriteOne() = (viewFavorite == 1)
+    private fun setFavoriteOne() { viewFavorite = 1 }
 
     fun onClickSecondFavorite() {
-        if(viewFavorite == 2) {
+        if(isFavoriteTwo()) {
             resetFavorite()
         } else {
             binding.animationView1.playAnimation()
             binding.animationView2.playAnimation()
             binding.animationView3.reset()
-            viewFavorite = 2
+            setFavoriteTwo()
             companyDao.updateFavorite(id, viewFavorite)
         }
     }
+    private fun isFavoriteTwo() = (viewFavorite == 2)
+    private fun setFavoriteTwo() { viewFavorite = 2 }
 
     fun onClickThirdFavorite() {
-        if(viewFavorite == 3) {
+        if(isFavoriteThree()) {
             resetFavorite()
         } else {
             binding.animationView1.playAnimation()
             binding.animationView2.playAnimation()
             binding.animationView3.playAnimation()
-            viewFavorite = 3
+            setFavoriteThree()
             companyDao.updateFavorite(id, viewFavorite)
         }
     }
+    private fun isFavoriteThree() = (viewFavorite == 3)
+    private fun setFavoriteThree() { viewFavorite = 3 }
 
     fun isEditFavorite() = (originalFavorite != viewFavorite)
 

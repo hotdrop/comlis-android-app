@@ -101,40 +101,46 @@ class CompanyViewModel(private var company: Company,
     }
 
     fun onClickFirstFavorite(binding: ItemCompanyBinding) {
-        if(viewFavorite == 1) {
+        if(isFavoriteOne()) {
             clearFavorite(binding)
         } else {
             binding.animationView1.playAnimation()
             binding.animationView2.reset()
             binding.animationView3.reset()
-            viewFavorite = 1
+            setFavoriteOne()
             companyDao.updateFavorite(company.id, viewFavorite)
         }
     }
+    private fun isFavoriteOne() = (viewFavorite == 1)
+    private fun setFavoriteOne() { viewFavorite = 1 }
 
     fun onClickSecondFavorite(binding: ItemCompanyBinding) {
-        if(viewFavorite == 2) {
+        if(isFavoriteTwo()) {
             clearFavorite(binding)
         } else {
             binding.animationView1.playAnimation()
             binding.animationView2.playAnimation()
             binding.animationView3.reset()
-            viewFavorite = 2
+            setFavoriteTwo()
             companyDao.updateFavorite(company.id, viewFavorite)
         }
     }
+    private fun isFavoriteTwo() = (viewFavorite == 2)
+    private fun setFavoriteTwo() { viewFavorite = 2 }
 
     fun onClickThirdFavorite(binding: ItemCompanyBinding) {
-        if(viewFavorite == 3) {
+        if(isFavoriteThree()) {
             clearFavorite(binding)
         } else {
             binding.animationView1.playAnimation()
             binding.animationView2.playAnimation()
             binding.animationView3.playAnimation()
-            viewFavorite = 3
+            setFavoriteThree()
             companyDao.updateFavorite(company.id, viewFavorite)
         }
     }
+    private fun isFavoriteThree() = (viewFavorite == 3)
+    private fun setFavoriteThree() { viewFavorite = 3 }
 
     private fun clearFavorite(binding: ItemCompanyBinding) {
         resetFavoriteAnimation(binding)

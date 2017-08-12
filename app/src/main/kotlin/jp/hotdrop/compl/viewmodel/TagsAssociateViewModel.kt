@@ -56,13 +56,14 @@ class TagsAssociateViewModel @Inject constructor(val context: Context): ViewMode
     }
 
     fun update() {
-        if(companyId != NOT_INIT_COMPANY_ID) {
-            val tags = viewModels
-                    .filter{ it.isAssociated }
-                    .map{ it.tag }
-                    .toList()
-            companyDao.associateTagByCompany(companyId, tags)
+        if(companyId == NOT_INIT_COMPANY_ID) {
+            return
         }
+        val tags = viewModels
+                .filter{ it.isAssociated }
+                .map{ it.tag }
+                .toList()
+        companyDao.associateTagByCompany(companyId, tags)
     }
 
     fun destroy() {
