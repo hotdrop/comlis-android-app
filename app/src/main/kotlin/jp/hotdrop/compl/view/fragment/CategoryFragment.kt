@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Spinner
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -87,6 +88,7 @@ class CategoryFragment : BaseFragment() {
             it.setHasFixedSize(true)
             it.adapter = adapter
             it.layoutManager = LinearLayoutManager(activity)
+            it.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_fall_down)
         }
 
         helper.attachToRecyclerView(binding.recyclerView)
