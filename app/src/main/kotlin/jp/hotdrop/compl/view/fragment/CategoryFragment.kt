@@ -106,6 +106,10 @@ class CategoryFragment : BaseFragment() {
         compositeDisposable.clear()
     }
 
+    fun scrollUpToTop() {
+        binding.recyclerView.smoothScrollToPosition(0)
+    }
+
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
         helper.startDrag(viewHolder)
     }
@@ -167,6 +171,7 @@ class CategoryFragment : BaseFragment() {
                     viewModel.register(editText.toText(), spinner.getSelection())
                     viewModel.goneEmptyMessageOnScreen()
                     adapter.add(viewModel.getViewModel(editText.text.toString()))
+                    scrollUpToTop()
                     dialogInterface.dismiss()
                 })
                 .create()
