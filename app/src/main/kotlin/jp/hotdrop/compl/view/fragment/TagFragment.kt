@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Spinner
 import com.google.android.flexbox.FlexboxLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -86,6 +87,7 @@ class TagFragment: BaseFragment() {
             it.layoutManager = FlexboxLayoutManager()
             it.adapter = adapter
             it.addItemDecoration(helper)
+            it.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.tag_layout)
         }
 
         helper.attachToRecyclerView(binding.recyclerView)
