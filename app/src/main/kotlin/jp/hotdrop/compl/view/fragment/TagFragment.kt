@@ -84,7 +84,7 @@ class TagFragment: BaseFragment() {
         helper = ItemTouchHelper(TagItemTouchHelperCallback(adapter))
         binding.recyclerView.let {
             it.setHasFixedSize(true)
-            it.layoutManager = FlexboxLayoutManager()
+            it.layoutManager = FlexboxLayoutManager(context)
             it.adapter = adapter
             it.addItemDecoration(helper)
             it.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.tag_layout)
@@ -233,9 +233,8 @@ class TagFragment: BaseFragment() {
             binding.cardView.setOnClickListener { showUpdateDialog(binding.viewModel) }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemTagBinding> {
-            return BindingHolder(context, parent, R.layout.item_tag)
-        }
+        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemTagBinding> =
+                BindingHolder(context, parent, R.layout.item_tag)
 
         fun refresh(vm: TagViewModel) {
             val position = adapter.getItemPosition(vm) ?: return
@@ -262,7 +261,7 @@ class TagFragment: BaseFragment() {
      */
     inner class TagItemTouchHelperCallback(val adapter: FlexItemAdapter): ItemTouchHelper.Callback() {
 
-        val NONE_POSITION = -1
+        private val NONE_POSITION = -1
         var fromPosition = NONE_POSITION
         var toPosition = NONE_POSITION
 

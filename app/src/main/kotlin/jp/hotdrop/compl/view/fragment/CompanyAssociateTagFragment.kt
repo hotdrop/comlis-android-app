@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import com.google.android.flexbox.FlexboxLayoutManager
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.FragmentCompanyAssociateTagBinding
@@ -67,8 +68,9 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
 
         binding.recyclerView.let {
             it.setHasFixedSize(true)
-            it.layoutManager = FlexboxLayoutManager()
+            it.layoutManager = FlexboxLayoutManager(context)
             it.adapter = adapter
+            it.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.tag_layout)
         }
 
         binding.fabDone.run {

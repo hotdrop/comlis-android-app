@@ -3,6 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:animation="@anim/display_tag_item"
     android:animationOrder="normal"
-    android:columnDelay="10%"
-    android:rowDelay="10%"
+    android:columnDelay="20%"
+    android:rowDelay="20%"
     android:direction="top_to_bottom|left_to_right" />
