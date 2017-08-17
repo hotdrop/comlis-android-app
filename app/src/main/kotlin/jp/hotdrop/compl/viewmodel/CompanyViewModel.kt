@@ -27,7 +27,8 @@ class CompanyViewModel(private var company: Company,
     lateinit var viewJobEvaluation: String
     lateinit var viewEmployeesNum: String
     lateinit var viewSalary: String
-    var viewFavorite = 0
+
+    private var viewFavorite = 0
 
     lateinit var colorName: String
     lateinit var viewTags: List<Tag>
@@ -130,7 +131,7 @@ class CompanyViewModel(private var company: Company,
         favorites.playAnimation(viewFavorite)
     }
 
-    fun updateFavorite(favoriteNum: Int) {
+    private fun updateFavorite(favoriteNum: Int) {
         viewFavorite = favoriteNum
         companyDao.updateFavorite(company.id, favoriteNum)
     }

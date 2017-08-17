@@ -56,12 +56,14 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     var viewDoingBusiness = ""
     var viewWantBusiness = ""
     var viewNote = ""
-    var viewFavorite = 0
-    var originalFavorite = 0
-    var viewRegisterDate = ""
-    var viewUpdateDate = ""
 
-    lateinit var jobEvaluation: JobEvaluation
+    private var viewFavorite = 0
+    private var originalFavorite = 0
+
+    var viewRegisterDate = ""
+
+    private lateinit var jobEvaluation: JobEvaluation
+
     lateinit var colorName: String
     lateinit var viewTags: List<Tag>
     lateinit var favorites: FavoriteStars
@@ -101,7 +103,9 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         viewFavorite = company.favorite
 
         viewRegisterDate = company.registerDate?.format() ?: EMPTY_DATE
-        viewUpdateDate = company.updateDate?.format() ?: EMPTY_DATE
+
+        // updateDate is no use
+        // company.updateDate?.format() ?: EMPTY_DATE
 
         colorName = categoryDao.find(categoryId).colorType
         viewTags = companyDao.findByTag(id)
@@ -253,13 +257,13 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         binding.fabEdit.isClickable = false
     }
 
-    private fun ImageView.visibleIcon(): Unit {
+    private fun ImageView.visibleIcon() {
         visibility = View.VISIBLE
         startAnimation(editIconOpenAnimation)
         isClickable = true
     }
 
-    private fun ImageView.goneIcon(): Unit {
+    private fun ImageView.goneIcon() {
         visibility = View.GONE
         startAnimation(editIconCloseAnimation)
         isClickable = false
@@ -334,7 +338,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         favorites.playAnimation(viewFavorite)
     }
 
-    fun updateFavorite(favoriteNum: Int) {
+    private fun updateFavorite(favoriteNum: Int) {
         viewFavorite = favoriteNum
         companyDao.updateFavorite(id, favoriteNum)
     }

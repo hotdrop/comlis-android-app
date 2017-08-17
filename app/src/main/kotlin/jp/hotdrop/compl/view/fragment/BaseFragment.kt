@@ -86,7 +86,7 @@ abstract class BaseFragment: Fragment() {
             ErrorType.LoadFailureTags -> context.getString(R.string.load_failure_tags)
             ErrorType.LoadFailureSearch -> context.getString(R.string.load_failure_search)
         }
-        // DeployGateに流す処理、本当はビルドタイプを分けてデバッグに記述すべき。そもそもbuild.gradleに・・
+        // TODO DeployGateに流す処理、本当はビルドタイプを分けてデバッグに記述すべき。そもそもbuild.gradleに・・
         DeployGate.logError(msg + " throwable message =" + e.message)
         Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()
     }

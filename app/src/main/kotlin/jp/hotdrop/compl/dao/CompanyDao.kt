@@ -179,10 +179,6 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
                     .tagIdEq(tagId)
                     .isEmpty
 
-    fun maxOrder() =
-            companyRelation().selector()
-                    .maxByViewOrder() ?: 0
-
     fun exist(name: String) =
             !companyRelation().selector()
                     .nameEq(name)
@@ -193,6 +189,10 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
                     .nameEq(name)
                     .idNotEq(id)
                     .isEmpty
+
+    private fun maxOrder() =
+            companyRelation().selector()
+                    .maxByViewOrder() ?: 0
 
     private fun companyRelation() =
             orma.relationOfCompany()

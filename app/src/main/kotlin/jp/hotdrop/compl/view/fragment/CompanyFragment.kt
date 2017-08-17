@@ -201,7 +201,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
             super.onTabSelected(tab)
 
             tab ?: return
-            tabName = adapter.getPageTitle(tab.position).toString()
+            tabName = adapter.getPageTitle(tab.position)
         }
 
         override fun onTabReselected(tab: TabLayout.Tab?) {

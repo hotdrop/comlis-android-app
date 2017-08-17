@@ -2,18 +2,19 @@ package jp.hotdrop.compl.view.parts
 
 import com.airbnb.lottie.LottieAnimationView
 
-class FavoriteStars(val animationView1: LottieAnimationView,
-                    val animationView2: LottieAnimationView,
-                    val animationView3: LottieAnimationView) {
+class FavoriteStars(private val animationView1: LottieAnimationView,
+                    private val animationView2: LottieAnimationView,
+                    private val animationView3: LottieAnimationView) {
 
     /**
      * 拡張関数
      */
-    fun LottieAnimationView.reset() {
+    private fun LottieAnimationView.reset() {
         this.cancelAnimation()
         this.progress = 0.toFloat()
     }
-    fun LottieAnimationView.setFavoriteStar(): LottieAnimationView = this.apply {
+
+    private fun LottieAnimationView.setFavoriteStar(): LottieAnimationView = this.apply {
         setAnimation("FavoriteStar.json", LottieAnimationView.CacheStrategy.Weak)
     }
 
