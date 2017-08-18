@@ -13,14 +13,14 @@
 * Android studio 2.3.3
 
 # Library
-* Flexbox-layout 0.3.0-alpha3(RecyclerView対応版)
-* lottie 1.5.3
-* Android-Orma 4.2.5
 * RxKotlin 2.1.0
 * RxAndroid 2.0.1
-* RxJava 2.1.1
+* RxJava 2.1.3
 * RxBinding-kotlin 2.0.0
+* Flexbox-layout 0.3.0-alpha4(RecyclerView対応版)
 * dagger 2.11
+* lottie 1.5.3
+* Android-Orma 4.2.5
 * deploygate
 
 # Features
