@@ -153,9 +153,8 @@ class CompanyTabFragment: BaseFragment() {
     inner class Adapter(context: Context):
             ArrayRecyclerAdapter<CompanyViewModel, BindingHolder<ItemCompanyBinding>>(context) {
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCompanyBinding> {
-            return BindingHolder(context, parent, R.layout.item_company)
-        }
+        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCompanyBinding> =
+                BindingHolder(context, parent, R.layout.item_company)
 
         override fun onBindViewHolder(holder: BindingHolder<ItemCompanyBinding>?, position: Int) {
             holder ?: return
@@ -200,17 +199,22 @@ class CompanyTabFragment: BaseFragment() {
         }
 
         fun remove(companyId: Int) {
-            list.forEachIndexed { index, vm ->
-                if(vm.getId() == companyId) {
-                    adapter.removeItem(index)
-                    notifyItemRemoved(index)
+            for (idx in 0..adapter.itemCount) {
+                val vm = adapter.getItem(idx)
+                if (vm.getId() == companyId) {
+                    adapter.removeItem(idx)
+                    notifyItemRemoved(idx)
                     return
                 }
             }
         }
 
         fun getCompanyIdsAsCurrentOrder() =
-            list.map { vm -> vm.getId() }.toMutableList().reversed()
+                (0 until adapter.itemCount)
+                        .map { adapter.getItem(it) }
+                        .map { it.getId() }
+                        .toMutableList()
+                        .reversed()
 
         private fun initFavoriteEvent(binding: ItemCompanyBinding) {
 

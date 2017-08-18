@@ -8,7 +8,7 @@ import java.util.*
 abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val context: Context)
     : RecyclerView.Adapter<VH>() {
 
-    protected var list: MutableList<T> = mutableListOf()
+    private var list: MutableList<T> = mutableListOf()
 
     constructor(context: Context, list: MutableList<T>): this(context) {
         this.list = list
@@ -22,6 +22,8 @@ abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val 
         val idx = list.indexOf(item)
         return if(idx == -1) null else idx
     }
+
+    fun iterator(): Iterator<T> = list.iterator()
 
     fun addItem(item: T) {
         list.add(item)
@@ -47,7 +49,6 @@ abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val 
         Collections.swap(list, fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
     }
-
 
     /**
      * flexbox-layoutで上下左右のドラッグができるリストはこっちのonItemMovedメソッド使う

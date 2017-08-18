@@ -112,11 +112,11 @@ class TagFragment: BaseFragment() {
      * ダイアログで、入力した分類名に応じてボタンと注意書きの制御を行う拡張関数
      */
     private val REGISTER_MODE: Int = -1
-    fun AppCompatEditText.changeTextListener(view: View,
-                                             dialog: AlertDialog,
-                                             editText: AppCompatEditText,
-                                             tagId: Int = REGISTER_MODE,
-                                             originName: String = "") =
+    private fun AppCompatEditText.changeTextListener(view: View,
+                                                     dialog: AlertDialog,
+                                                     editText: AppCompatEditText,
+                                                     tagId: Int = REGISTER_MODE,
+                                                     originName: String = "") =
             addTextChangedListener(object: TextWatcher {
 
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/*no op*/}
@@ -253,7 +253,10 @@ class TagFragment: BaseFragment() {
             notifyItemRemoved(position)
         }
 
-        fun getModels(): List<Tag> = list.map{ it.tag }.toList()
+        fun getModels(): List<Tag> =
+                (0 until adapter.itemCount)
+                    .map { adapter.getItem(it) }
+                    .map { it.tag }
     }
 
     /**
@@ -262,8 +265,8 @@ class TagFragment: BaseFragment() {
     inner class TagItemTouchHelperCallback(val adapter: FlexItemAdapter): ItemTouchHelper.Callback() {
 
         private val NONE_POSITION = -1
-        var fromPosition = NONE_POSITION
-        var toPosition = NONE_POSITION
+        private var fromPosition = NONE_POSITION
+        private var toPosition = NONE_POSITION
 
         override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
             val dragFrags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
