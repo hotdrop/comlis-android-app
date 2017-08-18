@@ -16,9 +16,8 @@ class CompanyDaoTest {
     private lateinit var companyDao: CompanyDao
     private lateinit var tagDao: TagDao
 
-    private fun getContext(): Context {
-        return InstrumentationRegistry.getTargetContext()
-    }
+    private fun getContext(): Context =
+            InstrumentationRegistry.getTargetContext()
 
     @Before
     fun setup() {
@@ -55,9 +54,10 @@ class CompanyDaoTest {
 
         val company1FromDB = companiesFromDB[0]
         val company1AttachTag = mutableListOf(tagsFromDB[0], tagsFromDB[1])
+        companyDao.associateTagByCompany(company1FromDB.id, company1AttachTag)
+
         val company2FromDB = companiesFromDB[1]
         val company2AttachTag = mutableListOf(tagsFromDB[1], tagsFromDB[2], tagsFromDB[3])
-        companyDao.associateTagByCompany(company1FromDB.id, company1AttachTag)
         companyDao.associateTagByCompany(company2FromDB.id, company2AttachTag)
 
         val company1Tags = companyDao.findByTag(company1FromDB.id)
@@ -70,14 +70,17 @@ class CompanyDaoTest {
         val company = createCompany(testName)
         companyDao.insert(company)
 
-        val companyFromDB = companyDao.findAll().blockingGet().toList()
-                .filter { c -> c.name == testName }
-                .first()
+        val companyFromDB = companyDao.findAll()
+                .blockingGet()
+                .toList()
+                .first { c -> c.name == testName }
 
         assertCompareCompany(company, companyFromDB)
         println("viewOrder=${companyFromDB.viewOrder}")
+
         assert(companyFromDB.registerDate != null)
         println("register date = ${companyFromDB.registerDate}")
+
         assert(companyFromDB.updateDate == null)
         companyDao.delete(companyFromDB.id)
     }
@@ -88,9 +91,11 @@ class CompanyDaoTest {
         val company = createCompany(testName)
         companyDao.insert(company)
 
-        val companyChangeData = companyDao.findAll().blockingGet().toList()
-                .filter { c -> c.name == testName }
-                .first().apply {
+        val companyChangeData = companyDao.findAll()
+                .blockingGet()
+                .toList()
+                .first { c -> c.name == testName }
+                .apply {
                     categoryId = 2
                     overview = "update overview"
                     employeesNum = 499

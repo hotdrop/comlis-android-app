@@ -16,9 +16,8 @@ class TagDaoTest {
     private lateinit var tagDao: TagDao
     private lateinit var companyDao: CompanyDao
 
-    private fun getContext(): Context {
-        return InstrumentationRegistry.getTargetContext()
-    }
+    private fun getContext(): Context =
+            InstrumentationRegistry.getTargetContext()
 
     @Before
     fun setup() {
@@ -42,10 +41,12 @@ class TagDaoTest {
     fun findInIdTest() {
         val tagNames = mutableListOf("test1", "test2", "test3", "test4", "test5")
         tagNames.forEach { tagDao.insert(createTag(it)) }
+
         val tags = tagDao.findAll().blockingGet().toList()
         val ids = tags.filter{ tag -> tag.id%2 == 0 }.map { it.id }
         val tagByEvenNumberId = tagDao.findInIds(ids)
         assert(ids.size == 3)
+
         tagByEvenNumberId.forEach { tag ->
             assert(tagNames.contains(tag.name))
         }
@@ -75,6 +76,7 @@ class TagDaoTest {
             }
             assert(tagDao.countByAttachCompany(tag) == 1)
         }
+
         tagDao.find(threeAttachTagName)?.also { tag ->
             companies.takeLast(3).forEach {
                 companyDao.associateTagByCompany(it.id, mutableListOf(tag))

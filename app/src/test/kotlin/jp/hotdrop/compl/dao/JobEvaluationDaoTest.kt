@@ -14,9 +14,8 @@ class JobEvaluationDaoTest {
 
     private lateinit var dao: JobEvaluationDao
 
-    private fun getContext(): Context {
-        return InstrumentationRegistry.getTargetContext()
-    }
+    private fun getContext(): Context =
+            InstrumentationRegistry.getTargetContext()
 
     @Before
     fun setup() {
