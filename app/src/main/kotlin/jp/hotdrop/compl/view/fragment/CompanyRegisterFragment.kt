@@ -98,7 +98,9 @@ class CompanyRegisterFragment : BaseFragment() {
         val salaryHighObservable = binding.txtSalaryHigh.createEmptyOrNumberObservable()
         Observables.combineLatest(salaryLowObservable, salaryHighObservable,
                     { isLow, isHigh -> isLow && isHigh })
-                .subscribeBy { viewSalaryAttention(it) }
+                .subscribeBy(
+                        onNext = { viewSalaryAttention(it) }
+                )
                 .addTo(compositeDisposable)
 
         // combineFunctionの引数は、スコープが短いことと各々のBoolean値を識別する必要がないため1文字にする

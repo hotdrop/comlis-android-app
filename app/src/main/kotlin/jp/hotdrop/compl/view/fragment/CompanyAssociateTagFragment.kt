@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import com.google.android.flexbox.FlexboxLayoutManager
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.FragmentCompanyAssociateTagBinding
@@ -67,8 +68,9 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
 
         binding.recyclerView.let {
             it.setHasFixedSize(true)
-            it.layoutManager = FlexboxLayoutManager()
+            it.layoutManager = FlexboxLayoutManager(context)
             it.adapter = adapter
+            it.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.tag_layout)
         }
 
         binding.fabDone.run {
@@ -95,9 +97,11 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
 
     /**
      * このFragmentクラスだけObservableで変更を通知する。
-     * 本当はリストを使用している画面は全てこの形式にしたかったのだが、CardViewをタップで並び順変更できるようにしている画面が多数であ流。
+     *
+     * 本当はリストを使用している画面は全てこの形式にしたかったのだが、CardViewをタップで並び順変更できるようにしている画面が多数存在する。
      * これらの画面（具体的にはItemTouchHelperCallbackを実装している画面）でBaseObservableを継承したViewModel経由でリスト変更通知を
      * 実装すると画面がチカチカしたり、重かったりとうまくいかなかった。（モーションのブレ、残像、アイテムの分身なども発生した）
+     *
      * 本当はこれをやると設計が不統一になって可読性やメンテナンス性が下がるのでよくないが、このアプリはプロダクトではないしそもそも
      * 勉強を兼ねてる個人向けなのでこの画面でのみ適用する。
      */

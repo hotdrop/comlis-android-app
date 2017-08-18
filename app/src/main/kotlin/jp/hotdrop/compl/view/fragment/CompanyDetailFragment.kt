@@ -99,7 +99,7 @@ class CompanyDetailFragment: BaseFragment() {
 
     private fun canPassResult(requestCode: Int, resultCode: Int, refreshMode: Int): Boolean =
             (resultCode == Activity.RESULT_OK &&
-                    (Request.values().filter { it.code == requestCode }.isNotEmpty()) &&
+                    (Request.values().any { it.code == requestCode }) &&
                     (refreshMode == UPDATE || refreshMode == CHANGE_CATEGORY))
 
     private fun getChangeCategoryIntent() = Intent().apply {

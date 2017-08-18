@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Spinner
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -87,6 +88,7 @@ class CategoryFragment : BaseFragment() {
             it.setHasFixedSize(true)
             it.adapter = adapter
             it.layoutManager = LinearLayoutManager(activity)
+            it.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_fall_down)
         }
 
         helper.attachToRecyclerView(binding.recyclerView)
@@ -106,19 +108,23 @@ class CategoryFragment : BaseFragment() {
         compositeDisposable.clear()
     }
 
+    private fun scrollUpToTop() {
+        binding.recyclerView.smoothScrollToPosition(0)
+    }
+
     fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
         helper.startDrag(viewHolder)
     }
 
     /**
-     * ダイアログで、入力した分類名に応じてボタンと注意書きの制御を行う拡張関数
+     * ダイアログにおいて、入力した分類名に応じてボタンと注意書きの制御を行う拡張関数
      */
     private val REGISTER_MODE: Int = -1
-    fun AppCompatEditText.changeTextListener(view: View,
-                                             dialog: AlertDialog,
-                                             editText: AppCompatEditText,
-                                             categoryId: Int = REGISTER_MODE,
-                                             originName: String = "") =
+    private fun AppCompatEditText.changeTextListener(view: View,
+                                                     dialog: AlertDialog,
+                                                     editText: AppCompatEditText,
+                                                     categoryId: Int = REGISTER_MODE,
+                                                     originName: String = "") =
             addTextChangedListener(object: TextWatcher {
 
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/*no op*/}
@@ -167,6 +173,7 @@ class CategoryFragment : BaseFragment() {
                     viewModel.register(editText.toText(), spinner.getSelection())
                     viewModel.goneEmptyMessageOnScreen()
                     adapter.add(viewModel.getViewModel(editText.text.toString()))
+                    scrollUpToTop()
                     dialogInterface.dismiss()
                 })
                 .create()
@@ -220,7 +227,6 @@ class CategoryFragment : BaseFragment() {
     }
 
     /**
-     * アダプター
      * ViewModelでBaseObservableを継承し、ObservableListを使用してCallbackで変更を通知していたが
      * ItemTouchHelperとの連携がうまく行かなかったのでやめた。
      */
@@ -264,12 +270,13 @@ class CategoryFragment : BaseFragment() {
         }
 
         fun getCategoryIdsAsCurrentOrder(): List<Int> =
-                list.map {vm -> vm.getId()}.toMutableList().reversed()
+                (0 until adapter.itemCount)
+                        .map { adapter.getItem(it) }
+                        .map { it.getId() }
+                        .toMutableList()
+                        .reversed()
     }
 
-    /**
-     * アイテム選択時のコールバッククラス
-     */
     inner class CategoryItemTouchHelperCallback(val adapter: Adapter): ItemTouchHelper.Callback() {
 
         override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {

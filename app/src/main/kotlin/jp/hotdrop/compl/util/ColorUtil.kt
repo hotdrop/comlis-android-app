@@ -26,29 +26,23 @@ object ColorUtil {
         colorMap.put(PURPLE_NAME, ColorData(R.color.purple, R.color.light_purple, R.color.dark_purple, R.color.transparent_light_purple))
     }
 
-    fun getNames(): List<String> {
-        return colorMap.keys.toList()
-    }
+    fun getNames() = colorMap.keys.toList()
 
     @ColorRes
-    fun getResNormal(name: String, context: Context): Int {
-        return ContextCompat.getColor(context, colorMap[name]!!.normal)
-    }
+    fun getResNormal(name: String, context: Context) =
+            ContextCompat.getColor(context, colorMap[name]!!.normal)
 
     @ColorRes
-    fun getResDark(name: String, context: Context): Int {
-        return ContextCompat.getColor(context, colorMap[name]!!.dark)
-    }
+    fun getResDark(name: String, context: Context) =
+            ContextCompat.getColor(context, colorMap[name]!!.dark)
 
     @ColorRes
-    fun getResLight(name: String, context: Context): Int {
-        return ContextCompat.getColor(context, colorMap[name]!!.light)
-    }
+    fun getResLight(name: String, context: Context) =
+            ContextCompat.getColor(context, colorMap[name]!!.light)
 
     @ColorRes
-    fun getResTransparent(name: String, context: Context): Int {
-        return ContextCompat.getColor(context, colorMap[name]!!.transparent)
-    }
+    fun getResTransparent(name: String, context: Context) =
+            ContextCompat.getColor(context, colorMap[name]!!.transparent)
 
     fun getImageCover(name: String, context: Context): Drawable {
         when(name) {

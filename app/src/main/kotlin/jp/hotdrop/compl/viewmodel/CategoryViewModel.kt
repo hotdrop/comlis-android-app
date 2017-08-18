@@ -6,13 +6,10 @@ import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.util.ColorUtil
 
 class CategoryViewModel(var category: Category,
-                        var registerCompanyCount: Int,
+                        private var registerCompanyCount: Int,
                         private val context: Context): ViewModel() {
 
     var viewName = category.name
-
-    override fun equals(other: Any?) =
-            (other as CategoryViewModel).category.id == category.id || super.equals(other)
 
     fun isRegisterCompanyInCategory() = registerCompanyCount > 0
 
@@ -30,5 +27,16 @@ class CategoryViewModel(var category: Category,
         category = vm.category
         viewName = vm.viewName
         registerCompanyCount = vm.registerCompanyCount
+    }
+
+    override fun equals(other: Any?) =
+            (other as CategoryViewModel).category.id == category.id || super.equals(other)
+
+    override fun hashCode(): Int {
+        var result = category.hashCode()
+        result = 31 * result + category.id.hashCode()
+        result = 31 * result + context.hashCode()
+        result = 31 * result + viewName.hashCode()
+        return result
     }
 }

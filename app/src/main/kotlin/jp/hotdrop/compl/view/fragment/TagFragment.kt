@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Spinner
 import com.google.android.flexbox.FlexboxLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -83,9 +84,10 @@ class TagFragment: BaseFragment() {
         helper = ItemTouchHelper(TagItemTouchHelperCallback(adapter))
         binding.recyclerView.let {
             it.setHasFixedSize(true)
-            it.layoutManager = FlexboxLayoutManager()
+            it.layoutManager = FlexboxLayoutManager(context)
             it.adapter = adapter
             it.addItemDecoration(helper)
+            it.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.tag_layout)
         }
 
         helper.attachToRecyclerView(binding.recyclerView)
@@ -110,11 +112,11 @@ class TagFragment: BaseFragment() {
      * ダイアログで、入力した分類名に応じてボタンと注意書きの制御を行う拡張関数
      */
     private val REGISTER_MODE: Int = -1
-    fun AppCompatEditText.changeTextListener(view: View,
-                                             dialog: AlertDialog,
-                                             editText: AppCompatEditText,
-                                             tagId: Int = REGISTER_MODE,
-                                             originName: String = "") =
+    private fun AppCompatEditText.changeTextListener(view: View,
+                                                     dialog: AlertDialog,
+                                                     editText: AppCompatEditText,
+                                                     tagId: Int = REGISTER_MODE,
+                                                     originName: String = "") =
             addTextChangedListener(object: TextWatcher {
 
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {/*no op*/}
@@ -231,9 +233,8 @@ class TagFragment: BaseFragment() {
             binding.cardView.setOnClickListener { showUpdateDialog(binding.viewModel) }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemTagBinding> {
-            return BindingHolder(context, parent, R.layout.item_tag)
-        }
+        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemTagBinding> =
+                BindingHolder(context, parent, R.layout.item_tag)
 
         fun refresh(vm: TagViewModel) {
             val position = adapter.getItemPosition(vm) ?: return
@@ -252,7 +253,10 @@ class TagFragment: BaseFragment() {
             notifyItemRemoved(position)
         }
 
-        fun getModels(): List<Tag> = list.map{ it.tag }.toList()
+        fun getModels(): List<Tag> =
+                (0 until adapter.itemCount)
+                    .map { adapter.getItem(it) }
+                    .map { it.tag }
     }
 
     /**
@@ -260,9 +264,9 @@ class TagFragment: BaseFragment() {
      */
     inner class TagItemTouchHelperCallback(val adapter: FlexItemAdapter): ItemTouchHelper.Callback() {
 
-        val NONE_POSITION = -1
-        var fromPosition = NONE_POSITION
-        var toPosition = NONE_POSITION
+        private val NONE_POSITION = -1
+        private var fromPosition = NONE_POSITION
+        private var toPosition = NONE_POSITION
 
         override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
             val dragFrags: Int = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT

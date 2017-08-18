@@ -72,9 +72,7 @@ class SearchFragment: BaseFragment() {
         menu?.findItem(R.id.menu_search).let {
             MenuItemCompat.setOnActionExpandListener(it, object: MenuItemCompat.OnActionExpandListener {
 
-                override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                    return true
-                }
+                override fun onMenuItemActionExpand(item: MenuItem?) = true
 
                 override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
                     activity?.finish()
@@ -93,9 +91,7 @@ class SearchFragment: BaseFragment() {
 
             searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
 
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return onQueryTextChange(query)
-                }
+                override fun onQueryTextSubmit(query: String?) = onQueryTextChange(query)
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     if(newText == null || newText.isBlank()) {
@@ -141,9 +137,8 @@ class SearchFragment: BaseFragment() {
     inner class Adapter(context: Context)
         : ArrayRecyclerAdapter<ItemSearchResultViewModel, BindingHolder<ItemSearchResultBinding>>(context) {
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemSearchResultBinding> {
-            return BindingHolder(context, parent, R.layout.item_search_result)
-        }
+        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemSearchResultBinding> =
+                BindingHolder(context, parent, R.layout.item_search_result)
 
         override fun onBindViewHolder(holder: BindingHolder<ItemSearchResultBinding>?, position: Int) {
             holder ?: return

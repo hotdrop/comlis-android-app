@@ -18,7 +18,7 @@ class MainApplication: Application() {
                 .build()
 
         if (!DeployGate.isInitialized()) {
-            DeployGate.install(this, null, true);
+            DeployGate.install(this, null, true)
         }
     }
 
