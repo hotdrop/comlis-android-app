@@ -31,4 +31,12 @@ class CategoryViewModel(var category: Category,
 
     override fun equals(other: Any?) =
             (other as CategoryViewModel).category.id == category.id || super.equals(other)
+
+    override fun hashCode(): Int {
+        var result = category.hashCode()
+        result = 31 * result + category.id.hashCode()
+        result = 31 * result + context.hashCode()
+        result = 31 * result + viewName.hashCode()
+        return result
+    }
 }

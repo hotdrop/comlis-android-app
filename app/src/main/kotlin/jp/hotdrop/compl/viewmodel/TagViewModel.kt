@@ -11,9 +11,6 @@ class TagViewModel(var tag: Tag,
 
     var viewName = tag.name
 
-    override fun equals(other: Any?) =
-            ((other as TagViewModel).getId() == tag.id || super.equals(other))
-
     fun isAttachCompany() = attachCompanyCount > 0
 
     @ColorRes
@@ -30,6 +27,17 @@ class TagViewModel(var tag: Tag,
         this.tag = vm.tag
         viewName = vm.viewName
         attachCompanyCount = vm.attachCompanyCount
+    }
+
+    override fun equals(other: Any?) =
+            ((other as TagViewModel).getId() == tag.id || super.equals(other))
+
+    override fun hashCode(): Int {
+        var result = tag.hashCode()
+        result = 31 * result + attachCompanyCount
+        result = 31 * result + context.hashCode()
+        result = 31 * result + viewName.hashCode()
+        return result
     }
 
 }

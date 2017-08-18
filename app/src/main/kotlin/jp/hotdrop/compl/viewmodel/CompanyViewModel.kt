@@ -91,7 +91,6 @@ class CompanyViewModel(private var company: Company,
     @ColorRes
     fun getColorRes() = ColorUtil.getResNormal(colorName, context)
 
-    override fun equals(other: Any?) = (other as CompanyViewModel).company.id == company.id || super.equals(other)
 
     fun getId() = company.id
 
@@ -134,5 +133,29 @@ class CompanyViewModel(private var company: Company,
     private fun updateFavorite(favoriteNum: Int) {
         viewFavorite = favoriteNum
         companyDao.updateFavorite(company.id, favoriteNum)
+    }
+
+    override fun equals(other: Any?) = (other as CompanyViewModel).company.id == company.id || super.equals(other)
+
+    override fun hashCode(): Int {
+        var result = company.hashCode()
+        result = 31 * result + company.id.hashCode()
+        result = 31 * result + companyDao.hashCode()
+        result = 31 * result + categoryDao.hashCode()
+        result = 31 * result + jobEvaluationDao.hashCode()
+        result = 31 * result + (JOB_EVALUATION_UNIT?.hashCode() ?: 0)
+        result = 31 * result + (EMPLOYEES_NUM_UNIT?.hashCode() ?: 0)
+        result = 31 * result + (SALARY_UNIT?.hashCode() ?: 0)
+        result = 31 * result + (SALARY_RANGE_MARK?.hashCode() ?: 0)
+        result = 31 * result + viewName.hashCode()
+        result = 31 * result + viewWantedJob.hashCode()
+        result = 31 * result + viewJobEvaluation.hashCode()
+        result = 31 * result + viewEmployeesNum.hashCode()
+        result = 31 * result + viewSalary.hashCode()
+        result = 31 * result + viewFavorite
+        result = 31 * result + colorName.hashCode()
+        result = 31 * result + viewTags.hashCode()
+        result = 31 * result + favorites.hashCode()
+        return result
     }
 }
