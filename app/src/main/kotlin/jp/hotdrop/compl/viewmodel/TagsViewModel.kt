@@ -5,14 +5,14 @@ import android.databinding.Bindable
 import android.view.View
 import io.reactivex.Single
 import jp.hotdrop.compl.BR
-import jp.hotdrop.compl.dao.TagDao
 import jp.hotdrop.compl.model.Tag
+import jp.hotdrop.compl.repository.tag.TagRepository
 import javax.inject.Inject
 
 class TagsViewModel @Inject constructor(val context: Context): ViewModel() {
 
     @Inject
-    lateinit var tagDao: TagDao
+    lateinit var tagRepository: TagRepository
 
     @get:Bindable
     var emptyMessageVisibility = View.GONE
@@ -22,20 +22,22 @@ class TagsViewModel @Inject constructor(val context: Context): ViewModel() {
         }
 
     fun getData(): Single<List<TagViewModel>> =
-            tagDao.findAll()
+            tagRepository.findAll()
                     .map { tags ->
                         tags.map {
-                            val attachCnt = tagDao.countByAttachCompany(it)
+                            val attachCnt = tagRepository.countByAttachCompany(it)
                             TagViewModel(it, attachCnt, context)
                         }
                     }
 
-    fun existName(name: String) = tagDao.exist(name)
+    fun existName(name: String) =
+            tagRepository.exist(name)
 
-    fun existNameExclusionId(name: String, id: Int) = tagDao.existExclusionId(name, id)
+    fun existNameExclusionId(name: String, id: Int) =
+            tagRepository.existExclusionId(name, id)
 
     fun register(name: String, colorType: String) {
-        tagDao.insert(Tag().apply {
+        tagRepository.insert(Tag().apply {
             this.name = name
             this.colorType = colorType
         })
@@ -46,21 +48,21 @@ class TagsViewModel @Inject constructor(val context: Context): ViewModel() {
             name = newName
             colorType = newColorType
         }
-        tagDao.update(t)
+        tagRepository.update(t)
     }
 
     fun getViewModel(name: String): TagViewModel? =
-        tagDao.find(name)?.let {
-            val attachCnt = tagDao.countByAttachCompany(it)
+            tagRepository.find(name)?.let {
+            val attachCnt = tagRepository.countByAttachCompany(it)
             TagViewModel(it, attachCnt, context)
         }
 
     fun updateItemOrder(tags: List<Tag>) {
-        tagDao.updateAllOrder(tags)
+        tagRepository.updateAllOrder(tags)
     }
 
     fun delete(vm: TagViewModel) {
-        tagDao.delete(vm.tag)
+        tagRepository.delete(vm.tag)
     }
 
     fun visibilityEmptyMessageOnScreen() {

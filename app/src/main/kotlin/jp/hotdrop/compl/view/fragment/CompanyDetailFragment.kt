@@ -17,7 +17,6 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
 import jp.hotdrop.compl.databinding.ItemTagAssociateBinding
 import jp.hotdrop.compl.model.Tag
@@ -33,8 +32,6 @@ class CompanyDetailFragment: BaseFragment() {
     lateinit var viewModel: CompanyDetailViewModel
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
-    @Inject
-    lateinit var companyDao: CompanyDao
 
     private lateinit var binding: FragmentCompanyDetailBinding
     private val companyId by lazy { arguments.getInt(EXTRA_COMPANY_ID) }

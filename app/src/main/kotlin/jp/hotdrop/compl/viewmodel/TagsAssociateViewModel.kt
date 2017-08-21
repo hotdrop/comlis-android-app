@@ -8,16 +8,16 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import jp.hotdrop.compl.dao.CompanyDao
-import jp.hotdrop.compl.dao.TagDao
+import jp.hotdrop.compl.repository.company.CompanyRepository
+import jp.hotdrop.compl.repository.tag.TagRepository
 import javax.inject.Inject
 
 class TagsAssociateViewModel @Inject constructor(val context: Context): ViewModel() {
 
     @Inject
-    lateinit var tagDao: TagDao
+    lateinit var tagRepository: TagRepository
     @Inject
-    lateinit var companyDao: CompanyDao
+    lateinit var companyRepository: CompanyRepository
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
 
@@ -32,10 +32,10 @@ class TagsAssociateViewModel @Inject constructor(val context: Context): ViewMode
     }
 
     fun loadData(companyId: Int) {
-        tagDao.findAll()
+        tagRepository.findAll()
                 .map { tags ->
                     tags.map {
-                        val isAssociatedWith = companyDao.hasAssociateTag(companyId, it.id)
+                        val isAssociatedWith = companyRepository.hasAssociateTag(companyId, it.id)
                         TagAssociateViewModel(it, isAssociatedWith, context)
                     }
                 }
@@ -62,7 +62,7 @@ class TagsAssociateViewModel @Inject constructor(val context: Context): ViewMode
                 .filter{ it.isAssociated }
                 .map{ it.tag }
                 .toList()
-        companyDao.associateTagByCompany(companyId, tags)
+        companyRepository.associateTagByCompany(companyId, tags)
     }
 
     fun destroy() {

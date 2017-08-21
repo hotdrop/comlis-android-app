@@ -1,13 +1,12 @@
-package jp.hotdrop.compl.dao
+package jp.hotdrop.compl.repository.tag
 
 import io.reactivex.Single
 import jp.hotdrop.compl.model.Tag
+import jp.hotdrop.compl.repository.OrmaHolder
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class TagDao @Inject constructor(ormaHolder: OrmaHolder) {
+class TagLocalDataSource @Inject constructor(ormaHolder: OrmaHolder) {
 
     private val orma = ormaHolder.orma
 

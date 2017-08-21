@@ -14,8 +14,8 @@ import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.databinding.FragmentCompanyRegisterBinding
+import jp.hotdrop.compl.repository.category.CategoryRepository
 import jp.hotdrop.compl.view.parts.CategorySpinner
 import jp.hotdrop.compl.viewmodel.CompanyRegisterViewModel
 import javax.inject.Inject
@@ -27,7 +27,7 @@ class CompanyRegisterFragment : BaseFragment() {
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
     @Inject
-    lateinit var categoryDao: CategoryDao
+    lateinit var categoryRepository: CategoryRepository
 
     private lateinit var categorySpinner: CategorySpinner
     private lateinit var binding: FragmentCompanyRegisterBinding
@@ -51,7 +51,7 @@ class CompanyRegisterFragment : BaseFragment() {
 
         createObservableToEditTexts()
 
-        categorySpinner = CategorySpinner(binding.spinnerCategory, activity, categoryDao).apply {
+        categorySpinner = CategorySpinner(binding.spinnerCategory, activity, categoryRepository).apply {
             setSelection(selectedCategoryName)
         }
 

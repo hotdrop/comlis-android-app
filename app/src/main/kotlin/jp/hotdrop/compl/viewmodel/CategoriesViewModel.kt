@@ -6,16 +6,16 @@ import android.view.View
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toSingle
 import jp.hotdrop.compl.BR
-import jp.hotdrop.compl.dao.CategoryDao
-import jp.hotdrop.compl.dao.CompanyDao
+import jp.hotdrop.compl.repository.category.CategoryRepository
+import jp.hotdrop.compl.repository.company.CompanyRepository
 import javax.inject.Inject
 
 class CategoriesViewModel @Inject constructor(val context: Context): ViewModel() {
 
     @Inject
-    lateinit var categoryDao: CategoryDao
+    lateinit var categoryRepository: CategoryRepository
     @Inject
-    lateinit var companyDao: CompanyDao
+    lateinit var companyRepository: CompanyRepository
 
     @get:Bindable
     var emptyMessageVisibility = View.GONE
@@ -25,7 +25,7 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
         }
 
     fun getData(): Single<List<CategoryViewModel>> =
-            categoryDao.findAll()
+            categoryRepository.findAll()
                     .map {
                         val itemCount = getRegisterCompanyCount(it.id)
                         CategoryViewModel(it, itemCount, context)
@@ -33,20 +33,20 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
                     .toSingle()
 
     fun existName(categoryName: String) =
-            categoryDao.exist(categoryName)
+            categoryRepository.exist(categoryName)
 
     fun existNameExclusionId(categoryName: String, id: Int) =
-            categoryDao.existExclusionId(categoryName, id)
+            categoryRepository.existExclusionId(categoryName, id)
 
     fun getViewModel(name: String): CategoryViewModel {
-        val itemCount = categoryDao.find(name).let { category ->
+        val itemCount = categoryRepository.find(name).let { category ->
             getRegisterCompanyCount(category.id)
         }
-        return CategoryViewModel(categoryDao.find(name), itemCount, context)
+        return CategoryViewModel(categoryRepository.find(name), itemCount, context)
     }
 
     fun register(categoryName: String, colorType: String) {
-        categoryDao.insert(categoryName, colorType)
+        categoryRepository.insert(categoryName, colorType)
     }
 
     fun update(vm: CategoryViewModel, newName: String, newColorType: String) {
@@ -54,15 +54,15 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
             name = newName
             colorType = newColorType
         }
-        categoryDao.update(c)
+        categoryRepository.update(c)
     }
 
     fun updateItemOrder(categoryIds: List<Int>) {
-        categoryDao.updateAllOrder(categoryIds)
+        categoryRepository.updateAllOrder(categoryIds)
     }
 
     fun delete(vm: CategoryViewModel) {
-        categoryDao.delete(vm.category)
+        categoryRepository.delete(vm.category)
     }
 
     fun visibilityEmptyMessageOnScreen() {
@@ -74,5 +74,5 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
     }
 
     private fun getRegisterCompanyCount(categoryId: Int) =
-        companyDao.countByCategory(categoryId)
+            companyRepository.countByCategory(categoryId)
 }

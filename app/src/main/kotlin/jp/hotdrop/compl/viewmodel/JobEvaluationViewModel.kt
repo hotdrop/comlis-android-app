@@ -4,22 +4,19 @@ import android.content.Context
 import android.support.annotation.ColorRes
 import io.reactivex.Completable
 import io.reactivex.rxkotlin.toSingle
-import jp.hotdrop.compl.dao.CategoryDao
-import jp.hotdrop.compl.dao.CompanyDao
-import jp.hotdrop.compl.dao.JobEvaluationDao
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.JobEvaluation
+import jp.hotdrop.compl.repository.category.CategoryRepository
+import jp.hotdrop.compl.repository.company.CompanyRepository
 import jp.hotdrop.compl.util.ColorUtil
 import javax.inject.Inject
 
 class JobEvaluationViewModel @Inject constructor(val context: Context) {
 
     @Inject
-    lateinit var jobEvaluationDao: JobEvaluationDao
+    lateinit var companyRepository: CompanyRepository
     @Inject
-    lateinit var companyDao: CompanyDao
-    @Inject
-    lateinit var categoryDao: CategoryDao
+    lateinit var categoryRepository: CategoryRepository
 
     private var companyId = -1
     private lateinit var colorName: String
@@ -32,18 +29,18 @@ class JobEvaluationViewModel @Inject constructor(val context: Context) {
     var viewJobOfferReason= false
 
     fun loadData(companyId: Int): Completable =
-        companyDao.find(companyId)
-                .toSingle()
-                .flatMapCompletable { company ->
-                    setData(company)
-                    Completable.complete()
-                }
+            companyRepository.find(companyId)
+                    .toSingle()
+                    .flatMapCompletable { company ->
+                        setData(company)
+                        Completable.complete()
+                    }
 
     private fun setData(company: Company) {
         companyId = company.id
-        colorName = categoryDao.find(company.categoryId).colorType
+        colorName = categoryRepository.find(company.categoryId).colorType
 
-        jobEvaluationDao.find(company.id)?.run {
+        companyRepository.findJobEvaluation(company.id)?.run {
             viewCorrectSentence = correctSentence
             viewDevelopmentEnv= developmentEnv
             viewWantSkill= wantSkill
@@ -54,10 +51,11 @@ class JobEvaluationViewModel @Inject constructor(val context: Context) {
     }
 
     @ColorRes
-    fun getColorRes() = ColorUtil.getResDark(colorName, context)
+    fun getColorRes() =
+            ColorUtil.getResDark(colorName, context)
 
     fun update() {
-        jobEvaluationDao.upsert(makeData())
+        companyRepository.upsertJobEvaluation(makeData())
     }
 
     private fun makeData() = JobEvaluation().apply {

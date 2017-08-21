@@ -17,9 +17,9 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toSingle
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.databinding.FragmentCompanyBinding
 import jp.hotdrop.compl.model.Category
+import jp.hotdrop.compl.repository.category.CategoryRepository
 import jp.hotdrop.compl.view.StackedPageListener
 import jp.hotdrop.compl.view.activity.ActivityNavigator
 import javax.inject.Inject
@@ -30,7 +30,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
     @Inject
-    lateinit var categoryDao: CategoryDao
+    lateinit var categoryRepository: CategoryRepository
 
     private lateinit var binding: FragmentCompanyBinding
     private lateinit var adapter: Adapter
@@ -90,7 +90,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     private fun loadData() {
         showProgress()
 
-        categoryDao.findAll()
+        categoryRepository.findAll()
                 .toSingle()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

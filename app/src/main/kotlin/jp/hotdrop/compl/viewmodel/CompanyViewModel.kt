@@ -3,19 +3,17 @@ package jp.hotdrop.compl.viewmodel
 import android.content.Context
 import android.support.annotation.ColorRes
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.dao.CategoryDao
-import jp.hotdrop.compl.dao.CompanyDao
-import jp.hotdrop.compl.dao.JobEvaluationDao
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
+import jp.hotdrop.compl.repository.category.CategoryRepository
+import jp.hotdrop.compl.repository.company.CompanyRepository
 import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.parts.FavoriteStars
 
 class CompanyViewModel(private var company: Company,
                        private val context: Context,
-                       private val companyDao: CompanyDao,
-                       private val categoryDao: CategoryDao,
-                       private val jobEvaluationDao: JobEvaluationDao): ViewModel() {
+                       private val companyRepository: CompanyRepository,
+                       private val categoryRepository: CategoryRepository): ViewModel() {
 
     private val JOB_EVALUATION_UNIT = context.getString(R.string.label_job_evaluation_unit)
     private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
@@ -46,12 +44,12 @@ class CompanyViewModel(private var company: Company,
         viewEmployeesNum = if(company.employeesNum > 0) company.employeesNum.toString() + EMPLOYEES_NUM_UNIT else ""
         viewFavorite = company.favorite
 
-        colorName = categoryDao.find(company.categoryId).colorType
-        viewTags = companyDao.findByTag(company.id).take(5)
+        colorName = categoryRepository.find(company.categoryId).colorType
+        viewTags = companyRepository.findByTag(company.id).take(5)
 
         viewSalary = makeViewSalary(company.salaryLow, company.salaryHigh)
 
-        jobEvaluationDao.find(company.id)?.run {
+        companyRepository.findJobEvaluation(company.id)?.run {
             var score = 0
             if(correctSentence) score += 20
             if(developmentEnv) score += 10
@@ -132,21 +130,15 @@ class CompanyViewModel(private var company: Company,
 
     private fun updateFavorite(favoriteNum: Int) {
         viewFavorite = favoriteNum
-        companyDao.updateFavorite(company.id, favoriteNum)
+        companyRepository.updateFavorite(company.id, favoriteNum)
     }
 
-    override fun equals(other: Any?) = (other as CompanyViewModel).company.id == company.id || super.equals(other)
+    override fun equals(other: Any?) =
+            (other as CompanyViewModel).company.id == company.id || super.equals(other)
 
     override fun hashCode(): Int {
         var result = company.hashCode()
         result = 31 * result + company.id.hashCode()
-        result = 31 * result + companyDao.hashCode()
-        result = 31 * result + categoryDao.hashCode()
-        result = 31 * result + jobEvaluationDao.hashCode()
-        result = 31 * result + (JOB_EVALUATION_UNIT?.hashCode() ?: 0)
-        result = 31 * result + (EMPLOYEES_NUM_UNIT?.hashCode() ?: 0)
-        result = 31 * result + (SALARY_UNIT?.hashCode() ?: 0)
-        result = 31 * result + (SALARY_RANGE_MARK?.hashCode() ?: 0)
         result = 31 * result + viewName.hashCode()
         result = 31 * result + viewWantedJob.hashCode()
         result = 31 * result + viewJobEvaluation.hashCode()

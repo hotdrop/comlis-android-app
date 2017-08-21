@@ -16,8 +16,8 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.databinding.FragmentCompanyEditOverviewBinding
+import jp.hotdrop.compl.repository.category.CategoryRepository
 import jp.hotdrop.compl.view.parts.CategorySpinner
 import jp.hotdrop.compl.viewmodel.CompanyEditOverviewViewModel
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class CompanyEditOverviewFragment: BaseFragment() {
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
     @Inject
-    lateinit var categoryDao: CategoryDao
+    lateinit var categoryRepository: CategoryRepository
 
     private lateinit var binding: FragmentCompanyEditOverviewBinding
     private lateinit var categorySpinner: CategorySpinner
@@ -60,7 +60,7 @@ class CompanyEditOverviewFragment: BaseFragment() {
                 .subscribeBy(
                         onComplete = {
                             createObservableToEditTexts()
-                            categorySpinner = CategorySpinner(binding.spinnerCategory, activity, categoryDao).apply {
+                            categorySpinner = CategorySpinner(binding.spinnerCategory, activity, categoryRepository).apply {
                                 setSelection(viewModel.categoryId)
                             }
                             binding.updateButton.setOnClickListener{ onClickUpdate() }

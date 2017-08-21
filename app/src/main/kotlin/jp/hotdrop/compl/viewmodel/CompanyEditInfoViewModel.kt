@@ -4,18 +4,18 @@ import android.content.Context
 import android.support.annotation.ColorRes
 import io.reactivex.Completable
 import io.reactivex.rxkotlin.toSingle
-import jp.hotdrop.compl.dao.CategoryDao
-import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.repository.category.CategoryRepository
+import jp.hotdrop.compl.repository.company.CompanyRepository
 import jp.hotdrop.compl.util.ColorUtil
 import javax.inject.Inject
 
 class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewModel() {
 
     @Inject
-    lateinit var companyDao: CompanyDao
+    lateinit var companyRepository: CompanyRepository
     @Inject
-    lateinit var categoryDao: CategoryDao
+    lateinit var categoryRepository: CategoryRepository
 
     lateinit var viewEmployeesNum: String
     lateinit var viewSalaryLow: String
@@ -28,12 +28,12 @@ class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewMo
     private var companyId: Int = -1
 
     fun loadData(companyId: Int): Completable =
-        companyDao.find(companyId)
-                .toSingle()
-                .flatMapCompletable { company ->
-                    setData(company)
-                    Completable.complete()
-                }
+            companyRepository.find(companyId)
+                    .toSingle()
+                    .flatMapCompletable { company ->
+                        setData(company)
+                        Completable.complete()
+                    }
 
     private fun setData(company: Company) {
         viewEmployeesNum = if(company.employeesNum > 0) company.employeesNum.toString() else ""
@@ -42,7 +42,7 @@ class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewMo
         viewWantedJob = company.wantedJob ?: ""
         viewWorkPlace = company.workPlace ?: ""
         viewUrl = company.url ?: ""
-        colorName = categoryDao.find(company.categoryId).colorType
+        colorName = categoryRepository.find(company.categoryId).colorType
         companyId = company.id
     }
 
@@ -51,7 +51,7 @@ class CompanyEditInfoViewModel @Inject constructor(val context: Context): ViewMo
 
     fun update() {
         val company =  makeCompany()
-        companyDao.updateInformation(company)
+        companyRepository.updateInformation(company)
     }
 
     private fun makeCompany() = Company().apply {

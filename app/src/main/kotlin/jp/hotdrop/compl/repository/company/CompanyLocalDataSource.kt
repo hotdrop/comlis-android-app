@@ -1,19 +1,18 @@
-package jp.hotdrop.compl.dao
+package jp.hotdrop.compl.repository.company
 
 import io.reactivex.Single
 import jp.hotdrop.compl.model.AssociateCompanyWithTag
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
-import java.util.*
+import jp.hotdrop.compl.repository.OrmaHolder
+import jp.hotdrop.compl.repository.tag.TagRepository
+import java.util.Date
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
+class CompanyLocalDataSource @Inject constructor(ormaHolder: OrmaHolder,
+                                                 private val tagRepository: TagRepository)  {
 
     private val orma = ormaHolder.orma
-    @Inject
-    lateinit var tagDao: TagDao
 
     fun find(id: Int) =
             companyRelation().selector()
@@ -30,23 +29,24 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
                     .toList()
 
     fun findByCategory(categoryId: Int): Single<List<Company>> =
-        companyRelation().selector()
-                .categoryIdEq(categoryId)
-                .orderByViewOrderDesc()
-                .executeAsObservable()
-                .toList()
+            companyRelation().selector()
+                    .categoryIdEq(categoryId)
+                    .orderByViewOrderDesc()
+                    .executeAsObservable()
+                    .toList()
 
     fun findByTag(companyId: Int): List<Tag> {
-        val tagIds = associateCompanyAndTagRelation()
+        val associateTags = associateCompanyAndTagRelation()
                 .selector()
                 .companyIdEq(companyId)
-        return tagDao.findInIds(tagIds.map { it.tagId })
+        val tagIds = associateTags.map { it.tagId }
+        return tagRepository.findInIds(tagIds)
     }
 
     fun countByCategory(categoryId: Int) =
             companyRelation().selector()
-                .categoryIdEq(categoryId)
-                .count()
+                    .categoryIdEq(categoryId)
+                    .count()
 
     fun insert(company: Company) {
         orma.transactionSync {
@@ -65,9 +65,9 @@ class CompanyDao @Inject constructor(ormaHolder: OrmaHolder) {
             tags.forEach {
                 associateCompanyAndTagRelation().inserter()
                         .execute(AssociateCompanyWithTag().apply {
-                                companyId = argCompanyId
-                                tagId = it.id
-                            })
+                            companyId = argCompanyId
+                            tagId = it.id
+                        })
             }
         }
     }

@@ -4,18 +4,18 @@ import android.content.Context
 import android.support.annotation.ColorRes
 import io.reactivex.Completable
 import io.reactivex.rxkotlin.toSingle
-import jp.hotdrop.compl.dao.CategoryDao
-import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.repository.category.CategoryRepository
+import jp.hotdrop.compl.repository.company.CompanyRepository
 import jp.hotdrop.compl.util.ColorUtil
 import javax.inject.Inject
 
 class CompanyEditOverviewViewModel @Inject constructor(val context: Context): ViewModel() {
 
     @Inject
-    lateinit var companyDao: CompanyDao
+    lateinit var companyRepository: CompanyRepository
     @Inject
-    lateinit var categoryDao: CategoryDao
+    lateinit var categoryRepository: CategoryRepository
 
     lateinit var viewName: String
     lateinit var viewOverview: String
@@ -27,17 +27,17 @@ class CompanyEditOverviewViewModel @Inject constructor(val context: Context): Vi
     var isChangeCategory: Boolean = false
 
     fun loadData(companyId: Int): Completable =
-        companyDao.find(companyId)
-                .toSingle()
-                .flatMapCompletable { company ->
-                    setData(company)
-                    Completable.complete()
-                }
+            companyRepository.find(companyId)
+                    .toSingle()
+                    .flatMapCompletable { company ->
+                        setData(company)
+                        Completable.complete()
+                    }
 
     private fun setData(company: Company) {
         viewName = company.name
         viewOverview = company.overview ?: ""
-        colorName = categoryDao.find(company.categoryId).colorType
+        colorName = categoryRepository.find(company.categoryId).colorType
         companyId = company.id
         categoryId = company.categoryId
     }
@@ -50,13 +50,13 @@ class CompanyEditOverviewViewModel @Inject constructor(val context: Context): Vi
         if(name.isBlank())
             false
         else
-            companyDao.existExclusionId(name, companyId)
+            companyRepository.existExclusionId(name, companyId)
 
     fun update(selectedCategorySpinnerId: Int) {
         isChangeCategory = (categoryId != selectedCategorySpinnerId)
 
         val company =  makeCompany(selectedCategorySpinnerId)
-        companyDao.updateOverview(company)
+        companyRepository.updateOverview(company)
     }
 
     private fun makeCompany(selectedCategorySpinnerId: Int) = Company().apply {

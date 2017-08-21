@@ -1,20 +1,26 @@
-package jp.hotdrop.compl.dao
+package jp.hotdrop.compl.repository
 
 import android.content.Context
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.model.JobEvaluation
 import jp.hotdrop.compl.model.OrmaDatabase
 import jp.hotdrop.compl.model.Tag
+import jp.hotdrop.compl.repository.company.CompanyLocalDataSource
+import jp.hotdrop.compl.repository.company.CompanyRepository
+import jp.hotdrop.compl.repository.company.JobEvaluationLocalDataSource
+import jp.hotdrop.compl.repository.tag.TagLocalDataSource
+import jp.hotdrop.compl.repository.tag.TagRepository
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class CompanyDaoTest {
+class CompanyRepositoryTest {
 
-    private lateinit var companyDao: CompanyDao
-    private lateinit var tagDao: TagDao
+    private lateinit var companyRepository: CompanyRepository
+    private lateinit var tagRepository: TagRepository
 
     private fun getContext(): Context =
             InstrumentationRegistry.getTargetContext()
@@ -23,18 +29,22 @@ class CompanyDaoTest {
     fun setup() {
         val orma = OrmaDatabase.builder(getContext()).name(null).build()
         val ormaHolder = OrmaHolder(orma)
-        tagDao = TagDao(ormaHolder)
-        companyDao = CompanyDao(ormaHolder)
-        companyDao.tagDao = tagDao
+
+        val tagLocalDataSource = TagLocalDataSource(ormaHolder)
+        tagRepository = TagRepository(tagLocalDataSource)
+
+        val companyLocalDataSource = CompanyLocalDataSource(ormaHolder, tagRepository)
+        val jobEvaluateDataSource = JobEvaluationLocalDataSource(ormaHolder)
+        companyRepository = CompanyRepository(companyLocalDataSource, jobEvaluateDataSource)
     }
 
     @Test
     fun findTest() {
         val company = createCompany("TestFind")
-        companyDao.insert(company)
+        companyRepository.insert(company)
 
-        val companyGetDb = companyDao.findAll().blockingGet()[0]
-        val companyGetDbById = companyDao.find(companyGetDb.id)
+        val companyGetDb = companyRepository.findAll().blockingGet()[0]
+        val companyGetDbById = companyRepository.find(companyGetDb.id)
         assertCompareCompany(company, companyGetDb)
         assertCompareCompany(companyGetDb, companyGetDbById)
         assertCompareCompany(companyGetDbById, company)
@@ -44,23 +54,23 @@ class CompanyDaoTest {
     fun findByTagTest() {
         val c1 = createCompany("Tag1And2")
         val c2 = createCompany("Tag2And3")
-        companyDao.insert(c1)
-        companyDao.insert(c2)
+        companyRepository.insert(c1)
+        companyRepository.insert(c2)
         mutableListOf(createTag("Tag1"), createTag("Tag2"), createTag("Tag3"), createTag("Tag4"))
-                .forEach { tagDao.insert(it) }
+                .forEach { tagRepository.insert(it) }
 
-        val companiesFromDB = companyDao.findAll().blockingGet().toList()
-        val tagsFromDB = tagDao.findAll().blockingGet().toList()
+        val companiesFromDB = companyRepository.findAll().blockingGet().toList()
+        val tagsFromDB = tagRepository.findAll().blockingGet().toList()
 
         val company1FromDB = companiesFromDB[0]
         val company1AttachTag = mutableListOf(tagsFromDB[0], tagsFromDB[1])
-        companyDao.associateTagByCompany(company1FromDB.id, company1AttachTag)
+        companyRepository.associateTagByCompany(company1FromDB.id, company1AttachTag)
 
         val company2FromDB = companiesFromDB[1]
         val company2AttachTag = mutableListOf(tagsFromDB[1], tagsFromDB[2], tagsFromDB[3])
-        companyDao.associateTagByCompany(company2FromDB.id, company2AttachTag)
+        companyRepository.associateTagByCompany(company2FromDB.id, company2AttachTag)
 
-        val company1Tags = companyDao.findByTag(company1FromDB.id)
+        val company1Tags = companyRepository.findByTag(company1FromDB.id)
         company1Tags.zip(company1AttachTag).forEach { assertCompareTag(it.first, it.second) }
     }
 
@@ -68,9 +78,9 @@ class CompanyDaoTest {
     fun insertTest() {
         val testName = "Test900"
         val company = createCompany(testName)
-        companyDao.insert(company)
+        companyRepository.insert(company)
 
-        val companyFromDB = companyDao.findAll()
+        val companyFromDB = companyRepository.findAll()
                 .blockingGet()
                 .toList()
                 .first { c -> c.name == testName }
@@ -82,16 +92,16 @@ class CompanyDaoTest {
         println("register date = ${companyFromDB.registerDate}")
 
         assert(companyFromDB.updateDate == null)
-        companyDao.delete(companyFromDB.id)
+        companyRepository.delete(companyFromDB.id)
     }
 
     @Test
     fun updateTest() {
         val testName = "Update Test"
         val company = createCompany(testName)
-        companyDao.insert(company)
+        companyRepository.insert(company)
 
-        val companyChangeData = companyDao.findAll()
+        val companyChangeData = companyRepository.findAll()
                 .blockingGet()
                 .toList()
                 .first { c -> c.name == testName }
@@ -105,9 +115,9 @@ class CompanyDaoTest {
                     url = "https://www.update.up.date"
                     note = "update description"
                 }
-        companyDao.update(companyChangeData)
+        companyRepository.update(companyChangeData)
 
-        val companyFromDB = companyDao.find(companyChangeData.id)
+        val companyFromDB = companyRepository.find(companyChangeData.id)
 
         assertCompareCompany(companyChangeData, companyFromDB)
         assert(companyChangeData.viewOrder == companyFromDB.viewOrder)
@@ -115,7 +125,44 @@ class CompanyDaoTest {
         assert(companyFromDB.updateDate != null)
         println("update date = ${companyFromDB.updateDate}")
 
-        companyDao.delete(companyFromDB.id)
+        companyRepository.delete(companyFromDB.id)
+    }
+
+    @Test
+    fun upsertJovEvaluationForInsertTest() {
+        val testCompanyId = 50
+        val je = JobEvaluation().apply {
+            companyId = testCompanyId
+            correctSentence = true
+            developmentEnv = false
+            wantSkill = true
+            personImage = false
+            appeal = true
+            jobOfferReason = false
+        }
+        companyRepository.upsertJobEvaluation(je)
+        val je2 = companyRepository.findJobEvaluation(testCompanyId)
+
+        assert(equalsJobEvaluation(je, je2!!))
+    }
+
+    @Test
+    fun upsertJovEvaluationForUpdateTest() {
+        val testCompanyId = 60
+        val je = JobEvaluation().apply {
+            companyId = testCompanyId
+            correctSentence = true
+            developmentEnv = false
+            wantSkill = false
+            personImage = false
+            appeal = false
+            jobOfferReason = false
+        }
+        companyRepository.upsertJobEvaluation(je)
+        je.jobOfferReason = true
+        companyRepository.upsertJobEvaluation(je)
+        val je2 = companyRepository.findJobEvaluation(testCompanyId)
+        assert(equalsJobEvaluation(je, je2!!))
     }
 
     private fun createCompany(argName: String) = Company().apply {
@@ -152,5 +199,15 @@ class CompanyDaoTest {
         assert(t1.name == t2.name)
         assert(t1.colorType == t2.colorType)
         assert(t1.registerDate == t1.registerDate)
+    }
+
+    private fun equalsJobEvaluation(je1: JobEvaluation, je2: JobEvaluation): Boolean {
+        return (je1.companyId == je2.companyId &&
+                je1.correctSentence == je2.correctSentence &&
+                je1.developmentEnv == je2.developmentEnv &&
+                je1.wantSkill == je2.wantSkill &&
+                je1.personImage == je2.personImage &&
+                je1.appeal == je2.appeal &&
+                je1.jobOfferReason == je2.jobOfferReason)
     }
 }

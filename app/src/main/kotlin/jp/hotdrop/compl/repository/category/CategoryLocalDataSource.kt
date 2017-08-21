@@ -1,12 +1,11 @@
-package jp.hotdrop.compl.dao
+package jp.hotdrop.compl.repository.category
 
 import jp.hotdrop.compl.model.Category
+import jp.hotdrop.compl.repository.OrmaHolder
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class CategoryDao @Inject constructor(ormaHolder: OrmaHolder) {
+class CategoryLocalDataSource @Inject constructor(ormaHolder: OrmaHolder) {
 
     private val orma = ormaHolder.orma
 

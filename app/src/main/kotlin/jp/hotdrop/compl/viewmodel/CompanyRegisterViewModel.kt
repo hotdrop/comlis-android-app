@@ -1,14 +1,14 @@
 package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
-import jp.hotdrop.compl.dao.CategoryDao
-import jp.hotdrop.compl.dao.CompanyDao
+import jp.hotdrop.compl.repository.category.CategoryLocalDataSource
+import jp.hotdrop.compl.repository.company.CompanyRepository
 import jp.hotdrop.compl.model.Company
 import javax.inject.Inject
 
 class CompanyRegisterViewModel @Inject constructor(val context: Context,
-                                                   val companyDao: CompanyDao,
-                                                   val categoryDao: CategoryDao): ViewModel() {
+                                                   val companyDao: CompanyRepository,
+                                                   val categoryDao: CategoryLocalDataSource): ViewModel() {
 
     var viewName = ""
     var viewOverview = ""
@@ -21,7 +21,7 @@ class CompanyRegisterViewModel @Inject constructor(val context: Context,
     var viewDoingBusiness = ""
     var viewWantBusiness = ""
     var viewNote = ""
-    // viewOrder is not declared. Because autoSet max+1 value when insert in CompanyDao
+    // viewOrder is not declared. Because autoSet max+1 value when insert in CompanyRepository
 
     fun existName(name: String) =
             companyDao.exist(name)

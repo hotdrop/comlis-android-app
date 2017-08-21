@@ -1,4 +1,4 @@
-package jp.hotdrop.compl.dao
+package jp.hotdrop.compl.repository
 
 import jp.hotdrop.compl.model.OrmaDatabase
 

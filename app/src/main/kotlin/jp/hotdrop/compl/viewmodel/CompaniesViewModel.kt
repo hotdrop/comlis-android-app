@@ -5,20 +5,17 @@ import android.databinding.Bindable
 import android.view.View
 import io.reactivex.Single
 import jp.hotdrop.compl.BR
-import jp.hotdrop.compl.dao.CategoryDao
-import jp.hotdrop.compl.dao.CompanyDao
-import jp.hotdrop.compl.dao.JobEvaluationDao
 import jp.hotdrop.compl.model.Tag
+import jp.hotdrop.compl.repository.category.CategoryRepository
+import jp.hotdrop.compl.repository.company.CompanyRepository
 import javax.inject.Inject
 
 class CompaniesViewModel @Inject constructor(private val context: Context): ViewModel() {
 
     @Inject
-    lateinit var companyDao: CompanyDao
+    lateinit var companyRepository: CompanyRepository
     @Inject
-    lateinit var categoryDao: CategoryDao
-    @Inject
-    lateinit var jobEvaluationDao: JobEvaluationDao
+    lateinit var categoryRepository: CategoryRepository
 
     @get:Bindable
     var emptyMessageVisibility = View.GONE
@@ -28,24 +25,25 @@ class CompaniesViewModel @Inject constructor(private val context: Context): View
         }
 
     fun getData(categoryId: Int): Single<List<CompanyViewModel>> =
-            companyDao.findByCategory(categoryId)
+            companyRepository.findByCategory(categoryId)
                     .map { companies ->
                         companies.map {
-                            CompanyViewModel(it, context, companyDao, categoryDao, jobEvaluationDao)
+                            CompanyViewModel(it, context, companyRepository, categoryRepository)
                         }
                     }
 
     fun getCompanyViewModel(companyId: Int) =
-            companyDao.find(companyId).let {
-                CompanyViewModel(it, context, companyDao, categoryDao, jobEvaluationDao)
+            companyRepository.find(companyId).let {
+                CompanyViewModel(it, context, companyRepository, categoryRepository)
             }
 
     fun updateItemOrder(companyIds: List<Int>) {
-        companyDao.updateAllOrder(companyIds)
+        companyRepository.updateAllOrder(companyIds)
     }
 
     // 関連付けしているタグしか取得していないため、無条件で第二引数をtrueにする。（関連付けられているという意味）
-    fun getTagAssociateViewModel(tag: Tag) = TagAssociateViewModel(tag, true, context)
+    fun getTagAssociateViewModel(tag: Tag) =
+            TagAssociateViewModel(tag, true, context)
 
     fun visibilityEmptyMessageOnScreen() {
         emptyMessageVisibility = View.VISIBLE

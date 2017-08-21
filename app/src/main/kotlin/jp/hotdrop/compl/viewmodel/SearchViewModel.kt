@@ -2,23 +2,23 @@ package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
 import io.reactivex.Single
-import jp.hotdrop.compl.dao.CategoryDao
-import jp.hotdrop.compl.dao.CompanyDao
 import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.repository.category.CategoryRepository
+import jp.hotdrop.compl.repository.company.CompanyRepository
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(val context: Context): ViewModel() {
 
     @Inject
-    lateinit var companyDao: CompanyDao
+    lateinit var companyRepository: CompanyRepository
     @Inject
-    lateinit var categoryDao: CategoryDao
+    lateinit var categoryRepository: CategoryRepository
 
     fun getSearchResults(searchText: String): Single<List<ItemSearchResultViewModel>> =
-            companyDao.findAll()
+            companyRepository.findAll()
                     .map { companies ->
                         companies.filter { company -> isMatch(company, searchText) }
-                                .map { ItemSearchResultViewModel(it, context, categoryDao) }
+                                .map { ItemSearchResultViewModel(it, context, categoryRepository) }
                     }
 
     private fun isMatch(company: Company, searchText: String): Boolean {

@@ -6,7 +6,7 @@ import com.github.gfx.android.orma.AccessThreadConstraint
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
-import jp.hotdrop.compl.dao.OrmaHolder
+import jp.hotdrop.compl.repository.OrmaHolder
 import jp.hotdrop.compl.model.OrmaDatabase
 
 @Module

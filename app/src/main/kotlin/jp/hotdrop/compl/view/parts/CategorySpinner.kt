@@ -4,12 +4,12 @@ import android.R
 import android.app.Activity
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.model.Category
+import jp.hotdrop.compl.repository.category.CategoryRepository
 
-class CategorySpinner(private val spinner: Spinner, private val activity: Activity, categoryDao: CategoryDao) {
+class CategorySpinner(private val spinner: Spinner, private val activity: Activity, categoryRepository: CategoryRepository) {
 
-    private val categoryList = categoryDao.findAll()
+    private val categoryList = categoryRepository.findAll()
     private val adapter by lazy {
         val categoryNames = categoryList.map(Category::name)
         ArrayAdapter(activity, R.layout.simple_dropdown_item_1line, categoryNames).apply {

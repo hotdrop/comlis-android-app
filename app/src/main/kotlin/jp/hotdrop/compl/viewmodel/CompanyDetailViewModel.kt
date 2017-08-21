@@ -14,13 +14,12 @@ import android.widget.TextView
 import io.reactivex.Completable
 import io.reactivex.rxkotlin.toSingle
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.dao.CategoryDao
-import jp.hotdrop.compl.dao.CompanyDao
-import jp.hotdrop.compl.dao.JobEvaluationDao
 import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.JobEvaluation
 import jp.hotdrop.compl.model.Tag
+import jp.hotdrop.compl.repository.category.CategoryRepository
+import jp.hotdrop.compl.repository.company.CompanyRepository
 import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.parts.FavoriteStars
 import javax.inject.Inject
@@ -34,11 +33,9 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     private val EMPTY_DATE = context.getString(R.string.label_empty_date)
 
     @Inject
-    lateinit var companyDao: CompanyDao
+    lateinit var companyRepository: CompanyRepository
     @Inject
-    lateinit var categoryDao: CategoryDao
-    @Inject
-    lateinit var jobEvaluationDao: JobEvaluationDao
+    lateinit var categoryRepository: CategoryRepository
 
     lateinit var binding: FragmentCompanyDetailBinding
 
@@ -69,7 +66,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     lateinit var favorites: FavoriteStars
 
     fun loadData(companyId: Int, newBinding: FragmentCompanyDetailBinding): Completable =
-            companyDao.find(companyId)
+            companyRepository.find(companyId)
                     .toSingle()
                     .flatMapCompletable {
                         setData(it, newBinding)
@@ -107,10 +104,10 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         // updateDate is no use
         // company.updateDate?.format() ?: EMPTY_DATE
 
-        colorName = categoryDao.find(categoryId).colorType
-        viewTags = companyDao.findByTag(id)
+        colorName = categoryRepository.find(categoryId).colorType
+        viewTags = companyRepository.findByTag(id)
 
-        jobEvaluation = jobEvaluationDao.find(id) ?: JobEvaluation().apply { companyId = id }
+        jobEvaluation = companyRepository.findJobEvaluation(id) ?: JobEvaluation().apply { companyId = id }
     }
 
     private fun makeViewSalary(salaryLow: Int, salaryHigh: Int): String {
@@ -133,10 +130,10 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     @ColorRes
     fun getLightColorRes() = ColorUtil.getResLight(colorName, context)
 
-    fun getCategoryName() = categoryDao.find(categoryId).name
+    fun getCategoryName() = categoryRepository.find(categoryId).name
 
     fun delete() {
-        companyDao.delete(id)
+        companyRepository.delete(id)
     }
 
     private val fabOpenAnimation: Animation by lazy {
@@ -340,7 +337,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
 
     private fun updateFavorite(favoriteNum: Int) {
         viewFavorite = favoriteNum
-        companyDao.updateFavorite(id, favoriteNum)
+        companyRepository.updateFavorite(id, favoriteNum)
     }
 
     fun isEditFavorite() = (originalFavorite != viewFavorite)

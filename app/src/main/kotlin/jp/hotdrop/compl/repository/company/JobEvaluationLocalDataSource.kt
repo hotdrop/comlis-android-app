@@ -1,11 +1,10 @@
-package jp.hotdrop.compl.dao
+package jp.hotdrop.compl.repository.company
 
 import jp.hotdrop.compl.model.JobEvaluation
+import jp.hotdrop.compl.repository.OrmaHolder
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class JobEvaluationDao @Inject constructor(ormaHolder: OrmaHolder) {
+class JobEvaluationLocalDataSource @Inject constructor(ormaHolder: OrmaHolder) {
 
     private val orma = ormaHolder.orma
 

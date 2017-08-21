@@ -2,11 +2,13 @@ package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
 import android.support.annotation.ColorRes
-import jp.hotdrop.compl.dao.CategoryDao
 import jp.hotdrop.compl.model.Company
+import jp.hotdrop.compl.repository.category.CategoryRepository
 import jp.hotdrop.compl.util.ColorUtil
 
-class ItemSearchResultViewModel(company: Company, val context: Context, val categoryDao: CategoryDao): ViewModel() {
+class ItemSearchResultViewModel(company: Company,
+                                val context: Context,
+                                val categoryRepository: CategoryRepository): ViewModel() {
 
     val id = company.id
     val categoryId = company.categoryId
@@ -17,7 +19,7 @@ class ItemSearchResultViewModel(company: Company, val context: Context, val cate
     val colorName: String
 
     init {
-        val category = categoryDao.find(categoryId)
+        val category = categoryRepository.find(categoryId)
         viewCategoryName = category.name
         colorName = category.colorType
     }
