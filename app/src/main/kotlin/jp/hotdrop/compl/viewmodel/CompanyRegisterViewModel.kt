@@ -1,14 +1,14 @@
 package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
+import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.repository.category.CategoryLocalDataSource
 import jp.hotdrop.compl.repository.company.CompanyRepository
-import jp.hotdrop.compl.model.Company
 import javax.inject.Inject
 
-class CompanyRegisterViewModel @Inject constructor(val context: Context,
-                                                   val companyDao: CompanyRepository,
-                                                   val categoryDao: CategoryLocalDataSource): ViewModel() {
+class CompanyRegisterViewModel @Inject constructor(private val context: Context,
+                                                   private val companyDao: CompanyRepository,
+                                                   private val categoryDao: CategoryLocalDataSource): ViewModel() {
 
     var viewName = ""
     var viewOverview = ""

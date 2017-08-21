@@ -24,18 +24,15 @@ import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.parts.FavoriteStars
 import javax.inject.Inject
 
-class CompanyDetailViewModel @Inject constructor(val context: Context): ViewModel() {
+class CompanyDetailViewModel @Inject constructor(private val context: Context,
+                                                 private val companyRepository: CompanyRepository,
+                                                 private val categoryRepository: CategoryRepository): ViewModel() {
 
     private val SALARY_UNIT = context.getString(R.string.label_salary_unit)
     private val SALARY_RANGE_MARK = context.getString(R.string.label_salary_range_mark)
     private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
     private val EMPTY_VALUE = context.getString(R.string.label_empty_value)
     private val EMPTY_DATE = context.getString(R.string.label_empty_date)
-
-    @Inject
-    lateinit var companyRepository: CompanyRepository
-    @Inject
-    lateinit var categoryRepository: CategoryRepository
 
     lateinit var binding: FragmentCompanyDetailBinding
 

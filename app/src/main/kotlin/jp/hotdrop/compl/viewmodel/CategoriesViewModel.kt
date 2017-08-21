@@ -10,12 +10,9 @@ import jp.hotdrop.compl.repository.category.CategoryRepository
 import jp.hotdrop.compl.repository.company.CompanyRepository
 import javax.inject.Inject
 
-class CategoriesViewModel @Inject constructor(val context: Context): ViewModel() {
-
-    @Inject
-    lateinit var categoryRepository: CategoryRepository
-    @Inject
-    lateinit var companyRepository: CompanyRepository
+class CategoriesViewModel @Inject constructor(private val context: Context,
+                                              private val categoryRepository: CategoryRepository,
+                                              private val companyRepository: CompanyRepository): ViewModel() {
 
     @get:Bindable
     var emptyMessageVisibility = View.GONE

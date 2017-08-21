@@ -7,8 +7,8 @@ import jp.hotdrop.compl.repository.category.CategoryRepository
 import jp.hotdrop.compl.util.ColorUtil
 
 class ItemSearchResultViewModel(company: Company,
-                                val context: Context,
-                                val categoryRepository: CategoryRepository): ViewModel() {
+                                private val context: Context,
+                                categoryRepository: CategoryRepository): ViewModel() {
 
     val id = company.id
     val categoryId = company.categoryId

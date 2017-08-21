@@ -12,14 +12,10 @@ import jp.hotdrop.compl.repository.company.CompanyRepository
 import jp.hotdrop.compl.repository.tag.TagRepository
 import javax.inject.Inject
 
-class TagsAssociateViewModel @Inject constructor(val context: Context): ViewModel() {
-
-    @Inject
-    lateinit var tagRepository: TagRepository
-    @Inject
-    lateinit var companyRepository: CompanyRepository
-    @Inject
-    lateinit var compositeDisposable: CompositeDisposable
+class TagsAssociateViewModel @Inject constructor(private val context: Context,
+                                                 private val tagRepository: TagRepository,
+                                                 private val companyRepository: CompanyRepository,
+                                                 private val compositeDisposable: CompositeDisposable): ViewModel() {
 
     val viewModels: ObservableList<TagAssociateViewModel> = ObservableArrayList()
 
