@@ -1,4 +1,4 @@
-[![Kotlin 1.1.4](https://img.shields.io/badge/Kotlin-1.1.3-blue.svg)](http://kotlinlang.org)
+[![Kotlin 1.1.4](https://img.shields.io/badge/Kotlin-1.1.4-blue.svg)](http://kotlinlang.org)
 
 # コムリス
 転職用に空いた時間でチマチマ作った会社情報保持アプリです。
