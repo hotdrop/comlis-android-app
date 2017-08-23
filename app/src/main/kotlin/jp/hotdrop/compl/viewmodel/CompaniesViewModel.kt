@@ -6,6 +6,7 @@ import android.view.View
 import io.reactivex.Single
 import jp.hotdrop.compl.BR
 import jp.hotdrop.compl.model.Tag
+import jp.hotdrop.compl.model.TagAssociateState
 import jp.hotdrop.compl.repository.category.CategoryRepository
 import jp.hotdrop.compl.repository.company.CompanyRepository
 import javax.inject.Inject
@@ -38,9 +39,9 @@ class CompaniesViewModel @Inject constructor(private val context: Context,
         companyRepository.updateAllOrder(companyIds)
     }
 
-    // 関連付けしているタグしか取得していないため、無条件で第二引数をtrueにする。（関連付けられているという意味）
+    // Unconditionally associate. Because this view model displays only associated tags.
     fun getTagAssociateViewModel(tag: Tag) =
-            TagAssociateViewModel(tag, true, context)
+            TagAssociateViewModel(tag, TagAssociateState.ASSOCIATED, context)
 
     fun visibilityEmptyMessageOnScreen() {
         emptyMessageVisibility = View.VISIBLE
