@@ -8,9 +8,11 @@ import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.model.TagAssociateState
 import jp.hotdrop.compl.util.ColorUtil
 
-class TagAssociateViewModel(var tag: Tag,
-                            private var tagAssociateState: TagAssociateState,
-                            val context: Context): ViewModel() {
+class TagAssociateViewModel(
+        var tag: Tag,
+        private var tagAssociateState: TagAssociateState,
+        val context: Context
+): ViewModel() {
 
     var viewName = tag.name
 

@@ -7,9 +7,11 @@ import jp.hotdrop.compl.repository.category.CategoryRepository
 import jp.hotdrop.compl.repository.company.CompanyRepository
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(private val context: Context,
-                                          private val companyRepository: CompanyRepository,
-                                          private val categoryRepository: CategoryRepository): ViewModel() {
+class SearchViewModel @Inject constructor(
+        private val context: Context,
+        private val companyRepository: CompanyRepository,
+        private val categoryRepository: CategoryRepository
+): ViewModel() {
 
     fun getSearchResults(searchText: String): Single<List<ItemSearchResultViewModel>> =
             companyRepository.findAll()

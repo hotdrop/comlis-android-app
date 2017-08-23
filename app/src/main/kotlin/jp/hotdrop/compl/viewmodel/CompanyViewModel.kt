@@ -10,10 +10,12 @@ import jp.hotdrop.compl.repository.company.CompanyRepository
 import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.parts.FavoriteStars
 
-class CompanyViewModel(private var company: Company,
-                       private val context: Context,
-                       private val companyRepository: CompanyRepository,
-                       private val categoryRepository: CategoryRepository): ViewModel() {
+class CompanyViewModel(
+        private var company: Company,
+        private val context: Context,
+        private val companyRepository: CompanyRepository,
+        private val categoryRepository: CategoryRepository
+): ViewModel() {
 
     private val JOB_EVALUATION_UNIT = context.getString(R.string.label_job_evaluation_unit)
     private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)

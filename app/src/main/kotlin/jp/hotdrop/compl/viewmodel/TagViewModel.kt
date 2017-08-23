@@ -5,9 +5,11 @@ import android.support.annotation.ColorRes
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.util.ColorUtil
 
-class TagViewModel(var tag: Tag,
-                   private var attachCompanyCount: Int,
-                   private val context: Context): ViewModel() {
+class TagViewModel(
+        var tag: Tag,
+        private var attachCompanyCount: Int,
+        private val context: Context
+): ViewModel() {
 
     var viewName = tag.name
 

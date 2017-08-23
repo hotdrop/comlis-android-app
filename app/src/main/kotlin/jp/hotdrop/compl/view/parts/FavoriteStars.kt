@@ -2,10 +2,11 @@ package jp.hotdrop.compl.view.parts
 
 import com.airbnb.lottie.LottieAnimationView
 
-class FavoriteStars(private val animationView1: LottieAnimationView,
-                    private val animationView2: LottieAnimationView,
-                    private val animationView3: LottieAnimationView) {
-
+class FavoriteStars(
+        private val animationView1: LottieAnimationView,
+        private val animationView2: LottieAnimationView,
+        private val animationView3: LottieAnimationView
+) {
     /**
      * 拡張関数
      */

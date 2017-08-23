@@ -9,7 +9,10 @@ import android.widget.Spinner
 import android.widget.TextView
 import jp.hotdrop.compl.util.ColorUtil
 
-class ColorSpinner(private val spinner: Spinner, private val context: Context) {
+class ColorSpinner(
+        private val spinner: Spinner,
+        private val context: Context
+) {
 
     private val adapter by lazy {
         Adapter(context, R.layout.simple_dropdown_item_1line, ColorUtil.getNames()).apply {
