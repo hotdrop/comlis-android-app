@@ -9,6 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 class CompanyRepository @Inject constructor(private val localDataSource: CompanyLocalDataSource,
+                                            private val remoteDataSource: CompanyRemoteDataSource,
                                             private val jobEvaluationLocalDataSource: JobEvaluationLocalDataSource) {
 
     fun find(id: Int) =
@@ -16,6 +17,9 @@ class CompanyRepository @Inject constructor(private val localDataSource: Company
 
     fun findAll(): Single<List<Company>> =
             localDataSource.findAll()
+
+    fun findAllFromRemote(): Single<List<Company>> =
+            remoteDataSource.findAll()
 
     fun findByCategory(categoryId: Int): Single<List<Company>> =
             localDataSource.findByCategory(categoryId)
