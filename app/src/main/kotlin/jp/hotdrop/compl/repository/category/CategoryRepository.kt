@@ -5,7 +5,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CategoryRepository @Inject constructor(private val localDataSource: CategoryLocalDataSource) {
+class CategoryRepository @Inject constructor(
+        private val localDataSource: CategoryLocalDataSource
+) {
 
     fun find(id: Int) =
             localDataSource.find(id)

@@ -6,7 +6,9 @@ import jp.hotdrop.compl.repository.OrmaHolder
 import java.util.*
 import javax.inject.Inject
 
-class TagLocalDataSource @Inject constructor(ormaHolder: OrmaHolder) {
+class TagLocalDataSource @Inject constructor(
+        ormaHolder: OrmaHolder
+) {
 
     private val orma = ormaHolder.orma
 

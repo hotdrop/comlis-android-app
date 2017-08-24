@@ -5,7 +5,9 @@ import jp.hotdrop.compl.repository.OrmaHolder
 import java.util.*
 import javax.inject.Inject
 
-class CategoryLocalDataSource @Inject constructor(ormaHolder: OrmaHolder) {
+class CategoryLocalDataSource @Inject constructor(
+        ormaHolder: OrmaHolder
+) {
 
     private val orma = ormaHolder.orma
 

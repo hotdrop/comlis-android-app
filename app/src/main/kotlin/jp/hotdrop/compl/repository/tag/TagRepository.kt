@@ -6,7 +6,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TagRepository @Inject constructor(private val localRepository: TagLocalDataSource) {
+class TagRepository @Inject constructor(
+        private val localRepository: TagLocalDataSource
+) {
 
     fun find(name: String): Tag? =
             localRepository.find(name)

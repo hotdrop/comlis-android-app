@@ -17,7 +17,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class ApplicationModule(private val appContext: Application) {
+class ApplicationModule(
+        private val appContext: Application
+) {
 
     @Provides
     fun provideContext(): Context = appContext

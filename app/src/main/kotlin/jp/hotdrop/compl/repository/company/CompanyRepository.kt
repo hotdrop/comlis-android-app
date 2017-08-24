@@ -8,9 +8,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CompanyRepository @Inject constructor(private val localDataSource: CompanyLocalDataSource,
-                                            private val remoteDataSource: CompanyRemoteDataSource,
-                                            private val jobEvaluationLocalDataSource: JobEvaluationLocalDataSource) {
+class CompanyRepository @Inject constructor(
+        private val localDataSource: CompanyLocalDataSource,
+        private val remoteDataSource: CompanyRemoteDataSource,
+        private val jobEvaluationLocalDataSource: JobEvaluationLocalDataSource
+) {
 
     fun find(id: Int) =
             localDataSource.find(id)
