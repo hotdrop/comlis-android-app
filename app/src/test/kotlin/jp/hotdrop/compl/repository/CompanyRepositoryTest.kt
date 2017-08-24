@@ -8,6 +8,7 @@ import jp.hotdrop.compl.model.JobEvaluation
 import jp.hotdrop.compl.model.OrmaDatabase
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.repository.company.CompanyLocalDataSource
+import jp.hotdrop.compl.repository.company.CompanyRemoteDataSource
 import jp.hotdrop.compl.repository.company.CompanyRepository
 import jp.hotdrop.compl.repository.company.JobEvaluationLocalDataSource
 import jp.hotdrop.compl.repository.tag.TagLocalDataSource
@@ -34,8 +35,12 @@ class CompanyRepositoryTest {
         tagRepository = TagRepository(tagLocalDataSource)
 
         val companyLocalDataSource = CompanyLocalDataSource(ormaHolder, tagRepository)
+
+        val appClient = MockClient().create()
+        val remoteDataSource = CompanyRemoteDataSource(appClient)
+
         val jobEvaluateDataSource = JobEvaluationLocalDataSource(ormaHolder)
-        companyRepository = CompanyRepository(companyLocalDataSource, jobEvaluateDataSource)
+        companyRepository = CompanyRepository(companyLocalDataSource, remoteDataSource, jobEvaluateDataSource)
     }
 
     @Test
