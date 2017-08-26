@@ -18,7 +18,7 @@ android {
         versionName "0.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "API_ROOT", "\"http://localhost:3000/\""
+        buildConfigField "String", "API_URL", "\"http://localhost:3000/\""
     }
     buildTypes {
         debug {
@@ -80,5 +80,5 @@ dependencies {
 
     compile 'com.deploygate:sdk:3.1.1'
     testCompile 'junit:junit:4.12'
-    testCompile 'com.github.gfx.android.robolectricinstrumentation:robolectric-instrumentation:3.0.8'
+    testCompile 'com.github.gfx.android.robolectricinstrumentation:robolectric-instrumentation:3.1.4'
 }

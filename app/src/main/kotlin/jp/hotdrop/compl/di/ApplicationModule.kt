@@ -46,7 +46,7 @@ class ApplicationModule(
     fun provideCdsService(client: OkHttpClient): CdsService =
         Retrofit.Builder()
                 .client(client)
-                .baseUrl(BuildConfig.API_ROOT)
+                .baseUrl(BuildConfig.API_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()

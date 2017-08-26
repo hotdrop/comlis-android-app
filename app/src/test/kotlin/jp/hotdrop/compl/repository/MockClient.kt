@@ -16,15 +16,15 @@ class MockClient {
     // But, now I want to try to connect remote server with same implementation as main so I made it the
     // same as the implementation of ApplicationModule.
     private val httpClient = OkHttpClient.Builder().build()
+    private val mockRetrofit: Retrofit = Retrofit.Builder()
+            .client(httpClient)
+            .baseUrl(BuildConfig.API_URL)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
     fun create(): ComlisClient {
-        val cdsService = Retrofit.Builder()
-                .client(httpClient)
-                .baseUrl(BuildConfig.API_ROOT)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(CdsService::class.java)
-        return ComlisClient(cdsService)
+        val service = mockRetrofit.create(CdsService::class.java)
+        return ComlisClient(service)
     }
 }
