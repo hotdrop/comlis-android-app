@@ -1,7 +1,6 @@
 package jp.hotdrop.compl.repository
 
 import android.security.NetworkSecurityPolicy
-import io.reactivex.rxkotlin.subscribeBy
 import jp.hotdrop.compl.repository.company.CompanyRemoteDataSource
 import org.junit.Before
 import org.junit.Test
@@ -10,7 +9,6 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.Implementation
 import org.robolectric.annotation.Implements
-import retrofit2.HttpException
 
 @RunWith(RobolectricTestRunner::class)
 @Config(shadows = arrayOf(CompanyRemoteDataSourceTest.MyNetworkSecurityPolicy::class), sdk = intArrayOf(23))
@@ -26,20 +24,11 @@ class CompanyRemoteDataSourceTest {
     @Test
     fun connectTest() {
         println("Connect test start!")
-        remoteDataSource.findAll()
-                .subscribeBy(
-                onSuccess = {
-                    it.forEach { println("  " + it.toString()) }
-                },
-                onError = {
-                    val httpException = it as? HttpException
-                    if(httpException != null) {
-                        assert(false) { println("  Error status code=" + httpException.code()) }
-                    } else {
-                        assert(false) { println("  UnKnown Error. message = " + it.message) }
-                    }
-                }
-        )
+        remoteDataSource.findAll().test().run {
+            assertNoErrors()
+            values().forEach { it.forEach { println("  " + it.name) } }
+            assertComplete()
+        }
     }
 
     /**

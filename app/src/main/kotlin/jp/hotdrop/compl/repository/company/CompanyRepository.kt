@@ -20,8 +20,9 @@ class CompanyRepository @Inject constructor(
     fun findAll(): Single<List<Company>> =
             localDataSource.findAll()
 
-    fun findAllFromRemote(): Single<List<Company>> =
-            remoteDataSource.findAll()
+//    TODO UnImplements
+//    fun findAllFromRemote(): Single<List<Company>> {
+//    }
 
     fun findByCategory(categoryId: Int): Single<List<Company>> =
             localDataSource.findByCategory(categoryId)
