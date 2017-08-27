@@ -3,6 +3,7 @@ package jp.hotdrop.compl.repository.company
 import io.reactivex.Single
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.JobEvaluation
+import jp.hotdrop.compl.model.ReceiveCompany
 import jp.hotdrop.compl.model.Tag
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,9 +21,8 @@ class CompanyRepository @Inject constructor(
     fun findAll(): Single<List<Company>> =
             localDataSource.findAll()
 
-//    TODO UnImplements
-//    fun findAllFromRemote(): Single<List<Company>> {
-//    }
+    fun findAllFromRemote(): Single<List<ReceiveCompany>> =
+            remoteDataSource.findAll()
 
     fun findByCategory(categoryId: Int): Single<List<Company>> =
             localDataSource.findByCategory(categoryId)

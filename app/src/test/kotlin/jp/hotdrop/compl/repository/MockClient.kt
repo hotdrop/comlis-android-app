@@ -1,8 +1,7 @@
 package jp.hotdrop.compl.repository
 
 import jp.hotdrop.compl.BuildConfig
-import jp.hotdrop.compl.api.ComlisClient
-import jp.hotdrop.compl.api.service.CdsService
+import jp.hotdrop.compl.service.ComlisService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -23,8 +22,6 @@ class MockClient {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-    fun create(): ComlisClient {
-        val service = mockRetrofit.create(CdsService::class.java)
-        return ComlisClient(service)
-    }
+    fun create(): ComlisService =
+            mockRetrofit.create(ComlisService::class.java)
 }

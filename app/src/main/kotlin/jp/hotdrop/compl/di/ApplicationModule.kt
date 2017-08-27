@@ -7,9 +7,9 @@ import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
 import jp.hotdrop.compl.BuildConfig
-import jp.hotdrop.compl.api.service.CdsService
 import jp.hotdrop.compl.model.OrmaDatabase
 import jp.hotdrop.compl.repository.OrmaHolder
+import jp.hotdrop.compl.service.ComlisService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -43,12 +43,12 @@ class ApplicationModule(
 
     @Singleton
     @Provides
-    fun provideCdsService(client: OkHttpClient): CdsService =
+    fun provideComlisService(client: OkHttpClient): ComlisService =
         Retrofit.Builder()
                 .client(client)
                 .baseUrl(BuildConfig.API_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-                .create(CdsService::class.java)
+                .create(ComlisService::class.java)
 }
