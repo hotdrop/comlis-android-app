@@ -25,7 +25,7 @@ import jp.hotdrop.compl.view.activity.ActivityNavigator
 import javax.inject.Inject
 
 
-class CompanyFragment: BaseFragment(), StackedPageListener {
+class CompanyRootFragment : BaseFragment(), StackedPageListener {
 
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
@@ -37,8 +37,8 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     private var tabName: String? = null
 
     companion object {
-        val TAG: String = CompanyFragment::class.java.simpleName
-        fun newInstance() = CompanyFragment()
+        val TAG: String = CompanyRootFragment::class.java.simpleName
+        fun newInstance() = CompanyRootFragment()
     }
 
     override fun onAttach(context: Context?) {
@@ -150,14 +150,13 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
-            R.id.item_search -> ActivityNavigator.showSearch(this@CompanyFragment)
+            R.id.item_search -> ActivityNavigator.showSearch(this@CompanyRootFragment)
             R.id.item_get_company_from_server -> {
                 // TODO
                 /**
                  * 1. 通信中アイコンに変更
                  * 2. サーバー通信開始
-                 *    処理は別のクラスに任せてSingleで結果をもらう。このFragmentはCompanyRootFragmentにリファクタして
-                 *    CompanyRootViewModelを作りそこでサーバー通信処理をしたほうがいいかも。
+                 *    処理はCompanyRootViewModelに任せてSingleで結果をもらう。
                  *   2-1. onError  : エラーアイコンに変更
                  *   2-2. onSuccess: 更新アイコンに変更
                  * 3. エラーアイコンタップでToast表示。エラーメッセージは別のクラスから取得

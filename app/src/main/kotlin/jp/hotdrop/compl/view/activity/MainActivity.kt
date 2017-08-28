@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentTransaction
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.ActivityMainBinding
 import jp.hotdrop.compl.view.fragment.CategoryFragment
-import jp.hotdrop.compl.view.fragment.CompanyFragment
+import jp.hotdrop.compl.view.fragment.CompanyRootFragment
 import jp.hotdrop.compl.view.fragment.TagFragment
 
 class MainActivity : BaseActivity() {
@@ -30,7 +30,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        if(switchFragment(companyFragment, CompanyFragment.TAG)) {
+        if(switchFragment(companyFragment, CompanyRootFragment.TAG)) {
             binding.bottomNav.menu.findItem(R.id.nav_companies).isChecked = true
             binding.title.text = getString(R.string.companies)
             return
@@ -45,7 +45,7 @@ class MainActivity : BaseActivity() {
             menuItem.isChecked = true
 
             when(menuItem.itemId) {
-                R.id.nav_companies -> switchFragment(companyFragment, CompanyFragment.TAG)
+                R.id.nav_companies -> switchFragment(companyFragment, CompanyRootFragment.TAG)
                 R.id.nav_categories -> switchFragment(categoryFragment, CategoryFragment.TAG)
                 R.id.nav_tags -> switchFragment(tagFragment, TagFragment.TAG)
                 else -> false
@@ -54,10 +54,10 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initFragments(savedInstanceState: Bundle?) {
-        companyFragment = supportFragmentManager.findFragmentByTag(CompanyFragment.TAG) ?: CompanyFragment.newInstance()
+        companyFragment = supportFragmentManager.findFragmentByTag(CompanyRootFragment.TAG) ?: CompanyRootFragment.newInstance()
         categoryFragment = supportFragmentManager.findFragmentByTag(CategoryFragment.TAG) ?: CategoryFragment.newInstance()
         tagFragment = supportFragmentManager.findFragmentByTag(TagFragment.TAG) ?: TagFragment.newInstance()
-        savedInstanceState ?: switchFragment(companyFragment, CompanyFragment.TAG)
+        savedInstanceState ?: switchFragment(companyFragment, CompanyRootFragment.TAG)
     }
 
     private fun switchFragment(fragment: Fragment, sign: String): Boolean {
