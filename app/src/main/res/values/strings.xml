@@ -8,6 +8,7 @@
     <string name="title_tags">タグ一覧</string>
     <string name="title_tags_view_reorder">タグ並べ替え</string>
     <string name="title_search">検索</string>
+    <string name="title_company_get_from_server">サーバーから取得</string>
 
     <!-- menu -->
     <string name="companies">会社一覧</string>

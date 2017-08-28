@@ -177,6 +177,8 @@ class CompanyTabFragment: BaseFragment() {
             binding.flexBoxContainer.removeAllViews()
             binding.viewModel.viewTags.forEach { tag -> setCardView(binding.flexBoxContainer, tag) }
             initFavoriteEvent(binding)
+
+            // TODO GetFromServerDateが1日以内のもの(この判定はviewModelで行う)はnew的なアイコンをつける。うざくない程度に点滅させたい
         }
 
         private fun setCardView(flexboxLayout: FlexboxLayout, tag: Tag) {

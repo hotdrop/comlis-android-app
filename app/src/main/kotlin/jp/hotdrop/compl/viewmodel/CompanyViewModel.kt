@@ -91,7 +91,6 @@ class CompanyViewModel(
     @ColorRes
     fun getColorRes() = ColorUtil.getResNormal(colorName, context)
 
-
     fun getId() = company.id
 
     fun onClickFirstFavorite() {

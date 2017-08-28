@@ -6,5 +6,12 @@
         android:title="@string/title_search"
         android:icon="@drawable/ic_search"
         android:orderInCategory="100"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/item_get_company_from_server"
+        android:title="@string/title_company_get_from_server"
+        android:icon="@drawable/ic_cloud_download"
+        android:orderInCategory="200"
+        app:showAsAction="ifRoom" />
+
 </menu>

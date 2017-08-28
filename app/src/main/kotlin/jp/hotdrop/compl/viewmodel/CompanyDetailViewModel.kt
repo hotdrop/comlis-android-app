@@ -202,8 +202,6 @@ class CompanyDetailViewModel @Inject constructor(
         }
     }
 
-    /** TODO このメニューの実装ももう少し綺麗にできるといいな・・ **/
-
     fun onClickMenuFab() {
         if(isOpenFabMenu())
             collapseFabMenu()

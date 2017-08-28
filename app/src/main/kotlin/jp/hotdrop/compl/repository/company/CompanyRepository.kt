@@ -21,9 +21,6 @@ class CompanyRepository @Inject constructor(
     fun findAll(): Single<List<Company>> =
             localDataSource.findAll()
 
-    fun findAllFromRemote(): Single<List<ReceiveCompany>> =
-            remoteDataSource.findAll()
-
     fun findByCategory(categoryId: Int): Single<List<Company>> =
             localDataSource.findByCategory(categoryId)
 
@@ -88,4 +85,7 @@ class CompanyRepository @Inject constructor(
     fun upsertJobEvaluation(jobEvaluation: JobEvaluation) {
         jobEvaluationLocalDataSource.upsert(jobEvaluation)
     }
+
+    fun findAllFromRemote(): Single<List<ReceiveCompany>> =
+            remoteDataSource.findAll()
 }

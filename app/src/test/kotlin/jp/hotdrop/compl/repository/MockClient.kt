@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MockClient {
 
-    // TODO This class is terrible.
+    // This class is terrible.
     // Should be in fact implements Client Class, and make some mock method.
 
     // But, now I want to try to connect remote server with same implementation as main so I made it the

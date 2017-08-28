@@ -149,9 +149,21 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        // YAGNIに反するが、OptionItemが増えた場合に備えてwhenで実装しておく
         when(item?.itemId) {
             R.id.item_search -> ActivityNavigator.showSearch(this@CompanyFragment)
+            R.id.item_get_company_from_server -> {
+                // TODO
+                /**
+                 * 1. 通信中アイコンに変更
+                 * 2. サーバー通信開始
+                 *    処理は別のクラスに任せてSingleで結果をもらう。このFragmentはCompanyRootFragmentにリファクタして
+                 *    CompanyRootViewModelを作りそこでサーバー通信処理をしたほうがいいかも。
+                 *   2-1. onError  : エラーアイコンに変更
+                 *   2-2. onSuccess: 更新アイコンに変更
+                 * 3. エラーアイコンタップでToast表示。エラーメッセージは別のクラスから取得
+                 * 4. 更新アイコンタップでloadData実行
+                 */
+            }
         }
 
         return super.onOptionsItemSelected(item)
