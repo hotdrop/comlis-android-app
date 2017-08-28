@@ -21,10 +21,8 @@ class CategoryLocalDataSource @Inject constructor(
                     .nameEq(name)
                     .value()
 
-    // CompanyDaoと同理由によりDescで取得する
     fun findAll(): List<Category> =
             categoryRelation().selector()
-                 .orderByViewOrderDesc()
                  .toList()
 
     fun insert(argName: String, argColorType: String) {

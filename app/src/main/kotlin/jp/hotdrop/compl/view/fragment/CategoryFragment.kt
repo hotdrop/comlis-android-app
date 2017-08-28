@@ -259,8 +259,8 @@ class CategoryFragment : BaseFragment() {
         }
 
         fun add(vm: CategoryViewModel) {
-            addItemToFirst(vm)
-            notifyItemInserted(0)
+            addItem(vm)
+            notifyItemInserted(itemCount)
         }
 
         fun remove(vm: CategoryViewModel) {
@@ -274,7 +274,6 @@ class CategoryFragment : BaseFragment() {
                         .map { adapter.getItem(it) }
                         .map { it.getId() }
                         .toMutableList()
-                        .reversed()
     }
 
     inner class CategoryItemTouchHelperCallback(val adapter: Adapter): ItemTouchHelper.Callback() {
