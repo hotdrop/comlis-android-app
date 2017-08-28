@@ -14,26 +14,25 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.rxkotlin.toSingle
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.FragmentCompanyBinding
 import jp.hotdrop.compl.model.Category
-import jp.hotdrop.compl.repository.category.CategoryRepository
 import jp.hotdrop.compl.view.StackedPageListener
 import jp.hotdrop.compl.view.activity.ActivityNavigator
+import jp.hotdrop.compl.viewmodel.CompanyRootViewModel
 import javax.inject.Inject
 
+class CompanyRootFragment: BaseFragment(), StackedPageListener {
 
-class CompanyRootFragment : BaseFragment(), StackedPageListener {
-
+    @Inject
+    lateinit var viewModel: CompanyRootViewModel
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
-    @Inject
-    lateinit var categoryRepository: CategoryRepository
 
     private lateinit var binding: FragmentCompanyBinding
     private lateinit var adapter: Adapter
+
     private var tabName: String? = null
 
     companion object {
@@ -49,6 +48,7 @@ class CompanyRootFragment : BaseFragment(), StackedPageListener {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
+        binding.viewModel = viewModel
 
         tabName = null
         loadData()
@@ -88,17 +88,16 @@ class CompanyRootFragment : BaseFragment(), StackedPageListener {
     }
 
     private fun loadData() {
-        showProgress()
+        viewModel.visibilityProgressBar()
 
-        categoryRepository.findAll()
-                .toSingle()
+        viewModel.loadData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onSuccess = { initView(it) },
                         onError = {
                             showErrorAsToast(ErrorType.LoadFailureCompany, it)
-                            hideProgress()
+                            viewModel.goneProgressBar()
                         }
                 )
                 .addTo(compositeDisposable)
@@ -109,10 +108,10 @@ class CompanyRootFragment : BaseFragment(), StackedPageListener {
         adapter = Adapter(childFragmentManager)
 
         if(categories.isNotEmpty()) {
-            categories.forEach { category -> addFragment(category.name, category.id) }
-            binding.listEmptyView.visibility = View.GONE
+            categories.forEach { addFragment(it.name, it.id) }
+            viewModel.goneEmptyMessageOnScreen()
         } else {
-            binding.listEmptyView.visibility = View.VISIBLE
+            viewModel.visibilityEmptyMessageOnScreen()
         }
 
         // tabLayoutを再作成するとonTabSelectedが呼ばれてしまうためこのタイミングで保持しておく。
@@ -129,15 +128,7 @@ class CompanyRootFragment : BaseFragment(), StackedPageListener {
             binding.viewPager.currentItem = adapter.getPagePosition(stockSelectedTabName)
         }
 
-        hideProgress()
-    }
-
-    private fun showProgress() {
-        binding.progressBarContainer.visibility = View.VISIBLE
-    }
-
-    private fun hideProgress() {
-        binding.progressBarContainer.visibility = View.GONE
+        viewModel.goneProgressBar()
     }
 
     private fun addFragment(title: String, categoryId: Int) {

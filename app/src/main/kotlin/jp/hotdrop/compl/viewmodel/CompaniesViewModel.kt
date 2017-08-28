@@ -18,10 +18,10 @@ class CompaniesViewModel @Inject constructor(
 ): ViewModel() {
 
     @get:Bindable
-    var emptyMessageVisibility = View.GONE
+    var companiesEmptyMessageVisibility = View.GONE
         set(value) {
             field = value
-            notifyPropertyChanged(BR.emptyMessageVisibility)
+            notifyPropertyChanged(BR.companiesEmptyMessageVisibility)
         }
 
     fun getData(categoryId: Int): Single<List<CompanyViewModel>> =
@@ -46,10 +46,10 @@ class CompaniesViewModel @Inject constructor(
             TagAssociateViewModel(tag, TagAssociateState.ASSOCIATED, context)
 
     fun visibilityEmptyMessageOnScreen() {
-        emptyMessageVisibility = View.VISIBLE
+        companiesEmptyMessageVisibility = View.VISIBLE
     }
 
     fun goneEmptyMessageOnScreen() {
-        emptyMessageVisibility = View.GONE
+        companiesEmptyMessageVisibility = View.GONE
     }
 }
