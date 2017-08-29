@@ -3,11 +3,13 @@ package jp.hotdrop.compl.view.fragment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewPager
 import android.view.*
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,8 +18,9 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.databinding.FragmentCompanyBinding
+import jp.hotdrop.compl.databinding.FragmentRootCompanyBinding
 import jp.hotdrop.compl.model.Category
+import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.StackedPageListener
 import jp.hotdrop.compl.view.activity.ActivityNavigator
 import jp.hotdrop.compl.viewmodel.CompanyRootViewModel
@@ -30,7 +33,7 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
 
-    private lateinit var binding: FragmentCompanyBinding
+    private lateinit var binding: FragmentRootCompanyBinding
     private lateinit var adapter: Adapter
 
     private var tabName: String? = null
@@ -46,7 +49,7 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentCompanyBinding.inflate(inflater, container, false)
+        binding = FragmentRootCompanyBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         binding.viewModel = viewModel
 
@@ -143,16 +146,22 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
         when(item?.itemId) {
             R.id.item_search -> ActivityNavigator.showSearch(this@CompanyRootFragment)
             R.id.item_get_company_from_server -> {
-                // TODO
-                /**
-                 * 1. 通信中アイコンに変更
-                 * 2. サーバー通信開始
-                 *    処理はCompanyRootViewModelに任せてSingleで結果をもらう。
-                 *   2-1. onError  : エラーアイコンに変更
-                 *   2-2. onSuccess: 更新アイコンに変更
-                 * 3. エラーアイコンタップでToast表示。エラーメッセージは別のクラスから取得
-                 * 4. 更新アイコンタップでloadData実行
-                 */
+                // TODO 通信中アイコンへの変更処理
+                viewModel.dummyLoadDataForRemote()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeBy(
+                                onComplete = {
+                                    // TODO 更新アイコンタップでloadData実行
+                                    item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
+                                    item.icon.setTintList(ColorStateList.valueOf(ColorUtil.getResLight(ColorUtil.BLUE_NAME, context)))
+                                },
+                                onError = {
+                                    // TODO エラーアイコンタップでToast表示。エラーメッセージは別のクラスから取得
+                                    item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
+                                    item.icon.setTintList(ColorStateList.valueOf(ColorUtil.getResLight(ColorUtil.RED_NAME, context)))
+                                }
+                        ).addTo(compositeDisposable)
             }
         }
 
