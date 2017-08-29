@@ -13,3 +13,6 @@
 -keepattributes Signature
 # Retain declared checked exceptions for use by a Proxy instance.
 -keepattributes Exceptions
+
+# SearchView
+-keep class android.support.v7.widget.SearchView { *; }
