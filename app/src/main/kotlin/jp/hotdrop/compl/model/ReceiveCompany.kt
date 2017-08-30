@@ -10,14 +10,12 @@ class ReceiveCompany {
     var salaryLow: Int = 0
     var salaryHigh: Int = 0
 
-    fun toCompany(): Company {
-        return Company().apply {
-            name = name
-            overview = overview
-            workPlace = workPlace
-            employeesNum = employeesNum
-            salaryLow = salaryLow
-            salaryHigh = salaryHigh
-        }
+    fun toCompany() = Company().also {
+        it.name = name
+        it.overview = overview
+        it.workPlace = workPlace
+        it.employeesNum = employeesNum
+        it.salaryLow = salaryLow
+        it.salaryHigh = salaryHigh
     }
 }

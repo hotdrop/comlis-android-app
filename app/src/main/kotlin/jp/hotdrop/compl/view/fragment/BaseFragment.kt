@@ -91,13 +91,14 @@ abstract class BaseFragment: Fragment() {
         Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()
     }
 
-    // ここはRootFragmentしか使わないのでここにある必要はないかも
+    // RootFragmentしか使わないのでここにある必要はないかも
     sealed class MessageType {
         // ここは404や500によって分けたい
         object Success: MessageType()
         object Error: MessageType()
     }
 
+    // 下手に自作メッセージを出すよりもこのまま出したほうがいいかも・・
     fun showRemoteAccessMessageAsToast(type: MessageType, errorMessage: String = "") {
         val msg = when(type) {
             MessageType.Success -> context.getString(R.string.remote_access_message_success)

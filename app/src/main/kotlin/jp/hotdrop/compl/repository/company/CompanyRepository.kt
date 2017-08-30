@@ -18,6 +18,9 @@ class CompanyRepository @Inject constructor(
     fun find(id: Int) =
             localDataSource.find(id)
 
+    fun find(name: String) =
+            localDataSource.find(name)
+
     fun findAll(): Single<List<Company>> =
             localDataSource.findAll()
 
@@ -30,16 +33,24 @@ class CompanyRepository @Inject constructor(
     fun countByCategory(categoryId: Int) =
             localDataSource.countByCategory(categoryId)
 
-    fun insert(company: Company) {
-        localDataSource.insert(company)
+    fun insert(company: Company, fromRemoteRepository: Boolean = false) {
+        if(fromRemoteRepository) {
+            localDataSource.insertWithRemote(company)
+        } else {
+            localDataSource.insert(company)
+        }
     }
 
     fun associateTagByCompany(companyId: Int, tags: List<Tag>) {
         localDataSource.associateTagByCompany(companyId, tags)
     }
 
-    fun update(company: Company) {
-        localDataSource.update(company)
+    fun update(company: Company, fromRemoteRepository: Boolean = false) {
+        if(fromRemoteRepository) {
+            localDataSource.updateWithRemote(company)
+        } else {
+            localDataSource.update(company)
+        }
     }
 
     fun updateOverview(company: Company) {

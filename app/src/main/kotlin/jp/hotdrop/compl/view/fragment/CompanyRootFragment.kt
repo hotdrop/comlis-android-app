@@ -148,14 +148,17 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
         when(item?.itemId) {
             R.id.item_search -> ActivityNavigator.showSearch(this@CompanyRootFragment)
             R.id.item_connect_from_server -> {
+                // TODO RuntimePermissionでandroid.permission.INTERNETを与える
                 changeLoadingIcon(item)
 
-                viewModel.dummyLoadDataForRemote()
+                viewModel.loadDataFromRemote()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy(
                                 onComplete = { changeSuccessIcon(item) },
-                                onError = { changeErrorIcon(item) }
+                                onError = {
+                                    changeErrorIcon(item, it)
+                                }
                         ).addTo(compositeDisposable)
             }
         }
@@ -173,23 +176,28 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
     private fun changeSuccessIcon(item: MenuItem) {
         MenuItemCompat.setActionView(item, null)
         item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
+
         val iconColor = ContextCompat.getColor(context, R.color.toolbar_icon_loading_success)
         item.icon.setTintList(ColorStateList.valueOf(iconColor))
+
         item.setOnMenuItemClickListener {
             loadData()
             changeDefaultIcon(item)
             true
         }
+
         showRemoteAccessMessageAsToast(MessageType.Success)
     }
-    private fun changeErrorIcon(item: MenuItem) {
+    private fun changeErrorIcon(item: MenuItem, throwable: Throwable) {
         MenuItemCompat.setActionView(item, null)
         item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
+
         val iconColor = ContextCompat.getColor(context, R.color.toolbar_icon_loading_error)
         item.icon.setTintList(ColorStateList.valueOf(iconColor))
+
         item.setOnMenuItemClickListener{
-            // TODO エラーはサーバーに接続できなかったのかサーバーでエラーが返ってきたのかくらいは表示したい。
-            showRemoteAccessMessageAsToast(MessageType.Error, "エラー詳細")
+            // TODO サーバーに接続できなかったのか、サーバーでエラーが返ってきたのかくらいは表示したい。
+            showRemoteAccessMessageAsToast(MessageType.Error, viewModel.getErrorMessage(throwable))
             true
         }
     }

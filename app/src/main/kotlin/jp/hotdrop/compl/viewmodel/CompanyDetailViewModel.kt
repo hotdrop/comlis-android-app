@@ -57,6 +57,7 @@ class CompanyDetailViewModel @Inject constructor(
     private var originalFavorite = 0
 
     var viewRegisterDate = ""
+    var viewUpdateDate = ""
 
     private lateinit var jobEvaluation: JobEvaluation
 
@@ -99,6 +100,7 @@ class CompanyDetailViewModel @Inject constructor(
         viewFavorite = company.favorite
 
         viewRegisterDate = company.registerDate?.format() ?: EMPTY_DATE
+        viewUpdateDate = company.updateDate?.format() ?: EMPTY_DATE
 
         // updateDate is no use
         // company.updateDate?.format() ?: EMPTY_DATE

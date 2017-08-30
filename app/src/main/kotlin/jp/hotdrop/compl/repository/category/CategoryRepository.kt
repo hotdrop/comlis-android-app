@@ -18,8 +18,8 @@ class CategoryRepository @Inject constructor(
     fun findAll(): List<Category> =
             localDataSource.findAll()
 
-    fun insert(name: String, colorType: String) {
-        localDataSource.insert(name, colorType)
+    fun insert(category: Category) {
+        localDataSource.insert(category)
     }
 
     fun update(category: Category) {

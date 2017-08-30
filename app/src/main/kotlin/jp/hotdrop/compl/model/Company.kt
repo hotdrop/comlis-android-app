@@ -56,11 +56,9 @@ class Company {
     @Column
     var registerDate: Date? = null
 
-    /**
-     * Update this column is only when editing company with EditFragment.
-     */
     @Column
     var updateDate: Date? = null
 
-    // TODO GetFromServerDateカラムを追加する
+    @Column
+    var fromRemoteDate: Date? = null
 }

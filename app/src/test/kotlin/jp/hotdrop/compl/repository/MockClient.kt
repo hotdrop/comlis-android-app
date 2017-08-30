@@ -1,6 +1,5 @@
 package jp.hotdrop.compl.repository
 
-import jp.hotdrop.compl.BuildConfig
 import jp.hotdrop.compl.service.ComlisService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -17,7 +16,8 @@ class MockClient {
     private val httpClient = OkHttpClient.Builder().build()
     private val mockRetrofit: Retrofit = Retrofit.Builder()
             .client(httpClient)
-            .baseUrl(BuildConfig.API_URL)
+            //.baseUrl(BuildConfig.API_URL)
+            .baseUrl("http://localhost:8080/")
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()

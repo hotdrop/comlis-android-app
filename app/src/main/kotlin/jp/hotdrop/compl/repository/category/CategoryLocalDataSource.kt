@@ -25,15 +25,13 @@ class CategoryLocalDataSource @Inject constructor(
             categoryRelation().selector()
                  .toList()
 
-    fun insert(argName: String, argColorType: String) {
-        val category = Category().apply {
-            name = argName
-            colorType = argColorType
-            viewOrder = maxOrder() + 1
-            registerDate = Date(System.currentTimeMillis())
-        }
+    fun insert(category: Category) {
         orma.transactionSync {
-            categoryRelation().inserter().execute(category)
+            categoryRelation().inserter()
+                    .execute(category.apply {
+                        viewOrder = maxOrder() + 1
+                        registerDate = Date(System.currentTimeMillis())
+                    })
         }
     }
 

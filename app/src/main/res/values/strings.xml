@@ -8,12 +8,15 @@
     <string name="title_tags">タグ一覧</string>
     <string name="title_tags_view_reorder">タグ並べ替え</string>
     <string name="title_search">検索</string>
-    <string name="title_company_get_from_server">サーバーから取得</string>
+    <string name="title_company_get_from_remote">リモートリポジトリから取得</string>
 
     <!-- menu -->
     <string name="companies">会社一覧</string>
     <string name="categories">分類</string>
     <string name="tags">タグ</string>
+
+    <!-- -->
+    <string name="category_name_get_from_remote">リモートから取得</string>
 
     <!-- company list -->
     <string name="empty_company_list">何も登録されていません。分類を登録してから登録してください。</string>
@@ -142,8 +145,8 @@
     <string name="load_failure_search">検索の実行に失敗しました。</string>
 
     <!-- remote access message -->
-    <string name="remote_access_message_success">サーバーから新しい会社情報を取得しました。</string>
-    <string name="remote_access_message_error">サーバーエラー</string>
+    <string name="remote_access_message_success">リモートから新しい会社情報を取得しました。</string>
+    <string name="remote_access_message_error">通信エラー</string>
 
     <string name="open">open</string>
     <string name="close">close</string>
