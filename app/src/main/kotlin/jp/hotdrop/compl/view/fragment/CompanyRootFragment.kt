@@ -9,9 +9,12 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
+import android.support.v4.view.MenuItemCompat
 import android.support.v4.view.ViewPager
 import android.view.*
+import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -20,7 +23,6 @@ import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.FragmentRootCompanyBinding
 import jp.hotdrop.compl.model.Category
-import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.StackedPageListener
 import jp.hotdrop.compl.view.activity.ActivityNavigator
 import jp.hotdrop.compl.viewmodel.CompanyRootViewModel
@@ -139,33 +141,54 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.menu_company, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
             R.id.item_search -> ActivityNavigator.showSearch(this@CompanyRootFragment)
-            R.id.item_get_company_from_server -> {
-                // TODO 通信中アイコンへの変更処理
+            R.id.item_connect_from_server -> {
+
+                changeLoadingIcon(item)
+
                 viewModel.dummyLoadDataForRemote()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy(
                                 onComplete = {
-                                    // TODO 更新アイコンタップでloadData実行
-                                    item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
-                                    item.icon.setTintList(ColorStateList.valueOf(ColorUtil.getResLight(ColorUtil.BLUE_NAME, context)))
+                                    changeSuccessIcon(item)
+                                    // TODO itemをタップすると画面再構築（loadData呼ぶ）
+                                    // Debug Toast
+                                    Toast.makeText(context, "onComplete!", Toast.LENGTH_SHORT).show()
                                 },
                                 onError = {
-                                    // TODO エラーアイコンタップでToast表示。エラーメッセージは別のクラスから取得
-                                    item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
-                                    item.icon.setTintList(ColorStateList.valueOf(ColorUtil.getResLight(ColorUtil.RED_NAME, context)))
+                                    // TODO itemをタップするとエラー概要をToast表示
+                                    changeErrorIcon(item)
+                                    // Debug Toast
+                                    Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
                                 }
                         ).addTo(compositeDisposable)
             }
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun changeLoadingIcon(item: MenuItem) {
+        MenuItemCompat.setActionView(item, R.layout.action_connect_from_server)
+    }
+    private fun changeSuccessIcon(item: MenuItem) {
+        MenuItemCompat.setActionView(item, null)
+        item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
+        val iconColor = ContextCompat.getColor(context, R.color.toolbar_icon_loading_success)
+        item.icon.setTintList(ColorStateList.valueOf(iconColor))
+    }
+    private fun changeErrorIcon(item: MenuItem) {
+        MenuItemCompat.setActionView(item, null)
+        item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
+        val iconColor = ContextCompat.getColor(context, R.color.toolbar_icon_loading_error)
+        item.icon.setTintList(ColorStateList.valueOf(iconColor))
     }
 
     override fun onTop() {

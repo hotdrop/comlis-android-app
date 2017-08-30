@@ -236,9 +236,10 @@ class CompanyDetailViewModel @Inject constructor(
         binding.fabEdit.isClickable = true
     }
 
+    private val FAB_MENU_CLOSE_ROTATION = 0.toFloat()
     private fun collapseFabMenu() {
         ViewCompat.animate(binding.fabDetailMenu)
-                .rotation(0.toFloat())
+                .rotation(FAB_MENU_CLOSE_ROTATION)
                 .withLayer()
                 .setDuration(300)
                 .setInterpolator(OvershootInterpolator(10.toFloat()))

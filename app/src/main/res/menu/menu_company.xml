@@ -8,7 +8,7 @@
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/item_get_company_from_server"
+    <item android:id="@+id/item_connect_from_server"
         android:title="@string/title_company_get_from_server"
         android:icon="@drawable/ic_cloud_download"
         android:orderInCategory="200"
