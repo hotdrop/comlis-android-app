@@ -14,7 +14,6 @@ import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.MenuItemCompat
 import android.support.v4.view.ViewPager
 import android.view.*
-import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -149,25 +148,14 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
         when(item?.itemId) {
             R.id.item_search -> ActivityNavigator.showSearch(this@CompanyRootFragment)
             R.id.item_connect_from_server -> {
-
                 changeLoadingIcon(item)
 
                 viewModel.dummyLoadDataForRemote()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy(
-                                onComplete = {
-                                    changeSuccessIcon(item)
-                                    // TODO itemをタップすると画面再構築（loadData呼ぶ）
-                                    // Debug Toast
-                                    Toast.makeText(context, "onComplete!", Toast.LENGTH_SHORT).show()
-                                },
-                                onError = {
-                                    // TODO itemをタップするとエラー概要をToast表示
-                                    changeErrorIcon(item)
-                                    // Debug Toast
-                                    Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
-                                }
+                                onComplete = { changeSuccessIcon(item) },
+                                onError = { changeErrorIcon(item) }
                         ).addTo(compositeDisposable)
             }
         }
@@ -175,6 +163,10 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun changeDefaultIcon(item: MenuItem) {
+        item.setOnMenuItemClickListener(null)
+        item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_cloud_download, null)
+    }
     private fun changeLoadingIcon(item: MenuItem) {
         MenuItemCompat.setActionView(item, R.layout.action_connect_from_server)
     }
@@ -183,12 +175,23 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
         item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
         val iconColor = ContextCompat.getColor(context, R.color.toolbar_icon_loading_success)
         item.icon.setTintList(ColorStateList.valueOf(iconColor))
+        item.setOnMenuItemClickListener {
+            loadData()
+            changeDefaultIcon(item)
+            true
+        }
+        showRemoteAccessMessageAsToast(MessageType.Success)
     }
     private fun changeErrorIcon(item: MenuItem) {
         MenuItemCompat.setActionView(item, null)
         item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
         val iconColor = ContextCompat.getColor(context, R.color.toolbar_icon_loading_error)
         item.icon.setTintList(ColorStateList.valueOf(iconColor))
+        item.setOnMenuItemClickListener{
+            // TODO エラーはサーバーに接続できなかったのかサーバーでエラーが返ってきたのかくらいは表示したい。
+            showRemoteAccessMessageAsToast(MessageType.Error, "エラー詳細")
+            true
+        }
     }
 
     override fun onTop() {
