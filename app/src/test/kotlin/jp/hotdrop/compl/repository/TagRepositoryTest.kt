@@ -2,7 +2,6 @@ package jp.hotdrop.compl.repository
 
 import android.content.Context
 import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.OrmaDatabase
 import jp.hotdrop.compl.model.Tag
@@ -15,8 +14,11 @@ import jp.hotdrop.compl.repository.tag.TagRepository
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
-@RunWith(AndroidJUnit4::class)
+@RunWith(RobolectricTestRunner::class)
+@Config(shadows = arrayOf(MockClient.MyNetworkSecurityPolicy::class), sdk = intArrayOf(23))
 class TagRepositoryTest {
 
     private lateinit var tagRepository: TagRepository

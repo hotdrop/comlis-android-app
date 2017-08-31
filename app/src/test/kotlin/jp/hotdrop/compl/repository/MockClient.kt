@@ -1,7 +1,11 @@
 package jp.hotdrop.compl.repository
 
+import android.security.NetworkSecurityPolicy
+import jp.hotdrop.compl.BuildConfig
 import jp.hotdrop.compl.service.ComlisService
 import okhttp3.OkHttpClient
+import org.robolectric.annotation.Implementation
+import org.robolectric.annotation.Implements
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,12 +20,29 @@ class MockClient {
     private val httpClient = OkHttpClient.Builder().build()
     private val mockRetrofit: Retrofit = Retrofit.Builder()
             .client(httpClient)
-            //.baseUrl(BuildConfig.API_URL)
-            .baseUrl("http://localhost:8080/")
+            .baseUrl(BuildConfig.API_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
     fun create(): ComlisService =
             mockRetrofit.create(ComlisService::class.java)
+
+    /**
+     * Test Mock Server is http. not good...
+     */
+    @Implements(NetworkSecurityPolicy::class)
+    class MyNetworkSecurityPolicy {
+
+        companion object {
+            @Implementation
+            @JvmStatic fun getInstance(): NetworkSecurityPolicy {
+                val shadow = MyNetworkSecurityPolicy::class.java.classLoader.loadClass("android.security.NetworkSecurityPolicy")
+                return (shadow.newInstance() as NetworkSecurityPolicy)
+            }
+        }
+
+        @Implementation
+        fun isCleartextTrafficPermitted() = true
+    }
 }
