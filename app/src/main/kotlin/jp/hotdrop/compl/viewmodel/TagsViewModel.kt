@@ -9,10 +9,10 @@ import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.repository.tag.TagRepository
 import javax.inject.Inject
 
-class TagsViewModel @Inject constructor(val context: Context): ViewModel() {
-
-    @Inject
-    lateinit var tagRepository: TagRepository
+class TagsViewModel @Inject constructor(
+        val context: Context,
+        private val tagRepository: TagRepository
+): ViewModel() {
 
     @get:Bindable
     var emptyMessageVisibility = View.GONE

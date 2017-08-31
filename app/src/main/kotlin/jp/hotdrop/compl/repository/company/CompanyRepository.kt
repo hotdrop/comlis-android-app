@@ -3,16 +3,23 @@ package jp.hotdrop.compl.repository.company
 import io.reactivex.Single
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.JobEvaluation
+import jp.hotdrop.compl.model.ReceiveCompany
 import jp.hotdrop.compl.model.Tag
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CompanyRepository @Inject constructor(private val localDataSource: CompanyLocalDataSource,
-                                            private val jobEvaluationLocalDataSource: JobEvaluationLocalDataSource) {
+class CompanyRepository @Inject constructor(
+        private val localDataSource: CompanyLocalDataSource,
+        private val remoteDataSource: CompanyRemoteDataSource,
+        private val jobEvaluationLocalDataSource: JobEvaluationLocalDataSource
+) {
 
     fun find(id: Int) =
             localDataSource.find(id)
+
+    fun find(name: String) =
+            localDataSource.find(name)
 
     fun findAll(): Single<List<Company>> =
             localDataSource.findAll()
@@ -26,16 +33,24 @@ class CompanyRepository @Inject constructor(private val localDataSource: Company
     fun countByCategory(categoryId: Int) =
             localDataSource.countByCategory(categoryId)
 
-    fun insert(company: Company) {
-        localDataSource.insert(company)
+    fun insert(company: Company, fromRemoteRepository: Boolean = false) {
+        if(fromRemoteRepository) {
+            localDataSource.insertWithRemote(company)
+        } else {
+            localDataSource.insert(company)
+        }
     }
 
     fun associateTagByCompany(companyId: Int, tags: List<Tag>) {
         localDataSource.associateTagByCompany(companyId, tags)
     }
 
-    fun update(company: Company) {
-        localDataSource.update(company)
+    fun update(company: Company, fromRemoteRepository: Boolean = false) {
+        if(fromRemoteRepository) {
+            localDataSource.updateWithRemote(company)
+        } else {
+            localDataSource.update(company)
+        }
     }
 
     fun updateOverview(company: Company) {
@@ -81,4 +96,7 @@ class CompanyRepository @Inject constructor(private val localDataSource: Company
     fun upsertJobEvaluation(jobEvaluation: JobEvaluation) {
         jobEvaluationLocalDataSource.upsert(jobEvaluation)
     }
+
+    fun findAllFromRemote(): Single<List<ReceiveCompany>> =
+            remoteDataSource.findAll()
 }

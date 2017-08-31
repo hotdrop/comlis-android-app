@@ -11,13 +11,11 @@ import jp.hotdrop.compl.repository.company.CompanyRepository
 import jp.hotdrop.compl.util.ColorUtil
 import javax.inject.Inject
 
-class JobEvaluationViewModel @Inject constructor(val context: Context) {
-
-    @Inject
-    lateinit var companyRepository: CompanyRepository
-    @Inject
-    lateinit var categoryRepository: CategoryRepository
-
+class JobEvaluationViewModel @Inject constructor(
+        val context: Context,
+        private val companyRepository: CompanyRepository,
+        private val categoryRepository: CategoryRepository
+) {
     private var companyId = -1
     private lateinit var colorName: String
 

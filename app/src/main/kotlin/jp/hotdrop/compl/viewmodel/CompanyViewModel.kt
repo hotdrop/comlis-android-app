@@ -2,6 +2,7 @@ package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
 import android.support.annotation.ColorRes
+import android.widget.TextView
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
@@ -9,11 +10,15 @@ import jp.hotdrop.compl.repository.category.CategoryRepository
 import jp.hotdrop.compl.repository.company.CompanyRepository
 import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.parts.FavoriteStars
+import jp.hotdrop.compl.view.parts.RainbowAnimationText
+import java.util.*
 
-class CompanyViewModel(private var company: Company,
-                       private val context: Context,
-                       private val companyRepository: CompanyRepository,
-                       private val categoryRepository: CategoryRepository): ViewModel() {
+class CompanyViewModel(
+        private var company: Company,
+        private val context: Context,
+        private val companyRepository: CompanyRepository,
+        private val categoryRepository: CategoryRepository
+): ViewModel() {
 
     private val JOB_EVALUATION_UNIT = context.getString(R.string.label_job_evaluation_unit)
     private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
@@ -89,7 +94,6 @@ class CompanyViewModel(private var company: Company,
     @ColorRes
     fun getColorRes() = ColorUtil.getResNormal(colorName, context)
 
-
     fun getId() = company.id
 
     fun onClickFirstFavorite() {
@@ -132,6 +136,27 @@ class CompanyViewModel(private var company: Company,
         viewFavorite = favoriteNum
         companyRepository.updateFavorite(company.id, favoriteNum)
     }
+
+    fun markFromRemote(markTextView: TextView) {
+        if(!checkWithinOneDay(company.fromRemoteDate)) {
+            return
+        }
+
+        markTextView.text =  if(isNewCompany()) "  new!!" else "  update!"
+        RainbowAnimationText(context, markTextView).run {
+            animationStart()
+        }
+    }
+
+    private val HOUR_12_MILLIS = 12 * 60 * 60 * 1000
+    private fun checkWithinOneDay(targetDate: Date?): Boolean {
+        targetDate ?: return false
+        val startDate = Date(System.currentTimeMillis() - HOUR_12_MILLIS)
+        val endDate = Date(System.currentTimeMillis() + HOUR_12_MILLIS)
+        return targetDate in startDate..endDate
+    }
+
+    private fun isNewCompany() = company.fromRemoteDate == company.registerDate
 
     override fun equals(other: Any?) =
             (other as CompanyViewModel).company.id == company.id || super.equals(other)

@@ -21,7 +21,7 @@
             android:padding="@dimen/spacing_small"
             android:text="@string/empty_tab_company_list"
             android:textColor="@color/empty_text"
-            android:visibility="@{viewModel.emptyMessageVisibility}" />
+            android:visibility="@{viewModel.companiesEmptyMessageVisibility}" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"

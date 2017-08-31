@@ -6,12 +6,13 @@ import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
 import jp.hotdrop.compl.repository.OrmaHolder
 import jp.hotdrop.compl.repository.tag.TagRepository
-import java.util.Date
+import java.util.*
 import javax.inject.Inject
 
-class CompanyLocalDataSource @Inject constructor(ormaHolder: OrmaHolder,
-                                                 private val tagRepository: TagRepository)  {
-
+class CompanyLocalDataSource @Inject constructor(
+        ormaHolder: OrmaHolder,
+        private val tagRepository: TagRepository
+)  {
     private val orma = ormaHolder.orma
 
     fun find(id: Int) =
@@ -19,9 +20,14 @@ class CompanyLocalDataSource @Inject constructor(ormaHolder: OrmaHolder,
                     .idEq(id)
                     .value()
 
+    fun find(name: String) =
+            companyRelation().selector()
+                    .nameEq(name)
+                    .value()
+
     // 登録した会社はリストの先頭に表示したい。
-    // でもviewOrderを負の値で登にするのが嫌だったので、viewOrderは普通にインクリメントし
-    // ViewOrderDescで取得する。
+    // 考えた案は2つ、1つは登録時に最新のデータはviewOrderを負の値にする案でもう一つはviewOrderを降順で取得する案
+    // 負の値はいくつかバグを生む可能性があったため、2つ目の案を採用した。
     fun findAll(): Single<List<Company>> =
             companyRelation().selector()
                     .orderByViewOrderDesc()
@@ -49,9 +55,23 @@ class CompanyLocalDataSource @Inject constructor(ormaHolder: OrmaHolder,
                     .count()
 
     fun insert(company: Company) {
+        executeInsert(company.apply {
+            viewOrder = maxOrder() + 1
+            registerDate = Date(System.currentTimeMillis())
+        })
+    }
+
+    fun insertWithRemote(company: Company) {
+        executeInsert(company.apply {
+            viewOrder = maxOrder() + 1
+            val nowDate = Date(System.currentTimeMillis())
+            registerDate = nowDate
+            fromRemoteDate = nowDate
+        })
+    }
+
+    private fun executeInsert(company: Company) {
         orma.transactionSync {
-            company.viewOrder = maxOrder() + 1
-            company.registerDate = Date(System.currentTimeMillis())
             companyRelation().inserter()
                     .execute(company)
         }
@@ -73,6 +93,14 @@ class CompanyLocalDataSource @Inject constructor(ormaHolder: OrmaHolder,
     }
 
     fun update(company: Company) {
+        executeUpdate(company, null)
+    }
+
+    fun updateWithRemote(company: Company) {
+        executeUpdate(company, Date(System.currentTimeMillis()))
+    }
+
+    private fun executeUpdate(company: Company, fromRemoteDate: Date?) {
         orma.transactionSync {
             companyRelation().updater()
                     .name(company.name)
@@ -88,6 +116,7 @@ class CompanyLocalDataSource @Inject constructor(ormaHolder: OrmaHolder,
                     .url(company.url)
                     .note(company.note)
                     .updateDate(Date(System.currentTimeMillis()))
+                    .fromRemoteDate(fromRemoteDate)
                     .idEq(company.id)
                     .execute()
         }

@@ -7,7 +7,11 @@ import android.widget.Spinner
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.repository.category.CategoryRepository
 
-class CategorySpinner(private val spinner: Spinner, private val activity: Activity, categoryRepository: CategoryRepository) {
+class CategorySpinner(
+        private val spinner: Spinner,
+        private val activity: Activity,
+        categoryRepository: CategoryRepository
+) {
 
     private val categoryList = categoryRepository.findAll()
     private val adapter by lazy {

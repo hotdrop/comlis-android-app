@@ -8,18 +8,17 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import jp.hotdrop.compl.model.TagAssociateState
 import jp.hotdrop.compl.repository.company.CompanyRepository
 import jp.hotdrop.compl.repository.tag.TagRepository
 import javax.inject.Inject
 
-class TagsAssociateViewModel @Inject constructor(val context: Context): ViewModel() {
-
-    @Inject
-    lateinit var tagRepository: TagRepository
-    @Inject
-    lateinit var companyRepository: CompanyRepository
-    @Inject
-    lateinit var compositeDisposable: CompositeDisposable
+class TagsAssociateViewModel @Inject constructor(
+        private val context: Context,
+        private val tagRepository: TagRepository,
+        private val companyRepository: CompanyRepository,
+        private val compositeDisposable: CompositeDisposable
+): ViewModel() {
 
     val viewModels: ObservableList<TagAssociateViewModel> = ObservableArrayList()
 
@@ -35,8 +34,9 @@ class TagsAssociateViewModel @Inject constructor(val context: Context): ViewMode
         tagRepository.findAll()
                 .map { tags ->
                     tags.map {
-                        val isAssociatedWith = companyRepository.hasAssociateTag(companyId, it.id)
-                        TagAssociateViewModel(it, isAssociatedWith, context)
+                        val isAssociated = companyRepository.hasAssociateTag(companyId, it.id)
+                        val associateState = if(isAssociated) TagAssociateState.ASSOCIATED else TagAssociateState.RELEASE
+                        TagAssociateViewModel(it, associateState, context)
                     }
                 }
                 .subscribeOn(Schedulers.io())
@@ -59,7 +59,7 @@ class TagsAssociateViewModel @Inject constructor(val context: Context): ViewMode
             return
         }
         val tags = viewModels
-                .filter{ it.isAssociated }
+                .filter{ it.isAssociated() }
                 .map{ it.tag }
                 .toList()
         companyRepository.associateTagByCompany(companyId, tags)

@@ -6,16 +6,16 @@ import android.view.View
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toSingle
 import jp.hotdrop.compl.BR
+import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.repository.category.CategoryRepository
 import jp.hotdrop.compl.repository.company.CompanyRepository
 import javax.inject.Inject
 
-class CategoriesViewModel @Inject constructor(val context: Context): ViewModel() {
-
-    @Inject
-    lateinit var categoryRepository: CategoryRepository
-    @Inject
-    lateinit var companyRepository: CompanyRepository
+class CategoriesViewModel @Inject constructor(
+        private val context: Context,
+        private val categoryRepository: CategoryRepository,
+        private val companyRepository: CompanyRepository
+): ViewModel() {
 
     @get:Bindable
     var emptyMessageVisibility = View.GONE
@@ -39,22 +39,22 @@ class CategoriesViewModel @Inject constructor(val context: Context): ViewModel()
             categoryRepository.existExclusionId(categoryName, id)
 
     fun getViewModel(name: String): CategoryViewModel {
-        val itemCount = categoryRepository.find(name).let { category ->
-            getRegisterCompanyCount(category.id)
-        }
+        val itemCount = categoryRepository.find(name).let { getRegisterCompanyCount(it.id) }
         return CategoryViewModel(categoryRepository.find(name), itemCount, context)
     }
 
-    fun register(categoryName: String, colorType: String) {
-        categoryRepository.insert(categoryName, colorType)
+    fun register(argName: String, argColorType: String) {
+        categoryRepository.insert(Category().apply {
+            name = argName
+            colorType = argColorType
+        })
     }
 
     fun update(vm: CategoryViewModel, newName: String, newColorType: String) {
-        val c = vm.category.apply {
+        categoryRepository.update(vm.category.apply {
             name = newName
             colorType = newColorType
-        }
-        categoryRepository.update(c)
+        })
     }
 
     fun updateItemOrder(categoryIds: List<Int>) {

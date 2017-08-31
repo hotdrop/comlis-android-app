@@ -5,8 +5,9 @@ import android.support.v7.widget.RecyclerView
 import java.util.*
 
 
-abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(private val context: Context)
-    : RecyclerView.Adapter<VH>() {
+abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(
+        private val context: Context
+): RecyclerView.Adapter<VH>() {
 
     private var list: MutableList<T> = mutableListOf()
 

@@ -5,9 +5,11 @@ import android.support.annotation.ColorRes
 import jp.hotdrop.compl.model.Category
 import jp.hotdrop.compl.util.ColorUtil
 
-class CategoryViewModel(var category: Category,
-                        private var registerCompanyCount: Int,
-                        private val context: Context): ViewModel() {
+class CategoryViewModel(
+        var category: Category,
+        private var registerCompanyCount: Int,
+        private val context: Context
+): ViewModel() {
 
     var viewName = category.name
 

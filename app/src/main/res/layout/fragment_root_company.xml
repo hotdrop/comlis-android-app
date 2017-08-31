@@ -2,7 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.fragment.CompanyFragment" >
+    tools:context=".view.fragment.CompanyRootFragment" >
+
+    <data>
+        <variable
+            name="viewModel"
+            type="jp.hotdrop.compl.viewmodel.CompanyRootViewModel" />
+    </data>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -43,7 +49,7 @@
             android:padding="@dimen/spacing_small"
             android:text="@string/empty_company_list"
             android:textColor="@color/empty_text"
-            android:visibility="gone" />
+            android:visibility="@{viewModel.tabEmptyMessageVisibility}" />
 
         <RelativeLayout
             android:id="@+id/progress_bar_container"
@@ -54,7 +60,8 @@
                 android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true" />
+                android:layout_centerInParent="true"
+                android:visibility="@{viewModel.progressVisibility}"/>
 
         </RelativeLayout>
 

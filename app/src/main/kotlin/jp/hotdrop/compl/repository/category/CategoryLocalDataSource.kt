@@ -5,7 +5,9 @@ import jp.hotdrop.compl.repository.OrmaHolder
 import java.util.*
 import javax.inject.Inject
 
-class CategoryLocalDataSource @Inject constructor(ormaHolder: OrmaHolder) {
+class CategoryLocalDataSource @Inject constructor(
+        ormaHolder: OrmaHolder
+) {
 
     private val orma = ormaHolder.orma
 
@@ -19,21 +21,18 @@ class CategoryLocalDataSource @Inject constructor(ormaHolder: OrmaHolder) {
                     .nameEq(name)
                     .value()
 
-    // CompanyDaoと同理由によりDescで取得する
     fun findAll(): List<Category> =
             categoryRelation().selector()
-                 .orderByViewOrderDesc()
-                 .toList()
+                    .orderByViewOrderAsc()
+                    .toList()
 
-    fun insert(argName: String, argColorType: String) {
-        val category = Category().apply {
-            name = argName
-            colorType = argColorType
-            viewOrder = maxOrder() + 1
-            registerDate = Date(System.currentTimeMillis())
-        }
+    fun insert(category: Category) {
         orma.transactionSync {
-            categoryRelation().inserter().execute(category)
+            categoryRelation().inserter()
+                    .execute(category.apply {
+                        viewOrder = maxOrder() + 1
+                        registerDate = Date(System.currentTimeMillis())
+                    })
         }
     }
 

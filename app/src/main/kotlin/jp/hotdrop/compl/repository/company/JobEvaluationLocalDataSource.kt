@@ -4,7 +4,9 @@ import jp.hotdrop.compl.model.JobEvaluation
 import jp.hotdrop.compl.repository.OrmaHolder
 import javax.inject.Inject
 
-class JobEvaluationLocalDataSource @Inject constructor(ormaHolder: OrmaHolder) {
+class JobEvaluationLocalDataSource @Inject constructor(
+        ormaHolder: OrmaHolder
+) {
 
     private val orma = ormaHolder.orma
 

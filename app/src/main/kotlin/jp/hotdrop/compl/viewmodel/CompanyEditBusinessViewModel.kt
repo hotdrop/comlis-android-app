@@ -10,12 +10,11 @@ import jp.hotdrop.compl.repository.company.CompanyRepository
 import jp.hotdrop.compl.util.ColorUtil
 import javax.inject.Inject
 
-class CompanyEditBusinessViewModel @Inject constructor(val context: Context): ViewModel() {
-
-    @Inject
-    lateinit var companyRepository: CompanyRepository
-    @Inject
-    lateinit var categoryRepository: CategoryRepository
+class CompanyEditBusinessViewModel @Inject constructor(
+        val context: Context,
+        private val companyRepository: CompanyRepository,
+        private val categoryRepository: CategoryRepository
+): ViewModel() {
 
     lateinit var viewDoingBusiness: String
     lateinit var viewWantBusiness: String

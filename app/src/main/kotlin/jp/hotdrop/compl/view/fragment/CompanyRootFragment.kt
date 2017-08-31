@@ -3,42 +3,46 @@ package jp.hotdrop.compl.view.fragment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v4.content.ContextCompat
+import android.support.v4.content.res.ResourcesCompat
+import android.support.v4.view.MenuItemCompat
 import android.support.v4.view.ViewPager
 import android.view.*
+import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.rxkotlin.toSingle
 import io.reactivex.schedulers.Schedulers
 import jp.hotdrop.compl.R
-import jp.hotdrop.compl.databinding.FragmentCompanyBinding
+import jp.hotdrop.compl.databinding.FragmentRootCompanyBinding
 import jp.hotdrop.compl.model.Category
-import jp.hotdrop.compl.repository.category.CategoryRepository
 import jp.hotdrop.compl.view.StackedPageListener
 import jp.hotdrop.compl.view.activity.ActivityNavigator
+import jp.hotdrop.compl.viewmodel.CompanyRootViewModel
 import javax.inject.Inject
 
+class CompanyRootFragment: BaseFragment(), StackedPageListener {
 
-class CompanyFragment: BaseFragment(), StackedPageListener {
-
+    @Inject
+    lateinit var viewModel: CompanyRootViewModel
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
-    @Inject
-    lateinit var categoryRepository: CategoryRepository
 
-    private lateinit var binding: FragmentCompanyBinding
+    private lateinit var binding: FragmentRootCompanyBinding
     private lateinit var adapter: Adapter
+
     private var tabName: String? = null
 
     companion object {
-        val TAG: String = CompanyFragment::class.java.simpleName
-        fun newInstance() = CompanyFragment()
+        val TAG: String = CompanyRootFragment::class.java.simpleName
+        fun newInstance() = CompanyRootFragment()
     }
 
     override fun onAttach(context: Context?) {
@@ -47,8 +51,9 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentCompanyBinding.inflate(inflater, container, false)
+        binding = FragmentRootCompanyBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
+        binding.viewModel = viewModel
 
         tabName = null
         loadData()
@@ -87,18 +92,26 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
         loadData()
     }
 
-    private fun loadData() {
-        showProgress()
+    override fun onTop() {
+        loadData()
+    }
 
-        categoryRepository.findAll()
-                .toSingle()
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
+    }
+
+    private fun loadData() {
+        viewModel.visibilityProgressBar()
+
+        viewModel.loadData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onSuccess = { initView(it) },
                         onError = {
                             showErrorAsToast(ErrorType.LoadFailureCompany, it)
-                            hideProgress()
+                            viewModel.goneProgressBar()
                         }
                 )
                 .addTo(compositeDisposable)
@@ -109,10 +122,10 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
         adapter = Adapter(childFragmentManager)
 
         if(categories.isNotEmpty()) {
-            categories.forEach { category -> addFragment(category.name, category.id) }
-            binding.listEmptyView.visibility = View.GONE
+            categories.forEach { addFragment(it.name, it.id) }
+            viewModel.goneEmptyMessageOnScreen()
         } else {
-            binding.listEmptyView.visibility = View.VISIBLE
+            viewModel.visibilityEmptyMessageOnScreen()
         }
 
         // tabLayoutを再作成するとonTabSelectedが呼ばれてしまうためこのタイミングで保持しておく。
@@ -129,15 +142,7 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
             binding.viewPager.currentItem = adapter.getPagePosition(stockSelectedTabName)
         }
 
-        hideProgress()
-    }
-
-    private fun showProgress() {
-        binding.progressBarContainer.visibility = View.VISIBLE
-    }
-
-    private fun hideProgress() {
-        binding.progressBarContainer.visibility = View.GONE
+        viewModel.goneProgressBar()
     }
 
     private fun addFragment(title: String, categoryId: Int) {
@@ -145,25 +150,78 @@ class CompanyFragment: BaseFragment(), StackedPageListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.menu_company, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        // YAGNIに反するが、OptionItemが増えた場合に備えてwhenで実装しておく
         when(item?.itemId) {
-            R.id.item_search -> ActivityNavigator.showSearch(this@CompanyFragment)
+            R.id.item_search -> ActivityNavigator.showSearch(this@CompanyRootFragment)
+            R.id.item_connect_from_server -> {
+                changeLoadingIcon(item)
+
+                viewModel.loadDataFromRemote()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeBy(
+                                onComplete = { changeSuccessIcon(item) },
+                                onError = { changeErrorIcon(item, it) }
+                        ).addTo(compositeDisposable)
+            }
         }
 
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onTop() {
-        loadData()
+    private fun changeDefaultIcon(item: MenuItem) {
+        item.setOnMenuItemClickListener(null)
+        item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_cloud_download, null)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.clear()
+    private fun changeLoadingIcon(item: MenuItem) {
+        MenuItemCompat.setActionView(item, R.layout.action_connect_from_server)
+    }
+
+    private fun changeSuccessIcon(item: MenuItem) {
+        MenuItemCompat.setActionView(item, null)
+        item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
+
+        val iconColor = ContextCompat.getColor(context, R.color.toolbar_icon_loading_success)
+        item.icon.setTintList(ColorStateList.valueOf(iconColor))
+
+        item.setOnMenuItemClickListener {
+            loadData()
+            changeDefaultIcon(item)
+            true
+        }
+
+        showRemoteAccessMessageAsToast(MessageType.Success)
+    }
+
+    private fun changeErrorIcon(item: MenuItem, throwable: Throwable) {
+        MenuItemCompat.setActionView(item, null)
+        item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
+
+        val iconColor = ContextCompat.getColor(context, R.color.toolbar_icon_loading_error)
+        item.icon.setTintList(ColorStateList.valueOf(iconColor))
+
+        item.setOnMenuItemClickListener{
+            showRemoteAccessMessageAsToast(MessageType.Error, viewModel.getErrorMessage(throwable))
+            true
+        }
+    }
+
+    private sealed class MessageType {
+        object Success: MessageType()
+        object Error: MessageType()
+    }
+
+    private fun showRemoteAccessMessageAsToast(type: MessageType, errorMessage: String = "") {
+        val msg = when(type) {
+            MessageType.Success -> context.getString(R.string.remote_access_message_success)
+            MessageType.Error -> context.getString(R.string.remote_access_message_error) + ":" + errorMessage
+        }
+        Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()
     }
 
     private inner class Adapter(fm: FragmentManager): FragmentStatePagerAdapter(fm) {

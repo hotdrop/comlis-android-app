@@ -24,18 +24,17 @@ import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.parts.FavoriteStars
 import javax.inject.Inject
 
-class CompanyDetailViewModel @Inject constructor(val context: Context): ViewModel() {
+class CompanyDetailViewModel @Inject constructor(
+        private val context: Context,
+        private val companyRepository: CompanyRepository,
+        private val categoryRepository: CategoryRepository
+): ViewModel() {
 
     private val SALARY_UNIT = context.getString(R.string.label_salary_unit)
     private val SALARY_RANGE_MARK = context.getString(R.string.label_salary_range_mark)
     private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
     private val EMPTY_VALUE = context.getString(R.string.label_empty_value)
     private val EMPTY_DATE = context.getString(R.string.label_empty_date)
-
-    @Inject
-    lateinit var companyRepository: CompanyRepository
-    @Inject
-    lateinit var categoryRepository: CategoryRepository
 
     lateinit var binding: FragmentCompanyDetailBinding
 
@@ -58,6 +57,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
     private var originalFavorite = 0
 
     var viewRegisterDate = ""
+    var viewUpdateDate = ""
 
     private lateinit var jobEvaluation: JobEvaluation
 
@@ -100,6 +100,7 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         viewFavorite = company.favorite
 
         viewRegisterDate = company.registerDate?.format() ?: EMPTY_DATE
+        viewUpdateDate = company.updateDate?.format() ?: EMPTY_DATE
 
         // updateDate is no use
         // company.updateDate?.format() ?: EMPTY_DATE
@@ -203,8 +204,6 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         }
     }
 
-    /** TODO このメニューの実装ももう少し綺麗にできるといいな・・ **/
-
     fun onClickMenuFab() {
         if(isOpenFabMenu())
             collapseFabMenu()
@@ -239,9 +238,10 @@ class CompanyDetailViewModel @Inject constructor(val context: Context): ViewMode
         binding.fabEdit.isClickable = true
     }
 
+    private val FAB_MENU_CLOSE_ROTATION = 0.toFloat()
     private fun collapseFabMenu() {
         ViewCompat.animate(binding.fabDetailMenu)
-                .rotation(0.toFloat())
+                .rotation(FAB_MENU_CLOSE_ROTATION)
                 .withLayer()
                 .setDuration(300)
                 .setInterpolator(OvershootInterpolator(10.toFloat()))

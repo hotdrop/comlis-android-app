@@ -5,7 +5,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CategoryRepository @Inject constructor(private val localDataSource: CategoryLocalDataSource) {
+class CategoryRepository @Inject constructor(
+        private val localDataSource: CategoryLocalDataSource
+) {
 
     fun find(id: Int) =
             localDataSource.find(id)
@@ -16,8 +18,8 @@ class CategoryRepository @Inject constructor(private val localDataSource: Catego
     fun findAll(): List<Category> =
             localDataSource.findAll()
 
-    fun insert(name: String, colorType: String) {
-        localDataSource.insert(name, colorType)
+    fun insert(category: Category) {
+        localDataSource.insert(category)
     }
 
     fun update(category: Category) {

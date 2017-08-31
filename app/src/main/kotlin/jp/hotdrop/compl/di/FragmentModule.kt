@@ -6,7 +6,9 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class FragmentModule constructor(private var fragment: Fragment) {
+class FragmentModule constructor(
+        private var fragment: Fragment
+) {
 
     @Provides
     fun provideFragmentManager(): FragmentManager = fragment.fragmentManager

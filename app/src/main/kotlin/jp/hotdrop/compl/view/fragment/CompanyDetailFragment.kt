@@ -20,6 +20,7 @@ import jp.hotdrop.compl.R
 import jp.hotdrop.compl.databinding.FragmentCompanyDetailBinding
 import jp.hotdrop.compl.databinding.ItemTagAssociateBinding
 import jp.hotdrop.compl.model.Tag
+import jp.hotdrop.compl.model.TagAssociateState
 import jp.hotdrop.compl.view.activity.ActivityNavigator
 import jp.hotdrop.compl.view.parts.FavoriteStars
 import jp.hotdrop.compl.viewmodel.CompanyDetailViewModel
@@ -131,8 +132,8 @@ class CompanyDetailFragment: BaseFragment() {
         fun setCardView(layout: FlexboxLayout, tag: Tag) {
             val binding = DataBindingUtil.inflate<ItemTagAssociateBinding>(getLayoutInflater(null),
                     R.layout.item_tag_associate, layout, false)
-            // 関連付けしているタグしか取得していないため、無条件で第二引数をtrue（関連付けられているという意味）にする。
-            binding.viewModel = TagAssociateViewModel(tag, true, context)
+            // Unconditionally associate. Because get only associated tags.
+            binding.viewModel = TagAssociateViewModel(tag, TagAssociateState.ASSOCIATED, context)
             layout.addView(binding.root)
         }
 

@@ -56,9 +56,9 @@ class Company {
     @Column
     var registerDate: Date? = null
 
-    /**
-     * 更新日の更新はEditFragmentで編集した場合のみ
-     */
     @Column
     var updateDate: Date? = null
+
+    @Column
+    var fromRemoteDate: Date? = null
 }
