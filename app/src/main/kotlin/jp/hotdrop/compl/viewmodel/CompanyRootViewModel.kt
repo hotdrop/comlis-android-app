@@ -73,6 +73,11 @@ class CompanyRootViewModel @Inject constructor(
     }
 
     private fun updateAlreadyCompany(company: Company, receiveCompany: ReceiveCompany) {
+
+        if(unNecessaryUpdate(company)) {
+            return
+        }
+
         val compositeCompany = company.apply {
             overview = if(overview.isNullOrEmpty()) receiveCompany.overview else overview
             workPlace = if(workPlace.isNullOrEmpty()) receiveCompany.workPlace else workPlace
@@ -82,6 +87,11 @@ class CompanyRootViewModel @Inject constructor(
         }
         companyRepository.update(compositeCompany, fromRemoteRepository = true)
     }
+
+    private fun unNecessaryUpdate(company: Company) =
+            (company.overview != null && company.overview!!.isNotEmpty()) &&
+                (company.workPlace != null && company.workPlace!!.isNotEmpty()) &&
+                company.employeesNum > 0 && company.salaryLow > 0 && company.salaryHigh > 0
 
     fun getErrorMessage(throwable: Throwable): String {
         val httpException = throwable as? HttpException

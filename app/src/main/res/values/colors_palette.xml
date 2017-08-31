@@ -41,5 +41,10 @@
     <color name="light_gray">#d6d4d4</color>
     <color name="transparent">#00000000</color>
 
+    <color name="rainbow_red">#bf0c43</color>
+    <color name="rainbow_yellow">#f9ba15</color>
+    <color name="rainbow_green">#8eac00</color>
+    <color name="rainbow_blue">#127a97</color>
+    <color name="rainbow_purple">#452b72</color>
 
 </resources>

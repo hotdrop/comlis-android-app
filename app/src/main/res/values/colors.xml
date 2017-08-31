@@ -57,4 +57,12 @@
     <!-- parts -->
     <color name="border_line">@color/gray</color>
 
+    <integer-array name="rainbow">
+        <item>@color/rainbow_red</item>
+        <item>@color/rainbow_yellow</item>
+        <item>@color/rainbow_green</item>
+        <item>@color/rainbow_blue</item>
+        <item>@color/rainbow_purple</item>
+    </integer-array>
+
 </resources>

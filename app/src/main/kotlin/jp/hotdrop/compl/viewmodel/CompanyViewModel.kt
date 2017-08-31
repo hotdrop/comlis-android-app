@@ -1,7 +1,11 @@
 package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
+import android.databinding.Bindable
 import android.support.annotation.ColorRes
+import android.view.View
+import android.widget.TextView
+import jp.hotdrop.compl.BR
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
@@ -9,6 +13,8 @@ import jp.hotdrop.compl.repository.category.CategoryRepository
 import jp.hotdrop.compl.repository.company.CompanyRepository
 import jp.hotdrop.compl.util.ColorUtil
 import jp.hotdrop.compl.view.parts.FavoriteStars
+import jp.hotdrop.compl.view.parts.RainbowAnimationText
+import java.util.*
 
 class CompanyViewModel(
         private var company: Company,
@@ -16,6 +22,13 @@ class CompanyViewModel(
         private val companyRepository: CompanyRepository,
         private val categoryRepository: CategoryRepository
 ): ViewModel() {
+
+    @get:Bindable
+    var markFromRemoteVisibility = View.GONE
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.markFromRemoteVisibility)
+        }
 
     private val JOB_EVALUATION_UNIT = context.getString(R.string.label_job_evaluation_unit)
     private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
@@ -133,6 +146,35 @@ class CompanyViewModel(
         viewFavorite = favoriteNum
         companyRepository.updateFavorite(company.id, favoriteNum)
     }
+
+    fun markFromRemote(markTextView: TextView) {
+        if(!checkWithinOneDay(company.fromRemoteDate)) {
+            markFromRemoteVisibility = View.GONE
+            return
+        }
+
+        markFromRemoteVisibility = View.VISIBLE
+
+        if(isNewCompany()) {
+            markTextView.text = "new"
+        } else {
+            markTextView.text = "update"
+        }
+
+        RainbowAnimationText(markTextView, context).run {
+            animationStart()
+        }
+    }
+
+    private val HOUR_12_MILLIS = 12 * 60 * 60 * 1000
+    private fun checkWithinOneDay(targetDate: Date?): Boolean {
+        targetDate ?: return false
+        val startDate = Date(System.currentTimeMillis() - HOUR_12_MILLIS)
+        val endDate = Date(System.currentTimeMillis() + HOUR_12_MILLIS)
+        return targetDate in startDate..endDate
+    }
+
+    private fun isNewCompany() = company.fromRemoteDate == company.registerDate
 
     override fun equals(other: Any?) =
             (other as CompanyViewModel).company.id == company.id || super.equals(other)

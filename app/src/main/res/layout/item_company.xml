@@ -28,10 +28,20 @@
                 android:clipToPadding="false"
                 android:padding="@dimen/spacing">
 
+                <TextView
+                    android:id="@+id/mark_from_remote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_large"
+                    android:paddingStart="@dimen/spacing_small"
+                    android:paddingBottom="@dimen/spacing_xsmall"
+                    android:visibility="@{viewModel.markFromRemoteVisibility}" />
+
                 <ImageView
                     android:id="@+id/icon_reorder"
                     android:layout_width="@dimen/reorder_icon_company_list_width"
                     android:layout_height="@dimen/reorder_icon_company_list_height"
+                    android:layout_below="@id/mark_from_remote"
                     android:layout_alignTop="@id/txt_name"
                     android:contentDescription="@string/description_company_reorder"
                     android:src="@drawable/ic_reorder"
@@ -40,6 +50,7 @@
                 <TextView
                     android:id="@+id/txt_name"
                     style="@style/ListItemText"
+                    android:layout_below="@id/mark_from_remote"
                     android:layout_toEndOf="@id/icon_reorder"
                     android:text="@{viewModel.viewName}" />
 
