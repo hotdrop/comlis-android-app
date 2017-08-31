@@ -39,13 +39,13 @@ class ApplicationModule(
 
     @Singleton
     @Provides
-    fun provideHttpClient(): OkHttpClient = OkHttpClient.Builder().build()
+    fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder().build()
 
     @Singleton
     @Provides
-    fun provideComlisService(client: OkHttpClient): ComlisService =
+    fun provideComlisService(okHttpClient: OkHttpClient): ComlisService =
         Retrofit.Builder()
-                .client(client)
+                .client(okHttpClient)
                 .baseUrl(BuildConfig.API_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
