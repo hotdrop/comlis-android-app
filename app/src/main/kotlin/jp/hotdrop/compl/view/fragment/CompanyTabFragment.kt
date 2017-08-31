@@ -178,7 +178,7 @@ class CompanyTabFragment: BaseFragment() {
             binding.viewModel.viewTags.forEach { tag -> setCardView(binding.flexBoxContainer, tag) }
             initFavoriteEvent(binding)
 
-            binding.viewModel.markFromRemote(binding.markFromRemote)
+            binding.viewModel.markFromRemote(binding.txtMarkRemote)
         }
 
         private fun setCardView(flexboxLayout: FlexboxLayout, tag: Tag) {

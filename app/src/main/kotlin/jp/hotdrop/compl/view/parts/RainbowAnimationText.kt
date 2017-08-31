@@ -19,8 +19,8 @@ import android.widget.TextView
 import jp.hotdrop.compl.R
 
 class RainbowAnimationText constructor(
-        textView: TextView,
-        context: Context
+        context: Context,
+        targetTextView: TextView
 ) {
 
     private val ANIM_COLOR_SPAN_PROPERTY =
@@ -33,14 +33,14 @@ class RainbowAnimationText constructor(
 
     init {
         val span = AnimatedColorSpan(context)
-        val spannableStr = SpannableString(textView.text.toString()).apply {
-            setSpan(span, 0, textView.text.toString().length, 0)
+        val spannableStr = SpannableString(targetTextView.text.toString()).apply {
+            setSpan(span, 0, targetTextView.text.toString().length, 0)
         }
 
         objectAnimator = ObjectAnimator.ofFloat(span, ANIM_COLOR_SPAN_PROPERTY, 0f, 100f)
                 .apply {
                     setEvaluator(FloatEvaluator())
-                    addUpdateListener{ textView.text = spannableStr }
+                    addUpdateListener{ targetTextView.text = spannableStr }
                     interpolator = LinearInterpolator()
                     duration = DateUtils.MINUTE_IN_MILLIS * 3
                     repeatCount = ValueAnimator.INFINITE

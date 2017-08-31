@@ -1,11 +1,8 @@
 package jp.hotdrop.compl.viewmodel
 
 import android.content.Context
-import android.databinding.Bindable
 import android.support.annotation.ColorRes
-import android.view.View
 import android.widget.TextView
-import jp.hotdrop.compl.BR
 import jp.hotdrop.compl.R
 import jp.hotdrop.compl.model.Company
 import jp.hotdrop.compl.model.Tag
@@ -22,13 +19,6 @@ class CompanyViewModel(
         private val companyRepository: CompanyRepository,
         private val categoryRepository: CategoryRepository
 ): ViewModel() {
-
-    @get:Bindable
-    var markFromRemoteVisibility = View.GONE
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.markFromRemoteVisibility)
-        }
 
     private val JOB_EVALUATION_UNIT = context.getString(R.string.label_job_evaluation_unit)
     private val EMPLOYEES_NUM_UNIT = context.getString(R.string.label_employees_num_unit)
@@ -149,19 +139,11 @@ class CompanyViewModel(
 
     fun markFromRemote(markTextView: TextView) {
         if(!checkWithinOneDay(company.fromRemoteDate)) {
-            markFromRemoteVisibility = View.GONE
             return
         }
 
-        markFromRemoteVisibility = View.VISIBLE
-
-        if(isNewCompany()) {
-            markTextView.text = "new"
-        } else {
-            markTextView.text = "update"
-        }
-
-        RainbowAnimationText(markTextView, context).run {
+        markTextView.text =  if(isNewCompany()) "  new!!" else "  update!"
+        RainbowAnimationText(context, markTextView).run {
             animationStart()
         }
     }
