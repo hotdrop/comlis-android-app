@@ -96,10 +96,10 @@ class CompanyRootViewModel @Inject constructor(
     fun getErrorMessage(throwable: Throwable): String {
         val httpException = throwable as? HttpException
         if(httpException != null) {
-            // TODO ステータスコードによってエラーメッセージを分ける
-            return "status code=" + httpException.code()
+            val error = httpException.response().errorBody()
+            return error.toString() + " http status code=" + httpException.code()
         }
-        return throwable.message ?: "不明のエラーです。"
+        return throwable.message ?: "unknown error. throwable message is null."
     }
 
     fun visibilityEmptyMessageOnScreen() {

@@ -14,6 +14,7 @@ import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.MenuItemCompat
 import android.support.v4.view.ViewPager
 import android.view.*
+import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -205,10 +206,22 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
         item.icon.setTintList(ColorStateList.valueOf(iconColor))
 
         item.setOnMenuItemClickListener{
-            // TODO サーバーに接続できなかったのか、サーバーでエラーが返ってきたのかくらいは表示したい。
             showRemoteAccessMessageAsToast(MessageType.Error, viewModel.getErrorMessage(throwable))
             true
         }
+    }
+
+    private sealed class MessageType {
+        object Success: MessageType()
+        object Error: MessageType()
+    }
+
+    private fun showRemoteAccessMessageAsToast(type: MessageType, errorMessage: String = "") {
+        val msg = when(type) {
+            MessageType.Success -> context.getString(R.string.remote_access_message_success)
+            MessageType.Error -> context.getString(R.string.remote_access_message_error) + ":" + errorMessage
+        }
+        Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()
     }
 
     private inner class Adapter(fm: FragmentManager): FragmentStatePagerAdapter(fm) {

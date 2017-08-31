@@ -17,7 +17,7 @@ android {
         versionName "0.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "API_URL", "\"https://localhost:8080/\""
+        buildConfigField "String", "API_URL", "\"http://localhost:8080/\""
     }
     buildTypes {
         debug {
