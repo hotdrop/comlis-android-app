@@ -91,6 +91,15 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
         loadData()
     }
 
+    override fun onTop() {
+        loadData()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
+    }
+
     private fun loadData() {
         viewModel.visibilityProgressBar()
 
@@ -148,7 +157,6 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
         when(item?.itemId) {
             R.id.item_search -> ActivityNavigator.showSearch(this@CompanyRootFragment)
             R.id.item_connect_from_server -> {
-                // TODO RuntimePermissionでandroid.permission.INTERNETを与える
                 changeLoadingIcon(item)
 
                 viewModel.loadDataFromRemote()
@@ -156,9 +164,7 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy(
                                 onComplete = { changeSuccessIcon(item) },
-                                onError = {
-                                    changeErrorIcon(item, it)
-                                }
+                                onError = { changeErrorIcon(item, it) }
                         ).addTo(compositeDisposable)
             }
         }
@@ -170,9 +176,11 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
         item.setOnMenuItemClickListener(null)
         item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_cloud_download, null)
     }
+
     private fun changeLoadingIcon(item: MenuItem) {
         MenuItemCompat.setActionView(item, R.layout.action_connect_from_server)
     }
+
     private fun changeSuccessIcon(item: MenuItem) {
         MenuItemCompat.setActionView(item, null)
         item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
@@ -188,6 +196,7 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
 
         showRemoteAccessMessageAsToast(MessageType.Success)
     }
+
     private fun changeErrorIcon(item: MenuItem, throwable: Throwable) {
         MenuItemCompat.setActionView(item, null)
         item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
@@ -200,15 +209,6 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
             showRemoteAccessMessageAsToast(MessageType.Error, viewModel.getErrorMessage(throwable))
             true
         }
-    }
-
-    override fun onTop() {
-        loadData()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.clear()
     }
 
     private inner class Adapter(fm: FragmentManager): FragmentStatePagerAdapter(fm) {
