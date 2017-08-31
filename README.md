@@ -8,7 +8,7 @@
 * target_sdk_version: 25
 
 # Environment
-* Kotlin 1.1.4
+* Kotlin 1.1.4-2
 * gradle 2.2.3
 * Android studio 2.3.3
 
@@ -22,6 +22,8 @@
 * lottie 1.5.3
 * Android-Orma 4.2.5
 * deploygate
+* retrofit 2.3.0
+* okhttp 3.8.1
 
 # Features
 会社情報を登録し、タグ付けや分類指定、検索等をすることができます。
