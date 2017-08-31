@@ -23,7 +23,8 @@ class CategoryLocalDataSource @Inject constructor(
 
     fun findAll(): List<Category> =
             categoryRelation().selector()
-                 .toList()
+                    .orderByViewOrderAsc()
+                    .toList()
 
     fun insert(category: Category) {
         orma.transactionSync {
