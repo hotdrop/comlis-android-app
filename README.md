@@ -3,6 +3,9 @@
 # コムリス
 空いた時間でチマチマ作った転職用会社情報保持アプリです。
 
+This application contains deliverables distributed under the Apache License 2.0  
+[Apache License Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
 # SDK version
 * min_sdk_version: 23
 * target_sdk_version: 25
