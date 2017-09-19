@@ -30,6 +30,7 @@
                     android:id="@+id/txt_name"
                     style="@style/EditText"
                     android:layout_below="@id/label_name"
+                    android:maxLength="@integer/company_name_max_length"
                     android:text="@={viewModel.viewName}" />
 
                 <TextView
@@ -84,6 +85,7 @@
                     android:id="@+id/txt_employees_num"
                     style="@style/CompactEditText"
                     android:layout_below="@id/label_employees_num"
+                    android:maxLength="@integer/company_employees_num_max_length"
                     android:text="@={viewModel.viewEmployeesNum}" />
 
                 <TextView
@@ -106,6 +108,7 @@
                     style="@style/CompactEditText"
                     android:layout_below="@id/label_salary"
                     android:layout_toEndOf="@id/label_employees_unit"
+                    android:maxLength="@integer/company_salary_max_length"
                     android:text="@={viewModel.viewSalaryLow}" />
 
                 <TextView
@@ -131,6 +134,7 @@
                     android:layout_below="@id/label_salary"
                     android:layout_toEndOf="@id/label_salary_range_mark"
                     android:hint="@string/hint_salary"
+                    android:maxLength="@integer/company_salary_max_length"
                     android:text="@={viewModel.viewSalaryHigh}" />
 
                 <TextView
@@ -166,6 +170,7 @@
                     style="@style/EditText"
                     android:layout_below="@id/label_wanted_job"
                     android:hint="@string/hint_wanted_job"
+                    android:maxLength="@integer/company_wanted_job_max_length"
                     android:text="@={viewModel.viewWantedJob}" />
 
                 <TextView
@@ -178,6 +183,7 @@
                     android:id="@+id/txt_work_place"
                     style="@style/EditText"
                     android:layout_below="@id/label_work_place"
+                    android:maxLength="@integer/company_work_place_max_length"
                     android:text="@={viewModel.viewWorkPlace}" />
 
                 <TextView
@@ -191,6 +197,7 @@
                     style="@style/EditText"
                     android:layout_below="@id/label_url"
                     android:hint="@string/hint_url"
+                    android:maxLength="@integer/company_url_max_length"
                     android:text="@={viewModel.viewUrl}" />
 
                 <TextView

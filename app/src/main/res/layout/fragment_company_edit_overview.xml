@@ -31,6 +31,7 @@
                     android:id="@+id/txt_name"
                     style="@style/EditText"
                     android:layout_below="@id/label_name"
+                    android:maxLength="@integer/company_name_max_length"
                     android:text="@={viewModel.viewName}" />
 
                 <TextView

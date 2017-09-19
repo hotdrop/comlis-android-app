@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <integer name="company_name_max_length">50</integer>
+    <integer name="company_employees_num_max_length">5</integer>
+    <integer name="company_salary_max_length">4</integer>
+    <integer name="company_wanted_job_max_length">50</integer>
+    <integer name="company_work_place_max_length">50</integer>
+    <integer name="company_url_max_length">100</integer>
+
     <integer name="company_overview_counter_max_length">200</integer>
     <integer name="company_overview_max_lines">30</integer>
+
     <integer name="company_description_counter_max_length">1000</integer>
     <integer name="company_description_max_lines">30</integer>
+
+    <integer name="compnay_doing_business_max_length">500</integer>
     <integer name="company_doing_business_max_lines">3</integer>
+
+    <integer name="compnay_want_business_max_length">500</integer>
     <integer name="company_want_business_max_lines">3</integer>
+
     <integer name="anim_display_item_duration">400</integer>
 </resources>
