@@ -5,7 +5,7 @@
     tools:context=".view.fragment.CompanyEditOverviewFragment">
 
     <data>
-        <variable name="viewModel" type="jp.hotdrop.compl.viewmodel.CompanyEditOverviewViewModel" />
+        <variable name="viewModel" type="jp.hotdrop.comlis.viewmodel.CompanyEditOverviewViewModel" />
     </data>
 
     <ScrollView

@@ -5,7 +5,7 @@
     tools:context=".view.fragment.CompanyDetailFragment">
 
     <data>
-        <variable name="viewModel" type="jp.hotdrop.compl.viewmodel.CompanyDetailViewModel" />
+        <variable name="viewModel" type="jp.hotdrop.comlis.viewmodel.CompanyDetailViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

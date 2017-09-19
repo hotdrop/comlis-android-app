@@ -3,7 +3,7 @@
     tools:context=".view.fragment.CompanyJobEvaluationFragment">
 
     <data>
-        <variable name="viewModel" type="jp.hotdrop.compl.viewmodel.JobEvaluationViewModel" />
+        <variable name="viewModel" type="jp.hotdrop.comlis.viewmodel.JobEvaluationViewModel" />
     </data>
 
     <ScrollView

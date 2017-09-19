@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="viewModel" type="jp.hotdrop.compl.viewmodel.TagViewModel" />
+        <variable name="viewModel" type="jp.hotdrop.comlis.viewmodel.TagViewModel" />
     </data>
 
     <RelativeLayout

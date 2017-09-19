@@ -4,7 +4,7 @@
     tools:context=".view.fragment.CompanyRegisterFragment">
 
     <data>
-        <variable name="viewModel" type="jp.hotdrop.compl.viewmodel.CompanyRegisterViewModel" />
+        <variable name="viewModel" type="jp.hotdrop.comlis.viewmodel.CompanyRegisterViewModel" />
     </data>
 
     <ScrollView

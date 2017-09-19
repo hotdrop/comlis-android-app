@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="jp.hotdrop.compl.viewmodel.TagsAssociateViewModel" />
+            type="jp.hotdrop.comlis.viewmodel.TagsAssociateViewModel" />
     </data>
 
     <FrameLayout
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <jp.hotdrop.compl.view.customlayout.CustomRecyclerView
+            <jp.hotdrop.comlis.view.customlayout.CustomRecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

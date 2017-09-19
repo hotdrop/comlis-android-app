@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="jp.hotdrop.compl.viewmodel.CompaniesViewModel" />
+            type="jp.hotdrop.comlis.viewmodel.CompaniesViewModel" />
     </data>
 
     <RelativeLayout

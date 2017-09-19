@@ -3,7 +3,7 @@
     tools:context=".view.fragment.CompanyEditBusinessFragment">
 
     <data>
-        <variable name="viewModel" type="jp.hotdrop.compl.viewmodel.CompanyEditBusinessViewModel" />
+        <variable name="viewModel" type="jp.hotdrop.comlis.viewmodel.CompanyEditBusinessViewModel" />
     </data>
 
     <ScrollView

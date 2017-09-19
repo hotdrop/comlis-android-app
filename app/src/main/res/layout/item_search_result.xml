@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools" >
 
     <data>
-        <variable name="viewModel" type="jp.hotdrop.compl.viewmodel.ItemSearchResultViewModel" />
+        <variable name="viewModel" type="jp.hotdrop.comlis.viewmodel.ItemSearchResultViewModel" />
     </data>
 
     <RelativeLayout
