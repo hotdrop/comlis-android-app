@@ -183,6 +183,7 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
     }
 
     private fun changeSuccessIcon(item: MenuItem) {
+        MenuItemCompat.setActionView(item, null)
 
         if(!viewModel.hasCompaniesFromRemote) {
             showRemoteAccessMessageAsToast(MessageType.NoNewData)
@@ -190,7 +191,6 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
             return
         }
 
-        MenuItemCompat.setActionView(item, null)
         item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
 
         val iconColor = ContextCompat.getColor(context, R.color.toolbar_icon_loading_success)
