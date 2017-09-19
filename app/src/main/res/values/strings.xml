@@ -93,8 +93,8 @@
     <string name="hint_salary">任意</string>
     <string name="hint_wanted_job">PM, インフラエンジニア, プログラマー等</string>
     <string name="hint_url">https://www.sample.co.jp</string>
-    <string name="hint_doing_business">現在やっている事業内容</string>
-    <string name="hint_want_business">これからやろうとしている事業内容</string>
+    <string name="hint_doing_business">現在の事業内容</string>
+    <string name="hint_want_business">今後やろうとしている事業内容</string>
 
     <!-- button -->
     <string name="add_button">登録</string>

@@ -206,32 +206,52 @@
                     android:layout_below="@id/txt_url"
                     android:text="@string/label_doing_business" />
 
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/txt_doing_business"
-                    style="@style/MultiLineEditText"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_doing_business"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/label_doing_business"
-                    android:maxLines="@integer/company_doing_business_max_lines"
-                    android:hint="@string/hint_doing_business"
-                    android:text="@={viewModel.viewDoingBusiness}" />
+                    android:layout_marginEnd="@dimen/spacing"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@integer/company_doing_business_max_length" >
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/txt_doing_business"
+                        style="@style/MultiLineEditText"
+                        android:maxLines="@integer/company_doing_business_max_lines"
+                        android:hint="@string/hint_doing_business"
+                        android:text="@={viewModel.viewDoingBusiness}" />
+
+                </android.support.design.widget.TextInputLayout>
 
                 <TextView
                     android:id="@+id/label_want_business"
                     style="@style/ItemLabel"
-                    android:layout_below="@id/txt_doing_business"
+                    android:layout_below="@id/input_layout_doing_business"
                     android:text="@string/label_want_business" />
 
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/txt_want_business"
-                    style="@style/MultiLineEditText"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_want_business"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/label_want_business"
-                    android:maxLines="@integer/company_want_business_max_lines"
-                    android:hint="@string/hint_want_business"
-                    android:text="@={viewModel.viewWantBusiness}" />
+                    android:layout_marginEnd="@dimen/spacing"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@integer/company_want_business_max_length" >
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/txt_want_business"
+                        style="@style/MultiLineEditText"
+                        android:maxLines="@integer/company_want_business_max_lines"
+                        android:hint="@string/hint_want_business"
+                        android:text="@={viewModel.viewWantBusiness}" />
+
+                </android.support.design.widget.TextInputLayout>
 
                 <TextView
                     android:id="@+id/label_note"
                     style="@style/ItemLabel"
-                    android:layout_below="@id/txt_want_business"
+                    android:layout_below="@id/input_layout_want_business"
                     android:text="@string/label_description" />
 
                 <android.support.design.widget.TextInputLayout
