@@ -183,6 +183,13 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
     }
 
     private fun changeSuccessIcon(item: MenuItem) {
+
+        if(!viewModel.hasCompaniesFromRemote) {
+            showRemoteAccessMessageAsToast(MessageType.NoNewData)
+            changeDefaultIcon(item)
+            return
+        }
+
         MenuItemCompat.setActionView(item, null)
         item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
 
@@ -213,12 +220,14 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
 
     private sealed class MessageType {
         object Success: MessageType()
+        object NoNewData: MessageType()
         object Error: MessageType()
     }
 
     private fun showRemoteAccessMessageAsToast(type: MessageType, errorMessage: String = "") {
         val msg = when(type) {
             MessageType.Success -> context.getString(R.string.remote_access_message_success)
+            MessageType.NoNewData -> context.getString(R.string.remote_access_message_no_new_data)
             MessageType.Error -> context.getString(R.string.remote_access_message_error) + ":" + errorMessage
         }
         Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()

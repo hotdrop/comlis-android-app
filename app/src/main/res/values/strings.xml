@@ -146,6 +146,7 @@
 
     <!-- remote access message -->
     <string name="remote_access_message_success">リモートから新しい会社情報を取得しました。</string>
+    <string name="remote_access_message_no_new_data">新しい会社情報はありません。</string>
     <string name="remote_access_message_error">通信エラー</string>
 
     <string name="open">open</string>

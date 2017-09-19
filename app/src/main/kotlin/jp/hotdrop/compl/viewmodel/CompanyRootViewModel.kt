@@ -37,12 +37,15 @@ class CompanyRootViewModel @Inject constructor(
             notifyPropertyChanged(BR.progressVisibility)
         }
 
+    var hasCompaniesFromRemote = false
+
     fun loadData(): Single<List<Category>> =
             categoryRepository.findAll().toSingle()
 
     fun loadDataFromRemote(): Completable {
         return companyRepository.findAllFromRemote()
                 .flatMapCompletable { receiveCompanies ->
+                    hasCompaniesFromRemote = receiveCompanies.isNotEmpty()
                     receiveCompanies.forEach {
                         if(companyRepository.exist(it.name)) {
                             val company = companyRepository.find(it.name)
