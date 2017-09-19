@@ -23,7 +23,11 @@ class CompanyRemoteDataSourceTest {
         println("Connect test start!")
         remoteDataSource.findAll().test().run {
             assertNoErrors()
-            values().forEach { it.forEach { println("  " + it.name) } }
+            values().forEach {
+                it.forEach {
+                    println("  " + it.name + "  従業員数:" + it.employeesNum + "  概要:" + it.overview)
+                }
+            }
             assertComplete()
         }
     }
