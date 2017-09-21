@@ -9,6 +9,7 @@ class ReceiveCompany {
     var employeesNum: Int = 0
     var salaryLow: Int = 0
     var salaryHigh: Int = 0
+    var dateEpoch: Long = 0
 
     fun toCompany() = Company().also {
         it.name = name

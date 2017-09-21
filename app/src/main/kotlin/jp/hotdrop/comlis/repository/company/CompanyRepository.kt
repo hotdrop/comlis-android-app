@@ -97,6 +97,6 @@ class CompanyRepository @Inject constructor(
         jobEvaluationLocalDataSource.upsert(jobEvaluation)
     }
 
-    fun findAllFromRemote(): Single<List<ReceiveCompany>> =
-            remoteDataSource.findAll()
+    fun findAllFromRemote(latestDateEpoch: Long): Single<List<ReceiveCompany>> =
+            remoteDataSource.findAll(latestDateEpoch)
 }

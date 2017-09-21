@@ -13,6 +13,7 @@ import jp.hotdrop.comlis.model.Company
 import jp.hotdrop.comlis.model.ReceiveCompany
 import jp.hotdrop.comlis.repository.category.CategoryRepository
 import jp.hotdrop.comlis.repository.company.CompanyRepository
+import jp.hotdrop.comlis.repository.company.RemoteKeyRepository
 import jp.hotdrop.comlis.util.ColorUtil
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class CompanyRootViewModel @Inject constructor(
         private val context: Context,
         private val categoryRepository: CategoryRepository,
-        private val companyRepository: CompanyRepository
+        private val companyRepository: CompanyRepository,
+        private val remoteKeyRepository: RemoteKeyRepository
 ): ViewModel() {
 
     @get:Bindable
@@ -43,7 +45,8 @@ class CompanyRootViewModel @Inject constructor(
             categoryRepository.findAll().toSingle()
 
     fun loadDataFromRemote(): Completable {
-        return companyRepository.findAllFromRemote()
+        val latestDateEpoch = remoteKeyRepository.findLatest()
+        return companyRepository.findAllFromRemote(latestDateEpoch)
                 .flatMapCompletable { receiveCompanies ->
                     hasCompaniesFromRemote = receiveCompanies.isNotEmpty()
                     receiveCompanies.forEach {
@@ -54,7 +57,10 @@ class CompanyRootViewModel @Inject constructor(
                             registerNewCompany(it)
                         }
                     }
-                    // TODO 次回以降、取得不要なデータのIDをListにして投げる
+                    // save the most recent dateEpoch of the acquired remote repository
+                    receiveCompanies.maxBy { it.dateEpoch }?.run {
+                        remoteKeyRepository.save(dateEpoch)
+                    }
                     Completable.complete()
                 }
     }

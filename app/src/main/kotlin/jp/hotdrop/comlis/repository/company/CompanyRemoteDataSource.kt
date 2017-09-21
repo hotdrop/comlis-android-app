@@ -8,5 +8,6 @@ import javax.inject.Inject
 class CompanyRemoteDataSource @Inject constructor(
         private val comlisService: ComlisService
 ) {
-    fun findAll(): Single<List<ReceiveCompany>> = comlisService.companies()
+    fun findAll(latestDateEpoch: Long): Single<List<ReceiveCompany>> =
+            comlisService.companies(latestDateEpoch)
 }
