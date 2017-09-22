@@ -190,7 +190,7 @@ class CompanyDetailFragment: BaseFragment() {
         }
         binding.toolbarLayout.isClickable = false
 
-        binding.imageEditAbstract.setOnClickListener {
+        binding.imageEditOverview.setOnClickListener {
             ActivityNavigator.showCompanyEditOverview(this@CompanyDetailFragment, companyId,
                     viewModel.colorName, Request.EditOverview.code)
         }

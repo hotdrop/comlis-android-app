@@ -31,7 +31,7 @@ import jp.hotdrop.comlis.viewmodel.CategoriesViewModel
 import jp.hotdrop.comlis.viewmodel.CategoryViewModel
 import javax.inject.Inject
 
-class CategoryFragment : BaseFragment() {
+class CategoryFragment: BaseFragment() {
 
     @Inject
     lateinit var viewModel: CategoriesViewModel

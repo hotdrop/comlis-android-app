@@ -158,7 +158,7 @@ class CompanyDetailViewModel @Inject constructor(
 
         binding.run {
             val darkColor = ColorUtil.getResDark(colorName, context)
-            imageEditAbstract.setColorFilter(darkColor)
+            imageEditOverview.setColorFilter(darkColor)
             imageEditInformation.setColorFilter(darkColor)
             imageEditJobEvaluation.setColorFilter(darkColor)
             imageEditBusiness.setColorFilter(darkColor)
@@ -220,7 +220,7 @@ class CompanyDetailViewModel @Inject constructor(
             collapseFabMenu()
         }
     }
-    private fun isVisibleEditFab() = (binding.imageEditAbstract.visibility == View.VISIBLE)
+    private fun isVisibleEditFab() = (binding.imageEditOverview.visibility == View.VISIBLE)
 
     private val FAB_MENU_OPEN_ROTATION = 90.toFloat()
     private fun expandFabMenu() {
@@ -268,7 +268,7 @@ class CompanyDetailViewModel @Inject constructor(
 
     private fun visibleEditIcons() {
         binding.toolbarLayout.isClickable = true
-        binding.imageEditAbstract.visibleIcon()
+        binding.imageEditOverview.visibleIcon()
         binding.imageEditInformation.visibleIcon()
         binding.imageEditBusiness.visibleIcon()
         binding.imageEditJobEvaluation.visibleIcon()
@@ -277,7 +277,7 @@ class CompanyDetailViewModel @Inject constructor(
 
     private fun goneEditIcons() {
         binding.toolbarLayout.isClickable = false
-        binding.imageEditAbstract.goneIcon()
+        binding.imageEditOverview.goneIcon()
         binding.imageEditInformation.goneIcon()
         binding.imageEditBusiness.goneIcon()
         binding.imageEditJobEvaluation.goneIcon()

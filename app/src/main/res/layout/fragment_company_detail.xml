@@ -99,29 +99,30 @@
                     app:flexWrap="wrap" />
 
                 <TextView
-                    android:id="@+id/label_abstract_title"
+                    android:id="@+id/label_overview_title"
                     style="@style/SectionTitle"
                     android:layout_below="@id/flex_box_container"
                     android:textColor="@{viewModel.getColorRes}"
                     android:text="@string/label_overview"/>
 
                 <ImageView
-                    android:id="@+id/image_edit_abstract"
+                    android:id="@+id/image_edit_overview"
                     style="@style/EditIconImage"
                     android:layout_below="@id/flex_box_container"
-                    android:layout_toEndOf="@id/label_abstract_title"
-                    android:layout_alignBottom="@id/label_abstract_title"
-                    android:src="@drawable/ic_mode_edit"/>
+                    android:layout_toEndOf="@id/label_overview_title"
+                    android:layout_alignBottom="@id/label_overview_title"
+                    android:src="@drawable/ic_mode_edit"
+                    android:contentDescription="@string/description_company_detail_edit_overview" />
 
                 <View
-                    android:id="@+id/line_abstract_title"
+                    android:id="@+id/line_overview_title"
                     style="@style/TitleBorder"
-                    android:layout_below="@id/label_abstract_title" />
+                    android:layout_below="@id/label_overview_title" />
 
                 <TextView
                     android:id="@+id/txt_overview"
                     style="@style/MultiLineDisplayText"
-                    android:layout_below="@id/line_abstract_title"
+                    android:layout_below="@id/line_overview_title"
                     android:text="@{viewModel.viewOverview}"/>
 
                 <TextView
@@ -137,7 +138,8 @@
                     android:layout_below="@id/txt_overview"
                     android:layout_toEndOf="@id/label_information_title"
                     android:layout_alignBottom="@id/label_information_title"
-                    android:src="@drawable/ic_mode_edit"/>
+                    android:src="@drawable/ic_mode_edit"
+                    android:contentDescription="@string/description_company_detail_edit_info"/>
 
                 <View
                     android:id="@+id/line_information_title"
@@ -235,7 +237,9 @@
                     android:layout_below="@id/txt_link_url"
                     android:layout_toEndOf="@id/label_business_title"
                     android:layout_alignBottom="@id/label_business_title"
-                    android:src="@drawable/ic_mode_edit"/>
+                    android:src="@drawable/ic_mode_edit"
+                    android:contentDescription="@string/description_company_detail_edit_business"
+                    tools:ignore="ContentDescription" />
 
                 <View
                     android:id="@+id/line_business_title"
@@ -284,7 +288,8 @@
                     android:layout_below="@id/txt_want_business"
                     android:layout_toEndOf="@id/label_job_evaluation_title"
                     android:layout_alignBottom="@id/label_job_evaluation_title"
-                    android:src="@drawable/ic_mode_edit"/>
+                    android:src="@drawable/ic_mode_edit"
+                    android:contentDescription="@string/description_company_detail_edit_job_evaluation"/>
 
                 <View
                     android:id="@+id/line_job_evaluation_title"
@@ -342,7 +347,8 @@
                     android:layout_below="@id/job_eval_offer_reason"
                     android:layout_toEndOf="@id/label_description_title"
                     android:layout_alignBottom="@id/label_description_title"
-                    android:src="@drawable/ic_mode_edit"/>
+                    android:src="@drawable/ic_mode_edit"
+                    android:contentDescription="@string/description_company_detail_edit_detail"/>
 
                 <View
                     android:id="@+id/line_detail_title"
