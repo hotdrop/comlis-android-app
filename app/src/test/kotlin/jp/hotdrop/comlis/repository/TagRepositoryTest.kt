@@ -18,7 +18,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(shadows = arrayOf(MockClient.MyNetworkSecurityPolicy::class), sdk = intArrayOf(23))
+@Config(sdk = intArrayOf(23), manifest = Config.NONE)
 class TagRepositoryTest {
 
     private lateinit var tagRepository: TagRepository
@@ -36,7 +36,7 @@ class TagRepositoryTest {
         tagRepository = TagRepository(localDataSource)
         val companyLocalDataSource = CompanyLocalDataSource(ormaHolder, tagRepository)
 
-        val appClient = MockClient().create()
+        val appClient = MockComlisClient().service()
         val remoteDataSource = CompanyRemoteDataSource(appClient)
 
         val jobEvaluateDataSource = JobEvaluationLocalDataSource(ormaHolder)

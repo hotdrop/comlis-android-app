@@ -1,0 +1,35 @@
+[
+  {
+    "id": "TEST001",
+    "name": "モックデータその1",
+    "overview": "テストデータその1です",
+    "workPlace": "Dummy1",
+    "employeesNum": "100",
+    "salaryLow": "100",
+    "salaryHigh": "300",
+    "url": "http://test.test.test",
+    "dateEpoch": "10"
+  },
+  {
+    "id": "TEST002",
+    "name": "モックデータその2",
+    "overview": "テストデータその2です",
+    "workPlace": "Dummy2",
+    "employeesNum": "200",
+    "salaryLow": "300",
+    "salaryHigh": "400",
+    "url": "http://test.test.test",
+    "dateEpoch": "10"
+  },
+  {
+    "id": "TEST003",
+    "name": "モックデータその3",
+    "overview": "テストデータその3です。",
+    "workPlace": "Dummy3",
+    "employeesNum": "300",
+    "salaryLow": "300",
+    "salaryHigh": "500",
+    "url": "http://test.test.test",
+    "dateEpoch": "20"
+  }
+]

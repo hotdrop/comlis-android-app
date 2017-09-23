@@ -1,4 +1,4 @@
-package jp.hotdrop.comlis.repository
+package jp.hotdrop.comlis.product
 
 import android.security.NetworkSecurityPolicy
 import jp.hotdrop.comlis.BuildConfig
@@ -10,26 +10,22 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MockClient {
+class ComlisClient {
 
-    // This class is terrible.
-    // Should be in fact implements Client Class, and make some mock method.
-
-    // But, now I want to try to connect remote server with same implementation as main so I made it the
-    // same as the implementation of ApplicationModule.
     private val httpClient = OkHttpClient.Builder().build()
-    private val mockRetrofit: Retrofit = Retrofit.Builder()
+
+    private val retrofit: Retrofit = Retrofit.Builder()
             .client(httpClient)
             .baseUrl(BuildConfig.API_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-    fun create(): ComlisService =
-            mockRetrofit.create(ComlisService::class.java)
+    fun service(): ComlisService =
+            retrofit.create(ComlisService::class.java)
 
     /**
-     * Test Mock Server is http. not good...
+     * Test Mock Server is localhost and http.
      */
     @Implements(NetworkSecurityPolicy::class)
     class MyNetworkSecurityPolicy {
