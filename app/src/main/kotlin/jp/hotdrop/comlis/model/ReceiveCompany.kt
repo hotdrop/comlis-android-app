@@ -9,6 +9,7 @@ class ReceiveCompany {
     var employeesNum: Int = 0
     var salaryLow: Int = 0
     var salaryHigh: Int = 0
+    var url: String? = null
     var dateEpoch: Long = 0
 
     fun toCompany() = Company().also {
@@ -18,5 +19,6 @@ class ReceiveCompany {
         it.employeesNum = employeesNum
         it.salaryLow = salaryLow
         it.salaryHigh = salaryHigh
+        it.url = url
     }
 }
