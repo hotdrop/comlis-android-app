@@ -12,10 +12,13 @@ class MockComlisClient(
 ) {
     private val httpClient = OkHttpClient.Builder().build()
     private val mockRetrofit: Retrofit by lazy {
+        // if you can test to the remote repository in the mock server,
+        // you will setting the mock server URL,
+        // otherwise you will setting nothing, make it a dummy url.
         if(url == null) {
             Retrofit.Builder()
                     .client(httpClient)
-                    .baseUrl("http://test.test")
+                    .baseUrl("https://test.test")
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()

@@ -14,10 +14,10 @@ android {
         minSdkVersion min_sdk_version as int
         targetSdkVersion target_sdk_version as int
         versionCode 1
-        versionName "0.8"
+        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "API_URL", "\"https://localhost:8080/\""
+        buildConfigField "String", "API_URL", "\"https://loalhost:9485/\""
     }
     buildTypes {
         debug {
