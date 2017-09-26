@@ -4,12 +4,7 @@ import jp.hotdrop.comlis.model.ReceiveCompany
 import jp.hotdrop.comlis.repository.company.CompanyRemoteDataSource
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
-@RunWith(RobolectricTestRunner::class)
-@Config(shadows = arrayOf(ComlisClient.MyNetworkSecurityPolicy::class), sdk = intArrayOf(23), manifest = Config.NONE)
 class RemoteConnectTest {
 
     private lateinit var remoteDataSource: CompanyRemoteDataSource

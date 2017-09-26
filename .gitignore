@@ -5,3 +5,5 @@
 local.properties
 build
 projectFilesBackup
+app/libs/
+app/src/test/resources/server.keystore
