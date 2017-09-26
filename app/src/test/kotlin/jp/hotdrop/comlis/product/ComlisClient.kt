@@ -14,9 +14,9 @@ import javax.net.ssl.X509TrustManager
 
 class ComlisClient {
 
-    // If you used self signed certificate, you changed follow passStr.
-    private val KEY_PASS = "serverpass"
-    private val KEY_STORE_PASS = "keypass"
+    // If you used self signed certificate, you changed KEY_PASS and KEY_STORE_PASS.
+    private val keyPass = "your crt key pass"
+    private val keyStorePass = "your key store pass"
 
     private val okHttpClient = createOkHttpClient()
 
@@ -40,7 +40,7 @@ class ComlisClient {
                 throw IllegalStateException("Unexpected default trust managers.")
 
         val keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm()).apply {
-            init(keyStore, KEY_PASS.toCharArray())
+            init(keyStore, keyPass.toCharArray())
         }
 
         val sslContext = SSLContext.getInstance("TLS").apply {
@@ -53,12 +53,11 @@ class ComlisClient {
                 .build()
     }
 
-    private fun readKeyStore(): KeyStore {
-        val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
-        val inputStream = javaClass.classLoader.getResourceAsStream("server.keystore")
-        inputStream.use {
-            keyStore.load(it, KEY_STORE_PASS.toCharArray())
-        }
-        return keyStore
+    private fun readKeyStore() = KeyStore.getInstance(KeyStore.getDefaultType()).also { keyStore ->
+        javaClass.classLoader
+                .getResourceAsStream("server.keystore")
+                .use { inputStream ->
+                    keyStore.load(inputStream, keyStorePass.toCharArray())
+                }
     }
 }
