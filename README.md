@@ -8,12 +8,11 @@ This application contains deliverables distributed under the Apache License 2.0
 
 # SDK version
 * min_sdk_version: 23
-* target_sdk_version: 25
+* target_sdk_version: 26
 
 # Environment
 * Kotlin 1.1.50
 * gradle 2.2.3
-* Android studio 2.3.3
 
 # Library
 * RxKotlin 2.1.0
