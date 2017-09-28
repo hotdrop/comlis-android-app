@@ -1,4 +1,4 @@
-[![Kotlin 1.1.4](https://img.shields.io/badge/Kotlin-1.1.4-blue.svg)](http://kotlinlang.org)
+[![Kotlin 1.1.50](https://img.shields.io/badge/Kotlin-1.1.50-blue.svg)](http://kotlinlang.org)
 
 # コムリス
 空いた時間でチマチマ作った転職用会社情報保持アプリです。
@@ -11,7 +11,7 @@ This application contains deliverables distributed under the Apache License 2.0
 * target_sdk_version: 25
 
 # Environment
-* Kotlin 1.1.4-3
+* Kotlin 1.1.50
 * gradle 2.2.3
 * Android studio 2.3.3
 
@@ -21,6 +21,7 @@ This application contains deliverables distributed under the Apache License 2.0
 * RxJava 2.1.3
 * RxBinding-kotlin 2.0.0
 * Flexbox-layout 0.3.0-alpha4(RecyclerView対応版)
+* databinding
 * Dagger 2.11
 * Lottie 1.5.3
 * Android-Orma 4.2.5
