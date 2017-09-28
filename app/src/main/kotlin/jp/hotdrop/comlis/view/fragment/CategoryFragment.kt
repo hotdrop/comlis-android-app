@@ -15,7 +15,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.Spinner
+import android.widget.TextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -147,25 +147,25 @@ class CategoryFragment: BaseFragment() {
 
                 private fun disableButton() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
-                    view.findViewById(R.id.label_category_attention).visibility = View.GONE
+                    view.findViewById<TextView>(R.id.label_category_attention).visibility = View.GONE
                 }
 
                 private fun disableButtonWithAttention() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
-                    view.findViewById(R.id.label_category_attention).visibility = View.VISIBLE
+                    view.findViewById<TextView>(R.id.label_category_attention).visibility = View.VISIBLE
                 }
 
                 private fun enableButton() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
-                    view.findViewById(R.id.label_category_attention).visibility = View.GONE
+                    view.findViewById<TextView>(R.id.label_category_attention).visibility = View.GONE
                 }
             })
 
     private fun showRegisterDialog() {
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category, null)
-        val editText = view.findViewById(R.id.text_category_name) as AppCompatEditText
+        val editText = view.findViewById<AppCompatEditText>(R.id.text_category_name)
 
-        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
+        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type), context)
 
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
@@ -188,10 +188,10 @@ class CategoryFragment: BaseFragment() {
     private fun showUpdateDialog(vm: CategoryViewModel) {
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category, null)
 
-        val editText = view.findViewById(R.id.text_category_name) as AppCompatEditText
+        val editText = view.findViewById<AppCompatEditText>(R.id.text_category_name)
         editText.setText(vm.viewName as CharSequence)
 
-        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
+        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type), context)
         spinner.setSelection(vm.getColorType())
 
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
@@ -220,7 +220,7 @@ class CategoryFragment: BaseFragment() {
 
         if(vm.isRegisterCompanyInCategory()) {
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE).isEnabled = false
-            view.findViewById(R.id.label_category_delete_attention).visibility = View.VISIBLE
+            view.findViewById<TextView>(R.id.label_category_delete_attention).visibility = View.VISIBLE
         }
 
         editText.changeTextListener(view, dialog, editText, vm.getId(), vm.viewName)

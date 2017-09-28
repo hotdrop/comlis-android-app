@@ -45,7 +45,7 @@ class ColorSpinner(
         }
 
         private fun getTextViewWithSetColor(v: TextView, position: Int): View =
-            (v.findViewById(android.R.id.text1) as TextView).apply {
+            (v.findViewById<TextView>(android.R.id.text1)).apply {
                 setTextColor(ColorUtil.getResDark(colorNames[position], context))
                 text = colorNames[position]
                 textSize = 20.toFloat()

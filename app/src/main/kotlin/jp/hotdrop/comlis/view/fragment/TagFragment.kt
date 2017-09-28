@@ -14,7 +14,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.Spinner
+import android.widget.TextView
 import com.google.android.flexbox.FlexboxLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -139,25 +139,25 @@ class TagFragment: BaseFragment() {
 
                 private fun disableButton() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
-                    view.findViewById(R.id.label_tag_attention).visibility = View.GONE
+                    view.findViewById<TextView>(R.id.label_tag_attention).visibility = View.GONE
                 }
 
                 private fun disableButtonWithAttention() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
-                    view.findViewById(R.id.label_tag_attention).visibility = View.VISIBLE
+                    view.findViewById<TextView>(R.id.label_tag_attention).visibility = View.VISIBLE
                 }
 
                 private fun enableButton() {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
-                    view.findViewById(R.id.label_tag_attention).visibility = View.GONE
+                    view.findViewById<TextView>(R.id.label_tag_attention).visibility = View.GONE
                 }
             })
 
     private fun showRegisterDialog() {
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_tag, null)
-        val editText = view.findViewById(R.id.text_tag_name) as AppCompatEditText
+        val editText = view.findViewById<AppCompatEditText>(R.id.text_tag_name)
 
-        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context)
+        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type), context)
 
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
@@ -180,9 +180,9 @@ class TagFragment: BaseFragment() {
 
     private fun showUpdateDialog(vm: TagViewModel) {
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_tag, null)
-        val editText = (view.findViewById(R.id.text_tag_name) as AppCompatEditText).apply { setText(vm.viewName as CharSequence) }
+        val editText = (view.findViewById<AppCompatEditText>(R.id.text_tag_name)).apply { setText(vm.viewName as CharSequence) }
 
-        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type) as Spinner, context).apply { setSelection(vm.getColorType()) }
+        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type), context).apply { setSelection(vm.getColorType()) }
 
         val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
                 .setView(view)
@@ -209,7 +209,7 @@ class TagFragment: BaseFragment() {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
 
         if(vm.isAttachCompany()) {
-            view.findViewById(R.id.label_tag_delete_attention).visibility = View.VISIBLE
+            view.findViewById<TextView>(R.id.label_tag_delete_attention).visibility = View.VISIBLE
         }
 
         editText.changeTextListener(view, dialog, editText, vm.getId(), vm.viewName)
