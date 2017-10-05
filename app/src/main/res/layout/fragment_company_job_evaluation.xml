@@ -71,7 +71,7 @@
                     style="@style/EvaluationNote"
                     android:layout_below="@id/development_env_title"
                     android:layout_toEndOf="@id/development_env_checkbox"
-                    android:text="@string/note_correct_sentence"/>
+                    android:text="@string/note_development_env"/>
 
                 <View
                     android:id="@+id/line_development_env"

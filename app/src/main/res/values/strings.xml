@@ -83,7 +83,7 @@
     <string name="title_correct_sentence">文章として正しい。</string>
     <string name="note_correct_sentence">そもそも記載内容が文章として成立しているか。</string>
     <string name="title_development_env">開発環境が書いてある。</string>
-    <string name="note_development_env" tools:ignore="UnusedResources">（言語、開発手法、人数など）適当に列挙されているのは怪しい。</string>
+    <string name="note_development_env" tools:ignore="UnusedResources">言語、開発手法、人数など。適当に列挙されているのは怪しい。</string>
     <string name="title_want_skill">欲しいスキルに対して具体的な説明がされている。</string>
     <string name="note_want_skill">例えば単に「Web開発者」ではなく「ReactとRedux等のFluxアーキテクチャを用いた云々」などエンジニアでないと分からない程度の詳しさになっているか。</string>
     <string name="title_person_image">欲しい人物像と期待内容が明記されている。</string>
