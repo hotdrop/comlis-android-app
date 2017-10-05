@@ -23,8 +23,7 @@
 
                 <TextView
                     android:id="@+id/label_description"
-                    style="@style/ItemLabel"
-                    android:text="@string/label_description" />
+                    style="@style/ItemLabel" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_description"
@@ -39,6 +38,7 @@
                         android:id="@+id/txt_description"
                         style="@style/MultiLineEditText"
                         android:maxLines="@integer/company_description_max_lines"
+                        android:hint="@string/label_description"
                         android:text="@={viewModel.viewNote}" />
 
                 </android.support.design.widget.TextInputLayout>

@@ -55,8 +55,7 @@
                 <TextView
                     android:id="@+id/label_overview"
                     style="@style/ItemLabel"
-                    android:layout_below="@id/spinner_category"
-                    android:text="@string/label_overview" />
+                    android:layout_below="@id/spinner_category" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_overview"
@@ -72,6 +71,7 @@
                         style="@style/MultiLineEditText"
                         android:layout_below="@id/label_overview"
                         android:maxLines="@integer/company_overview_max_lines"
+                        android:hint="@string/label_overview"
                         android:text="@={viewModel.viewOverview}" />
 
                 </android.support.design.widget.TextInputLayout>

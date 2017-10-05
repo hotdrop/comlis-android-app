@@ -54,8 +54,7 @@
                 <TextView
                     android:id="@+id/label_overview"
                     style="@style/ItemLabel"
-                    android:layout_below="@id/spinner_category"
-                    android:text="@string/label_overview" />
+                    android:layout_below="@id/spinner_category" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_overview"
@@ -71,6 +70,7 @@
                         style="@style/MultiLineEditText"
                         android:layout_below="@id/label_overview"
                         android:maxLines="@integer/company_overview_max_lines"
+                        android:hint="@string/label_overview"
                         android:text="@={viewModel.viewOverview}" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -203,8 +203,7 @@
                 <TextView
                     android:id="@+id/label_doing_business"
                     style="@style/ItemLabel"
-                    android:layout_below="@id/txt_url"
-                    android:text="@string/label_doing_business" />
+                    android:layout_below="@id/txt_url" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_doing_business"
@@ -227,8 +226,7 @@
                 <TextView
                     android:id="@+id/label_want_business"
                     style="@style/ItemLabel"
-                    android:layout_below="@id/input_layout_doing_business"
-                    android:text="@string/label_want_business" />
+                    android:layout_below="@id/input_layout_doing_business" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_want_business"
@@ -251,8 +249,7 @@
                 <TextView
                     android:id="@+id/label_note"
                     style="@style/ItemLabel"
-                    android:layout_below="@id/input_layout_want_business"
-                    android:text="@string/label_description" />
+                    android:layout_below="@id/input_layout_want_business" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_note"
@@ -267,6 +264,7 @@
                         android:id="@+id/txt_note"
                         style="@style/MultiLineEditText"
                         android:maxLines="@integer/company_description_max_lines"
+                        android:hint="@string/label_description"
                         android:text="@={viewModel.viewNote}" />
 
                 </android.support.design.widget.TextInputLayout>
