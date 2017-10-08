@@ -118,6 +118,7 @@
                         style="@style/EditText"
                         android:hint="@string/hint_wanted_job"
                         android:maxLines="@integer/company_wanted_job_max_lines"
+                        android:maxLength="@integer/company_wanted_job_max_length"
                         android:text="@={viewModel.viewWantedJob}" />
 
                 </android.support.design.widget.TextInputLayout>

@@ -28,13 +28,14 @@
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginEnd="@dimen/spacing"
                     app:counterEnabled="true"
-                    app:counterMaxLength="@integer/company_description_counter_max_length" >
+                    app:counterMaxLength="@integer/company_description_max_length" >
 
                     <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/txt_description"
                         style="@style/MultiLineEditText"
                         android:maxLines="@integer/company_description_max_lines"
                         android:hint="@string/label_description"
+                        android:maxLength="@integer/company_description_max_length"
                         android:text="@={viewModel.viewNote}" />
 
                 </android.support.design.widget.TextInputLayout>

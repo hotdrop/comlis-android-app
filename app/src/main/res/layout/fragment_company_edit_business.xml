@@ -35,6 +35,7 @@
                         style="@style/MultiLineEditText"
                         android:maxLines="@integer/company_doing_business_max_lines"
                         android:hint="@string/hint_doing_business"
+                        android:maxLength="@integer/company_doing_business_max_length"
                         android:text="@={viewModel.viewDoingBusiness}" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -54,6 +55,7 @@
                         style="@style/MultiLineEditText"
                         android:maxLines="@integer/company_want_business_max_lines"
                         android:hint="@string/hint_want_business"
+                        android:maxLength="@integer/company_want_business_max_length"
                         android:text="@={viewModel.viewWantBusiness}" />
 
                 </android.support.design.widget.TextInputLayout>

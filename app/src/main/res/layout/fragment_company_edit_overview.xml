@@ -36,6 +36,7 @@
                         style="@style/EditText"
                         android:maxLines="@integer/company_name_max_lines"
                         android:hint="@string/hint_company_name"
+                        android:maxLength="@integer/company_name_max_length"
                         android:text="@={viewModel.viewName}" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -66,13 +67,14 @@
                     android:layout_marginTop="@dimen/spacing"
                     android:layout_marginEnd="@dimen/spacing"
                     app:counterEnabled="true"
-                    app:counterMaxLength="@integer/company_overview_counter_max_length" >
+                    app:counterMaxLength="@integer/company_overview_max_length" >
 
                     <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/txt_overview"
                         style="@style/MultiLineEditText"
                         android:maxLines="@integer/company_overview_max_lines"
                         android:hint="@string/label_overview"
+                        android:maxLength="@integer/company_overview_max_length"
                         android:text="@={viewModel.viewOverview}" />
 
                 </android.support.design.widget.TextInputLayout>
