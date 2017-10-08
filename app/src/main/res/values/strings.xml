@@ -91,11 +91,12 @@
     <string name="title_job_offer_reason">求人を出した理由が記載されている。</string>
     <string name="note_job_offer_reason">サービスを大きくしたり事業拡大などが良い。離職率が高いイメージがなければ良い。</string>
 
-
     <!-- hint -->
+    <string name="hint_company_name">会社名</string>
     <string name="hint_salary">任意</string>
-    <string name="hint_wanted_job">PM, インフラエンジニア, プログラマー等</string>
-    <string name="hint_url">https://www.sample.co.jp</string>
+    <string name="hint_wanted_job">募集職種(例:アプリエンジニア,Webエンジニア等)</string>
+    <string name="hint_work_place">勤務地候補</string>
+    <string name="hint_url">URL(例: https://www.sample.co.jp)</string>
     <string name="hint_doing_business">現在の事業内容</string>
     <string name="hint_want_business">今後やろうとしている事業内容</string>
 

@@ -22,22 +22,28 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/label_name"
-                    style="@style/ItemLabel"
-                    android:text="@string/label_company" />
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing"
+                    android:layout_marginEnd="@dimen/spacing"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@integer/company_name_max_length" >
 
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/txt_name"
-                    style="@style/EditText"
-                    android:layout_below="@id/label_name"
-                    android:maxLength="@integer/company_name_max_length"
-                    android:text="@={viewModel.viewName}" />
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/txt_name"
+                        style="@style/EditText"
+                        android:maxLines="@integer/company_name_max_lines"
+                        android:hint="@string/hint_company_name"
+                        android:text="@={viewModel.viewName}" />
+
+                </android.support.design.widget.TextInputLayout>
 
                 <TextView
                     android:id="@+id/label_name_attention"
                     style="@style/AttentionLabel"
-                    android:layout_below="@id/txt_name"
+                    android:layout_below="@id/input_layout_name"
                     android:text="@string/company_name_attention"
                     android:visibility="gone" />
 
@@ -52,16 +58,12 @@
                     style="@style/Spinner"
                     android:layout_below="@id/label_category" />
 
-                <TextView
-                    android:id="@+id/label_overview"
-                    style="@style/ItemLabel"
-                    android:layout_below="@id/spinner_category" />
-
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_overview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/label_overview"
+                    android:layout_below="@id/spinner_category"
+                    android:layout_marginTop="@dimen/spacing"
                     android:layout_marginEnd="@dimen/spacing"
                     app:counterEnabled="true"
                     app:counterMaxLength="@integer/company_overview_counter_max_length" >
@@ -69,7 +71,6 @@
                     <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/txt_overview"
                         style="@style/MultiLineEditText"
-                        android:layout_below="@id/label_overview"
                         android:maxLines="@integer/company_overview_max_lines"
                         android:hint="@string/label_overview"
                         android:text="@={viewModel.viewOverview}" />
