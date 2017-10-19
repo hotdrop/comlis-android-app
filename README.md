@@ -59,7 +59,6 @@ This application contains deliverables distributed under the Apache License 2.0
 タブを跨いだ移動はできません。分類を変更する場合は会社情報詳細画面で行なってください。
 
 ## 画面イメージ
-*画面イメージ取り直し*
 <img src="images/01_main.png" width="200" />  
 
 # 会社情報詳細画面
@@ -78,7 +77,7 @@ This application contains deliverables distributed under the Apache License 2.0
 アプリでも警告表示されますが、一度削除してしまった会社情報は復元できません。十分注意して削除してください。
 
 ## 画面イメージ
-*画面イメージ入れる*
+<img src="images/02_detail.png" width="200" />  
 
 # 検索画面
 登録した会社情報を文字列検索する画面です。  
@@ -106,7 +105,7 @@ This application contains deliverables distributed under the Apache License 2.0
 各分類の左にある`≡`を押し続けた状態で上下に移動させてください。  
 
 ## 画面イメージ
-<img src="images/02_category.png" width="200" />
+<img src="images/03_category.png" width="200" />
 
 # タグ画面
 会社情報のタグを表示する画面です。
@@ -123,7 +122,7 @@ This application contains deliverables distributed under the Apache License 2.0
 タグ画面は`Flexbox-layout`を使用しており、上下左右に並び変えることができます。  
 
 ## 画面イメージ
-<img src="images/03_tag.png" width="200" />
+<img src="images/04_tag.png" width="200" />
 
 # リモート接続
 別のリポジトリである`comlis-web-scraping`と`comlis-data-store`を組み合わせることでリモートから会社情報を取得することが可能です。
