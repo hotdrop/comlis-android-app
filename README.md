@@ -1,4 +1,4 @@
-[![Kotlin 1.1.50](https://img.shields.io/badge/Kotlin-1.1.50-blue.svg)](http://kotlinlang.org)
+[![Kotlin 1.2.21](https://img.shields.io/badge/Kotlin-1.1.50-blue.svg)](http://kotlinlang.org)
 
 # コムリス
 空いた時間でチマチマ作った会社情報を保持するAndroidアプリケーションです。  
@@ -15,7 +15,7 @@ This application contains deliverables distributed under the Apache License 2.0
   - target_sdk_version: 26
 
 # 環境
-  - Kotlin 1.1.50
+  - Kotlin 1.2.21
   - gradle 2.2.3
 
 # 使用ライブラリ
