@@ -3,7 +3,20 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'deploygate'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
+    signingConfigs {
+        config {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
     compileSdkVersion compile_sdk_version as int
     buildToolsVersion build_tools_version
     dataBinding {
@@ -18,6 +31,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "API_URL", "\"https://loalhost:9485/\""
+        signingConfig signingConfigs.config
     }
     buildTypes {
         debug {
@@ -35,6 +49,15 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
+    }
+    productFlavors {
+        demo {
+            applicationId 'jp.hotdrop.compl.demo'
+            signingConfig signingConfigs.config
+        }
+        product {
+            signingConfig signingConfigs.config
+        }
     }
 }
 
@@ -72,8 +95,13 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
 
+    compile 'com.google.firebase:firebase-core:11.0.4'
+    compile 'com.google.firebase:firebase-messaging:11.0.4'
+
     compile 'com.deploygate:sdk:3.1.1'
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.okhttp3:mockwebserver:3.9.0'
     testCompile 'com.github.gfx.android.robolectricinstrumentation:robolectric-instrumentation:3.1.4'
 }
+
+apply plugin: 'com.google.gms.google-services'
