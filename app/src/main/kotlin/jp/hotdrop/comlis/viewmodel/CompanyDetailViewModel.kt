@@ -1,5 +1,6 @@
 package jp.hotdrop.comlis.viewmodel
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.support.annotation.ColorRes
@@ -12,7 +13,7 @@ import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import io.reactivex.Completable
-import io.reactivex.rxkotlin.toSingle
+import io.reactivex.Single
 import jp.hotdrop.comlis.R
 import jp.hotdrop.comlis.databinding.FragmentCompanyDetailBinding
 import jp.hotdrop.comlis.model.Company
@@ -66,8 +67,7 @@ class CompanyDetailViewModel @Inject constructor(
     lateinit var favorites: FavoriteStars
 
     fun loadData(companyId: Int, newBinding: FragmentCompanyDetailBinding): Completable =
-            companyRepository.find(companyId)
-                    .toSingle()
+            Single.just(companyRepository.find(companyId))
                     .flatMapCompletable {
                         setData(it, newBinding)
                         Completable.complete()
@@ -151,6 +151,7 @@ class CompanyDetailViewModel @Inject constructor(
         AnimationUtils.loadAnimation(context, R.anim.edit_icon_close)
     }
 
+    @SuppressLint("ResourceAsColor")
     fun initImages() {
 
         setImageCover(binding.imgCover)
@@ -164,6 +165,7 @@ class CompanyDetailViewModel @Inject constructor(
             imageEditBusiness.setColorFilter(darkColor)
             imageEditDescription.setColorFilter(darkColor)
 
+            // 本当はViewModelでViewの操作をするのはダメ。TintListに入れるのはViewの方でやらないと・・
             fabDetailMenu.backgroundTintList = ColorStateList.valueOf(darkColor)
             fabEdit.backgroundTintList = ColorStateList.valueOf(darkColor)
             fabTag.backgroundTintList = ColorStateList.valueOf(darkColor)
@@ -194,6 +196,7 @@ class CompanyDetailViewModel @Inject constructor(
 
     private val unCheckedColor = ContextCompat.getColor(context, R.color.unchecked_evaluation)
 
+    @SuppressLint("ResourceAsColor")
     private fun setEvaluationColor(checked: Boolean, v: TextView) {
         if(checked) {
             v.setTextColor(evaluationTextColor)

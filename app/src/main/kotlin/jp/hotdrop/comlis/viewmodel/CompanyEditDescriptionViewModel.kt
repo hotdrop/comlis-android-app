@@ -3,7 +3,7 @@ package jp.hotdrop.comlis.viewmodel
 import android.content.Context
 import android.support.annotation.ColorRes
 import io.reactivex.Completable
-import io.reactivex.rxkotlin.toSingle
+import io.reactivex.Single
 import jp.hotdrop.comlis.model.Company
 import jp.hotdrop.comlis.repository.category.CategoryRepository
 import jp.hotdrop.comlis.repository.company.CompanyRepository
@@ -22,8 +22,7 @@ class CompanyEditDescriptionViewModel @Inject constructor(
     private var companyId: Int = -1
 
     fun loadData(companyId: Int): Completable =
-            companyRepository.find(companyId)
-                    .toSingle()
+            Single.just(companyRepository.find(companyId))
                     .flatMapCompletable { company ->
                         setData(company)
                         Completable.complete()

@@ -5,7 +5,6 @@ import android.databinding.Bindable
 import android.view.View
 import io.reactivex.Completable
 import io.reactivex.Single
-import io.reactivex.rxkotlin.toSingle
 import jp.hotdrop.comlis.BR
 import jp.hotdrop.comlis.R
 import jp.hotdrop.comlis.model.Category
@@ -41,8 +40,7 @@ class CompanyRootViewModel @Inject constructor(
 
     var hasCompaniesFromRemote = false
 
-    fun loadData(): Single<List<Category>> =
-            categoryRepository.findAll().toSingle()
+    fun loadData(): Single<List<Category>> = Single.just(categoryRepository.findAll())
 
     fun loadDataFromRemote(): Completable {
         val latestDateEpoch = remoteKeyRepository.findLatest()

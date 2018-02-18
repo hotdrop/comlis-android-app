@@ -4,7 +4,6 @@ import android.content.Context
 import android.databinding.Bindable
 import android.view.View
 import io.reactivex.Single
-import io.reactivex.rxkotlin.toSingle
 import jp.hotdrop.comlis.BR
 import jp.hotdrop.comlis.model.Category
 import jp.hotdrop.comlis.repository.category.CategoryRepository
@@ -25,12 +24,11 @@ class CategoriesViewModel @Inject constructor(
         }
 
     fun getData(): Single<List<CategoryViewModel>> =
-            categoryRepository.findAll()
+            Single.just(categoryRepository.findAll()
                     .map {
                         val itemCount = getRegisterCompanyCount(it.id)
                         CategoryViewModel(it, itemCount, context)
-                    }
-                    .toSingle()
+                    })
 
     fun existName(categoryName: String) =
             categoryRepository.exist(categoryName)
