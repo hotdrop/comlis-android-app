@@ -3,9 +3,7 @@
 .idea
 
 local.properties
-keystore.properties
 build
 projectFilesBackup
 app/libs/
 app/src/test/resources/server.keystore
-app/google-services.json

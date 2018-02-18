@@ -15,8 +15,9 @@ import javax.net.ssl.X509TrustManager
 class ComlisClient {
 
     // If you used self signed certificate, you changed KEY_PASS and KEY_STORE_PASS.
-    private val keyPass = "your crt key pass"
-    private val keyStorePass = "your key store pass"
+    // But not use self signed certificate with production.
+    private val keyPass = "serverpass"
+    private val keyStorePass = "keypass"
 
     private val okHttpClient = createOkHttpClient()
 
