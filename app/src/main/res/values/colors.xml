@@ -26,8 +26,6 @@
     <!-- tag -->
     <color name="item_tag_background">@color/white</color>
     <color name="item_tag_unselected_background">@color/transparent</color>
-    <color name="item_tag_text">@color/black</color>
-    <color name="item_tag_subtext">@color/gray</color>
 
     <!-- list -->
     <color name="view_background">@color/light_gray</color>

@@ -6,17 +6,15 @@
     <string name="title_company_edit">会社情報編集</string>
     <string name="title_company_job_evaluation">募集要項の評価</string>
     <string name="title_tags">タグ一覧</string>
-    <string name="title_tags_view_reorder" tools:ignore="UnusedResources">タグ並べ替え</string>
-    <string name="title_search" tools:ignore="UnusedResources">検索</string>
-    <string name="title_company_get_from_remote" tools:ignore="UnusedResources">リモートリポジトリから取得</string>
+    <string name="title_search">検索</string>
+    <string name="title_company_get_from_remote">リモートリポジトリから取得</string>
 
     <!-- menu -->
     <string name="companies">会社一覧</string>
     <string name="categories">分類</string>
     <string name="tags">タグ</string>
 
-    <!-- -->
-    <string name="category_name_get_from_remote" tools:ignore="UnusedResources">リモートから取得</string>
+    <string name="category_name_get_from_remote">リモートから取得</string>
 
     <!-- company list -->
     <string name="empty_company_list">何も登録されていません。分類を登録してから登録してください。</string>
@@ -49,7 +47,7 @@
     <string name="label_fab_menu_tag">タグを付与</string>
 
     <!-- search -->
-    <string name="hint_search_text_field" tools:ignore="UnusedResources">検索</string>
+    <string name="hint_search_text_field">検索</string>
 
     <!-- company register and detail -->
     <string name="label_company">会社名</string>
@@ -72,16 +70,16 @@
     <string name="label_description">詳細</string>
     <string name="label_etc">その他</string>
     <string name="label_employees_num_unit">名</string>
-    <string name="label_job_evaluation_unit" tools:ignore="UnusedResources">点</string>
+    <string name="label_job_evaluation_unit">点</string>
 
-    <string name="label_empty_value" tools:ignore="UnusedResources">未登録</string>
-    <string name="label_empty_date" tools:ignore="UnusedResources">ー</string>
+    <string name="label_empty_value">未登録</string>
+    <string name="label_empty_date">ー</string>
 
     <!-- evaluation fragment -->
     <string name="title_correct_sentence">文章として正しい。</string>
     <string name="note_correct_sentence">そもそも記載内容が文章として成立しているか。</string>
     <string name="title_development_env">開発環境が書いてある。</string>
-    <string name="note_development_env" tools:ignore="UnusedResources">言語、開発手法、人数など。適当に列挙されているのは怪しい。</string>
+    <string name="note_development_env">言語、開発手法、人数など。適当に列挙されているのは怪しい。</string>
     <string name="title_want_skill">欲しいスキルに対して具体的な説明がされている。</string>
     <string name="note_want_skill">例えば単に「Web開発者」ではなく「ReactとRedux等のFluxアーキテクチャを用いた云々」などエンジニアでないと分からない程度の詳しさになっているか。</string>
     <string name="title_person_image">欲しい人物像と期待内容が明記されている。</string>
@@ -106,7 +104,7 @@
 
     <!-- error or warning message -->
     <string name="company_name_attention">この会社名は既に登録されているため登録できません。</string>
-    <string name="company_name_empty_attention" tools:ignore="UnusedResources">会社名を入力してください。</string>
+    <string name="company_name_empty_attention">会社名を入力してください。</string>
     <string name="employees_num_attention">従業員数は数字を入力してください。</string>
     <string name="salary_attention">年収は数字を入力してください。</string>
 
@@ -118,44 +116,39 @@
     <!-- tag list -->
     <string name="empty_tag_list">まだ何も登録されていません。好きなタグを登録してください。</string>
     <string name="label_tag_attach_count">添付数:</string>
-    <string name="description_tag_reorder" tools:ignore="UnusedResources">タグの並び順を変更するためのイメージアイコンです。</string>
-    <string name="tag_dialog_delete_attention" tools:ignore="UnusedResources">このタグは1つ以上添付されています。削除する場合はよくご確認ください。</string>
+    <string name="description_tag_reorder">タグの並び順を変更するためのイメージアイコンです。</string>
+    <string name="tag_dialog_delete_attention">このタグは1つ以上添付されています。削除する場合はよくご確認ください。</string>
 
     <!-- category dialog -->
-    <string name="category_dialog_label_name" tools:ignore="UnusedResources">分類名</string>
-    <string name="category_dialog_attention" tools:ignore="UnusedResources">この分類名は既に登録されています</string>
-    <string name="category_dialog_color_type" tools:ignore="UnusedResources">テーマカラー</string>
-    <string name="category_dialog_delete_attention" tools:ignore="UnusedResources">登録数が1以上の場合は削除できません。</string>
+    <string name="category_dialog_label_name">分類名</string>
+    <string name="category_dialog_attention">この分類名は既に登録されています</string>
+    <string name="category_dialog_color_type">テーマカラー</string>
+    <string name="category_dialog_delete_attention">登録数が1以上の場合は削除できません。</string>
 
     <!-- tag dialog -->
-    <string name="tag_dialog_label_name" tools:ignore="UnusedResources">タグ名</string>
-    <string name="tag_dialog_attention" tools:ignore="UnusedResources">このタグ名は既に登録されています</string>
+    <string name="tag_dialog_label_name">タグ名</string>
+    <string name="tag_dialog_attention">このタグ名は既に登録されています</string>
 
     <!-- dialog common -->
-    <string name="dialog_add_button" tools:ignore="UnusedResources">登録</string>
-    <string name="dialog_update_button" tools:ignore="UnusedResources">更新</string>
-    <string name="dialog_delete_button" tools:ignore="UnusedResources">削除</string>
+    <string name="dialog_add_button">登録</string>
+    <string name="dialog_update_button">更新</string>
+    <string name="dialog_delete_button">削除</string>
 
     <!-- company detail dialog -->
-    <string name="detail_dialog_trash_button_message" tools:ignore="UnusedResources">削除します。よろしいですか？（削除したら元に戻せません。）</string>
-    <string name="dialog_ok" tools:ignore="UnusedResources">OK</string>
-    <string name="dialog_cancel" tools:ignore="UnusedResources">Cancel</string>
+    <string name="detail_dialog_trash_button_message">削除します。よろしいですか？（削除したら元に戻せません。）</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
 
     <!-- error message -->
-    <string name="load_failure_companies" tools:ignore="UnusedResources">会社一覧の読み込みに失敗しました。</string>
-    <string name="load_failure_company" tools:ignore="UnusedResources">会社情報の読み込みに失敗しました。</string>
-    <string name="load_failure_categories" tools:ignore="UnusedResources">分類の読み込みに失敗しました。</string>
-    <string name="load_failure_tags" tools:ignore="UnusedResources">タグの読み込みに失敗しました。</string>
-    <string name="load_failure_search" tools:ignore="UnusedResources">検索の実行に失敗しました。</string>
+    <string name="load_failure_companies">会社一覧の読み込みに失敗しました。</string>
+    <string name="load_failure_company">会社情報の読み込みに失敗しました。</string>
+    <string name="load_failure_categories">分類の読み込みに失敗しました。</string>
+    <string name="load_failure_tags">タグの読み込みに失敗しました。</string>
+    <string name="load_failure_search">検索の実行に失敗しました。</string>
 
     <!-- remote access message -->
-    <string name="remote_access_message_success" tools:ignore="UnusedResources">リモートから新しい会社情報を取得しました。</string>
-    <string name="remote_access_message_no_new_data" tools:ignore="UnusedResources">新しい会社情報はありません。</string>
-    <string name="remote_access_message_error" tools:ignore="UnusedResources">通信エラー</string>
-
-    <string name="open" tools:ignore="UnusedResources">open</string>
-    <string name="close" tools:ignore="UnusedResources">close</string>
-
-    <string name="action_settings" tools:ignore="UnusedResources">Settings</string>
+    <string name="remote_access_message_success">リモートから新しい会社情報を取得しました。</string>
+    <string name="remote_access_message_no_new_data">新しい会社情報はありません。</string>
+    <string name="remote_access_message_error">通信エラー</string>
 
 </resources>

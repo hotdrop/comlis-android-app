@@ -19,7 +19,7 @@ object ColorUtil {
     private var colorMap = mutableMapOf<String, ColorData>()
 
     init {
-        colorMap.put(BLUE_NAME, ColorData(R.color.dark_blue, R.color.light_blue, R.color.dark_blue, R.color.transparent_light_blue))
+        colorMap.put(BLUE_NAME, ColorData(R.color.blue, R.color.light_blue, R.color.dark_blue, R.color.transparent_light_blue))
         colorMap.put(RED_NAME, ColorData(R.color.red, R.color.light_red, R.color.dark_red, R.color.transparent_light_red))
         colorMap.put(YELLOW_NAME, ColorData(R.color.yellow, R.color.light_yellow, R.color.dark_yellow, R.color.transparent_light_yellow))
         colorMap.put(GREEN_NAME, ColorData(R.color.green, R.color.light_green, R.color.dark_green, R.color.transparent_light_green))
