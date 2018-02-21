@@ -50,7 +50,7 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
         getComponent().inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentRootCompanyBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         binding.viewModel = viewModel

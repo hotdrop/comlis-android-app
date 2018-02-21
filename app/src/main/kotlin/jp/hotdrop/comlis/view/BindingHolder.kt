@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 
 class BindingHolder<out T : ViewDataBinding>(
-        context: Context,
+        context: Context?,
         parent: ViewGroup?,
         @LayoutRes layoutResId: Int
 ): RecyclerView.ViewHolder(LayoutInflater.from(context).inflate(layoutResId, parent, false)) {

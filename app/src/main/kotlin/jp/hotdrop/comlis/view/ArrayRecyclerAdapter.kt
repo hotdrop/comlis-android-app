@@ -6,12 +6,12 @@ import java.util.*
 
 
 abstract class ArrayRecyclerAdapter<T, VH: RecyclerView.ViewHolder>(
-        private val context: Context
+        private val context: Context?
 ): RecyclerView.Adapter<VH>() {
 
     private var list: MutableList<T> = mutableListOf()
 
-    constructor(context: Context, list: MutableList<T>): this(context) {
+    constructor(context: Context?, list: MutableList<T>): this(context) {
         this.list = list
     }
 

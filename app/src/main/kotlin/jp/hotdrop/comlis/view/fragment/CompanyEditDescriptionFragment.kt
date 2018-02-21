@@ -39,7 +39,7 @@ class CompanyEditDescriptionFragment: BaseFragment() {
         getComponent().inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyEditDescriptionBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
         binding.viewModel = viewModel

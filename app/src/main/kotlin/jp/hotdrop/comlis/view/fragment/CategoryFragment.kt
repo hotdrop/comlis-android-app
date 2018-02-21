@@ -54,7 +54,7 @@ class CategoryFragment: BaseFragment() {
         getComponent().inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCategoryBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         loadData()
@@ -162,75 +162,78 @@ class CategoryFragment: BaseFragment() {
             })
 
     private fun showRegisterDialog() {
-        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category, null)
-        val editText = view.findViewById<AppCompatEditText>(R.id.text_category_name)
+        context?.run {
+            val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category, null)
+            val editText = view.findViewById<AppCompatEditText>(R.id.text_category_name)
 
-        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type), context)
+            val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type), context)
+            val dialog = AlertDialog.Builder(this, R.style.DialogTheme)
+                    .setView(view)
+                    .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
+                        viewModel.register(editText.toText(), spinner.getSelection())
+                        viewModel.goneEmptyMessageOnScreen()
+                        adapter.add(viewModel.getViewModel(editText.text.toString()))
+                        scrollUpToTop()
+                        dialogInterface.dismiss()
+                    })
+                    .create()
 
-        val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
-                .setView(view)
-                .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
-                    viewModel.register(editText.toText(), spinner.getSelection())
-                    viewModel.goneEmptyMessageOnScreen()
-                    adapter.add(viewModel.getViewModel(editText.text.toString()))
-                    scrollUpToTop()
-                    dialogInterface.dismiss()
-                })
-                .create()
+            dialog.show()
 
-        dialog.show()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
 
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
-
-        editText.changeTextListener(view, dialog, editText)
+            editText.changeTextListener(view, dialog, editText)
+        }
     }
 
     private fun showUpdateDialog(vm: CategoryViewModel) {
-        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category, null)
+        context?.run {
+            val view = LayoutInflater.from(activity).inflate(R.layout.dialog_category, null)
 
-        val editText = view.findViewById<AppCompatEditText>(R.id.text_category_name)
-        editText.setText(vm.viewName as CharSequence)
+            val editText = view.findViewById<AppCompatEditText>(R.id.text_category_name)
+            editText.setText(vm.viewName as CharSequence)
 
-        val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type), context)
-        spinner.setSelection(vm.getColorType())
+            val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type), context)
+            spinner.setSelection(vm.getColorType())
 
-        val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
-                .setView(view)
-                .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
+            val dialog = AlertDialog.Builder(this, R.style.DialogTheme)
+                    .setView(view)
+                    .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
 
-                    viewModel.update(vm, editText.toText(), spinner.getSelection())
-                    adapter.refresh(viewModel.getViewModel(editText.toText()))
+                        viewModel.update(vm, editText.toText(), spinner.getSelection())
+                        adapter.refresh(viewModel.getViewModel(editText.toText()))
 
-                    dialogInterface.dismiss()
-                })
-                .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
-                    viewModel.delete(vm)
-                    adapter.remove(vm)
+                        dialogInterface.dismiss()
+                    })
+                    .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
+                        viewModel.delete(vm)
+                        adapter.remove(vm)
 
-                    if(adapter.itemCount <= 0) {
-                        viewModel.visibilityEmptyMessageOnScreen()
-                    }
+                        if(adapter.itemCount <= 0) {
+                            viewModel.visibilityEmptyMessageOnScreen()
+                        }
 
-                    dialogInterface.dismiss()
-                })
-                .create()
+                        dialogInterface.dismiss()
+                    })
+                    .create()
 
-        dialog.show()
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
+            dialog.show()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
 
-        if(vm.isRegisterCompanyInCategory()) {
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).isEnabled = false
-            view.findViewById<TextView>(R.id.label_category_delete_attention).visibility = View.VISIBLE
+            if(vm.isRegisterCompanyInCategory()) {
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).isEnabled = false
+                view.findViewById<TextView>(R.id.label_category_delete_attention).visibility = View.VISIBLE
+            }
+
+            editText.changeTextListener(view, dialog, editText, vm.getId(), vm.viewName)
         }
-
-        editText.changeTextListener(view, dialog, editText, vm.getId(), vm.viewName)
     }
 
     /**
      * ViewModelでBaseObservableを継承し、ObservableListを使用してCallbackで変更を通知していたが
      * ItemTouchHelperとの連携がうまく行かなかったのでやめた。
      */
-    inner class Adapter(context: Context)
+    inner class Adapter(context: Context?)
         : ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context) {
 
         override fun onBindViewHolder(holder: BindingHolder<ItemCategoryBinding>?, position: Int) {

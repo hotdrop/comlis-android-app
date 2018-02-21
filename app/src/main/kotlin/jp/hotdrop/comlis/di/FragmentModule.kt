@@ -9,7 +9,7 @@ import dagger.Provides
 class FragmentModule constructor(
         private var fragment: Fragment
 ) {
-
+    // これいらないんじゃないのか・・FragmentManager使ってない・・
     @Provides
     fun provideFragmentManager(): FragmentManager = fragment.fragmentManager
 }

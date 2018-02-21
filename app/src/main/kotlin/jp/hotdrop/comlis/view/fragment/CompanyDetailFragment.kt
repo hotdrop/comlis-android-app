@@ -49,7 +49,7 @@ class CompanyDetailFragment: BaseFragment() {
         getComponent().inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyDetailBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
 

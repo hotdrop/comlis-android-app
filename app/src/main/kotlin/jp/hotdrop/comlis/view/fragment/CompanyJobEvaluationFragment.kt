@@ -37,7 +37,7 @@ class CompanyJobEvaluationFragment: BaseFragment() {
         getComponent().inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyJobEvaluationBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
         binding.viewModel = viewModel

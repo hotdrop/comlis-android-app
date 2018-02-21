@@ -29,8 +29,8 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
     private lateinit var binding: FragmentCompanyAssociateTagBinding
     private lateinit var adapter: FlexboxItemAdapter
 
-    private val companyId by lazy { arguments.getInt(EXTRA_COMPANY_ID) }
-    private val colorName by lazy { arguments.getString(EXTRA_COLOR_NAME) }
+    private val companyId by lazy { arguments!!.getInt(EXTRA_COMPANY_ID) }
+    private val colorName by lazy { arguments!!.getString(EXTRA_COLOR_NAME) }
 
     companion object {
         private val EXTRA_COLOR_NAME = "colorName"
@@ -54,7 +54,7 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
         viewModel.loadData(companyId)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCompanyAssociateTagBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
 
@@ -77,10 +77,12 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
             backgroundTintList = ColorStateList.valueOf(ColorUtil.getResDark(colorName, context))
             setOnClickListener {
                 viewModel.update()
-
-                val intent = Intent().apply { putExtra(REFRESH_MODE, UPDATE) }
-                activity.setResult(Activity.RESULT_OK, intent)
-
+                // とりあえず更新して、もしactivityが生存していればintentで更新通知を送る。
+                // こういうことをしないといけないので、MVIなどでデータの流れを一方向にした方がいい。
+                activity?.run {
+                    val intent = Intent().apply { putExtra(REFRESH_MODE, UPDATE) }
+                    this.setResult(Activity.RESULT_OK, intent)
+                }
                 exit()
             }
         }
@@ -105,7 +107,7 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
      * 本当はこれをやると設計が不統一になって可読性やメンテナンス性が下がるのでよくないが、このアプリはプロダクトではないしそもそも
      * 勉強を兼ねてる個人向けなのでこの画面でのみ適用する。
      */
-    inner class FlexboxItemAdapter(context: Context, list: ObservableList<TagAssociateViewModel>)
+    inner class FlexboxItemAdapter(context: Context?, list: ObservableList<TagAssociateViewModel>)
         : ArrayRecyclerAdapter<TagAssociateViewModel, BindingHolder<ItemTagAssociateBinding>>(context, list) {
 
         init {

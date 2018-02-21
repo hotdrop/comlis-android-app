@@ -11,7 +11,7 @@ import jp.hotdrop.comlis.util.ColorUtil
 
 class ColorSpinner(
         private val spinner: Spinner,
-        private val context: Context
+        private val context: Context?
 ) {
 
     private val adapter by lazy {

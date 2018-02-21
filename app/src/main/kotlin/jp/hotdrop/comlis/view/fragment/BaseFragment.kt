@@ -1,7 +1,7 @@
 package jp.hotdrop.comlis.view.fragment
 
 import android.content.res.ColorStateList
-import android.support.annotation.ColorRes
+import android.support.annotation.ColorInt
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatButton
@@ -41,12 +41,13 @@ abstract class BaseFragment: Fragment() {
 
     private val fragmentComponent by lazy {
         val activity= activity as? BaseActivity ?: throw IllegalStateException("This fragment is not BaseActivity.")
+        // これGraphに属させてFragmentのinjectをするのが目的でFragmentModuleで定義しているFragmentManagerは使っていない気がする。
         activity.getComponent().plus(FragmentModule(this))
     }
 
     fun getComponent(): FragmentComponent = fragmentComponent
 
-    fun AppCompatButton.enabledWithColor(@ColorRes res: Int) {
+    fun AppCompatButton.enabledWithColor(@ColorInt res: Int) {
         this.isEnabled = true
         this.backgroundTintList = ColorStateList.valueOf(res)
     }
@@ -79,21 +80,22 @@ abstract class BaseFragment: Fragment() {
     }
 
     fun showErrorAsToast(type: ErrorType, e: Throwable) {
-        val msg = when(type) {
-            ErrorType.LoadFailureCompanies -> context.getString(R.string.load_failure_companies)
-            ErrorType.LoadFailureCompany -> context.getString(R.string.load_failure_company)
-            ErrorType.LoadFailureCategory -> context.getString(R.string.load_failure_categories)
-            ErrorType.LoadFailureTags -> context.getString(R.string.load_failure_tags)
-            ErrorType.LoadFailureSearch -> context.getString(R.string.load_failure_search)
+        when(type) {
+            ErrorType.LoadFailureCompanies -> context?.getString(R.string.load_failure_companies)
+            ErrorType.LoadFailureCompany -> context?.getString(R.string.load_failure_company)
+            ErrorType.LoadFailureCategory -> context?.getString(R.string.load_failure_categories)
+            ErrorType.LoadFailureTags -> context?.getString(R.string.load_failure_tags)
+            ErrorType.LoadFailureSearch -> context?.getString(R.string.load_failure_search)
+        }?.let {
+            // 本当はビルドタイプを分けてデバッグに記述すべき
+            DeployGate.logError(it + " throwable message =" + e.message)
+            Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
         }
-        // 本当はビルドタイプを分けてデバッグに記述すべき
-        DeployGate.logError(msg + " throwable message =" + e.message)
-        Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()
     }
 
     fun exit() {
         if(isResumed) {
-            activity.onBackPressed()
+            activity?.onBackPressed()
         }
     }
 }

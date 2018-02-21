@@ -1,7 +1,7 @@
 package jp.hotdrop.comlis.viewmodel
 
 import android.content.Context
-import android.support.annotation.ColorRes
+import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
 import jp.hotdrop.comlis.R
 import jp.hotdrop.comlis.model.Tag
@@ -20,14 +20,14 @@ class TagAssociateViewModel(
         tagAssociateState = tagAssociateState.flip()
     }
 
-    @ColorRes
+    @ColorInt
     fun getColorRes() = if(tagAssociateState == TagAssociateState.ASSOCIATED) {
         ColorUtil.getResLight(tag.colorType, context)
     } else {
         ColorUtil.getResTransparent(tag.colorType, context)
     }
 
-    @ColorRes
+    @ColorInt
     fun getBackGroundColorRes() = if(tagAssociateState == TagAssociateState.ASSOCIATED) {
         ContextCompat.getColor(context, R.color.item_tag_background)
     } else {
