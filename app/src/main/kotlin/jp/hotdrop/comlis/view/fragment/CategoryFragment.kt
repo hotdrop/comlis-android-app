@@ -2,7 +2,6 @@ package jp.hotdrop.comlis.view.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.view.MotionEventCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.AppCompatEditText
 import android.support.v7.widget.LinearLayoutManager
@@ -242,7 +241,7 @@ class CategoryFragment: BaseFragment() {
             val binding = holder.binding.apply {
                 viewModel = getItem(position)
                 iconReorderGroup.setOnTouchListener { _, motionEvent ->
-                    if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
+                    if(motionEvent.actionMasked == MotionEvent.ACTION_DOWN) {
                         onStartDrag(holder)
                     }
                     false

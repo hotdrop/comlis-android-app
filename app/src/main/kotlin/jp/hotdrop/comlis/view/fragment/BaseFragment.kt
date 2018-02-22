@@ -41,8 +41,7 @@ abstract class BaseFragment: Fragment() {
 
     private val fragmentComponent by lazy {
         val activity= activity as? BaseActivity ?: throw IllegalStateException("This fragment is not BaseActivity.")
-        // これGraphに属させてFragmentのinjectをするのが目的でFragmentModuleで定義しているFragmentManagerは使っていない気がする。
-        activity.getComponent().plus(FragmentModule(this))
+        activity.getComponent().plus(FragmentModule())
     }
 
     fun getComponent(): FragmentComponent = fragmentComponent

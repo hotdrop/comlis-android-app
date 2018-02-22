@@ -2,7 +2,6 @@ package jp.hotdrop.comlis.view.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.*
@@ -69,8 +68,8 @@ class SearchFragment: BaseFragment() {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.search_menu, menu)
 
-        menu?.findItem(R.id.menu_search).let {
-            MenuItemCompat.setOnActionExpandListener(it, object: MenuItemCompat.OnActionExpandListener {
+        menu?.findItem(R.id.menu_search)?.let {
+            it.setOnActionExpandListener(object: MenuItem.OnActionExpandListener {
 
                 override fun onMenuItemActionExpand(item: MenuItem?) = true
 
@@ -80,7 +79,7 @@ class SearchFragment: BaseFragment() {
                 }
             })
 
-            val searchView = (MenuItemCompat.getActionView(it) as SearchView).apply {
+            val searchView = (it.actionView as SearchView).apply {
                 setIconifiedByDefault(false)
                 // searchViewの位置が中央すぎるので、xmlでのgravity調整やtoolbarをいじったり、contentInsetStartWithNavigationしたりした。
                 // しかし、どれもこれも色々試してもうんともすんとも言わないのでとりあえずPaddingで対応・・

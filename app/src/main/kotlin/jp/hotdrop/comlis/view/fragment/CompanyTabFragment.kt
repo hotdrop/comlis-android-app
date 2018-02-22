@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.view.MotionEventCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
@@ -162,7 +161,7 @@ class CompanyTabFragment: BaseFragment() {
             val binding = holder.binding.apply {
                 viewModel = getItem(position)
                 iconReorder.setOnTouchListener { _, motionEvent ->
-                    if(MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
+                    if(motionEvent.actionMasked == MotionEvent.ACTION_DOWN) {
                         onStartDrag(holder)
                     }
                     false

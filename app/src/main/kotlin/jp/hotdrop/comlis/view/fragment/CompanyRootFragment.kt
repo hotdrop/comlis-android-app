@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
-import android.support.v4.view.MenuItemCompat
 import android.support.v4.view.ViewPager
 import android.view.*
 import android.widget.Toast
@@ -180,11 +179,11 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
     }
 
     private fun changeLoadingIcon(item: MenuItem) {
-        MenuItemCompat.setActionView(item, R.layout.action_connect_from_server)
+        item.setActionView(R.layout.action_connect_from_server)
     }
 
     private fun changeSuccessIcon(item: MenuItem) {
-        MenuItemCompat.setActionView(item, null)
+        item.actionView = null
 
         if(!viewModel.hasCompaniesFromRemote) {
             showRemoteAccessMessageAsToast(MessageType.NoNewData)
@@ -210,7 +209,7 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
     }
 
     private fun changeErrorIcon(item: MenuItem, throwable: Throwable) {
-        MenuItemCompat.setActionView(item, null)
+        item.actionView = null
         context?.run {
             val iconColor = ContextCompat.getColor(this, R.color.toolbar_icon_loading_error)
             item.let {
