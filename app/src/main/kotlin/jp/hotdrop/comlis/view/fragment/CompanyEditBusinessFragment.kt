@@ -24,7 +24,7 @@ class CompanyEditBusinessFragment: BaseFragment() {
     lateinit var compositeDisposable: CompositeDisposable
 
     private lateinit var binding: FragmentCompanyEditBusinessBinding
-    private val companyId by lazy { arguments.getInt(EXTRA_COMPANY_ID) }
+    private val companyId by lazy { arguments!!.getInt(EXTRA_COMPANY_ID) }
 
     companion object {
         fun create(companyId: Int) = CompanyEditBusinessFragment().apply {
@@ -59,8 +59,10 @@ class CompanyEditBusinessFragment: BaseFragment() {
     private fun onClickUpdate() {
         viewModel.update()
 
-        val intent = Intent().apply { putExtra(REFRESH_MODE, UPDATE) }
-        activity.setResult(Activity.RESULT_OK, intent)
+        activity?.run {
+            val intent = Intent().apply { putExtra(REFRESH_MODE, UPDATE) }
+            this.setResult(Activity.RESULT_OK, intent)
+        }
 
         exit()
     }

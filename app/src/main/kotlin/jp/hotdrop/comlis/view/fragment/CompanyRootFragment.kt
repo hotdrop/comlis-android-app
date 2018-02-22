@@ -65,18 +65,19 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
         super.onResume()
 
         // CompanyDetailFragmentを経由して分類変更がされた場合はこのonResumeルートを通る
-        val refreshMode = activity.intent.getIntExtra(REFRESH_MODE, NONE)
-        if(refreshMode != CHANGE_CATEGORY) {
-            return
-        }
+        activity?.let {
+            val refreshMode = it.intent.getIntExtra(REFRESH_MODE, NONE)
+            if(refreshMode != CHANGE_CATEGORY) {
+                return
+            }
+            tabName = it.intent.getStringExtra(EXTRA_CATEGORY_NAME)
 
-        tabName = activity.intent.getStringExtra(EXTRA_CATEGORY_NAME)
+            loadData()
 
-        loadData()
-
-        activity.intent.let {
-            it.removeExtra(REFRESH_MODE)
-            it.removeExtra(EXTRA_CATEGORY_NAME)
+            it.intent.let {
+                it.removeExtra(REFRESH_MODE)
+                it.removeExtra(EXTRA_CATEGORY_NAME)
+            }
         }
     }
 
@@ -191,15 +192,18 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
             return
         }
 
-        item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
+        context?.let {context ->
+            val iconColor = ContextCompat.getColor(context, R.color.toolbar_icon_loading_success)
+            item.let {
+                it.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
+                it.icon.setTintList(ColorStateList.valueOf(iconColor))
+                it.setOnMenuItemClickListener {
+                    loadData()
+                    changeDefaultIcon(item)
+                    true
+                }
+            }
 
-        val iconColor = ContextCompat.getColor(context, R.color.toolbar_icon_loading_success)
-        item.icon.setTintList(ColorStateList.valueOf(iconColor))
-
-        item.setOnMenuItemClickListener {
-            loadData()
-            changeDefaultIcon(item)
-            true
         }
 
         showRemoteAccessMessageAsToast(MessageType.Success)
@@ -207,14 +211,16 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
 
     private fun changeErrorIcon(item: MenuItem, throwable: Throwable) {
         MenuItemCompat.setActionView(item, null)
-        item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
-
-        val iconColor = ContextCompat.getColor(context, R.color.toolbar_icon_loading_error)
-        item.icon.setTintList(ColorStateList.valueOf(iconColor))
-
-        item.setOnMenuItemClickListener{
-            showRemoteAccessMessageAsToast(MessageType.Error, viewModel.getErrorMessage(throwable))
-            true
+        context?.run {
+            val iconColor = ContextCompat.getColor(this, R.color.toolbar_icon_loading_error)
+            item.let {
+                it.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_info, null)
+                it.icon.setTintList(ColorStateList.valueOf(iconColor))
+                it.setOnMenuItemClickListener{
+                    showRemoteAccessMessageAsToast(MessageType.Error, viewModel.getErrorMessage(throwable))
+                    true
+                }
+            }
         }
     }
 
@@ -225,12 +231,13 @@ class CompanyRootFragment: BaseFragment(), StackedPageListener {
     }
 
     private fun showRemoteAccessMessageAsToast(type: MessageType, errorMessage: String = "") {
-        val msg = when(type) {
-            MessageType.Success -> context.getString(R.string.remote_access_message_success)
-            MessageType.NoNewData -> context.getString(R.string.remote_access_message_no_new_data)
-            MessageType.Error -> context.getString(R.string.remote_access_message_error) + ":" + errorMessage
+        when(type) {
+            MessageType.Success -> context?.getString(R.string.remote_access_message_success)
+            MessageType.NoNewData -> context?.getString(R.string.remote_access_message_no_new_data)
+            MessageType.Error -> context?.getString(R.string.remote_access_message_error) + ":" + errorMessage
+        }?.let {
+            Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
         }
-        Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()
     }
 
     private inner class Adapter(fm: FragmentManager): FragmentStatePagerAdapter(fm) {

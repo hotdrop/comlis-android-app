@@ -31,7 +31,7 @@ class CompanyRegisterFragment : BaseFragment() {
 
     private lateinit var categorySpinner: CategorySpinner
     private lateinit var binding: FragmentCompanyRegisterBinding
-    private val selectedCategoryName by lazy { arguments.getString(EXTRA_CATEGORY_NAME) }
+    private val selectedCategoryName by lazy { arguments!!.getString(EXTRA_CATEGORY_NAME) }
 
     companion object {
         fun create(tabName: String?) = CompanyRegisterFragment().apply {
@@ -115,11 +115,15 @@ class CompanyRegisterFragment : BaseFragment() {
     }
 
     private fun setLabelNameAttentionToEmptyMessage() {
-        binding.labelNameAttention.text = context.getString(R.string.company_name_empty_attention)
+        context?.let {
+            binding.labelNameAttention.text = it.getString(R.string.company_name_empty_attention)
+        }
     }
 
     private fun setLabelNameAttentionToExistMessage() {
-        binding.labelNameAttention.text = context.getString(R.string.company_name_attention)
+        context?.let {
+            binding.labelNameAttention.text = it.getString(R.string.company_name_attention)
+        }
     }
 
     private fun viewNameAttention(gone: Boolean) {
@@ -137,11 +141,13 @@ class CompanyRegisterFragment : BaseFragment() {
     private fun onClickRegister() {
         viewModel.register(categorySpinner.getSelection())
 
-        val intent = Intent().apply {
-            val categoryName = viewModel.getCategoryName(categorySpinner.getSelection())
-            putExtra(EXTRA_CATEGORY_NAME, categoryName)
+        activity?.run {
+            val intent = Intent().apply {
+                val categoryName = viewModel.getCategoryName(categorySpinner.getSelection())
+                putExtra(EXTRA_CATEGORY_NAME, categoryName)
+            }
+            this.setResult(Activity.RESULT_OK, intent)
         }
-        activity.setResult(Activity.RESULT_OK, intent)
 
         exit()
     }

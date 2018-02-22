@@ -159,23 +159,23 @@ class TagFragment: BaseFragment() {
 
         val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type), context)
 
-        val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
-                .setView(view)
-                .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
-                    viewModel.register(editText.toText(), spinner.getSelection())
-                    viewModel.getViewModel(editText.toText())?.let { adapter.add(it) }
-                    if(adapter.itemCount == 1) {
-                        viewModel.goneEmptyMessageOnScreen()
-                    }
-                    dialogInterface.dismiss()
-                })
-                .create()
+        context?.run {
+            val dialog = AlertDialog.Builder(this, R.style.DialogTheme)
+                    .setView(view)
+                    .setPositiveButton(R.string.dialog_add_button, { dialogInterface, _ ->
+                        viewModel.register(editText.toText(), spinner.getSelection())
+                        viewModel.getViewModel(editText.toText())?.let { adapter.add(it) }
+                        if(adapter.itemCount == 1) {
+                            viewModel.goneEmptyMessageOnScreen()
+                        }
+                        dialogInterface.dismiss()
+                    })
+                    .create()
 
-        dialog.show()
-
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
-
-        editText.changeTextListener(view, dialog, editText)
+            dialog.show()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+            editText.changeTextListener(view, dialog, editText)
+        }
     }
 
     private fun showUpdateDialog(vm: TagViewModel) {
@@ -184,38 +184,37 @@ class TagFragment: BaseFragment() {
 
         val spinner = ColorSpinner(view.findViewById(R.id.spinner_color_type), context).apply { setSelection(vm.getColorType()) }
 
-        val dialog = AlertDialog.Builder(context, R.style.DialogTheme)
-                .setView(view)
-                .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
-                    viewModel.update(vm, editText.toText(), spinner.getSelection())
-                    viewModel.getViewModel(editText.toText())?.let { adapter.refresh(it) }
+        context?.run {
+            val dialog = AlertDialog.Builder(this, R.style.DialogTheme)
+                    .setView(view)
+                    .setPositiveButton(R.string.dialog_update_button, { dialogInterface, _ ->
+                        viewModel.update(vm, editText.toText(), spinner.getSelection())
+                        viewModel.getViewModel(editText.toText())?.let { adapter.refresh(it) }
 
-                    dialogInterface.dismiss()
-                })
-                .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
-                    viewModel.delete(vm)
-                    adapter.remove(vm)
+                        dialogInterface.dismiss()
+                    })
+                    .setNegativeButton(R.string.dialog_delete_button, { dialogInterface, _ ->
+                        viewModel.delete(vm)
+                        adapter.remove(vm)
 
-                    if(adapter.itemCount <= 0) {
-                        viewModel.visibilityEmptyMessageOnScreen()
-                    }
+                        if(adapter.itemCount <= 0) {
+                            viewModel.visibilityEmptyMessageOnScreen()
+                        }
 
-                    dialogInterface.dismiss()
-                })
-                .create()
+                        dialogInterface.dismiss()
+                    })
+                    .create()
 
-        dialog.show()
-
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
-
-        if(vm.isAttachCompany()) {
-            view.findViewById<TextView>(R.id.label_tag_delete_attention).visibility = View.VISIBLE
+            dialog.show()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
+            if(vm.isAttachCompany()) {
+                view.findViewById<TextView>(R.id.label_tag_delete_attention).visibility = View.VISIBLE
+            }
+            editText.changeTextListener(view, dialog, editText, vm.getId(), vm.viewName)
         }
-
-        editText.changeTextListener(view, dialog, editText, vm.getId(), vm.viewName)
     }
 
-    inner class FlexItemAdapter(context: Context)
+    inner class FlexItemAdapter(context: Context?)
         : ArrayRecyclerAdapter<TagViewModel, BindingHolder<ItemTagBinding>>(context) {
 
         override fun onBindViewHolder(holder: BindingHolder<ItemTagBinding>?, position: Int) {

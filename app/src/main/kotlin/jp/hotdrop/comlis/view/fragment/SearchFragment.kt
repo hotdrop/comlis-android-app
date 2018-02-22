@@ -134,7 +134,7 @@ class SearchFragment: BaseFragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
     }
 
-    inner class Adapter(context: Context)
+    inner class Adapter(context: Context?)
         : ArrayRecyclerAdapter<ItemSearchResultViewModel, BindingHolder<ItemSearchResultBinding>>(context) {
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemSearchResultBinding> =

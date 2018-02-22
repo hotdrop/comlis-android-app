@@ -35,7 +35,7 @@ class CompanyDetailFragment: BaseFragment() {
     lateinit var compositeDisposable: CompositeDisposable
 
     private lateinit var binding: FragmentCompanyDetailBinding
-    private val companyId by lazy { arguments.getInt(EXTRA_COMPANY_ID) }
+    private val companyId by lazy { arguments!!.getInt(EXTRA_COMPANY_ID) }
     private var isRefresh = false
 
     companion object {
@@ -88,7 +88,7 @@ class CompanyDetailFragment: BaseFragment() {
             getUpdateIntent()
         }
 
-        activity.setResult(Activity.RESULT_OK, intent)
+        activity?.setResult(Activity.RESULT_OK, intent)
 
         isRefresh = true
 
@@ -130,11 +130,13 @@ class CompanyDetailFragment: BaseFragment() {
     private fun initView() {
 
         fun setCardView(layout: FlexboxLayout, tag: Tag) {
-            val binding = DataBindingUtil.inflate<ItemTagAssociateBinding>(getLayoutInflater(null),
+            val binding = DataBindingUtil.inflate<ItemTagAssociateBinding>(onGetLayoutInflater(null),
                     R.layout.item_tag_associate, layout, false)
             // Unconditionally associate. Because get only associated tags.
-            binding.viewModel = TagAssociateViewModel(tag, TagAssociateState.ASSOCIATED, context)
-            layout.addView(binding.root)
+            context?.run {
+                binding.viewModel = TagAssociateViewModel(tag, TagAssociateState.ASSOCIATED, this)
+                layout.addView(binding.root)
+            }
         }
 
         binding.viewModel = viewModel.apply { initImages() }
@@ -174,7 +176,7 @@ class CompanyDetailFragment: BaseFragment() {
                     .setPositiveButton(R.string.dialog_ok, {dialogInterface, _ ->
                         viewModel.delete()
                         dialogInterface.dismiss()
-                        activity.setResult(Activity.RESULT_OK, getTrashIntent())
+                        activity?.setResult(Activity.RESULT_OK, getTrashIntent())
                         isRefresh = true
                         exit()
                     })
@@ -223,7 +225,7 @@ class CompanyDetailFragment: BaseFragment() {
         // 画面更新される。
         fun changedFavorite() {
             if(viewModel.isEditFavorite() && !isRefresh) {
-                activity.setResult(Activity.RESULT_OK, getUpdateIntent())
+                activity?.setResult(Activity.RESULT_OK, getUpdateIntent())
                 isRefresh = true
             }
         }

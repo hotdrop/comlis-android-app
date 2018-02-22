@@ -9,7 +9,7 @@ import jp.hotdrop.comlis.repository.category.CategoryRepository
 
 class CategorySpinner(
         private val spinner: Spinner,
-        private val activity: Activity,
+        private val activity: Activity?,
         categoryRepository: CategoryRepository
 ) {
 

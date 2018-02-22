@@ -33,7 +33,7 @@ class CompanyEditOverviewFragment: BaseFragment() {
 
     private lateinit var binding: FragmentCompanyEditOverviewBinding
     private lateinit var categorySpinner: CategorySpinner
-    private val companyId by lazy { arguments.getInt(EXTRA_COMPANY_ID) }
+    private val companyId by lazy { arguments!!.getInt(EXTRA_COMPANY_ID) }
 
     companion object {
         fun create(companyId: Int) = CompanyEditOverviewFragment().apply {
@@ -99,11 +99,15 @@ class CompanyEditOverviewFragment: BaseFragment() {
     }
 
     private fun setLabelNameAttentionToEmptyMessage() {
-        binding.labelNameAttention.text = context.getString(R.string.company_name_empty_attention)
+        context?.let {
+            binding.labelNameAttention.text = it.getString(R.string.company_name_empty_attention)
+        }
     }
 
     private fun setLabelNameAttentionToExistMessage() {
-        binding.labelNameAttention.text = context.getString(R.string.company_name_attention)
+        context?.let {
+            binding.labelNameAttention.text = it.getString(R.string.company_name_attention)
+        }
     }
 
     private fun disableUpdateButtonWithNameAttention() {
@@ -119,10 +123,12 @@ class CompanyEditOverviewFragment: BaseFragment() {
     private fun onClickUpdate() {
         viewModel.update(categorySpinner.getSelection())
 
-        val intent = Intent().apply {
-            if(viewModel.isChangeCategory) putExtra(REFRESH_MODE, CHANGE_CATEGORY) else putExtra(REFRESH_MODE, UPDATE)
+        activity?.run {
+            val intent = Intent().apply {
+                if(viewModel.isChangeCategory) putExtra(REFRESH_MODE, CHANGE_CATEGORY) else putExtra(REFRESH_MODE, UPDATE)
+            }
+            this.setResult(Activity.RESULT_OK, intent)
         }
-        activity.setResult(Activity.RESULT_OK, intent)
 
         exit()
     }

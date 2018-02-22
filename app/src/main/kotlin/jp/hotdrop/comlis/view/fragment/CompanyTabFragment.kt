@@ -40,7 +40,7 @@ class CompanyTabFragment: BaseFragment() {
     @Inject
     lateinit var compositeDisposable: CompositeDisposable
 
-    private val categoryId by lazy { arguments.getInt(EXTRA_CATEGORY_ID) }
+    private val categoryId by lazy { arguments!!.getInt(EXTRA_CATEGORY_ID) }
 
     private lateinit var binding: FragmentCompanyTabBinding
     private lateinit var adapter: Adapter
@@ -133,7 +133,7 @@ class CompanyTabFragment: BaseFragment() {
                     viewModel.visibilityEmptyMessageOnScreen()
                 }
             }
-            CHANGE_CATEGORY -> activity.intent = data
+            CHANGE_CATEGORY -> activity?.intent = data
         }
     }
 
@@ -150,7 +150,7 @@ class CompanyTabFragment: BaseFragment() {
      * ViewModelでBaseObservableを継承し、ObservableListを使用してCallbackで変更を通知していたが
      * ItemTouchHelperとの連携がうまく行かなかったのでやめた。
      */
-    inner class Adapter(context: Context):
+    inner class Adapter(context: Context?):
             ArrayRecyclerAdapter<CompanyViewModel, BindingHolder<ItemCompanyBinding>>(context) {
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCompanyBinding> =
@@ -182,7 +182,7 @@ class CompanyTabFragment: BaseFragment() {
         }
 
         private fun setCardView(flexboxLayout: FlexboxLayout, tag: Tag) {
-            val binding = DataBindingUtil.inflate<ItemCompanyListTagBinding>(getLayoutInflater(null),
+            val binding = DataBindingUtil.inflate<ItemCompanyListTagBinding>(onGetLayoutInflater(null),
                     R.layout.item_company_list_tag, flexboxLayout, false)
 
             binding.viewModel = viewModel.getTagAssociateViewModel(tag)
