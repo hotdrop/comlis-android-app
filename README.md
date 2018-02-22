@@ -10,27 +10,9 @@
 This application contains deliverables distributed under the Apache License 2.0  
 [Apache License Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
-# SDK version
-  - min_sdk_version: 23
-  - target_sdk_version: 26
-
-# 環境
-  - Kotlin 1.2.21
+# 開発環境
+  - Android Studio3.0.1
   - gradle 2.2.3
-
-# 使用ライブラリ
-  - RxKotlin 2.1.0
-  - RxAndroid 2.0.1
-  - RxJava 2.1.3
-  - RxBinding-kotlin 2.0.0
-  - Flexbox-layout 0.3.0-alpha4(RecyclerView対応版)
-  - databinding
-  - Dagger 2.11
-  - Lottie 1.5.3
-  - Android-Orma 4.2.5
-  - deployGate
-  - Retrofit 2.3.0
-  - OkHttp 3.8.1
 
 # 使い方
 主要な画面の簡単な説明と使い方を示します。  
