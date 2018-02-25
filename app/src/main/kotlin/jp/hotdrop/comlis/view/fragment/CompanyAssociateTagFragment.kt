@@ -141,12 +141,13 @@ class CompanyAssociateTagFragment: BaseFragment(), TagsAssociateViewModel.Callba
             }
 
             binding.cardView.setOnClickListener {
-                val vm = binding.viewModel
-                vm.changeAssociateState()
-                binding.run {
-                    borderLeft.setBackgroundColor(vm.getColorRes())
-                    borderRight.setBackgroundColor(vm.getColorRes())
-                    cardView.setCardBackgroundColor(vm.getBackGroundColorRes())
+                binding.viewModel?.let{ vm ->
+                    vm.changeAssociateState()
+                    binding.run {
+                        borderLeft.setBackgroundColor(vm.getColorRes())
+                        borderRight.setBackgroundColor(vm.getColorRes())
+                        cardView.setCardBackgroundColor(vm.getBackGroundColorRes())
+                    }
                 }
             }
         }

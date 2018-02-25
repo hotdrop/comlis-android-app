@@ -169,15 +169,18 @@ class CompanyTabFragment: BaseFragment() {
             }
 
             binding.cardView.setOnClickListener {
-                ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, binding.viewModel.getId(), Request.Detail.code)
+                binding.viewModel?.let {vm ->
+                    ActivityNavigator.showCompanyDetail(this@CompanyTabFragment, vm.getId(), Request.Detail.code)
+                }
             }
 
             // Recycle後に復帰した際、追加したタグを削除しておかないとタグが積まれていくためremoveAllする。
             binding.flexBoxContainer.removeAllViews()
-            binding.viewModel.viewTags.forEach { tag -> setCardView(binding.flexBoxContainer, tag) }
-            initFavoriteEvent(binding)
-
-            binding.viewModel.markFromRemote(binding.txtMarkRemote)
+            binding.viewModel?.let {vm ->
+                vm.viewTags.forEach { tag -> setCardView(binding.flexBoxContainer, tag) }
+                initFavoriteEvent(binding)
+                vm.markFromRemote(binding.txtMarkRemote)
+            }
         }
 
         private fun setCardView(flexboxLayout: FlexboxLayout, tag: Tag) {
@@ -219,22 +222,23 @@ class CompanyTabFragment: BaseFragment() {
 
         private fun initFavoriteEvent(binding: ItemCompanyBinding) {
 
-            val vm = binding.viewModel
-            vm.favorites = FavoriteStars(binding.animationView1, binding.animationView2, binding.animationView3)
+            binding.viewModel?.let { vm ->
+                vm.favorites = FavoriteStars(binding.animationView1, binding.animationView2, binding.animationView3)
+                binding.animationView1.apply {
+                    setOnClickListener { vm.onClickFirstFavorite() }
+                }
 
-            binding.animationView1.apply {
-                setOnClickListener { vm.onClickFirstFavorite() }
+                binding.animationView2.apply {
+                    setOnClickListener { vm.onClickSecondFavorite() }
+                }
+
+                binding.animationView3.apply {
+                    setOnClickListener { vm.onClickThirdFavorite() }
+                }
+
+                vm.playFavorite()
+
             }
-
-            binding.animationView2.apply {
-                setOnClickListener { vm.onClickSecondFavorite() }
-            }
-
-            binding.animationView3.apply {
-                setOnClickListener { vm.onClickThirdFavorite() }
-            }
-
-            vm.playFavorite()
         }
     }
 

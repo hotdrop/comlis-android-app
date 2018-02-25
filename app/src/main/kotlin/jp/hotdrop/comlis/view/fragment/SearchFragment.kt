@@ -145,12 +145,13 @@ class SearchFragment: BaseFragment() {
             val binding = holder.binding
             binding.viewModel = getItem(position)
 
-            binding.cardView.setOnClickListener {
-                ActivityNavigator.showCompanyDetail(this@SearchFragment, binding.viewModel.id, Request.Detail.code)
+            binding.viewModel?.let { vm ->
+                binding.cardView.setOnClickListener {
+                    ActivityNavigator.showCompanyDetail(this@SearchFragment, vm.id, Request.Detail.code)
+                }
+                val favorites = FavoriteStars(binding.animationView1, binding.animationView2, binding.animationView3)
+                favorites.playAnimation(vm.favorite)
             }
-
-            val favorites = FavoriteStars(binding.animationView1, binding.animationView2, binding.animationView3)
-            favorites.playAnimation(binding.viewModel.favorite)
         }
 
         fun clearAll() {

@@ -248,7 +248,9 @@ class CategoryFragment: BaseFragment() {
                 }
             }
 
-            binding.cardView.setOnClickListener { showUpdateDialog(binding.viewModel) }
+            binding.viewModel?.let {vm ->
+                binding.cardView.setOnClickListener { showUpdateDialog(vm) }
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCategoryBinding> =
