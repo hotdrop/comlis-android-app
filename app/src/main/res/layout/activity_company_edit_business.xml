@@ -4,31 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.activity.CompanyEditBusinessActivity">
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="@dimen/toolbar_height"
             android:background="?attr/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             <TextView
                 android:id="@+id/title"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 style="@style/title"
                 android:textColor="@color/title_in_image_cover"
                 android:text="@string/title_company_edit" />
+
         </android.support.v7.widget.Toolbar>
 
         <FrameLayout
             android:id="@+id/content_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/toolbar" />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    </RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </layout>

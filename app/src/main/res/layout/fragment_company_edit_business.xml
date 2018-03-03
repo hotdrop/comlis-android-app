@@ -11,75 +11,77 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_doing_business"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/company_doing_business_max_length"
+                app:layout_constraintBottom_toTopOf="@+id/input_layout_want_business"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread_inside">
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_doing_business"
-                    android:layout_width="match_parent"
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_doing_business"
+                    style="@style/MultiLineEditText"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:layout_marginEnd="@dimen/spacing"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="@integer/company_doing_business_max_length" >
+                    android:hint="@string/hint_doing_business"
+                    android:maxLength="@integer/company_doing_business_max_length"
+                    android:maxLines="@integer/company_doing_business_max_lines"
+                    android:text="@={viewModel.viewDoingBusiness}" />
 
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/txt_doing_business"
-                        style="@style/MultiLineEditText"
-                        android:maxLines="@integer/company_doing_business_max_lines"
-                        android:hint="@string/hint_doing_business"
-                        android:maxLength="@integer/company_doing_business_max_length"
-                        android:text="@={viewModel.viewDoingBusiness}" />
+            </android.support.design.widget.TextInputLayout>
 
-                </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_want_business"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/company_want_business_max_length"
+                app:layout_constraintBottom_toTopOf="@+id/update_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_doing_business">
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_want_business"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/input_layout_doing_business"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:layout_marginEnd="@dimen/spacing"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="@integer/company_want_business_max_length" >
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_want_business"
+                    style="@style/MultiLineEditText"
+                    android:hint="@string/hint_want_business"
+                    android:maxLength="@integer/company_want_business_max_length"
+                    android:maxLines="@integer/company_want_business_max_lines"
+                    android:text="@={viewModel.viewWantBusiness}" />
 
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/txt_want_business"
-                        style="@style/MultiLineEditText"
-                        android:maxLines="@integer/company_want_business_max_lines"
-                        android:hint="@string/hint_want_business"
-                        android:maxLength="@integer/company_want_business_max_length"
-                        android:text="@={viewModel.viewWantBusiness}" />
+            </android.support.design.widget.TextInputLayout>
 
-                </android.support.design.widget.TextInputLayout>
 
-            </RelativeLayout>
-
-            <LinearLayout
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/update_button"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" >
+                android:backgroundTint="@{viewModel.getColorRes}"
+                android:text="@string/update_button"
+                android:theme="@style/AccentButton"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_want_business" />
 
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/update_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_small"
-                    android:layout_marginBottom="@dimen/spacing_small"
-                    android:theme="@style/AccentButton"
-                    android:backgroundTint="@{viewModel.getColorRes}"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:text="@string/update_button" />
 
-            </LinearLayout>
-        </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
     </ScrollView>
 
 </layout>
