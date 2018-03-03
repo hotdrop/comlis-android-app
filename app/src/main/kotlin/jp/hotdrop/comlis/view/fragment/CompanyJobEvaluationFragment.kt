@@ -61,8 +61,6 @@ class CompanyJobEvaluationFragment: BaseFragment() {
             val intent = Intent().apply { putExtra(REFRESH_MODE, UPDATE) }
             this.setResult(Activity.RESULT_OK, intent)
         }
-
-
         exit()
     }
 

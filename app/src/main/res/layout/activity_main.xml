@@ -18,6 +18,8 @@
 
             <TextView
                 android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 style="@style/title"
                 android:text="@string/companies" />
 

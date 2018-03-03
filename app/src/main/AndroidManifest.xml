@@ -22,7 +22,6 @@
         <activity
             android:name="jp.hotdrop.comlis.view.activity.CompanyRegisterActivity"
             android:exported="false"
-            android:label="@string/title_company_register"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="jp.hotdrop.comlis.view.activity.CompanyDetailActivity"
@@ -31,32 +30,26 @@
         <activity
             android:name="jp.hotdrop.comlis.view.activity.CompanyAssociateTagActivity"
             android:exported="false"
-            android:label="@string/title_tags"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="jp.hotdrop.comlis.view.activity.CompanyEditOverviewActivity"
             android:exported="false"
-            android:label="@string/title_company_edit"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="jp.hotdrop.comlis.view.activity.CompanyJobEvaluationActivity"
             android:exported="false"
-            android:label="@string/title_company_job_evaluation"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="jp.hotdrop.comlis.view.activity.CompanyEditInfoActivity"
             android:exported="false"
-            android:label="@string/title_company_edit"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="jp.hotdrop.comlis.view.activity.CompanyEditBusinessActivity"
             android:exported="false"
-            android:label="@string/title_company_edit"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="jp.hotdrop.comlis.view.activity.CompanyEditDescriptionActivity"
             android:exported="false"
-            android:label="@string/title_company_edit"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="jp.hotdrop.comlis.view.activity.SearchActivity"
