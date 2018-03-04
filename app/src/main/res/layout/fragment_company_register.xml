@@ -9,295 +9,365 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:layout_marginEnd="@dimen/spacing"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="@integer/company_name_max_length" >
-
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/txt_name"
-                        style="@style/EditText"
-                        android:maxLines="@integer/company_name_max_lines"
-                        android:hint="@string/hint_company_name"
-                        android:maxLength="@integer/company_name_max_length"
-                        android:text="@={viewModel.viewName}" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <TextView
-                    android:id="@+id/label_name_attention"
-                    style="@style/AttentionLabel"
-                    android:layout_below="@id/input_layout_name"
-                    android:text="@string/company_name_attention"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/label_category"
-                    style="@style/ItemLabel"
-                    android:layout_below="@id/label_name_attention"
-                    android:text="@string/label_category" />
-
-                <Spinner
-                    android:id="@+id/spinner_category"
-                    style="@style/Spinner"
-                    android:layout_below="@id/label_category" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_overview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/spinner_category"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:layout_marginEnd="@dimen/spacing"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="@integer/company_overview_max_length" >
-
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/txt_overview"
-                        style="@style/MultiLineEditText"
-                        android:maxLines="@integer/company_overview_max_lines"
-                        android:hint="@string/label_overview"
-                        android:maxLength="@integer/company_overview_max_length"
-                        android:text="@={viewModel.viewOverview}" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <TextView
-                    android:id="@+id/label_employees_num"
-                    style="@style/ItemLabel"
-                    android:layout_below="@id/input_layout_overview"
-                    android:text="@string/label_employees_num" />
-
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/txt_employees_num"
-                    style="@style/CompactEditText"
-                    android:layout_below="@id/label_employees_num"
-                    android:maxLength="@integer/company_employees_num_max_length"
-                    android:text="@={viewModel.viewEmployeesNum}" />
-
-                <TextView
-                    android:id="@+id/label_employees_unit"
-                    style="@style/ItemUnitLabel"
-                    android:layout_below="@id/label_employees_num"
-                    android:layout_toEndOf="@id/txt_employees_num"
-                    android:layout_alignBottom="@id/txt_employees_num"
-                    android:text="@string/label_employees_num_unit" />
-
-                <TextView
-                    android:id="@+id/label_salary"
-                    style="@style/ItemLabel"
-                    android:layout_below="@id/input_layout_overview"
-                    android:layout_toEndOf="@id/label_employees_unit"
-                    android:text="@string/label_salary" />
-
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/txt_salary_lower"
-                    style="@style/CompactEditText"
-                    android:layout_below="@id/label_salary"
-                    android:layout_toEndOf="@id/label_employees_unit"
-                    android:maxLength="@integer/company_salary_max_length"
-                    android:text="@={viewModel.viewSalaryLow}" />
-
-                <TextView
-                    android:id="@+id/label_salary_lower_unit"
-                    style="@style/ItemUnitLabel"
-                    android:layout_toEndOf="@id/txt_salary_lower"
-                    android:layout_below="@id/label_salary"
-                    android:layout_alignBottom="@id/txt_salary_lower"
-                    android:text="@string/label_salary_unit" />
-
-                <TextView
-                    android:id="@+id/label_salary_range_mark"
-                    style="@style/ItemUnitLabel"
-                    android:layout_marginStart="@dimen/spacing"
-                    android:layout_toEndOf="@id/label_salary_lower_unit"
-                    android:layout_alignBottom="@id/txt_salary_lower"
-                    android:layout_below="@id/label_salary"
-                    android:text="@string/label_salary_range_mark" />
-
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/txt_salary_high"
-                    style="@style/CompactEditText"
-                    android:layout_below="@id/label_salary"
-                    android:layout_toEndOf="@id/label_salary_range_mark"
-                    android:hint="@string/hint_salary"
-                    android:maxLength="@integer/company_salary_max_length"
-                    android:text="@={viewModel.viewSalaryHigh}" />
-
-                <TextView
-                    android:id="@+id/label_salary_high_unit"
-                    style="@style/ItemUnitLabel"
-                    android:layout_toEndOf="@id/txt_salary_high"
-                    android:layout_below="@id/label_salary"
-                    android:layout_alignBottom="@id/txt_salary_lower"
-                    android:text="@string/label_salary_unit" />
-
-                <TextView
-                    android:id="@+id/label_employees_num_attention"
-                    style="@style/AttentionLabel"
-                    android:layout_below="@id/txt_employees_num"
-                    android:text="@string/employees_num_attention"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/label_salary_attention"
-                    style="@style/AttentionLabel"
-                    android:layout_below="@id/label_employees_num_attention"
-                    android:text="@string/salary_attention"
-                    android:visibility="gone" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_wanted_job"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/label_salary_attention"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:layout_marginEnd="@dimen/spacing"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="@integer/company_wanted_job_max_length" >
-
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/txt_wanted_job"
-                        style="@style/EditText"
-                        android:hint="@string/hint_wanted_job"
-                        android:maxLines="@integer/company_wanted_job_max_lines"
-                        android:maxLength="@integer/company_wanted_job_max_length"
-                        android:text="@={viewModel.viewWantedJob}" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_work_place"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/input_layout_wanted_job"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:layout_marginEnd="@dimen/spacing"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="@integer/company_work_place_max_length" >
-
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/txt_work_place"
-                        style="@style/EditText"
-                        android:hint="@string/hint_work_place"
-                        android:maxLines="@integer/company_work_place_max_lines"
-                        android:maxLength="@integer/company_work_place_max_length"
-                        android:text="@={viewModel.viewWorkPlace}" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_url"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/input_layout_work_place"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:layout_marginEnd="@dimen/spacing"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="@integer/company_url_max_length" >
-
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/txt_url"
-                        style="@style/EditText"
-                        android:hint="@string/hint_url"
-                        android:maxLines="@integer/company_url_max_lines"
-                        android:maxLength="@integer/company_url_max_length"
-                        android:text="@={viewModel.viewUrl}" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_doing_business"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/input_layout_url"
-                    android:layout_marginEnd="@dimen/spacing"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="@integer/company_doing_business_max_length" >
-
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/txt_doing_business"
-                        style="@style/MultiLineEditText"
-                        android:maxLines="@integer/company_doing_business_max_lines"
-                        android:hint="@string/hint_doing_business"
-                        android:maxLength="@integer/company_doing_business_max_length"
-                        android:text="@={viewModel.viewDoingBusiness}" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_want_business"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/input_layout_doing_business"
-                    android:layout_marginEnd="@dimen/spacing"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="@integer/company_want_business_max_length" >
-
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/txt_want_business"
-                        style="@style/MultiLineEditText"
-                        android:maxLines="@integer/company_want_business_max_lines"
-                        android:hint="@string/hint_want_business"
-                        android:maxLength="@integer/company_want_business_max_length"
-                        android:text="@={viewModel.viewWantBusiness}" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_note"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/input_layout_want_business"
-                    android:layout_marginEnd="@dimen/spacing"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="@integer/company_description_max_length" >
-
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/txt_note"
-                        style="@style/MultiLineEditText"
-                        android:maxLines="@integer/company_description_max_lines"
-                        android:hint="@string/label_description"
-                        android:maxLength="@integer/company_description_max_length"
-                        android:text="@={viewModel.viewNote}" />
-
-                </android.support.design.widget.TextInputLayout>
-
-            </RelativeLayout>
-
-            <LinearLayout
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" >
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="16dp" />
 
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/register_button"
-                    android:layout_width="wrap_content"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/company_name_max_length"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_name"
+                    style="@style/EditText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_small"
-                    android:layout_marginBottom="@dimen/spacing_small"
-                    android:theme="@style/AccentButton"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:text="@string/add_button" />
+                    android:hint="@string/hint_company_name"
+                    android:maxLength="@integer/company_name_max_length"
+                    android:maxLines="@integer/company_name_max_lines"
+                    android:text="@={viewModel.viewName}" />
 
-            </LinearLayout>
-        </LinearLayout>
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/label_name_attention"
+                style="@style/AttentionLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/company_name_attention"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.47"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_name" />
+
+            <TextView
+                android:id="@+id/label_category"
+                style="@style/ItemLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/label_category"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/label_name_attention" />
+
+            <Spinner
+                android:id="@+id/spinner_category"
+                style="@style/Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spinner_height"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/label_category" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_overview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/company_overview_max_length"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/spinner_category">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_overview"
+                    style="@style/MultiLineEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/label_overview"
+                    android:maxLength="@integer/company_overview_max_length"
+                    android:maxLines="@integer/company_overview_max_lines"
+                    android:text="@={viewModel.viewOverview}" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/label_employees_num"
+                style="@style/ItemLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/label_employees_num"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_overview" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/txt_employees_num"
+                style="@style/CompactEditText"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:maxLength="@integer/company_employees_num_max_length"
+                android:text="@={viewModel.viewEmployeesNum}"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/label_employees_num" />
+
+            <TextView
+                android:id="@+id/label_employees_unit"
+                style="@style/ItemUnitLabel"
+                android:text="@string/label_employees_num_unit"
+                app:layout_constraintBaseline_toBaselineOf="@+id/txt_employees_num"
+                app:layout_constraintStart_toEndOf="@+id/txt_employees_num" />
+
+            <TextView
+                android:id="@+id/label_salary"
+                style="@style/ItemLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/label_salary"
+                app:layout_constraintStart_toEndOf="@+id/label_employees_unit"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_overview" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/txt_salary_lower"
+                style="@style/CompactEditText"
+                android:layout_marginStart="16dp"
+                android:maxLength="@integer/company_salary_max_length"
+                android:text="@={viewModel.viewSalaryLow}"
+                app:layout_constraintStart_toEndOf="@+id/label_employees_unit"
+                app:layout_constraintTop_toBottomOf="@+id/label_salary" />
+
+            <TextView
+                android:id="@+id/label_salary_lower_unit"
+                style="@style/ItemUnitLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:text="@string/label_salary_unit"
+                app:layout_constraintBaseline_toBaselineOf="@+id/txt_salary_lower"
+                app:layout_constraintStart_toEndOf="@+id/txt_salary_lower" />
+
+            <TextView
+                android:id="@+id/label_salary_range_mark"
+                style="@style/ItemUnitLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:text="@string/label_salary_range_mark"
+                app:layout_constraintBaseline_toBaselineOf="@+id/label_salary_lower_unit"
+                app:layout_constraintStart_toEndOf="@+id/label_salary_lower_unit" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/txt_salary_high"
+                style="@style/CompactEditText"
+                android:layout_marginStart="8dp"
+                android:hint="@string/hint_salary"
+                android:maxLength="@integer/company_salary_max_length"
+                android:text="@={viewModel.viewSalaryHigh}"
+                app:layout_constraintStart_toEndOf="@+id/label_salary_range_mark"
+                app:layout_constraintTop_toBottomOf="@+id/label_salary" />
+
+            <TextView
+                android:id="@+id/label_salary_high_unit"
+                style="@style/ItemUnitLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:text="@string/label_salary_unit"
+                app:layout_constraintBaseline_toBaselineOf="@+id/txt_salary_high"
+                app:layout_constraintStart_toEndOf="@+id/txt_salary_high" />
+
+            <TextView
+                android:id="@+id/label_employees_num_attention"
+                style="@style/AttentionLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/employees_num_attention"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/txt_employees_num" />
+
+            <TextView
+                android:id="@+id/label_salary_attention"
+                style="@style/AttentionLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/salary_attention"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/label_employees_num_attention" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_wanted_job"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/company_wanted_job_max_length"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/label_salary_attention">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_wanted_job"
+                    style="@style/EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_wanted_job"
+                    android:maxLength="@integer/company_wanted_job_max_length"
+                    android:maxLines="@integer/company_wanted_job_max_lines"
+                    android:text="@={viewModel.viewWantedJob}" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_work_place"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/company_work_place_max_length"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_wanted_job">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_work_place"
+                    style="@style/EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_work_place"
+                    android:maxLength="@integer/company_work_place_max_length"
+                    android:maxLines="@integer/company_work_place_max_lines"
+                    android:text="@={viewModel.viewWorkPlace}" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_url"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/company_url_max_length"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_work_place">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_url"
+                    style="@style/EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_url"
+                    android:maxLength="@integer/company_url_max_length"
+                    android:maxLines="@integer/company_url_max_lines"
+                    android:text="@={viewModel.viewUrl}" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_doing_business"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/company_doing_business_max_length"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_url">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_doing_business"
+                    style="@style/MultiLineEditText"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_doing_business"
+                    android:maxLength="@integer/company_doing_business_max_length"
+                    android:maxLines="@integer/company_doing_business_max_lines"
+                    android:text="@={viewModel.viewDoingBusiness}" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_want_business"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/company_want_business_max_length"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_doing_business">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_want_business"
+                    style="@style/MultiLineEditText"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_want_business"
+                    android:maxLength="@integer/company_want_business_max_length"
+                    android:maxLines="@integer/company_want_business_max_lines"
+                    android:text="@={viewModel.viewWantBusiness}" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_note"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/company_description_max_length"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_want_business">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txt_note"
+                    style="@style/MultiLineEditText"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/label_description"
+                    android:maxLength="@integer/company_description_max_length"
+                    android:maxLines="@integer/company_description_max_lines"
+                    android:text="@={viewModel.viewNote}" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/register_button"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/add_button"
+                android:theme="@style/AccentButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_note" />
+
+
+        </android.support.constraint.ConstraintLayout>
     </ScrollView>
 
 </layout>
