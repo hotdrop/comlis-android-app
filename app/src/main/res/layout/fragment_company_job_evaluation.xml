@@ -1,4 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.fragment.CompanyJobEvaluationFragment">
 
@@ -10,212 +11,287 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/correct_sentence_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:layout_marginStart="@dimen/spacing"
-                    android:buttonTint="@{viewModel.getColorRes}"
-                    android:checked="@={viewModel.viewCorrectSentence}"/>
-
-                <TextView
-                    android:id="@+id/correct_sentence_title"
-                    style="@style/EvaluationTitle"
-                    android:layout_alignTop="@id/correct_sentence_checkbox"
-                    android:layout_toEndOf="@id/correct_sentence_checkbox"
-                    android:textColor="@{viewModel.getColorRes}"
-                    android:text="@string/title_correct_sentence"/>
-
-                <TextView
-                    android:id="@+id/correct_sentence_note"
-                    style="@style/EvaluationNote"
-                    android:layout_below="@id/correct_sentence_title"
-                    android:layout_toEndOf="@id/correct_sentence_checkbox"
-                    android:text="@string/note_correct_sentence"/>
-
-                <View
-                    android:id="@+id/line_correct_sentence"
-                    style="@style/EvaluationListBorder"
-                    android:layout_below="@id/correct_sentence_note" />
-
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/development_env_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/line_correct_sentence"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:layout_marginStart="@dimen/spacing"
-                    android:buttonTint="@{viewModel.getColorRes}"
-                    android:checked="@={viewModel.viewDevelopmentEnv}"/>
-
-                <TextView
-                    android:id="@+id/development_env_title"
-                    style="@style/EvaluationTitle"
-                    android:layout_alignTop="@id/development_env_checkbox"
-                    android:layout_toEndOf="@id/development_env_checkbox"
-                    android:textColor="@{viewModel.getColorRes}"
-                    android:text="@string/title_development_env"/>
-
-                <TextView
-                    android:id="@+id/development_env_note"
-                    style="@style/EvaluationNote"
-                    android:layout_below="@id/development_env_title"
-                    android:layout_toEndOf="@id/development_env_checkbox"
-                    android:text="@string/note_development_env"/>
-
-                <View
-                    android:id="@+id/line_development_env"
-                    style="@style/EvaluationListBorder"
-                    android:layout_below="@id/development_env_note" />
-
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/want_skill_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/line_development_env"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:layout_marginStart="@dimen/spacing"
-                    android:buttonTint="@{viewModel.getColorRes}"
-                    android:checked="@={viewModel.viewWantSkill}"/>
-
-                <TextView
-                    android:id="@+id/want_skill_title"
-                    style="@style/EvaluationTitle"
-                    android:layout_alignTop="@id/want_skill_checkbox"
-                    android:layout_toEndOf="@id/want_skill_checkbox"
-                    android:textColor="@{viewModel.getColorRes}"
-                    android:text="@string/title_want_skill"/>
-
-                <TextView
-                    android:id="@+id/want_skill_note"
-                    style="@style/EvaluationNote"
-                    android:layout_below="@id/want_skill_title"
-                    android:layout_toEndOf="@id/want_skill_checkbox"
-                    android:text="@string/note_want_skill"/>
-
-                <View
-                    android:id="@+id/line_want_skill"
-                    style="@style/EvaluationListBorder"
-                    android:layout_below="@id/want_skill_note" />
-
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/person_image_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/line_want_skill"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:layout_marginStart="@dimen/spacing"
-                    android:buttonTint="@{viewModel.getColorRes}"
-                    android:checked="@={viewModel.viewPersonImage}"/>
-
-                <TextView
-                    android:id="@+id/person_image_title"
-                    style="@style/EvaluationTitle"
-                    android:layout_alignTop="@id/person_image_checkbox"
-                    android:layout_toEndOf="@id/person_image_checkbox"
-                    android:textColor="@{viewModel.getColorRes}"
-                    android:text="@string/title_person_image"/>
-
-                <TextView
-                    android:id="@+id/person_image_note"
-                    style="@style/EvaluationNote"
-                    android:layout_below="@id/person_image_title"
-                    android:layout_toEndOf="@id/person_image_checkbox"
-                    android:text="@string/note_person_image"/>
-
-                <View
-                    android:id="@+id/line_person_image"
-                    style="@style/EvaluationListBorder"
-                    android:layout_below="@id/person_image_note" />
-
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/appeal_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/line_person_image"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:layout_marginStart="@dimen/spacing"
-                    android:buttonTint="@{viewModel.getColorRes}"
-                    android:checked="@={viewModel.viewAppeal}"/>
-
-                <TextView
-                    android:id="@+id/appeal_title"
-                    style="@style/EvaluationTitle"
-                    android:layout_alignTop="@id/appeal_checkbox"
-                    android:layout_toEndOf="@id/appeal_checkbox"
-                    android:textColor="@{viewModel.getColorRes}"
-                    android:text="@string/title_appeal"/>
-
-                <TextView
-                    android:id="@+id/appeal_note"
-                    style="@style/EvaluationNote"
-                    android:layout_below="@id/appeal_title"
-                    android:layout_toEndOf="@id/appeal_checkbox"
-                    android:text="@string/note_appeal"/>
-
-                <View
-                    android:id="@+id/line_appeal"
-                    style="@style/EvaluationListBorder"
-                    android:layout_below="@id/appeal_note" />
-
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/job_offer_reason_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/line_appeal"
-                    android:layout_marginTop="@dimen/spacing"
-                    android:layout_marginStart="@dimen/spacing"
-                    android:buttonTint="@{viewModel.getColorRes}"
-                    android:checked="@={viewModel.viewJobOfferReason}"/>
-
-                <TextView
-                    android:id="@+id/job_offer_reason_title"
-                    style="@style/EvaluationTitle"
-                    android:layout_alignTop="@id/job_offer_reason_checkbox"
-                    android:layout_toEndOf="@id/job_offer_reason_checkbox"
-                    android:textColor="@{viewModel.getColorRes}"
-                    android:text="@string/title_job_offer_reason"/>
-
-                <TextView
-                    android:id="@+id/job_offer_reason_note"
-                    style="@style/EvaluationNote"
-                    android:layout_below="@id/job_offer_reason_title"
-                    android:layout_toEndOf="@id/job_offer_reason_checkbox"
-                    android:text="@string/note_job_offer_reason"/>
-
-                <View
-                    android:id="@+id/line_job_offer_reason"
-                    style="@style/EvaluationListBorder"
-                    android:layout_below="@id/job_offer_reason_note" />
-
-            </RelativeLayout>
-            <LinearLayout
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/correct_sentence_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" >
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:buttonTint="@{viewModel.getColorRes}"
+                android:checked="@={viewModel.viewCorrectSentence}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/update_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_large"
-                    android:layout_marginBottom="@dimen/spacing_small"
-                    android:theme="@style/AccentButton"
-                    android:backgroundTint="@{viewModel.getColorRes}"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:text="@string/update_button" />
+            <TextView
+                android:id="@+id/correct_sentence_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                style="@style/EvaluationTitle"
+                android:text="@string/title_correct_sentence"
+                android:textColor="@{viewModel.getColorRes}"
+                app:layout_constraintStart_toEndOf="@+id/correct_sentence_checkbox"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
-        </LinearLayout>
+            <TextView
+                android:id="@+id/correct_sentence_note"
+                style="@style/EvaluationNote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="18dp"
+                android:text="@string/note_correct_sentence"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/correct_sentence_checkbox"
+                app:layout_constraintTop_toTopOf="@+id/correct_sentence_title" />
+
+            <View
+                android:id="@+id/line_correct_sentence"
+                style="@style/EvaluationListBorder"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/correct_sentence_note" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/development_env_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:buttonTint="@{viewModel.getColorRes}"
+                android:checked="@={viewModel.viewDevelopmentEnv}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line_correct_sentence" />
+
+            <TextView
+                android:id="@+id/development_env_title"
+                style="@style/EvaluationTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/title_development_env"
+                android:textColor="@{viewModel.getColorRes}"
+                app:layout_constraintStart_toEndOf="@+id/development_env_checkbox"
+                app:layout_constraintTop_toBottomOf="@+id/line_correct_sentence" />
+
+            <TextView
+                android:id="@+id/development_env_note"
+                style="@style/EvaluationNote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="@string/note_development_env"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/development_env_checkbox"
+                app:layout_constraintTop_toBottomOf="@+id/development_env_title" />
+
+            <View
+                android:id="@+id/line_development_env"
+                style="@style/EvaluationListBorder"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/development_env_note" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/want_skill_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:buttonTint="@{viewModel.getColorRes}"
+                android:checked="@={viewModel.viewWantSkill}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line_development_env" />
+
+            <TextView
+                android:id="@+id/want_skill_title"
+                style="@style/EvaluationTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/title_want_skill"
+                android:textColor="@{viewModel.getColorRes}"
+                app:layout_constraintStart_toEndOf="@+id/want_skill_checkbox"
+                app:layout_constraintTop_toBottomOf="@+id/line_development_env" />
+
+            <TextView
+                android:id="@+id/want_skill_note"
+                style="@style/EvaluationNote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="@string/note_want_skill"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/want_skill_checkbox"
+                app:layout_constraintTop_toBottomOf="@+id/want_skill_title" />
+
+            <View
+                android:id="@+id/line_want_skill"
+                style="@style/EvaluationListBorder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/want_skill_note" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/person_image_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:buttonTint="@{viewModel.getColorRes}"
+                android:checked="@={viewModel.viewPersonImage}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line_want_skill" />
+
+            <TextView
+                android:id="@+id/person_image_title"
+                style="@style/EvaluationTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/title_person_image"
+                android:textColor="@{viewModel.getColorRes}"
+                app:layout_constraintStart_toEndOf="@+id/person_image_checkbox"
+                app:layout_constraintTop_toBottomOf="@+id/line_want_skill" />
+
+            <TextView
+                android:id="@+id/person_image_note"
+                style="@style/EvaluationNote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="@string/note_person_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/person_image_checkbox"
+                app:layout_constraintTop_toBottomOf="@+id/person_image_title" />
+
+            <View
+                android:id="@+id/line_person_image"
+                style="@style/EvaluationListBorder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/person_image_note" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/appeal_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:buttonTint="@{viewModel.getColorRes}"
+                android:checked="@={viewModel.viewAppeal}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line_person_image" />
+
+            <TextView
+                android:id="@+id/appeal_title"
+                style="@style/EvaluationTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/title_appeal"
+                android:textColor="@{viewModel.getColorRes}"
+                app:layout_constraintStart_toEndOf="@+id/appeal_checkbox"
+                app:layout_constraintTop_toBottomOf="@+id/line_person_image" />
+
+            <TextView
+                android:id="@+id/appeal_note"
+                style="@style/EvaluationNote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="@string/note_appeal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/appeal_checkbox"
+                app:layout_constraintTop_toBottomOf="@+id/appeal_title" />
+
+            <View
+                android:id="@+id/line_appeal"
+                style="@style/EvaluationListBorder"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appeal_note" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/job_offer_reason_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:buttonTint="@{viewModel.getColorRes}"
+                android:checked="@={viewModel.viewJobOfferReason}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line_appeal" />
+
+            <TextView
+                android:id="@+id/job_offer_reason_title"
+                style="@style/EvaluationTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/title_job_offer_reason"
+                android:textColor="@{viewModel.getColorRes}"
+                app:layout_constraintStart_toEndOf="@+id/job_offer_reason_checkbox"
+                app:layout_constraintTop_toBottomOf="@+id/line_appeal" />
+
+            <TextView
+                android:id="@+id/job_offer_reason_note"
+                style="@style/EvaluationNote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="@string/note_job_offer_reason"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/job_offer_reason_checkbox"
+                app:layout_constraintTop_toBottomOf="@+id/job_offer_reason_title" />
+
+            <View
+                android:id="@+id/line_job_offer_reason"
+                style="@style/EvaluationListBorder"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/job_offer_reason_note" />
+
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/update_button"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@{viewModel.getColorRes}"
+                android:text="@string/update_button"
+                android:theme="@style/AccentButton"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/line_job_offer_reason"
+                app:layout_constraintTop_toBottomOf="@+id/line_job_offer_reason" />
+
+
+        </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </layout>
