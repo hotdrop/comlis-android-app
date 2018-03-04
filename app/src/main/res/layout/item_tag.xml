@@ -46,6 +46,8 @@
 
                 <TextView
                     android:id="@+id/label_register_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/ListSubItemLabel"
                     android:layout_below="@id/txt_name"
                     android:layout_toEndOf="@id/icon_reorder_group"
@@ -53,6 +55,8 @@
 
                 <TextView
                     android:id="@+id/label_count_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/ListSubItemText"
                     android:layout_below="@id/txt_name"
                     android:layout_toEndOf="@id/label_register_count"

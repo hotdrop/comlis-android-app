@@ -126,6 +126,8 @@
             <TextView
                 android:id="@+id/label_employees_unit"
                 style="@style/ItemUnitLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/label_employees_num_unit"
                 app:layout_constraintBaseline_toBaselineOf="@+id/txt_employees_num"
                 app:layout_constraintStart_toEndOf="@+id/txt_employees_num" />
@@ -144,6 +146,8 @@
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/txt_salary_lower"
                 style="@style/CompactEditText"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:maxLength="@integer/company_salary_max_length"
                 android:text="@={viewModel.viewSalaryLow}"
@@ -171,6 +175,8 @@
 
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/txt_salary_high"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
                 style="@style/CompactEditText"
                 android:layout_marginStart="8dp"
                 android:hint="@string/hint_salary"
@@ -297,6 +303,7 @@
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/txt_doing_business"
                     style="@style/MultiLineEditText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_doing_business"
                     android:maxLength="@integer/company_doing_business_max_length"
@@ -320,6 +327,7 @@
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/txt_want_business"
                     style="@style/MultiLineEditText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_want_business"
                     android:maxLength="@integer/company_want_business_max_length"
@@ -343,6 +351,7 @@
                 <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/txt_note"
                     style="@style/MultiLineEditText"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/label_description"
                     android:maxLength="@integer/company_description_max_length"

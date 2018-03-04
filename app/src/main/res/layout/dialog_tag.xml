@@ -11,11 +11,15 @@
         <TextView
             android:id="@+id/label_tag_name"
             style="@style/ItemLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/tag_dialog_label_name" />
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/text_tag_name"
             style="@style/EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/label_tag_name" />
 
         <TextView
@@ -31,6 +35,8 @@
 
         <Spinner
             android:id="@+id/spinner_color_type"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spinner_height"
             style="@style/Spinner"
             android:layout_marginTop="@dimen/spacing"
             android:layout_below="@id/label_tag_attention" />

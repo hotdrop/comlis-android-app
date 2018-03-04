@@ -31,12 +31,16 @@
 
                 <TextView
                     android:id="@+id/txt_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/ListItemText"
                     android:textColor="@{viewModel.getColorRes}"
                     android:text="@{viewModel.viewCategoryName}" />
 
                 <TextView
                     android:id="@+id/txt_company_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/ListItemText"
                     android:layout_below="@id/txt_category"
                     android:text="@{viewModel.viewCompanyName}" />

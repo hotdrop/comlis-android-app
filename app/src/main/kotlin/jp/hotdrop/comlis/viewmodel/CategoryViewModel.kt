@@ -15,6 +15,7 @@ class CategoryViewModel(
 
     fun isRegisterCompanyInCategory() = registerCompanyCount > 0
 
+    // TODO これのせいでViewModelにcontextを受け渡す羽目になっているのでやめる。他全部ViewModelにContext持つのはダメ
     @ColorRes
     fun getColorRes() = ColorUtil.getResLight(category.colorType, context)
 

@@ -100,6 +100,8 @@
 
                 <TextView
                     android:id="@+id/label_overview_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/SectionTitle"
                     android:layout_below="@id/flex_box_container"
                     android:textColor="@{viewModel.getColorRes}"
@@ -107,6 +109,8 @@
 
                 <ImageView
                     android:id="@+id/image_edit_overview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/EditIconImage"
                     android:layout_below="@id/flex_box_container"
                     android:layout_toEndOf="@id/label_overview_title"
@@ -121,12 +125,16 @@
 
                 <TextView
                     android:id="@+id/txt_overview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     style="@style/MultiLineDisplayText"
                     android:layout_below="@id/line_overview_title"
                     android:text="@{viewModel.viewOverview}"/>
 
                 <TextView
                     android:id="@+id/label_information_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/SectionTitle"
                     android:textColor="@{viewModel.getColorRes}"
                     android:layout_below="@id/txt_overview"
@@ -134,6 +142,8 @@
 
                 <ImageView
                     android:id="@+id/image_edit_information"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/EditIconImage"
                     android:layout_below="@id/txt_overview"
                     android:layout_toEndOf="@id/label_information_title"
@@ -148,6 +158,8 @@
 
                 <TextView
                     android:id="@+id/label_employees_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemLabel"
                     android:drawableStart="@drawable/ic_people"
                     android:layout_below="@id/line_information_title"
@@ -155,6 +167,8 @@
 
                 <TextView
                     android:id="@+id/txt_employees_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemText"
                     android:layout_alignTop="@id/label_employees_num"
                     android:layout_toEndOf="@id/label_employees_num"
@@ -163,6 +177,8 @@
 
                 <TextView
                     android:id="@+id/label_salary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemLabel"
                     android:drawableStart="@drawable/ic_attach_money"
                     android:layout_below="@id/label_employees_num"
@@ -170,6 +186,8 @@
 
                 <TextView
                     android:id="@+id/txt_salary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemText"
                     android:layout_alignTop="@id/label_salary"
                     android:layout_toEndOf="@id/label_salary"
@@ -178,6 +196,8 @@
 
                 <TextView
                     android:id="@+id/label_wanted_job"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemLabel"
                     android:drawableStart="@drawable/ic_contacts"
                     android:layout_below="@id/label_salary"
@@ -185,6 +205,8 @@
 
                 <TextView
                     android:id="@+id/txt_wanted_job"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemText"
                     android:layout_alignTop="@id/label_wanted_job"
                     android:layout_toEndOf="@id/label_wanted_job"
@@ -193,6 +215,8 @@
 
                 <TextView
                     android:id="@+id/label_work_place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemLabel"
                     android:drawableStart="@drawable/ic_place"
                     android:layout_below="@id/label_wanted_job"
@@ -200,6 +224,8 @@
 
                 <TextView
                     android:id="@+id/txt_work_place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemText"
                     android:layout_alignTop="@id/label_work_place"
                     android:layout_toEndOf="@id/label_work_place"
@@ -208,6 +234,8 @@
 
                 <TextView
                     android:id="@+id/label_url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemLabel"
                     android:drawableStart="@drawable/ic_open_in_browser"
                     android:layout_below="@id/label_work_place"
@@ -216,6 +244,8 @@
 
                 <TextView
                     android:id="@+id/txt_link_url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemText"
                     android:layout_alignTop="@id/label_url"
                     android:layout_toEndOf="@id/label_url"
@@ -226,6 +256,8 @@
 
                 <TextView
                     android:id="@+id/label_business_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/SectionTitle"
                     android:textColor="@{viewModel.getColorRes}"
                     android:layout_below="@id/txt_link_url"
@@ -233,6 +265,8 @@
 
                 <ImageView
                     android:id="@+id/image_edit_business"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/EditIconImage"
                     android:layout_below="@id/txt_link_url"
                     android:layout_toEndOf="@id/label_business_title"
@@ -248,6 +282,8 @@
 
                 <TextView
                     android:id="@+id/label_doing_business"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemLabel"
                     android:drawableStart="@drawable/ic_business"
                     android:layout_below="@id/line_business_title"
@@ -255,6 +291,8 @@
 
                 <TextView
                     android:id="@+id/txt_doing_business"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     style="@style/MultiLineDisplayText"
                     android:layout_below="@id/label_doing_business"
                     android:layout_marginTop="@dimen/spacing_small"
@@ -262,6 +300,8 @@
 
                 <TextView
                     android:id="@+id/label_want_business"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemLabel"
                     android:drawableStart="@drawable/ic_cloud"
                     android:layout_below="@id/txt_doing_business"
@@ -270,6 +310,8 @@
 
                 <TextView
                     android:id="@+id/txt_want_business"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     style="@style/MultiLineDisplayText"
                     android:layout_below="@id/label_want_business"
                     android:layout_marginTop="@dimen/spacing_small"
@@ -277,6 +319,8 @@
 
                 <TextView
                     android:id="@+id/label_job_evaluation_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/SectionTitle"
                     android:textColor="@{viewModel.getColorRes}"
                     android:layout_below="@id/txt_want_business"
@@ -284,6 +328,8 @@
 
                 <ImageView
                     android:id="@+id/image_edit_job_evaluation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/EditIconImage"
                     android:layout_below="@id/txt_want_business"
                     android:layout_toEndOf="@id/label_job_evaluation_title"
@@ -298,6 +344,8 @@
 
                 <TextView
                     android:id="@+id/job_eval_correct_sentence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/JobEvaluationLabel"
                     android:layout_below="@id/line_job_evaluation_title"
                     android:layout_marginTop="@dimen/spacing"
@@ -305,30 +353,40 @@
                     android:text="@string/title_correct_sentence" />
                 <TextView
                     android:id="@+id/job_eval_development_env"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/JobEvaluationLabel"
                     android:layout_below="@id/job_eval_correct_sentence"
                     android:drawableStart="@drawable/ic_star_rate"
                     android:text="@string/title_development_env" />
                 <TextView
                     android:id="@+id/job_eval_want_skill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/JobEvaluationLabel"
                     android:layout_below="@id/job_eval_development_env"
                     android:drawableStart="@drawable/ic_star_rate"
                     android:text="@string/title_want_skill" />
                 <TextView
                     android:id="@+id/job_eval_person_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/JobEvaluationLabel"
                     android:layout_below="@id/job_eval_want_skill"
                     android:drawableStart="@drawable/ic_star_rate"
                     android:text="@string/title_person_image" />
                 <TextView
                     android:id="@+id/job_eval_appeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/JobEvaluationLabel"
                     android:layout_below="@id/job_eval_person_image"
                     android:drawableStart="@drawable/ic_star_rate"
                     android:text="@string/title_appeal" />
                 <TextView
                     android:id="@+id/job_eval_offer_reason"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/JobEvaluationLabel"
                     android:layout_below="@id/job_eval_appeal"
                     android:drawableStart="@drawable/ic_star_rate"
@@ -336,6 +394,8 @@
 
                 <TextView
                     android:id="@+id/label_description_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/SectionTitle"
                     android:textColor="@{viewModel.getColorRes}"
                     android:layout_below="@id/job_eval_offer_reason"
@@ -343,6 +403,8 @@
 
                 <ImageView
                     android:id="@+id/image_edit_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/EditIconImage"
                     android:layout_below="@id/job_eval_offer_reason"
                     android:layout_toEndOf="@id/label_description_title"
@@ -357,12 +419,16 @@
 
                 <TextView
                     android:id="@+id/text_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     style="@style/MultiLineDisplayText"
                     android:layout_below="@id/line_detail_title"
                     android:text="@{viewModel.viewNote}"/>
 
                 <TextView
                     android:id="@+id/label_etc_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/SectionTitle"
                     android:textColor="@{viewModel.getColorRes}"
                     android:layout_below="@id/text_detail"
@@ -375,6 +441,8 @@
 
                 <TextView
                     android:id="@+id/label_register_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemLabel"
                     android:layout_marginTop="@dimen/spacing"
                     android:drawableStart="@drawable/ic_query_builder"
@@ -383,6 +451,8 @@
 
                 <TextView
                     android:id="@+id/txt_register_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemText"
                     android:layout_alignTop="@id/label_register_date"
                     android:layout_toEndOf="@id/label_register_date"
@@ -391,6 +461,8 @@
 
                 <TextView
                     android:id="@+id/label_update_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemLabel"
                     android:drawableStart="@drawable/ic_query_builder"
                     android:layout_below="@id/label_register_date"
@@ -398,6 +470,8 @@
 
                 <TextView
                     android:id="@+id/txt_update_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/OverViewItemText"
                     android:layout_alignTop="@id/label_update_date"
                     android:layout_toEndOf="@id/label_update_date"

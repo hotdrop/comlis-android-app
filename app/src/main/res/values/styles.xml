@@ -62,8 +62,6 @@
 
     <!-- list -->
     <style name="ListItemText">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/spacing_small</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
@@ -72,8 +70,6 @@
     </style>
 
     <style name="ListSubItemLabel">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/spacing_small</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
@@ -82,8 +78,6 @@
     </style>
 
     <style name="ListSubItemText">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
         <item name="android:textColor">@color/item_list_subtext</item>
@@ -136,8 +130,6 @@
 
     <!-- Spinner -->
     <style name="Spinner">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/spinner_height</item>
         <item name="android:layout_marginTop">@dimen/spacing_small</item>
         <item name="android:layout_marginStart">@dimen/spacing</item>
         <item name="android:layout_marginEnd">@dimen/spacing</item>
@@ -164,8 +156,6 @@
     </style>
 
     <style name="SectionTitle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/spacing</item>
         <item name="android:layout_marginTop">@dimen/spacing_large</item>
         <item name="android:ellipsize">end</item>
@@ -182,8 +172,6 @@
     </style>
 
     <style name="MultiLineDisplayText">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/spacing_small</item>
         <item name="android:layout_marginStart">@dimen/spacing</item>
         <item name="android:layout_marginEnd">@dimen/spacing</item>
@@ -193,8 +181,6 @@
     </style>
 
     <style name="OverViewItemLabel">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_marginStart">@dimen/spacing</item>
         <item name="android:ellipsize">end</item>
@@ -204,8 +190,6 @@
     </style>
 
     <style name="OverViewItemText">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_marginStart">@dimen/spacing_small</item>
         <item name="android:ellipsize">end</item>
@@ -215,8 +199,6 @@
     </style>
 
     <style name="JobEvaluationLabel">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/spacing</item>
         <item name="android:ellipsize">end</item>
         <item name="android:lines">1</item>
@@ -256,8 +238,6 @@
 
     <!-- edit icon -->
     <style name="EditIconImage">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_marginStart">@dimen/spacing_small</item>
         <item name="android:layout_marginTop">@dimen/spacing_large</item>
