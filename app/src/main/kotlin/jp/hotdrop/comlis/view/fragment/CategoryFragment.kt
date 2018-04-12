@@ -235,8 +235,7 @@ class CategoryFragment: BaseFragment() {
     inner class Adapter(context: Context?)
         : ArrayRecyclerAdapter<CategoryViewModel, BindingHolder<ItemCategoryBinding>>(context) {
 
-        override fun onBindViewHolder(holder: BindingHolder<ItemCategoryBinding>?, position: Int) {
-            holder ?: return
+        override fun onBindViewHolder(holder: BindingHolder<ItemCategoryBinding>, position: Int) {
 
             val binding = holder.binding.apply {
                 viewModel = getItem(position)
@@ -253,7 +252,7 @@ class CategoryFragment: BaseFragment() {
             }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCategoryBinding> =
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemCategoryBinding> =
                 BindingHolder(context, parent, R.layout.item_category)
 
         fun refresh(vm: CategoryViewModel) {

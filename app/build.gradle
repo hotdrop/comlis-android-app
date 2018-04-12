@@ -43,7 +43,7 @@ android {
 }
 
 ext {
-    support_lib_version = "27.0.2"
+    support_lib_version = "27.1.0"
 }
 
 dependencies {
@@ -84,6 +84,15 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
 
     implementation 'com.deploygate:sdk:3.1.1'
+
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-core:0.9.21'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-attr:0.9.21'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-measurement:0.9.21'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-disk:0.9.21'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-recorder:0.9.21'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-phoenix:0.9.21'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-crash:0.9.21'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-shared-preferences:0.9.21'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.squareup.okhttp3:mockwebserver:3.9.1'

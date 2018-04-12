@@ -136,11 +136,10 @@ class SearchFragment: BaseFragment() {
     inner class Adapter(context: Context?)
         : ArrayRecyclerAdapter<ItemSearchResultViewModel, BindingHolder<ItemSearchResultBinding>>(context) {
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemSearchResultBinding> =
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemSearchResultBinding> =
                 BindingHolder(context, parent, R.layout.item_search_result)
 
-        override fun onBindViewHolder(holder: BindingHolder<ItemSearchResultBinding>?, position: Int) {
-            holder ?: return
+        override fun onBindViewHolder(holder: BindingHolder<ItemSearchResultBinding>, position: Int) {
 
             val binding = holder.binding
             binding.viewModel = getItem(position)

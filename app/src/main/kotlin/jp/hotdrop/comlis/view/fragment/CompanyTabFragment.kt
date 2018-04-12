@@ -152,11 +152,10 @@ class CompanyTabFragment: BaseFragment() {
     inner class Adapter(context: Context?):
             ArrayRecyclerAdapter<CompanyViewModel, BindingHolder<ItemCompanyBinding>>(context) {
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCompanyBinding> =
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemCompanyBinding> =
                 BindingHolder(context, parent, R.layout.item_company)
 
-        override fun onBindViewHolder(holder: BindingHolder<ItemCompanyBinding>?, position: Int) {
-            holder ?: return
+        override fun onBindViewHolder(holder: BindingHolder<ItemCompanyBinding>, position: Int) {
 
             val binding = holder.binding.apply {
                 viewModel = getItem(position)

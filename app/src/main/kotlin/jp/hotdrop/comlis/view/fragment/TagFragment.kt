@@ -216,8 +216,7 @@ class TagFragment: BaseFragment() {
     inner class FlexItemAdapter(context: Context?)
         : ArrayRecyclerAdapter<TagViewModel, BindingHolder<ItemTagBinding>>(context) {
 
-        override fun onBindViewHolder(holder: BindingHolder<ItemTagBinding>?, position: Int) {
-            holder ?: return
+        override fun onBindViewHolder(holder: BindingHolder<ItemTagBinding>, position: Int) {
 
             val binding = holder.binding
             binding.viewModel = getItem(position)
@@ -233,7 +232,7 @@ class TagFragment: BaseFragment() {
             }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemTagBinding> =
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemTagBinding> =
                 BindingHolder(context, parent, R.layout.item_tag)
 
         fun refresh(vm: TagViewModel) {
